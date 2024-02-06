@@ -209,7 +209,7 @@ class tnhosodenghikhenthuongchuyendeController extends Controller
         //gán trạng thái hồ sơ để theo dõi
         $inputs['trangthai'] = 'DCCVXD';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
-        setChuyenChuyenVienXD($model, $inputs);
+        setChuyenChuyenVienXD($model, $inputs, 'dshosothiduakhenthuong');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
 
@@ -221,7 +221,7 @@ class tnhosodenghikhenthuongchuyendeController extends Controller
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();          
         $inputs['thoigian'] = date('Y-m-d H:i:s');        
-        setXuLyHoSo($model, $inputs);
+        setXuLyHoSo($model, $inputs, 'dshosothiduakhenthuong');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
 }

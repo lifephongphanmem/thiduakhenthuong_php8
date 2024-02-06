@@ -1,12 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
-//
-//Khen cao
-
-
-
-
 //Khen thưởng theo niên hạn
 use App\Http\Controllers\NghiepVu\KhenThuongNienHan\dshosokhenthuongnienhanController;
 use App\Http\Controllers\NghiepVu\KhenThuongNienHan\qdhosokhenthuongnienhanController;

@@ -304,15 +304,8 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         //    dd($inputs);
         //gán thông tin vào bảng xử lý hồ sơ
-        dshosothiduakhenthuong_xuly::create([
-            'mahosotdkt' => $inputs['mahoso'],
-            'trangthai_xl' => $inputs['trangthai'],
-            'tendangnhap_xl' => $inputs['tendangnhap_xl'], //Thông tin tài khoản xử lý hồ sơ
-            'tendangnhap_tn' => $inputs['tendangnhap_tn'], //Thông tin tài khoản tiếp nhận kết quả xử lý hồ sơ
-            'noidung_xl' => $inputs['noidungxuly_xl'],
-            'ngaythang_xl' => $inputs['thoigian'],
-        ]);
-        setChuyenChuyenVienXD($model, $inputs);
+
+        setChuyenChuyenVienXD($model, $inputs, 'dshosothiduakhenthuong');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
 
@@ -325,16 +318,8 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         // dd($inputs);
-        //gán thông tin vào bảng xử lý hồ sơ
-        dshosothiduakhenthuong_xuly::create([
-            'mahosotdkt' => $inputs['mahoso'],
-            'trangthai_xl' => $inputs['trangthai'],
-            'tendangnhap_xl' => $inputs['tendangnhap_xl'], //Thông tin tài khoản xử lý hồ sơ
-            'tendangnhap_tn' => $inputs['tendangnhap_tn'], //Thông tin tài khoản tiếp nhận kết quả xử lý hồ sơ
-            'noidung_xl' => $inputs['noidungxuly_xl'],
-            'ngaythang_xl' => $inputs['thoigian'],
-        ]);
-        setXuLyHoSo($model, $inputs);
+
+        setXuLyHoSo($model, $inputs, 'dshosothiduakhenthuong');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
 
@@ -342,11 +327,11 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
     {
         $inputs = $request->all();
         $model = dshosothiduakhenthuong_xuly::where('mahosotdkt', $inputs['mahosotdkt'])->get();
-        $a_canbo = array_column( dstaikhoan::all()->toArray(),'tentaikhoan','tendangnhap');
+        $a_canbo = array_column(dstaikhoan::all()->toArray(), 'tentaikhoan', 'tendangnhap');
         return view('NghiepVu._DungChung.InQuaTrinhXuLy')
-            ->with('model', $model)           
+            ->with('model', $model)
             ->with('a_canbo', $a_canbo)
-            ->with('a_trangthaihs', getTrangThaiHoSo())            
+            ->with('a_trangthaihs', getTrangThaiHoSo())
             ->with('pageTitle', 'Thông tin quá trình xử lý hồ sơ đề nghị khen thưởng');
     }
 }

@@ -2,7 +2,6 @@
 
 use App\Models\DanhMuc\dstaikhoan_phamvi;
 use App\Models\HeThong\trangthaihoso;
-
 use App\Models\View\view_dscumkhoi;
 
 use App\Models\View\viewdiabandonvi;
@@ -1122,18 +1121,53 @@ function setTraLaiXD(&$model, &$inputs)
     ]);
 }
 
-function setChuyenChuyenVienXD(&$model, &$inputs)
+function setChuyenChuyenVienXD(&$model, &$inputs, $phanloai)
 {
     //dd($inputs);
     $model->trangthai = $inputs['trangthai'];
     $model->thoigian = $inputs['thoigian'];
-    
+
     $model->trangthai_xl = $inputs['trangthai_xl'];
     $model->tendangnhap_xl = $inputs['tendangnhap_tn'];
     $model->trangthai_xd = $model->trangthai;
     $model->thoigian_xd = $model->thoigian;
     $model->save();
 
+    switch ($phanloai) {
+        case 'dshosotdktcumkhoi': {
+                App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_xuly::create([
+                    'mahosotdkt' => $inputs['mahoso'],
+                    'trangthai_xl' => $inputs['trangthai'],
+                    'tendangnhap_xl' => $inputs['tendangnhap_xl'], //Thông tin tài khoản xử lý hồ sơ
+                    'tendangnhap_tn' => $inputs['tendangnhap_tn'], //Thông tin tài khoản tiếp nhận kết quả xử lý hồ sơ
+                    'noidung_xl' => $inputs['noidungxuly_xl'],
+                    'ngaythang_xl' => $inputs['thoigian'],
+                ]);
+                break;
+            }
+        case 'dshosokhencao': {
+                App\Models\NghiepVu\KhenCao\dshosokhencao_xuly::create([
+                    'mahosotdkt' => $inputs['mahoso'],
+                    'trangthai_xl' => $inputs['trangthai'],
+                    'tendangnhap_xl' => $inputs['tendangnhap_xl'], //Thông tin tài khoản xử lý hồ sơ
+                    'tendangnhap_tn' => $inputs['tendangnhap_tn'], //Thông tin tài khoản tiếp nhận kết quả xử lý hồ sơ
+                    'noidung_xl' => $inputs['noidungxuly_xl'],
+                    'ngaythang_xl' => $inputs['thoigian'],
+                ]);
+                break;
+            }
+        default: {
+                //dshosothiduakhenthuong
+                App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_xuly::create([
+                    'mahosotdkt' => $inputs['mahoso'],
+                    'trangthai_xl' => $inputs['trangthai'],
+                    'tendangnhap_xl' => $inputs['tendangnhap_xl'], //Thông tin tài khoản xử lý hồ sơ
+                    'tendangnhap_tn' => $inputs['tendangnhap_tn'], //Thông tin tài khoản tiếp nhận kết quả xử lý hồ sơ
+                    'noidung_xl' => $inputs['noidungxuly_xl'],
+                    'ngaythang_xl' => $inputs['thoigian'],
+                ]);
+            }
+    }
     //Lưu trạng thái
     trangthaihoso::create([
         'mahoso' => $inputs['mahoso'],
@@ -1147,14 +1181,51 @@ function setChuyenChuyenVienXD(&$model, &$inputs)
     ]);
 }
 
-function setXuLyHoSo(&$model, &$inputs)
+function setXuLyHoSo(&$model, &$inputs, $phanloai)
 {
     //dd($inputs);
     $model->trangthai_xl = $inputs['trangthai_xl'];
     $model->tendangnhap_xl = $inputs['tendangnhap_tn'];
-    $model->thoigian_xd = $inputs['thoigian']; 
+    $model->thoigian_xd = $inputs['thoigian'];
     $model->save();
 
+//gán thông tin vào bảng xử lý hồ sơ
+    switch ($phanloai) {
+        case 'dshosotdktcumkhoi': {
+                App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_xuly::create([
+                    'mahosotdkt' => $inputs['mahoso'],
+                    'trangthai_xl' => $inputs['trangthai'],
+                    'tendangnhap_xl' => $inputs['tendangnhap_xl'], //Thông tin tài khoản xử lý hồ sơ
+                    'tendangnhap_tn' => $inputs['tendangnhap_tn'], //Thông tin tài khoản tiếp nhận kết quả xử lý hồ sơ
+                    'noidung_xl' => $inputs['noidungxuly_xl'],
+                    'ngaythang_xl' => $inputs['thoigian'],
+                ]);
+                break;
+            }
+        case 'dshosokhencao': {
+                App\Models\NghiepVu\KhenCao\dshosokhencao_xuly::create([
+                    'mahosotdkt' => $inputs['mahoso'],
+                    'trangthai_xl' => $inputs['trangthai'],
+                    'tendangnhap_xl' => $inputs['tendangnhap_xl'], //Thông tin tài khoản xử lý hồ sơ
+                    'tendangnhap_tn' => $inputs['tendangnhap_tn'], //Thông tin tài khoản tiếp nhận kết quả xử lý hồ sơ
+                    'noidung_xl' => $inputs['noidungxuly_xl'],
+                    'ngaythang_xl' => $inputs['thoigian'],
+                ]);
+                break;
+            }
+        default: {
+                //dshosothiduakhenthuong
+                App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_xuly::create([
+                    'mahosotdkt' => $inputs['mahoso'],
+                    'trangthai_xl' => $inputs['trangthai'],
+                    'tendangnhap_xl' => $inputs['tendangnhap_xl'], //Thông tin tài khoản xử lý hồ sơ
+                    'tendangnhap_tn' => $inputs['tendangnhap_tn'], //Thông tin tài khoản tiếp nhận kết quả xử lý hồ sơ
+                    'noidung_xl' => $inputs['noidungxuly_xl'],
+                    'ngaythang_xl' => $inputs['thoigian'],
+                ]);
+            }
+    }
+    
     //Lưu trạng thái
     trangthaihoso::create([
         'mahoso' => $inputs['mahoso'],

@@ -143,6 +143,7 @@ include('khenthuongchuyende.php');
 include('khenthuongdotxuat.php');
 include('khenthuongconghien.php');
 include('khenthuongdoingoai.php');
+include('khenthuongnienhan.php');
 include('khencao.php');
 include('cumkhoi.php');
 include('tracuu.php');

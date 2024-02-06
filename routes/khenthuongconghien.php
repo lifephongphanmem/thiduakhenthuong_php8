@@ -129,6 +129,7 @@ Route::group(['prefix' => 'KhenThuongCongHien'], function () {
         Route::post('ChuyenChuyenVien', [tnhosodenghikhenthuongconghienController::class, 'ChuyenChuyenVien']);
         Route::post('XuLyHoSo', [tnhosodenghikhenthuongconghienController::class, 'XuLyHoSo']);
         Route::post('LayXuLyHoSo', [tnhosodenghikhenthuongconghienController::class, 'LayXuLyHoSo']);
+        Route::get('QuaTrinhXuLyHoSo', [tnhosodenghikhenthuongconghienController::class, 'QuaTrinhXuLyHoSo']);
     });
 
     Route::group(['prefix' => 'XetDuyet'], function () {
