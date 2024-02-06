@@ -30,33 +30,29 @@ Route::group(['prefix' => 'DiaBan'], function () {
 
 Route::group(['prefix' => 'DonVi'], function () {
     Route::get('ThongTin', [dsdonviController::class, 'ThongTin']);
-    Route::get('DanhSach', 'HeThong\dsdonviController@DanhSach');
-    Route::get('Them', 'HeThong\dsdonviController@create');
-    Route::post('Them', 'HeThong\dsdonviController@store');
-    Route::get('Sua', 'HeThong\dsdonviController@edit');
-    Route::post('Sua', 'HeThong\dsdonviController@store');
-    Route::post('Xoa', 'HeThong\dsdonviController@destroy');
+    Route::get('DanhSach', [dsdonviController::class, 'DanhSach']);
+    Route::get('Them', [dsdonviController::class, 'create']);
+    Route::post('Them', [dsdonviController::class, 'store']);
+    Route::get('Sua', [dsdonviController::class, 'edit']);
+    Route::post('Sua', [dsdonviController::class, 'store']);
+    Route::post('Xoa', [dsdonviController::class, 'destroy']);
     //Route::get('QuanLy', 'HeThong\dsdonviController@QuanLy');
-    Route::post('QuanLy', 'HeThong\dsdonviController@LuuQuanLy');
+    Route::post('QuanLy', [dsdonviController::class, 'LuuQuanLy']);
 
-    Route::post('NhanExcel', 'HeThong\dsdonviController@NhanExcel');
+    Route::post('NhanExcel',[dsdonviController::class, 'NhanExcel']);
 });
 
 Route::group(['prefix' => 'TaiKhoan'], function () {
-    Route::get('ThongTin', 'HeThong\dstaikhoanController@ThongTin');
-    Route::get('DanhSach', 'HeThong\dstaikhoanController@DanhSach');
-
-    Route::get('PhanQuyen', 'HeThong\dstaikhoanController@PhanQuyen');
-    Route::post('PhanQuyen', 'HeThong\dstaikhoanController@LuuPhanQuyen');
-
-    Route::get('Them', 'HeThong\dstaikhoanController@create');
-    Route::post('Them', 'HeThong\dstaikhoanController@store');
-    Route::get('Sua', 'HeThong\dstaikhoanController@edit');
-    Route::post('Sua', 'HeThong\dstaikhoanController@store');
-    Route::post('NhomChucNang', 'HeThong\dstaikhoanController@NhomChucNang');
-
-    Route::post('Xoa', 'HeThong\dstaikhoanController@XoaTaiKhoan');
-
+    Route::get('ThongTin', [dstaikhoanController::class, 'ThongTin']);
+    Route::get('DanhSach',[dstaikhoanController::class, 'DanhSach']);
+    Route::get('PhanQuyen',[dstaikhoanController::class, 'PhanQuyen']);
+    Route::post('PhanQuyen',[dstaikhoanController::class, 'LuuPhanQuyen']);
+    Route::get('Them', [dstaikhoanController::class, 'create']);
+    Route::post('Them', [dstaikhoanController::class, 'store']);
+    Route::get('Sua', [dstaikhoanController::class, 'edit']);
+    Route::post('Sua', [dstaikhoanController::class, 'store']);
+    Route::post('NhomChucNang', [dstaikhoanController::class, 'NhomChucNang']);
+    Route::post('Xoa', [dstaikhoanController::class, 'XoaTaiKhoan']);
     Route::get('PhamViDuLieu', [dstaikhoanController::class, 'PhamViDuLieu']);
     Route::post('PhamViDuLieu', [dstaikhoanController::class, 'LuuPhamViDuLieu']);
     Route::post('XoaPhamViDuLieu', [dstaikhoanController::class, 'XoaPhamViDuLieu']);
@@ -69,14 +65,14 @@ Route::group(['prefix' => 'HeThongAPI'], function () {
 
 Route::group(['prefix' => 'ChucNang'], function () {
     Route::get('ThongTin', [dschucnangController::class, 'ThongTin']);
-    Route::post('ThongTin', 'HeThong\dschucnangController@LuuChucNang');
-    Route::get('LayChucNang', 'HeThong\dschucnangController@LayChucNang');
-    Route::post('Xoa', 'HeThong\dschucnangController@XoaChucNang');
+    Route::post('ThongTin', [dschucnangController::class, 'LuuChucNang']);
+    Route::get('LayChucNang', [dschucnangController::class, 'LayChucNang']);
+    Route::post('Xoa', [dschucnangController::class, 'XoaChucNang']);
 });
 
 Route::group(['prefix' => 'VanPhongHoTro'], function () {
     Route::get('ThongTin', [dsvanphonghotroController::class, 'ThongTin']);
     Route::post('Them', [dsvanphonghotroController::class, 'Them']);
-    Route::get('LayChucNang', 'HeThong\dschucnangController@LayChucNang');
-    Route::post('Xoa', 'HeThong\dschucnangController@XoaChucNang');
+    Route::get('LayChucNang', [dsvanphonghotroController::class, 'LayChucNang']);
+    Route::post('Xoa', [dsvanphonghotroController::class, 'XoaChucNang']);
 });

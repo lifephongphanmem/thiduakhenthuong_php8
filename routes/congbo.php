@@ -1,12 +1,14 @@
 <?php
+
+use App\Http\Controllers\HeThong\congboController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix'=>'CongBo'], function(){    
-    Route::get('VanBan','HeThong\congboController@VanBan');    
-    Route::get('QuyetDinh','HeThong\congboController@QuyetDinh');
+    Route::get('VanBan', [congboController::class, 'VanBan']);    
+    Route::get('QuyetDinh',[congboController::class, 'QuyetDinh']);
 
-    Route::get('TaiLieuVanBan','HeThong\congboController@TaiLieuVanBan');
-    Route::get('TaiLieuQuyetDinh','HeThong\congboController@TaiLieuQuyetDinh');
+    Route::get('TaiLieuVanBan',[congboController::class, 'TaiLieuVanBan']);
+    Route::get('TaiLieuQuyetDinh',[congboController::class, 'TaiLieuQuyetDinh']);
 });
 
 
