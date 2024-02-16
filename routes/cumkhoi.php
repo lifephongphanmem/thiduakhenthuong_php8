@@ -211,16 +211,17 @@ Route::group(['prefix' => 'CumKhoiThiDua'], function () {
             Route::get('DanhSach', [tnhosokhenthuongcumkhoiController::class, 'DanhSach']);
             Route::post('TraLai', [tnhosokhenthuongcumkhoiController::class, 'TraLai']);
             Route::post('NhanHoSo', [tnhosokhenthuongcumkhoiController::class, 'NhanHoSo']);
-            Route::post('ChuyenHoSo', [tnhosokhenthuongcumkhoiController::class, 'ChuyenHoSo']);
+            Route::post('ChuyenHoSo', [tnhosokhenthuongcumkhoiController::class, 'ChuyenHoSo']);            
+            Route::post('ChuyenChuyenVien', [tnhosokhenthuongcumkhoiController::class, 'ChuyenChuyenVien']);
+            Route::post('XuLyHoSo', [tnhosokhenthuongcumkhoiController::class, 'XuLyHoSo']);
+            Route::post('LayXuLyHoSo', [tnhosokhenthuongcumkhoiController::class, 'LayXuLyHoSo']);
+            Route::get('QuaTrinhXuLyHoSo', [tnhosokhenthuongcumkhoiController::class, 'QuaTrinhXuLyHoSo']);
         });
 
         Route::group(['prefix' => 'KhenThuong'], function () {
             Route::get('DanhSach', [qdhosokhenthuongcumkhoiController::class, 'DanhSach']);
             Route::get('ThongTin', [qdhosokhenthuongcumkhoiController::class, 'ThongTin']);
             Route::post('Them', [qdhosokhenthuongcumkhoiController::class, 'Them']);
-            // Route::get('Sua', [qdhosokhenthuongcumkhoiController::class, 'Sua']);
-            // Route::post('Sua', [qdhosokhenthuongcumkhoiController::class, 'LuuHoSo']);
-            // Route::post('Xoa', [qdhosokhenthuongcumkhoiController::class, 'XoaHoSo']);
 
             Route::post('ThemTapThe', [qdhosokhenthuongcumkhoiController::class, 'ThemTapThe']);
             Route::get('XoaTapThe', [qdhosokhenthuongcumkhoiController::class, 'XoaTapThe']);
@@ -256,7 +257,7 @@ Route::group(['prefix' => 'CumKhoiThiDua'], function () {
             Route::get('InGiayKhenTapThe', [qdhosokhenthuongcumkhoiController::class, 'InGiayKhenTapThe']);
 
             //09.11.2022
-            
+
             Route::get('InToTrinhPheDuyet', [qdhosokhenthuongcumkhoiController::class, 'InToTrinhPheDuyet']);
         });
     });

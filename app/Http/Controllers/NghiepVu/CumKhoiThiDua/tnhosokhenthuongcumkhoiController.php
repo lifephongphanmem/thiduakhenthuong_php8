@@ -11,6 +11,7 @@ use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstaikhoan;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_canhan;
@@ -201,6 +202,49 @@ class tnhosokhenthuongcumkhoiController extends Controller
             'madonvi' => $model->madonvi_xd,
             'thongtin' => 'Tiếp nhận hồ sơ đề nghị khen thưởng.',
         ]);
-        return redirect(static::$url . 'DanhSach?madonvi=' . $model->madonvi_xd . '&macumkhoi=' . $model->macumkhoi);
+        return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi_xd . '&macumkhoi=' . $model->macumkhoi);
+    }
+
+    public function ChuyenChuyenVien(Request $request)
+    {
+        if (!chkPhanQuyen('tnhosodenghikhenthuongthidua', 'xuly')) {
+            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongthidua')->with('tenphanquyen', 'xuly');
+        }
+        $inputs = $request->all();
+        //gán trạng thái hồ sơ để theo dõi
+        $inputs['trangthai'] = 'DCCVXD';
+        $inputs['thoigian'] = date('Y-m-d H:i:s');
+        $model = dshosotdktcumkhoi::where('mahosotdkt', $inputs['mahoso'])->first();
+        //    dd($inputs);
+        //gán thông tin vào bảng xử lý hồ sơ
+
+        setChuyenChuyenVienXD($model, $inputs, 'dshosotdktcumkhoi');
+        return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']. '&macumkhoi=' . $model->macumkhoi);
+    }
+
+    public function XuLyHoSo(Request $request)
+    {
+        if (!chkPhanQuyen('tnhosodenghikhenthuongthidua', 'xuly')) {
+            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongthidua')->with('tenphanquyen', 'hoanthanh');
+        }
+        $inputs = $request->all();
+        $model = dshosotdktcumkhoi::where('mahosotdkt', $inputs['mahoso'])->first();
+        $inputs['thoigian'] = date('Y-m-d H:i:s');
+        // dd($inputs);
+
+        setXuLyHoSo($model, $inputs, 'dshosotdktcumkhoi');
+        return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi'] . '&macumkhoi=' . $model->macumkhoi);
+    }
+
+    public function QuaTrinhXuLyHoSo(Request $request)
+    {
+        $inputs = $request->all();
+        $model = dshosotdktcumkhoi::where('mahosotdkt', $inputs['mahosotdkt'])->get();
+        $a_canbo = array_column(dstaikhoan::all()->toArray(), 'tentaikhoan', 'tendangnhap');
+        return view('NghiepVu._DungChung.InQuaTrinhXuLy')
+            ->with('model', $model)
+            ->with('a_canbo', $a_canbo)
+            ->with('a_trangthaihs', getTrangThaiHoSo())
+            ->with('pageTitle', 'Thông tin quá trình xử lý hồ sơ đề nghị khen thưởng');
     }
 }
