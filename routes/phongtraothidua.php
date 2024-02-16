@@ -8,6 +8,7 @@ use App\Http\Controllers\NghiepVu\ThiDuaKhenThuong\dsphongtraothiduaController;
 use App\Http\Controllers\NghiepVu\ThiDuaKhenThuong\qdhosodenghikhenthuongthiduaController;
 use App\Http\Controllers\NghiepVu\ThiDuaKhenThuong\dshosodenghikhenthuongthiduaController;
 use App\Http\Controllers\NghiepVu\ThiDuaKhenThuong\dshosokhenthuongthiduaController;
+use App\Http\Controllers\NghiepVu\ThiDuaKhenThuong\tnhosodenghikhenthuongthiduaController;
 use App\Http\Controllers\NghiepVu\ThiDuaKhenThuong\xdhosodenghikhenthuongthiduaController;
 
 Route::group(['prefix' => 'PhongTraoThiDua'], function () {
@@ -117,6 +118,19 @@ Route::group(['prefix' => 'HoSoDeNghiKhenThuongThiDua'], function () {
     //Route::get('ToTrinhHoSo', [dshosodenghikhenthuongthiduaController::class, 'ToTrinhHoSo']);
     //Route::post('ToTrinhHoSo', [dshosodenghikhenthuongthiduaController::class, 'LuuToTrinhHoSo']);
     //Route::get('InToTrinhHoSo', [dshosodenghikhenthuongthiduaController::class, 'InToTrinhHoSo']);
+});
+
+Route::group(['prefix' => 'TiepNhanHoSoThiDua'], function () {
+    Route::get('ThongTin', [tnhosodenghikhenthuongthiduaController::class, 'ThongTin']);
+    Route::get('DanhSach', [tnhosodenghikhenthuongthiduaController::class, 'DanhSach']);
+    Route::post('TraLai', [tnhosodenghikhenthuongthiduaController::class, 'TraLai']);
+    Route::post('NhanHoSo', [tnhosodenghikhenthuongthiduaController::class, 'NhanHoSo']);
+    Route::post('ChuyenHoSo', [tnhosodenghikhenthuongthiduaController::class, 'ChuyenHoSo']);
+    
+    Route::post('ChuyenChuyenVien', [tnhosodenghikhenthuongthiduaController::class, 'ChuyenChuyenVien']);
+    Route::post('XuLyHoSo', [tnhosodenghikhenthuongthiduaController::class, 'XuLyHoSo']);
+    Route::post('LayXuLyHoSo', [tnhosodenghikhenthuongthiduaController::class, 'LayXuLyHoSo']);
+    Route::get('QuaTrinhXuLyHoSo', [tnhosodenghikhenthuongthiduaController::class, 'QuaTrinhXuLyHoSo']);
 });
 
 Route::group(['prefix' => 'XetDuyetHoSoThiDua'], function () {
