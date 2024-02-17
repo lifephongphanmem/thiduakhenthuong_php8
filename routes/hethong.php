@@ -13,8 +13,8 @@ Route::get('DangNhap', [hethongchungController::class, 'DangNhap']);
 Route::post('DangNhap', [hethongchungController::class, 'XacNhanDangNhap']);
 Route::post('QuenMatKhau', [hethongchungController::class, 'QuenMatKhau']);
 Route::get('DangXuat', [hethongchungController::class, 'DangXuat']);
-Route::get('ThongTinDonVi', [hethongchungController::class, 'ThongTinDonVi']);
-Route::post('ThongTinDonVi', [hethongchungController::class, 'LuuThongTinDonVi']);
+Route::get('ThongTinDonVi', [dsdonviController::class, 'ThongTinDonVi']);
+Route::post('ThongTinDonVi', [dsdonviController::class, 'LuuThongTinDonVi']);
 
 Route::group(['prefix' => 'HeThongChung'], function () {
     Route::get('ThongTin', [hethongchungController::class, 'ThongTin']);
