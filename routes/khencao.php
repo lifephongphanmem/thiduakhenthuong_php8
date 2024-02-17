@@ -45,6 +45,10 @@ Route::group(['prefix' => 'KhenCao'], function () {
         Route::post('TraLai', [tnhosodenghikhencaoController::class, 'TraLai']);
         Route::post('NhanHoSo', [tnhosodenghikhencaoController::class, 'NhanHoSo']);
         Route::post('ChuyenHoSo', [tnhosodenghikhencaoController::class, 'ChuyenHoSo']);
+        Route::post('ChuyenChuyenVien', [tnhosodenghikhencaoController::class, 'ChuyenChuyenVien']);
+            Route::post('XuLyHoSo', [tnhosodenghikhencaoController::class, 'XuLyHoSo']);
+            Route::post('LayXuLyHoSo', [tnhosodenghikhencaoController::class, 'LayXuLyHoSo']);
+            Route::get('QuaTrinhXuLyHoSo', [tnhosodenghikhencaoController::class, 'QuaTrinhXuLyHoSo']);
     });
 
     Route::group(['prefix' => 'XetDuyetHoSoDN'], function () {

@@ -70,9 +70,10 @@
 
                                 <td style="text-align: center">
                                     @include('NghiepVu._DungChung.TD_XemThongTinTDKT')
-                                    @if (chkPhanQuyen('tnhosodenghikhencao', 'thaydoi'))
+                                    @include('NghiepVu._DungChung.TiepNhan.TD_TrangThai_CC')
+                                    {{-- @if (chkPhanQuyen('tnhosodenghikhencao', 'thaydoi'))
                                         @include('NghiepVu._DungChung.TiepNhan.TD_TrangThai_CC')
-                                    @endif
+                                    @endif --}}
                                 </td>
                             </tr>
                         @endforeach
@@ -85,6 +86,7 @@
     @include('includes.modal.modal_unapprove_hs')
     @include('includes.modal.modal_accept_hs')
     @include('includes.modal.modal_trinhhs')
+    @include('includes.modal.modal_chuyenchuyenvien')
     @include('NghiepVu._DungChung.InDuLieu_KhenCao')
     @include('includes.modal.modal_attackfile')
     @include('includes.modal.modal-lydo')

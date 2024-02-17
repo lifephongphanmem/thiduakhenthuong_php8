@@ -207,8 +207,8 @@ class tnhosokhenthuongcumkhoiController extends Controller
 
     public function ChuyenChuyenVien(Request $request)
     {
-        if (!chkPhanQuyen('tnhosodenghikhenthuongthidua', 'xuly')) {
-            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongthidua')->with('tenphanquyen', 'xuly');
+        if (!chkPhanQuyen('tnhosokhenthuongcumkhoi', 'xuly')) {
+            return view('errors.noperm')->with('machucnang', 'tnhosokhenthuongcumkhoi')->with('tenphanquyen', 'xuly');
         }
         $inputs = $request->all();
         //gán trạng thái hồ sơ để theo dõi
@@ -224,8 +224,8 @@ class tnhosokhenthuongcumkhoiController extends Controller
 
     public function XuLyHoSo(Request $request)
     {
-        if (!chkPhanQuyen('tnhosodenghikhenthuongthidua', 'xuly')) {
-            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongthidua')->with('tenphanquyen', 'hoanthanh');
+        if (!chkPhanQuyen('tnhosokhenthuongcumkhoi', 'xuly')) {
+            return view('errors.noperm')->with('machucnang', 'tnhosokhenthuongcumkhoi')->with('tenphanquyen', 'hoanthanh');
         }
         $inputs = $request->all();
         $model = dshosotdktcumkhoi::where('mahosotdkt', $inputs['mahoso'])->first();
