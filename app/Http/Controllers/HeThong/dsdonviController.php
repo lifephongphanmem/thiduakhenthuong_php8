@@ -16,6 +16,8 @@ use App\Models\DanhMuc\dstaikhoan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ColectionImport;
+use Illuminate\Support\Facades\Hash;
 
 class dsdonviController extends Controller
 {
@@ -231,7 +233,7 @@ class dsdonviController extends Controller
     public function NhanExcel(Request $request)
     {
         $inputs = $request->all();
-        //dd($inputs);
+        // dd($inputs);
         if (!isset($inputs['manhomchucnang'])) {
             return view('errors.403')
                 ->with('message', 'Bạn cần tạo nhóm chức năng trước khi nhận dữ liệu để phân quyền thuận tiện hơn.')
@@ -248,15 +250,22 @@ class dsdonviController extends Controller
         $filename = $inputs['madiaban'] . '_' . getdate()[0];
         $model_diaban = dsdiaban::where('madiaban', $inputs['madiaban'])->first();
 
-        $request->file('fexcel')->move(public_path() . '/data/uploads/', $filename . '.xlsx');
-        $path = public_path() . '/data/uploads/' . $filename . '.xlsx';
-        $data = [];
-
-        Excel::load($path, function ($reader) use (&$data) {            
-            $obj = $reader->getExcel();
-            $sheet = $obj->getSheet(0);
-            $data = $sheet->toArray(null, true, true, true); // giữ lại tiêu đề A=>'val';
-        });
+        // $request->file('fexcel')->move(public_path() . '/data/uploads/', $filename . '.xlsx');
+        // $request->file('fexcel')->move('data/uploads/', $filename . '.xlsx');
+        // $path = public_path() . '/data/uploads/' . $filename . '.xlsx';
+        // $path = '/data/uploads/' . $filename . '.xlsx';
+        // dd($inputs);
+        // dd($path);
+        // $data = [];
+        $dataObj = new ColectionImport();
+        $theArray = Excel::toArray($dataObj, $inputs['fexcel']);
+        $data = $theArray[0];
+        // dd($data);
+        // Excel::load($path, function ($reader) use (&$data) {            
+        //     $obj = $reader->getExcel();
+        //     $sheet = $obj->getSheet(0);
+        //     $data = $sheet->toArray(null, true, true, true); // giữ lại tiêu đề A=>'val';
+        // });
 
         // Excel::load($path, function ($reader) use (&$data, $inputs, $path) {
         //     $obj = $reader->getExcel();
@@ -272,24 +281,25 @@ class dsdonviController extends Controller
         $a_tk = array();
         $a_ck = [];
         $ma = getdate()[0];
-        //dd($data);
-        for ($i = $inputs['tudong']; $i <= $inputs['dendong']; $i++) {
-            if (!isset($data[$i][$inputs['tendonvi']])) {
+        // dd($data);
+        for ($i = ($inputs['tudong']-1); $i <= $inputs['dendong']; $i++) {
+            if (!isset($data[$i][ColumnName()[$inputs['tendonvi']]])) {
                 continue;
             }
             $a_dv[] = array(
                 'madiaban' => $inputs['madiaban'],
-                'tendonvi' => $data[$i][$inputs['tendonvi']] ?? '',
+                'tendonvi' => $data[$i][ColumnName()[$inputs['tendonvi']]] ?? '',
                 'madonvi' => $ma,
             );
 
             $a_tk[] = array(
                 'madonvi' => $ma,
                 'manhomchucnang' => $inputs['manhomchucnang'],
-                'tentaikhoan' => $data[$i][$inputs['tendonvi']] ?? '',
-                'matkhau' => '2d17247d02f162064940feff49988f8e',
+                'tentaikhoan' => $data[$i][ColumnName()[$inputs['tendonvi']]] ?? '',
+                // 'matkhau' => '2d17247d02f162064940feff49988f8e', 
+                'matkhau' => Hash::make($data[$i][ColumnName()[$inputs['matkhau']]] ?? ''),
                 'trangthai' => '1',
-                'tendangnhap' => $data[$i][$inputs['tendangnhap']] ?? '',
+                'tendangnhap' => $data[$i][ColumnName()[$inputs['tendangnhap']]] ?? '',
             );
             if ($inputs['macumkhoi'] != 'NULL') {
                 $a_ck[] = [
@@ -300,11 +310,10 @@ class dsdonviController extends Controller
             }
             $ma++;
         }
-        
         dsdonvi::insert($a_dv);
         dstaikhoan::insert($a_tk);
         dscumkhoi_chitiet::insert($a_ck);
-        File::Delete($path);
+        // File::Delete($path);
 
         return redirect(static::$url . 'DanhSach?madiaban=' . $inputs['madiaban']);
     }
