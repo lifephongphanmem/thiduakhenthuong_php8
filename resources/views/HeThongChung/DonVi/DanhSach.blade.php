@@ -151,6 +151,10 @@
                                             <label class="form-control-label">Tài khoản đăng nhập</label>
                                             {!! Form::text('tendangnhap', 'C', ['class' => 'form-control']) !!}
                                         </div>
+                                        <div class="col-md-3">
+                                            <label class="form-control-label">Mật khẩu</label>
+                                            {!! Form::text('matkhau', 'D', ['class' => 'form-control']) !!}
+                                        </div>
                                     </div>
 
                                     <div class="form-group row">

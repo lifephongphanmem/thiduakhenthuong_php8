@@ -692,6 +692,7 @@ function getDonVi($capdo, $chucnang = null, $tenquyen = null)
         $a_tk = App\Models\DanhMuc\dstaikhoan::wherein('madonvi', array_column($m_donvi->toarray(), 'madonvi'))->get('tendangnhap');
         $a_tk_pq = App\Models\DanhMuc\dstaikhoan_phanquyen::where('machucnang', $chucnang)->where('phanquyen', '1')
             ->wherein('tendangnhap', $a_tk)->get('tendangnhap');
+            // dd($a_tk_pq);
         $m_donvi = App\Models\View\viewdiabandonvi::wherein('madonvi', function ($qr) use ($a_tk_pq) {
             $qr->select('madonvi')->from('dstaikhoan')->wherein('tendangnhap', $a_tk_pq)->distinct();
         })->get();
@@ -1581,4 +1582,33 @@ function getHoSoXuLy($a_mahosotdkt, $tendangnhap, $phanloai)
                 }
         }
     }
+}
+
+//index các cột trong excel
+function ColumnName(){
+    return [
+        'A'=>0,
+        'B'=>1,
+        'C'=>2,
+        'D'=>3,
+        'E'=>4,
+        'F'=>5,
+        'G'=>6,
+        'H'=>7,
+        'I'=>8,
+        'J'=>9,
+        'K'=>10,
+        'L'=>11,
+        'M'=>12,
+        'N'=>13,
+        'O'=>13,
+        'P'=>15,
+        'Q'=>16,
+        'R'=>17,
+        'S'=>18,
+        'T'=>19,
+        'U'=>20,
+        'V'=>21,
+        'W'=>22
+    ];
 }

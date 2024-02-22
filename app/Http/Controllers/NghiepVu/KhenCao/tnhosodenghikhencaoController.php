@@ -87,6 +87,7 @@ class tnhosodenghikhencaoController extends Controller
         $m_khencanhan = dshosokhencao_canhan::where('ketqua', '1')->wherein('mahosotdkt', array_column($model->toarray(), 'mahosotdkt'))->get();
         $m_khentapthe = dshosokhencao_tapthe::where('ketqua', '1')->wherein('mahosotdkt', array_column($model->toarray(), 'mahosotdkt'))->get();
         $a_donvilocdulieu = getDiaBanCumKhoi(session('admin')->tendangnhap);
+        $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->where('phanloai', '<>', 'QUANLY')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
         foreach ($model as $key => $hoso) {
             //Gán để lấy các hàm dùng chung
             $hoso->mahosotdkttdkt = $hoso->mahosotdkt;
@@ -115,6 +116,7 @@ class tnhosodenghikhencaoController extends Controller
             ->with('a_capdo', getPhamViApDung())
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
+            ->with('a_taikhoanchuyenvien', $a_taikhoanchuyenvien)
             ->with('a_donviql', getDonViQuanLyDiaBan($donvi))
             ->with('a_phanloaihs', getPhanLoaiHoSo('KHENTHUONG'))
             ->with('a_loaihinhkt', array_column($m_loaihinh->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
