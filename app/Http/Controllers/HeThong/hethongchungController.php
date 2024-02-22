@@ -324,7 +324,8 @@ class hethongchungController extends Controller
         $inputs['hskhenthuong_totrinh'] = isset($inputs['hskhenthuong_totrinh']);
         //Tạo mã truy cập API
         if ($inputs['keypublic'] != '') {
-            $inputs['accesstoken'] = base64_encode(md5('SSA:') . md5($inputs['keypublic']));
+            $inputs['accesstoken'] = base64_encode(md5('SSA').':' . md5($inputs['keypublic']));
+
         }
         //dd($inputs);
         hethongchung::first()->update($inputs);
