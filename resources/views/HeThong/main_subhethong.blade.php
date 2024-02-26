@@ -658,6 +658,16 @@
                         </a>
                     </li>
                 @endif
+                {{-- @if (chkPhanQuyen('nhatkyhethong', 'phanquyen')) --}}
+                <li class="menu-item" aria-haspopup="true">
+                    <a href="{{ url('/VanPhongHoTro/ThongTin') }}" class="menu-link">
+                        <i class="menu-bullet menu-bullet-dot">
+                            <span></span>
+                        </i>
+                        <span class="menu-text font-weight-bold">Văn phòng hỗ trợ</span>
+                    </a>
+                </li>
+            {{-- @endif --}}
             </ul>
         </div>
     </li>

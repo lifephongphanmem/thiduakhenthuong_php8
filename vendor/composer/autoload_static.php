@@ -709,6 +709,7 @@ class ComposerStaticInit9e8e734344037130a109af233fd50fb4
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\ValidateSignature' => __DIR__ . '/../..' . '/app/Http/Middleware/ValidateSignature.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Imports\\ColectionImport' => __DIR__ . '/../..' . '/app/Imports/ColectionImport.php',
         'App\\Models\\DanhMuc\\dmcoquandonvi' => __DIR__ . '/../..' . '/app/Models/DanhMuc/dmcoquandonvi.php',
         'App\\Models\\DanhMuc\\dmdanhhieuthidua' => __DIR__ . '/../..' . '/app/Models/DanhMuc/dmdanhhieuthidua.php',
         'App\\Models\\DanhMuc\\dmdanhhieuthidua_tieuchuan' => __DIR__ . '/../..' . '/app/Models/DanhMuc/dmdanhhieuthidua_tieuchuan.php',
