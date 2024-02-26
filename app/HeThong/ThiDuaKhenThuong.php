@@ -1108,6 +1108,8 @@ function setTraLaiXD(&$model, &$inputs)
 
     $model->trangthai_xd = $model->trangthai;
     $model->thoigian_xd = $model->thoigian;
+    $model->trangthai_xl = null;
+    $model->tendangnhap_xl = null;
     $model->save();
 
     //Lưu trạng thái
