@@ -134,6 +134,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $inputs['url_hs'] = '/KhenThuongCongTrang/HoSo/';
         $inputs['url_xd'] = '/KhenThuongCongTrang/TiepNhan/';
         $inputs['url_qd'] = '/KhenThuongCongTrang/KhenThuong/';
+        $inputs['phanquyen']='tnhosodenghikhenthuongcongtrang';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
@@ -172,6 +173,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
 
         //Lấy hồ sơ
         $model = $model->orderby('ngayhoso')->get();
+        // dd($model);
         $m_khencanhan = dshosothiduakhenthuong_canhan::where('ketqua', '1')->wherein('mahosotdkt', array_column($model->toarray(), 'mahosotdkt'))->get();
         $m_khentapthe = dshosothiduakhenthuong_tapthe::where('ketqua', '1')->wherein('mahosotdkt', array_column($model->toarray(), 'mahosotdkt'))->get();
 
@@ -199,18 +201,41 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
                 if (in_array($hoso->trangthai_xd, $a_trangthai_taikhoan) && !in_array(session('admin')->tendangnhap, ['SSA', $hoso->tendangnhap_xl]))
                     $hoso->thaotac = false;
                 //lấy thông tin cán bộ xử lý cuối cùng
-                
+                //lấy thông tin cán bộ xử lý cuối cùng
+                $m_canbo_xl=dshosothiduakhenthuong_xuly::where('mahosotdkt',$hoso->mahosotdkt)->orderby('created_at','desc')->get();
+                //Kiểm tra cán bộ đã xử lý hồ sơ hiện tại hay chưa để ẩn nút xử lý hồ sơ
+                // $a_canbo_xl=array_column($m_canbo_xl->toArray(),'tendangnhap_xl');
+                // if(in_array($hoso->tendangnhap_xl,$a_canbo_xl))
+                // {
+                //     $hoso->thaotac = false;
+                // }
+                if(count($m_canbo_xl) > 0){
+                    $canbo_xl=$m_canbo_xl->first();
+                    $thongtincanbo=dstaikhoan::where('tendangnhap',$canbo_xl->tendangnhap_xl)->first();
+                    if($thongtincanbo->phanloai == "VANTHU")
+                    {
+                        $hoso->dieukien_hs=false;
+                        $hoso->trangthai='DCXL';
+                        $hoso->trangthai_chuyenchuyenvien= true;
+                    }else{
+                        $hoso->dieukien_hs=true;
+                    }
+                }else{
+                    if(session('admin')->phanloai == 'VANTHU'){
+                        $hoso->trangthai_chuyenchuyenvien= true;
+                    }
+                   
+                }
             } elseif (count($a_donvilocdulieu) > 0) {
                 //lọc các hồ sơ theo thiết lập dữ liệu
                 if (!in_array($hoso->madonvi, $a_donvilocdulieu))
                     $model->forget($key);
             }
         }
+        // dd($model);
         $inputs['trangthai'] = session('chucnang')['tnhosodenghikhenthuongcongtrang']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
         //dd($model->where('trangthai','CXKT')->where('madonvi_kt',''));
-        //    dd( $model);
-
         return view('NghiepVu.KhenThuongCongTrang.TiepNhan.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
@@ -328,7 +353,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
     public function QuaTrinhXuLyHoSo(Request $request)
     {
         $inputs = $request->all();
-        $model = dshosothiduakhenthuong_xuly::where('mahosotdkt', $inputs['mahosotdkt'])->get();
+        $model = dshosothiduakhenthuong_xuly::where('mahosotdkt', $inputs['mahosotdkt'])->OrderBy('created_at')->get();
         $a_canbo = array_column(dstaikhoan::all()->toArray(), 'tentaikhoan', 'tendangnhap');
         return view('NghiepVu._DungChung.InQuaTrinhXuLy')
             ->with('model', $model)

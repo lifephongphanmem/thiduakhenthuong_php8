@@ -1423,7 +1423,8 @@ function getTrangThai_TD_HoSo($trangthai)
         ],
         'KDK' => [
             'trangthai' => 'Không đủ điều<br>kiện',
-            'class' => 'badge badge-warning'
+            // 'class' => 'badge badge-warning'
+            'class' => 'badge badge-danger'
         ],
         'DCCVXD' => [
             'trangthai' => 'Đã chuyển</br>chuyên viên</br>xét duyệt',
@@ -1437,6 +1438,11 @@ function getTrangThai_TD_HoSo($trangthai)
             'trangthai' => 'Đã chuyển</br>tổng hợp',
             'class' => 'badge badge-success'
         ],
+        'DCXL' => [
+            'trangthai' => 'Đã chuyển</br>xử lý',
+            'class' => 'badge badge-warning'
+        ]
+
     ];
 
     return $a_trangthai[$trangthai] ?? ['trangthai' => $trangthai, 'class' => 'badge badge-info'];

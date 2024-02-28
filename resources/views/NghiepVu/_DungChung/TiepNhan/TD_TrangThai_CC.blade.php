@@ -1,5 +1,5 @@
 @if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN')
-    @if (in_array($tt->trangthai_hoso, ['CD']) && chkPhanQuyen('tnhosodenghikhenthuongcongtrang', 'tiepnhan'))
+    @if (in_array($tt->trangthai_hoso, ['CD']) && chkPhanQuyen($inputs['phanquyen'], 'tiepnhan'))
         <button title="Tiếp nhận hồ sơ" type="button"
             onclick="confirmNhan('{{ $tt->mahosotdkt }}','{{ $inputs['url_xd'] . 'NhanHoSo' }}','{{ $inputs['madonvi'] }}')"
             class="btn btn-sm btn-clean btn-icon" data-target="#nhan-modal-confirm" data-toggle="modal">
@@ -8,7 +8,7 @@
     @endif
 
     @if (in_array($tt->trangthai_hoso, ['DTN', 'CD', 'BTLXD', 'KDK', 'BTL']) &&
-            chkPhanQuyen('tnhosodenghikhenthuongcongtrang', 'tiepnhan'))
+            chkPhanQuyen($inputs['phanquyen'], 'tiepnhan'))
         <button title="Huỷ tiếp nhận và trả lại hồ sơ" type="button"
             onclick="confirmTraLai('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}', '{{ $inputs['url_xd'] . 'TraLai' }}')"
             class="btn btn-sm btn-clean btn-icon" data-target="#modal-tralai" data-toggle="modal">
@@ -16,8 +16,8 @@
         </button>
     @endif
 
-    @if (in_array($tt->trangthai_hoso, ['DTN']))
-        @if (chkPhanQuyen('tnhosodenghikhenthuongcongtrang', 'xuly'))
+    @if (in_array($tt->trangthai_hoso, ['DTN']) && $tt->trangthai_chuyenchuyenvien)
+        @if (chkPhanQuyen($inputs['phanquyen'], 'xuly'))
             <button title="Chuyển chuyên viên xử lý" type="button"
                 onclick="confirmChuyenChuyenVien('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}', '{{ $inputs['url_xd'] . 'ChuyenChuyenVien' }}')"
                 class="btn btn-sm btn-clean btn-icon" data-target="#modal-chuyenchuyenvien" data-toggle="modal">
@@ -28,9 +28,9 @@
 
     @if (in_array($tt->trangthai_hoso, ['DCCVXD', 'BTLXD', 'BTL']) &&
             $tt->thaotac &&
-            chkPhanQuyen('tnhosodenghikhenthuongcongtrang', 'xuly'))
+            chkPhanQuyen($inputs['phanquyen'], 'xuly'))
         <button title="Xử lý hồ sơ" type="button"
-            onclick="confirmXuLyHoSo('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}', '{{ $inputs['url_xd'] . 'XuLyHoSo' }}','{{ $tt->tendangnhap_xl }}')"
+            onclick="confirmXuLyHoSo('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}','{{$tt->dieukien_hs == true?1:0}}', '{{ $inputs['url_xd'] . 'XuLyHoSo' }}','{{ $tt->tendangnhap_xl }}')"
             class="btn btn-sm btn-clean btn-icon" data-target="#modal-xulyhoso" data-toggle="modal">
             <i class="icon-lg la flaticon-list text-success"></i>
         </button>
@@ -49,7 +49,7 @@
 
     @if (in_array($tt->trangthai_hoso, ['DCCVXD','BTLXD']) &&
             $tt->thaotac &&
-            chkPhanQuyen('tnhosodenghikhenthuongcongtrang', 'hoanthanh'))
+            chkPhanQuyen($inputs['phanquyen'], 'hoanthanh'))
         <button title="Chuyển xét duyệt khen thưởng" type="button"
             onclick="confirmTrinhHS('{{ $tt->mahosotdkt }}','{{ $inputs['url_xd'] . 'ChuyenHoSo' }}','{{ $inputs['madonvi'] }}')"
             class="btn btn-sm btn-clean btn-icon" {{ $tt->soluongkhenthuong == 0 ? 'disabled' : '' }}
@@ -64,7 +64,7 @@
         <i class="icon-lg la flaticon-list-1 text-dark"></i>
     </a>
 @else
-    @if (chkPhanQuyen('tnhosodenghikhenthuongcongtrang', 'tiepnhan'))
+    @if (chkPhanQuyen($inputs['phanquyen'], 'tiepnhan'))
         @if (in_array($tt->trangthai_hoso, ['CD']))
             <button title="Tiếp nhận hồ sơ" type="button"
                 onclick="confirmNhan('{{ $tt->mahosotdkt }}','{{ $inputs['url_xd'] . 'NhanHoSo' }}','{{ $inputs['madonvi'] }}')"
@@ -82,7 +82,7 @@
         @endif
     @endif
 
-    @if (in_array($tt->trangthai_hoso, ['DTN', 'BTLXD']) && chkPhanQuyen('tnhosodenghikhenthuongcongtrang', 'hoanthanh'))
+    @if (in_array($tt->trangthai_hoso, ['DTN', 'BTLXD']) && chkPhanQuyen($inputs['phanquyen'], 'hoanthanh'))
         <button title="Chuyển xét duyệt khen thưởng" type="button"
             onclick="confirmTrinhHS('{{ $tt->mahosotdkt }}','{{ $inputs['url_xd'] . 'ChuyenHoSo' }}','{{ $inputs['madonvi'] }}')"
             class="btn btn-sm btn-clean btn-icon" {{ $tt->soluongkhenthuong == 0 ? 'disabled' : '' }}

@@ -56,6 +56,7 @@ class dshosodenghikhenthuongdotxuatController extends Controller
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
         $inputs['maloaihinhkt'] = session('chucnang')['dshosodenghikhenthuongdotxuat']['maloaihinhkt'] ?? 'ALL';
+        $inputs['trangthai'] = session('chucnang')['dshosodenghikhenthuongdotxuat']['trangthai'] ?? 'CC';
         $model = dshosothiduakhenthuong::where('madonvi', $inputs['madonvi'])
             ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH','KHENCAOTHUTUONG' ,'KHENCAOCHUTICHNUOC',]);
         if ($inputs['maloaihinhkt'] != 'ALL')
@@ -94,7 +95,6 @@ class dshosodenghikhenthuongdotxuatController extends Controller
             $inputs['url_xd'] = '/KhenThuongDotXuat/HoSo/';
             $inputs['url_qd'] = '/KhenThuongDotXuat/HoSo/';
         }
-
         return view('NghiepVu.KhenThuongDotXuat.HoSo.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
@@ -189,6 +189,7 @@ class dshosodenghikhenthuongdotxuatController extends Controller
             return view('errors.noperm')->with('machucnang', 'dshosodenghikhenthuongdotxuat')->with('tenphanquyen', 'danhsach');
         }
         $inputs = $request->all();
+        // dd($inputs);
         $inputs['mahosotdkt'] = (string)getdate()[0];
         // $inputs['phanloai'] = 'KHENTHUONG';
         if (isset($inputs['totrinh'])) {
