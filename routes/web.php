@@ -153,3 +153,4 @@ include('khenthuongkhangchien.php');
 include('vanbantailieu.php');
 include('congbo.php');
 include('quykhenthuong.php');
+include('vanphonghotro.php');

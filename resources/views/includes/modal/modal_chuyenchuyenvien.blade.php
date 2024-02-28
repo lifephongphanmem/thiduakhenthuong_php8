@@ -64,9 +64,15 @@
                         {!! Form::select('tendangnhap_xl', $a_taikhoanchuyenvien, null, ['class' => 'form-control select2_modal']) !!}
                     </div>
                 </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label class="control-label">Cán bộ tiếp nhận hồ sơ</label>
+                        {!! Form::select('tendangnhap_tn', $a_taikhoanchuyenvien, null, ['class' => 'form-control select2_modal']) !!}
+                    </div>
+                </div>
                 <!-- Tài khoản quản lý + SSA: có thông tin trạng thái hồ sơ -->
                 {{-- @if (getPhanLoaiTaiKhoanTiepNhan()) --}}
-                    <div class="form-group row">
+                    <div class="form-group row" id="dieukien_hs">
                         <div class="col-md-12">
                             <label class="control-label">Trạng thái hồ sơ</label>
                             {!! Form::select('trangthai', getTrangThaiXuLyHoSo(), null, ['class' => 'form-control select2_modal']) !!}
@@ -81,12 +87,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
-                    <div class="col-md-12">
-                        <label class="control-label">Cán bộ tiếp nhận hồ sơ</label>
-                        {!! Form::select('tendangnhap_tn', $a_taikhoanchuyenvien, null, ['class' => 'form-control select2_modal']) !!}
-                    </div>
-                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
@@ -155,11 +156,15 @@
         $('#frm_xulyhoso').submit();
     }
 
-    function confirmXuLyHoSo(mahs, madonvi, url, tendangnhap_xl) {
+    function confirmXuLyHoSo(mahs, madonvi,dieukien_hs, url, tendangnhap_xl) {
         $('#frm_xulyhoso').attr('action', url);
         $('#frm_xulyhoso').find("[name='mahoso']").val(mahs);
         $('#frm_xulyhoso').find("[name='madonvi']").val(madonvi);
         $('#frm_xulyhoso').find("[name='tendangnhap_xl']").val(tendangnhap_xl);
+        $('#dieukien_hs').removeClass('d-none');
+        if(dieukien_hs == 0){
+           $('#dieukien_hs').addClass('d-none');
+        }
     }
 
     function viewXuLyHoSo(tendangnhap_xl, trangthai, noidungxuly_xl) {

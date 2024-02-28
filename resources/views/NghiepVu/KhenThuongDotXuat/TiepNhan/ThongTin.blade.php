@@ -67,7 +67,6 @@
                                 {{-- <td class="text-center">{{ getDayVn($tt->ngayhoso) }}</td> --}}
                                 @include('includes.td.td_trangthai_hoso')
                                 <td>{{ $a_donvi[$tt->madonvi_nhan_hoso] ?? '' }}</td>
-
                                 <td style="text-align: center">
                                     @include('NghiepVu._DungChung.TD_XemThongTinTDKT')
                                     @if (chkPhanQuyen('tnhosodenghikhenthuongdotxuat', 'thaydoi'))

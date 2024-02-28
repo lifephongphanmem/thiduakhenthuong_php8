@@ -14,6 +14,7 @@ use App\Models\HeThong\hethongchung_chucnang;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tailieu;
+use App\Models\VanPhongHoTro\vanphonghotro;
 use App\Models\View\viewdiabandonvi;
 use Illuminate\Support\Facades\Session;
 
@@ -29,9 +30,13 @@ class hethongchungController extends Controller
                 //123456; 123456@!
                 return redirect('/DoiMatKhau');
             else
-                return view('HeThong.dashboard')
-                    ->with('model', getHeThongChung())
-                    ->with('pageTitle', 'Thông tin hỗ trợ');
+                $model_vp = vanphonghotro::orderBy('stt')->get();
+            $a_vp = a_unique(array_column($model_vp->toArray(), 'vanphong'));
+            return view('HeThong.dashboard')
+                ->with('model_vp', $model_vp)
+                ->with('a_vp', $a_vp)
+                ->with('model', getHeThongChung())
+                ->with('pageTitle', 'Thông tin hỗ trợ');
         } else {
             return redirect('/TrangChu');
         }

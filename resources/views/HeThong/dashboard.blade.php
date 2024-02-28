@@ -42,7 +42,6 @@
             </div>
             <!--end::Iconbox-->
         </div>
-
         <div class="col-lg-6 col-xl-6 mb-5">
             <!--begin::Iconbox-->
             <div class="card card-custom mb-8 mb-lg-0">
