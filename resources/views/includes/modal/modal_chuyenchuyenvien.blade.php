@@ -160,11 +160,11 @@
         $('#frm_xulyhoso').attr('action', url);
         $('#frm_xulyhoso').find("[name='mahoso']").val(mahs);
         $('#frm_xulyhoso').find("[name='madonvi']").val(madonvi);
-        $('#frm_xulyhoso').find("[name='tendangnhap_xl']").val(tendangnhap_xl);
-        $('#frm_xulyhoso').find("[name='trangthai']").val(trangthai);
-        $('#dieukien_hs').removeClass('d-none');
+        $('#frm_xulyhoso').find("[name='tendangnhap_xl']").val(tendangnhap_xl); 
         if(dieukien_hs == 0){
            $('#dieukien_hs').addClass('d-none');
+        }else{
+            $('#frm_xulyhoso').find("[name='trangthai']").val(trangthai);
         }
     }
 
