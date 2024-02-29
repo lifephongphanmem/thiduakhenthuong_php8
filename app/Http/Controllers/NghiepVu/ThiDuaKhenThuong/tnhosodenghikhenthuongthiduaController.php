@@ -43,9 +43,9 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         $inputs['url_hs'] = '/HoSoDeNghiKhenThuongThiDua/';
         $inputs['url_xd'] = '/TiepNhanHoSoThiDua/';
         $inputs['url_qd'] = '/KhenThuongHoSoThiDua/';
+        $inputs['phanquyen']='tnhosodenghikhenthuongthidua';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
-
         $m_donvi = getDonVi(session('admin')->capdo, 'tnhosodenghikhenthuongthidua', null, 'MODEL');
         if (count($m_donvi) == 0) {
             return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongthidua')->with('tenphanquyen', 'danhsach');

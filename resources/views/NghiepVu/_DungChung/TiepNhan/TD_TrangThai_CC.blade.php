@@ -6,7 +6,6 @@
             <i class="icon-lg flaticon-interface-5 text-success"></i>
         </button>
     @endif
-
     @if (in_array($tt->trangthai_hoso, ['DTN', 'CD', 'BTLXD', 'KDK', 'BTL']) &&
             chkPhanQuyen($inputs['phanquyen'], 'tiepnhan'))
         <button title="Huỷ tiếp nhận và trả lại hồ sơ" type="button"
@@ -30,7 +29,7 @@
             $tt->thaotac &&
             chkPhanQuyen($inputs['phanquyen'], 'xuly'))
         <button title="Xử lý hồ sơ" type="button"
-            onclick="confirmXuLyHoSo('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}','{{$tt->dieukien_hs == true?1:0}}', '{{ $inputs['url_xd'] . 'XuLyHoSo' }}','{{ $tt->tendangnhap_xl }}')"
+            onclick="confirmXuLyHoSo('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}','{{$tt->dieukien_hs == true?1:0}}','{{$tt->trangthai_xl}}', '{{ $inputs['url_xd'] . 'XuLyHoSo' }}','{{ $tt->tendangnhap_xl }}')"
             class="btn btn-sm btn-clean btn-icon" data-target="#modal-xulyhoso" data-toggle="modal">
             <i class="icon-lg la flaticon-list text-success"></i>
         </button>

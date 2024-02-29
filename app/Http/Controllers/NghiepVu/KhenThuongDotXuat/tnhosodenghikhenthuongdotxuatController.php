@@ -47,7 +47,7 @@ class tnhosodenghikhenthuongdotxuatController extends Controller
         $inputs['url_hs'] = '/KhenThuongDotXuat/HoSo/';
         $inputs['url_xd'] = '/KhenThuongDotXuat/TiepNhan/';
         $inputs['url_qd'] = '/KhenThuongDotXuat/KhenThuong/';
-        $inputs['phanquyen']='tnhosodenghikhenthuongdotxuat';
+        $inputs['phanquyen'] = 'tnhosodenghikhenthuongdotxuat';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
@@ -135,7 +135,7 @@ class tnhosodenghikhenthuongdotxuatController extends Controller
                 if (in_array($hoso->trangthai_xd, $a_trangthai_taikhoan) && !in_array(session('admin')->tendangnhap, ['SSA', $hoso->tendangnhap_xl]))
                     $hoso->thaotac = false;
                 //lấy thông tin cán bộ xử lý cuối cùng
-                $m_canbo_xl=dshosothiduakhenthuong_xuly::where('mahosotdkt',$hoso->mahosotdkt)->orderby('created_at','desc')->get();
+                $m_canbo_xl = dshosothiduakhenthuong_xuly::where('mahosotdkt', $hoso->mahosotdkt)->orderby('created_at', 'desc')->get();
                 //Kiểm tra cán bộ đã xử lý hồ sơ hiện tại hay chưa để ẩn nút xử lý hồ sơ
                 // $a_canbo_xl=array_column($m_canbo_xl->toArray(),'tendangnhap_xl');
                 // if(in_array($hoso->tendangnhap_xl,$a_canbo_xl))
@@ -143,22 +143,25 @@ class tnhosodenghikhenthuongdotxuatController extends Controller
                 //     $hoso->thaotac = false;
                 // }
 
-                if(count($m_canbo_xl)>0){
-                    $canbo_xl=$m_canbo_xl->first();
-                    $thongtincanbo=dstaikhoan::where('tendangnhap',$canbo_xl->tendangnhap_xl)->first();
-                    if($thongtincanbo->phanloai == "VANTHU")
-                    {
-                        $hoso->dieukien_hs=false;
-                        $hoso->trangthai='DCXL';
-                        $hoso->trangthai_chuyenchuyenvien= true;
-                    }else{
-                        $hoso->dieukien_hs=true;
+                if (count($m_canbo_xl) > 0) {
+                    $canbo_xl = $m_canbo_xl->first();
+                    $thongtincanbo = dstaikhoan::where('tendangnhap', $canbo_xl->tendangnhap_xl)->first();
+                    if ($thongtincanbo->phanloai == "VANTHU") {
+                        $hoso->dieukien_hs = false;
+                        $hoso->trangthai = 'DCXL';
+                        $hoso->trangthai_chuyenchuyenvien = true;
+                    } else {
+                        $hoso->dieukien_hs = true;
                     }
-                }else{
-                    if(session('admin')->phanloai == 'VANTHU'){
-                        $hoso->trangthai_chuyenchuyenvien= true;
+                    //lấy thông tin cán bộ tiếp nhận để set trạng thái hồ sơ khi trưởng ban trả về văn thư
+                    $thongtin_canbonhan = dstaikhoan::where('tendangnhap', $canbo_xl->tendangnhap_tn)->first();
+                    if ($thongtin_canbonhan->phanloai == "VANTHU" && $hoso->trangthai_xl == "KDK") {
+                        $hoso->trangthai_hoso = "KDK";
                     }
-                   
+                } else {
+                    if (session('admin')->phanloai == 'VANTHU') {
+                        $hoso->trangthai_chuyenchuyenvien = true;
+                    }
                 }
             } elseif (count($a_donvilocdulieu) > 0) {
                 //lọc các hồ sơ theo thiết lập dữ liệu

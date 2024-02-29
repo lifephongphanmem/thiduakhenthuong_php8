@@ -156,11 +156,12 @@
         $('#frm_xulyhoso').submit();
     }
 
-    function confirmXuLyHoSo(mahs, madonvi,dieukien_hs, url, tendangnhap_xl) {
+    function confirmXuLyHoSo(mahs, madonvi,dieukien_hs,trangthai, url, tendangnhap_xl) {
         $('#frm_xulyhoso').attr('action', url);
         $('#frm_xulyhoso').find("[name='mahoso']").val(mahs);
         $('#frm_xulyhoso').find("[name='madonvi']").val(madonvi);
         $('#frm_xulyhoso').find("[name='tendangnhap_xl']").val(tendangnhap_xl);
+        $('#frm_xulyhoso').find("[name='trangthai']").val(trangthai);
         $('#dieukien_hs').removeClass('d-none');
         if(dieukien_hs == 0){
            $('#dieukien_hs').addClass('d-none');
