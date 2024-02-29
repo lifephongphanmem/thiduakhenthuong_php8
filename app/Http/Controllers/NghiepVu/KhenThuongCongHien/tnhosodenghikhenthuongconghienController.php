@@ -114,8 +114,8 @@ class tnhosodenghikhenthuongconghienController extends Controller
         //             $model->forget($key);
         //     }
         // }
-         //code mới theo tuyên quang
-         foreach ($model as $key => $hoso) {
+        //code mới theo tuyên quang
+        foreach ($model as $key => $hoso) {
             $hoso->soluongkhenthuong = $m_khencanhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + $m_khentapthe->where('mahosotdkt', $hoso->mahosotdkt)->count();
             //$hoso->soluongkhenthuong = 1;
@@ -150,6 +150,12 @@ class tnhosodenghikhenthuongconghienController extends Controller
                     if ($thongtin_canbonhan->phanloai == "VANTHU" && $hoso->trangthai_xl == "KDK") {
                         $hoso->trangthai_hoso = "KDK";
                     }
+                    if (session('admin')->phanloai == 'VANTHU') {
+                        $a_trangthai_hoso = array_column(trangthaihoso::where('mahoso', $hoso->mahosotdkt)->get()->toArray(), 'trangthai');
+                        if (in_array('BTL', $a_trangthai_hoso)) {
+                            $hoso->trangthai_chuyenchuyenvien = true;
+                        }
+                    }
                 } else {
                     if (session('admin')->phanloai == 'VANTHU') {
                         $hoso->trangthai_chuyenchuyenvien = true;
@@ -160,6 +166,10 @@ class tnhosodenghikhenthuongconghienController extends Controller
                 if (!in_array($hoso->madonvi, $a_donvilocdulieu))
                     $model->forget($key);
             }
+        }
+        //xét phân loại tài khoản để hiển thị lại cho tài khoản phó giám đốc và giám đốc sở
+        if (session('admin')->phanloai == 'LANHDAO') {
+            $inputs['taikhoanlanhdao'] = true;
         }
         $inputs['trangthai'] = session('chucnang')['tnhosodenghikhenthuongconghien']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
@@ -269,8 +279,8 @@ class tnhosodenghikhenthuongconghienController extends Controller
             return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongconghien')->with('tenphanquyen', 'hoanthanh');
         }
         $inputs = $request->all();
-        $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();          
-        $inputs['thoigian'] = date('Y-m-d H:i:s');        
+        $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
+        $inputs['thoigian'] = date('Y-m-d H:i:s');
         setXuLyHoSo($model, $inputs, 'dshosothiduakhenthuong');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }

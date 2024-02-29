@@ -43,6 +43,7 @@ class dsphongtraothiduacumkhoiController extends Controller
         if (!chkPhanQuyen('dsphongtraothiduacumkhoi', 'danhsach')) {
             return view('errors.noperm')->with('machucnang', 'dsphongtraothiduacumkhoi');
         }
+        
         $inputs = $request->all();
         $inputs['url'] = static::$url;
         //2023.11.28 Chỉ các đơn vị trưởng cụm khối mới thêm đc phong trào

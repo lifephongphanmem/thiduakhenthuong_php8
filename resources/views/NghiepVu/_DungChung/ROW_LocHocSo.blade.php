@@ -6,7 +6,7 @@
             <optgroup label="{{ $diaban->tendiaban }}">
                 <?php $donvi = $m_donvi->where('madiaban', $diaban->madiaban); ?>
                 @foreach ($donvi as $ct)
-                <option {{ $ct->madonvi == $inputs['madonvi'] ? 'selected' : '' }} value="{{ $ct->madonvi }}">{{ $ct->tendonvi }}</option>
+                <option {{ $ct->madonvi == $inputs['madonvi'] ? 'selected' : '' }} value="{{ $ct->madonvi }}">{{ isset($inputs['taikhoanlanhdao'])?$ct->tendvhienthi:$ct->tendonvi }}</option>
                 @endforeach
             </optgroup>
             @endforeach

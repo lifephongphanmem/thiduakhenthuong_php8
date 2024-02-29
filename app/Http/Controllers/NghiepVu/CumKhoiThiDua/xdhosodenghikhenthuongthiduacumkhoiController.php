@@ -51,8 +51,11 @@ class xdhosodenghikhenthuongthiduacumkhoiController extends Controller
         $inputs['phanloaihoso'] = 'dshosotdktcumkhoi';
 
         $m_donvi = getDonVi(session('admin')->capdo, 'xdhosodenghikhenthuongthiduacumkhoi');
+        if(count($m_donvi) <= 0)
+        {
+            return view('errors.noperm')->with('machucnang', 'xdhosodenghikhenthuongthiduacumkhoi')->with('tenphanquyen', 'danhsach');   
+        }
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
-
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         $inputs['maloaihinhkt'] = session('chucnang')['dshosodenghikhenthuongcongtrang']['maloaihinhkt'] ?? 'ALL';
