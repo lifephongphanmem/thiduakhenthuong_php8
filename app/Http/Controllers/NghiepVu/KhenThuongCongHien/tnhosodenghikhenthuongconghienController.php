@@ -182,8 +182,8 @@ class tnhosodenghikhenthuongconghienController extends Controller
 
     public function TraLai(Request $request)
     {
-        if (!chkPhanQuyen('tnhosodenghikhenthuongconghien', 'hoanthanh')) {
-            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongconghien')->with('tenphanquyen', 'hoanthanh');
+        if (!chkPhanQuyen('tnhosodenghikhenthuongconghien', 'tiepnhan')) {
+            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongconghien')->with('tenphanquyen', 'tiepnhan');
         }
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
