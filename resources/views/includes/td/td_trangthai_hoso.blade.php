@@ -38,7 +38,9 @@
     </td>
 @endif --}}
 
-<?php $a_trangthai_td = getTrangThai_TD_HoSo($tt->trangthai); ?>
+<?php $a_trangthai_td = getTrangThai_TD_HoSo($tt->trangthai);
+        $a_trangthai_xl= getTrangThai_TD_HoSo($tt->trangthai_xl);
+?>
 @switch($tt->trangthai)
     @case('CC')
     @case('CXD')
@@ -63,6 +65,11 @@
     @case('DDK')
 
     @case('KDK')
+    <td align="center">
+        <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+        {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_xd }}</b> --}}
+    </td>
+@break
     @case('DD')
 
     @case('DTH')
@@ -74,7 +81,7 @@
 
     @case('DCCVXD')
         <td align="center">
-            <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+            <span class="{{ $a_trangthai_xl['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
             {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_xd }}</b> --}}
         </td>
     @break
