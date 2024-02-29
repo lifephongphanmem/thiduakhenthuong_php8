@@ -147,6 +147,12 @@ class tnhosodenghikhenthuongdoingoaiController extends Controller
                     if ($thongtin_canbonhan->phanloai == "VANTHU" && $hoso->trangthai_xl == "KDK") {
                         $hoso->trangthai_hoso = "KDK";
                     }
+                    if (session('admin')->phanloai == 'VANTHU') {
+                        $a_trangthai_hoso = array_column(trangthaihoso::where('mahoso', $hoso->mahosotdkt)->get()->toArray(), 'trangthai');
+                        if (in_array('BTL', $a_trangthai_hoso)) {
+                            $hoso->trangthai_chuyenchuyenvien = true;
+                        }
+                    }
                 } else {
                     if (session('admin')->phanloai == 'VANTHU') {
                         $hoso->trangthai_chuyenchuyenvien = true;
@@ -157,6 +163,10 @@ class tnhosodenghikhenthuongdoingoaiController extends Controller
                 if (!in_array($hoso->madonvi, $a_donvilocdulieu))
                     $model->forget($key);
             }
+        }
+        //xét phân loại tài khoản để hiển thị lại cho tài khoản phó giám đốc và giám đốc sở
+        if (session('admin')->phanloai == 'LANHDAO') {
+            $inputs['taikhoanlanhdao'] = true;
         }
         $inputs['trangthai'] = session('chucnang')['tnhosodenghikhenthuongdoingoai']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
@@ -266,8 +276,8 @@ class tnhosodenghikhenthuongdoingoaiController extends Controller
             return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongdoingoai')->with('tenphanquyen', 'hoanthanh');
         }
         $inputs = $request->all();
-        $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();          
-        $inputs['thoigian'] = date('Y-m-d H:i:s');        
+        $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
+        $inputs['thoigian'] = date('Y-m-d H:i:s');
         setXuLyHoSo($model, $inputs, 'dshosothiduakhenthuong');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }

@@ -151,6 +151,12 @@ class tnhosodenghikhenthuongchuyendeController extends Controller
                     if ($thongtin_canbonhan->phanloai == "VANTHU" && $hoso->trangthai_xl == "KDK") {
                         $hoso->trangthai_hoso = "KDK";
                     }
+                    if (session('admin')->phanloai == 'VANTHU') {
+                        $a_trangthai_hoso = array_column(trangthaihoso::where('mahoso', $hoso->mahosotdkt)->get()->toArray(), 'trangthai');
+                        if (in_array('BTL', $a_trangthai_hoso)) {
+                            $hoso->trangthai_chuyenchuyenvien = true;
+                        }
+                    }
                 } else {
                     if (session('admin')->phanloai == 'VANTHU') {
                         $hoso->trangthai_chuyenchuyenvien = true;
@@ -162,6 +168,11 @@ class tnhosodenghikhenthuongchuyendeController extends Controller
                     $model->forget($key);
             }
         }
+                        //xét phân loại tài khoản để hiển thị lại cho tài khoản phó giám đốc và giám đốc sở
+                        if(session('admin')->phanloai == 'LANHDAO')
+                        {
+                            $inputs['taikhoanlanhdao']=true;
+                        }
         $inputs['trangthai'] = session('chucnang')['tnhosodenghikhenthuongchuyende']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
         //dd($model->where('trangthai','CXKT')->where('madonvi_kt',''));

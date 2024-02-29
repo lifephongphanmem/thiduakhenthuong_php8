@@ -140,6 +140,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
 
         $m_donvi = getDonVi(session('admin')->capdo, 'tnhosodenghikhenthuongcongtrang');
+        // dd($m_donvi);
         // $m_donvi = getDonVi(session('admin')->capdo);
         if (count($m_donvi) == 0) {
             return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongcongtrang')->with('tenphanquyen', 'danhsach');
@@ -221,6 +222,13 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
                         $hoso->trangthai_hoso = "KDK";
                         // $hoso->trangthai="KDK";
                     }
+                    if(session('admin')->phanloai == 'VANTHU'){
+                        $a_trangthai_hoso= array_column(trangthaihoso::where('mahoso',$hoso->mahosotdkt)->get()->toArray(),'trangthai');
+                        if(in_array('BTL',$a_trangthai_hoso)){
+                            $hoso->trangthai_chuyenchuyenvien= true;
+                        }
+                    }
+
                 }else{
                     if(session('admin')->phanloai == 'VANTHU'){
                         $hoso->trangthai_chuyenchuyenvien= true;
@@ -232,6 +240,12 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
                 if (!in_array($hoso->madonvi, $a_donvilocdulieu))
                     $model->forget($key);
             }
+        }
+
+        //xét phân loại tài khoản để hiển thị lại cho tài khoản phó giám đốc và giám đốc sở
+        if(session('admin')->phanloai == 'LANHDAO')
+        {
+            $inputs['taikhoanlanhdao']=true;
         }
         // dd($model);
         $inputs['trangthai'] = session('chucnang')['tnhosodenghikhenthuongcongtrang']['trangthai'] ?? 'CC';
