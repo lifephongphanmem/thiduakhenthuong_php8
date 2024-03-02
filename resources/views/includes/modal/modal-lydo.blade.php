@@ -40,8 +40,13 @@
                 madonvi: madv
             },
             dataType: 'JSON',
-            success: function (data) {               
-                $('#frm_lydo').find("[name='lydo']").val(data.lydo);
+            success: function (data) {    
+                if(data.lydo_xd != null){
+                    $('#frm_lydo').find("[name='lydo']").val(data.lydo_xd);
+                }else{
+                    $('#frm_lydo').find("[name='lydo']").val(data.lydo);
+                }          
+               
             }
         })
     }
