@@ -90,7 +90,7 @@ class tnhosodenghikhenthuongdoingoaiController extends Controller
         $a_donvilocdulieu = getDiaBanCumKhoi(session('admin')->tendangnhap);
         // $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->where('phanloai', '<>', 'QUANLY')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
         $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->get()->toarray(), 'tentaikhoan', 'tendangnhap');
-        $a_trangthai_taikhoan = ['DCCVXD', 'DCCVKT', 'DTN', 'DDK', 'KDD', 'BTL'];
+        $a_trangthai_taikhoan = ['DCCVXD', 'DCCVKT', 'DTN', 'DDK', 'KDD', 'BTL', 'BTLXD'];
         // foreach ($model as $key => $hoso) {
         //     $hoso->soluongkhenthuong = $m_khencanhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
         //         + $m_khentapthe->where('mahosotdkt', $hoso->mahosotdkt)->count();
