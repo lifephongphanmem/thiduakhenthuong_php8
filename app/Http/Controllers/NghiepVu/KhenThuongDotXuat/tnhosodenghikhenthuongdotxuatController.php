@@ -246,7 +246,7 @@ class tnhosodenghikhenthuongdotxuatController extends Controller
     public function NhanHoSo(Request $request)
     {
         if (!chkPhanQuyen('tnhosodenghikhenthuongdotxuat', 'hoanthanh')) {
-            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongdotxuat')->with('tenphanquyen', 'hoanthanh');
+            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongdotxuat')->with('tenphanquyen', 'tiepnhan');
         }
         $inputs = $request->all();
 
@@ -270,8 +270,8 @@ class tnhosodenghikhenthuongdotxuatController extends Controller
 
     public function ChuyenChuyenVien(Request $request)
     {
-        if (!chkPhanQuyen('tnhosodenghikhenthuongdotxuat', 'hoanthanh')) {
-            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongdotxuat')->with('tenphanquyen', 'hoanthanh');
+        if (!chkPhanQuyen('tnhosodenghikhenthuongdotxuat', 'xuly')) {
+            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongdotxuat')->with('tenphanquyen', 'xuly');
         }
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
@@ -284,8 +284,8 @@ class tnhosodenghikhenthuongdotxuatController extends Controller
 
     public function XuLyHoSo(Request $request)
     {
-        if (!chkPhanQuyen('tnhosodenghikhenthuongdotxuat', 'hoanthanh')) {
-            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongdotxuat')->with('tenphanquyen', 'hoanthanh');
+        if (!chkPhanQuyen('tnhosodenghikhenthuongdotxuat', 'xuly')) {
+            return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongdotxuat')->with('tenphanquyen', 'xuly');
         }
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
