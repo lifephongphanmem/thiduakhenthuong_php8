@@ -63,8 +63,8 @@ class tnhosodenghikhenthuongdoingoaiController extends Controller
 
         $model = dshosothiduakhenthuong::where('madonvi_xd', $inputs['madonvi'])
             ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC',])
-            ->where('maloaihinhkt', $inputs['maloaihinhkt']); //->orderby('ngayhoso')->get();
-
+            ->where('maloaihinhkt', $inputs['maloaihinhkt']) //->orderby('ngayhoso')->get();
+            ->wherenotin('trangthai_xd', ['BTL']);
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
             $m_loaihinh = dmloaihinhkhenthuong::all();
         } else {
