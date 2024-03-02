@@ -62,7 +62,7 @@ class xdhosodenghikhenthuongconghienController extends Controller
         $inputs['maloaihinhkt'] = session('chucnang')['dshosodenghikhenthuongconghien']['maloaihinhkt'] ?? 'ALL';
 
         //Xác định xem có dùng chức năng tiếp nhận ko
-        $a_trangthai_xd = ['DD', 'CXKT', 'DKT', 'BTLXD'];
+        $a_trangthai_xd = ['DD', 'CXKT', 'DKT'];
         if (chkGiaoDien('tnhosodenghikhenthuongconghien') != '1') {
             $a_trangthai_xd[] = 'CD';
         }
