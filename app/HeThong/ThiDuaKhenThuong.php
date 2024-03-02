@@ -1104,7 +1104,7 @@ function setTraLaiXD(&$model, &$inputs)
 {
     $model->trangthai = $inputs['trangthai'];
     $model->thoigian = $inputs['thoigian'];
-
+    $model->lydo = $inputs['lydo'];
 
     $model->trangthai_xd = $model->trangthai;
     $model->thoigian_xd = $model->thoigian;
@@ -1141,7 +1141,6 @@ function setTraLai($model, $inputs)
         $model->tendangnhap_xl = null;
     }
     $model->save();
-
     //Lưu trạng thái
     trangthaihoso::create([
         'mahoso' => $inputs['mahoso'],
