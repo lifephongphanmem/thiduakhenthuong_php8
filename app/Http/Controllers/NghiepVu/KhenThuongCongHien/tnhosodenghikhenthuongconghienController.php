@@ -161,16 +161,17 @@ class tnhosodenghikhenthuongconghienController extends Controller
                         $hoso->trangthai_chuyenchuyenvien = true;
                     }
                 }
+                //xét phân loại tài khoản để hiển thị lại cho tài khoản phó giám đốc và giám đốc sở
+                if (session('admin')->phanloai == 'LANHDAO') {
+                    $inputs['taikhoanlanhdao'] = true;
+                }
             } elseif (count($a_donvilocdulieu) > 0) {
                 //lọc các hồ sơ theo thiết lập dữ liệu
                 if (!in_array($hoso->madonvi, $a_donvilocdulieu))
                     $model->forget($key);
             }
         }
-        //xét phân loại tài khoản để hiển thị lại cho tài khoản phó giám đốc và giám đốc sở
-        if (session('admin')->phanloai == 'LANHDAO') {
-            $inputs['taikhoanlanhdao'] = true;
-        }
+
         $inputs['trangthai'] = session('chucnang')['tnhosodenghikhenthuongconghien']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
         //dd($model->where('trangthai','CXKT')->where('madonvi_kt',''));

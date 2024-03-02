@@ -129,9 +129,13 @@ class xdhosodenghikhenthuongdotxuatController extends Controller
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         //gán trạng thái hồ sơ để theo dõi
-        $inputs['trangthai'] = 'BTL';
+        $inputs['trangthai'] = 'BTLXD';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
-        setTraLaiXD($model, $inputs);
+        if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
+            setTraLai($model, $inputs);
+        }else{
+            setTraLaiXD($model, $inputs);
+        }
 
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
