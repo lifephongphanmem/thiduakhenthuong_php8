@@ -245,7 +245,7 @@ class tnhosodenghikhenthuongdotxuatController extends Controller
 
     public function NhanHoSo(Request $request)
     {
-        if (!chkPhanQuyen('tnhosodenghikhenthuongdotxuat', 'hoanthanh')) {
+        if (!chkPhanQuyen('tnhosodenghikhenthuongdotxuat', 'tiepnhan')) {
             return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongdotxuat')->with('tenphanquyen', 'tiepnhan');
         }
         $inputs = $request->all();
