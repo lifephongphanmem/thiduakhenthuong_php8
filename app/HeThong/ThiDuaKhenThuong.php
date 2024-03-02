@@ -692,7 +692,7 @@ function getDonVi($capdo, $chucnang = null, $tenquyen = null)
         $a_tk = App\Models\DanhMuc\dstaikhoan::wherein('madonvi', array_column($m_donvi->toarray(), 'madonvi'))->get('tendangnhap');
         $a_tk_pq = App\Models\DanhMuc\dstaikhoan_phanquyen::where('machucnang', $chucnang)->where('phanquyen', '1')
             ->wherein('tendangnhap', $a_tk)->get('tendangnhap');
-            // dd($a_tk_pq);
+        // dd($a_tk_pq);
         $m_donvi = App\Models\View\viewdiabandonvi::wherein('madonvi', function ($qr) use ($a_tk_pq) {
             $qr->select('madonvi')->from('dstaikhoan')->wherein('tendangnhap', $a_tk_pq)->distinct();
         })->get();
@@ -1104,12 +1104,42 @@ function setTraLaiXD(&$model, &$inputs)
 {
     $model->trangthai = $inputs['trangthai'];
     $model->thoigian = $inputs['thoigian'];
-    $model->lydo = $inputs['lydo'];
+
 
     $model->trangthai_xd = $model->trangthai;
     $model->thoigian_xd = $model->thoigian;
     $model->trangthai_xl = null;
     $model->tendangnhap_xl = null;
+    $model->save();
+
+    //Lưu trạng thái
+    trangthaihoso::create([
+        'mahoso' => $inputs['mahoso'],
+        'phanloai' => 'dshosothiduakhenthuong',
+        'trangthai' => $model->trangthai,
+        'thoigian' => $model->thoigian,
+        'madonvi_nhan' => $model->madonvi,
+        'madonvi' => $model->madonvi_xd,
+        'thongtin' => 'Trả lại hồ sơ đề nghị khen thưởng.',
+    ]);
+}
+//Trả lại theo quy trình tài khoản
+function setTraLai($model, $inputs)
+{
+    $model->trangthai = $inputs['trangthai'];
+    $model->thoigian = $inputs['thoigian'];
+
+
+    $model->trangthai_xd = $model->trangthai;
+    $model->thoigian_xd = $model->thoigian;
+    if ($inputs['trangthai'] == 'BTLXD') {
+        $model->trangthai_xl = 'KDK';
+        $model->lydo_xd = $inputs['lydo'];
+    } else {
+        $model->lydo = $inputs['lydo'];
+        $model->trangthai_xl = null;
+        $model->tendangnhap_xl = null;
+    }
     $model->save();
 
     //Lưu trạng thái
@@ -1192,7 +1222,7 @@ function setXuLyHoSo(&$model, &$inputs, $phanloai)
     $model->thoigian_xd = $inputs['thoigian'];
     $model->save();
 
-//gán thông tin vào bảng xử lý hồ sơ
+    //gán thông tin vào bảng xử lý hồ sơ
     switch ($phanloai) {
         case 'dshosotdktcumkhoi': {
                 App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_xuly::create([
@@ -1228,7 +1258,7 @@ function setXuLyHoSo(&$model, &$inputs, $phanloai)
                 ]);
             }
     }
-    
+
     //Lưu trạng thái
     trangthaihoso::create([
         'mahoso' => $inputs['mahoso'],
@@ -1587,30 +1617,31 @@ function getHoSoXuLy($a_mahosotdkt, $tendangnhap, $phanloai)
 }
 
 //index các cột trong excel
-function ColumnName(){
+function ColumnName()
+{
     return [
-        'A'=>0,
-        'B'=>1,
-        'C'=>2,
-        'D'=>3,
-        'E'=>4,
-        'F'=>5,
-        'G'=>6,
-        'H'=>7,
-        'I'=>8,
-        'J'=>9,
-        'K'=>10,
-        'L'=>11,
-        'M'=>12,
-        'N'=>13,
-        'O'=>13,
-        'P'=>15,
-        'Q'=>16,
-        'R'=>17,
-        'S'=>18,
-        'T'=>19,
-        'U'=>20,
-        'V'=>21,
-        'W'=>22
+        'A' => 0,
+        'B' => 1,
+        'C' => 2,
+        'D' => 3,
+        'E' => 4,
+        'F' => 5,
+        'G' => 6,
+        'H' => 7,
+        'I' => 8,
+        'J' => 9,
+        'K' => 10,
+        'L' => 11,
+        'M' => 12,
+        'N' => 13,
+        'O' => 13,
+        'P' => 15,
+        'Q' => 16,
+        'R' => 17,
+        'S' => 18,
+        'T' => 19,
+        'U' => 20,
+        'V' => 21,
+        'W' => 22
     ];
 }

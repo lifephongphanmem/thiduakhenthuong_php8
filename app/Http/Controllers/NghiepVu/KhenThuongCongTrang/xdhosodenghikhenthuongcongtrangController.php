@@ -62,7 +62,7 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
 
         //Xác định xem có dùng chức năng tiếp nhận ko
-        $a_trangthai_xd = ['DD', 'CXKT', 'DKT', 'BTLXD'];        
+        $a_trangthai_xd = ['DD', 'CXKT', 'DKT'];        
         if(chkGiaoDien('tnhosodenghikhenthuongcongtrang') != '1'){
             $a_trangthai_xd[] = 'CD';
         }
@@ -114,7 +114,8 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
         $inputs['trangthai'] = session('chucnang')['xdhosodenghikhenthuongcongtrang']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
         //dd($model->where('trangthai','CXKT')->where('madonvi_kt',''));
-        //dd( $inputs);
+        // dd( $inputs);
+        // dd($model);
         return view('NghiepVu.KhenThuongCongTrang.XetDuyetHoSo.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
@@ -136,9 +137,15 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         //gán trạng thái hồ sơ để theo dõi
-        $inputs['trangthai'] = 'BTL';
+        // $inputs['trangthai'] = 'BTL';
+        $inputs['trangthai'] = 'BTLXD';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
-        setTraLaiXD($model, $inputs);
+        if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
+            setTraLai($model, $inputs);
+        }else{
+            setTraLaiXD($model, $inputs);
+        }
+
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
 

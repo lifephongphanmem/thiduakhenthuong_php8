@@ -134,7 +134,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $inputs['url_hs'] = '/KhenThuongCongTrang/HoSo/';
         $inputs['url_xd'] = '/KhenThuongCongTrang/TiepNhan/';
         $inputs['url_qd'] = '/KhenThuongCongTrang/KhenThuong/';
-        $inputs['phanquyen']='tnhosodenghikhenthuongcongtrang';
+        $inputs['phanquyen'] = 'tnhosodenghikhenthuongcongtrang';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
@@ -154,7 +154,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $model = dshosothiduakhenthuong::where('madonvi_xd', $inputs['madonvi'])
             ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC',])
             ->where('maloaihinhkt', $inputs['maloaihinhkt']) //->orderby('ngayhoso')->get();
-            ->wherenotin('trangthai_xd',['BTL']);
+            ->wherenotin('trangthai_xd', ['BTL']);
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
             $m_loaihinh = dmloaihinhkhenthuong::all();
         } else {
@@ -182,7 +182,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->get()->toarray(), 'tentaikhoan', 'tendangnhap');
         // $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->where('phanloai', '<>', 'QUANLY')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
         $a_hosoxuly = getHoSoXuLy(array_column($model->toarray(), 'mahosotdkt'), session('admin')->tendangnhap, 'dshosothiduakhenthuong');
-        $a_trangthai_taikhoan = ['DCCVXD', 'DCCVKT', 'DTN', 'DDK', 'KDD', 'BTL'];
+        $a_trangthai_taikhoan = ['DCCVXD', 'DCCVKT', 'DTN', 'DDK', 'KDD', 'BTL', 'BTLXD'];
         foreach ($model as $key => $hoso) {
             $hoso->soluongkhenthuong = $m_khencanhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + $m_khentapthe->where('mahosotdkt', $hoso->mahosotdkt)->count();
@@ -202,38 +202,38 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
                 if (in_array($hoso->trangthai_xd, $a_trangthai_taikhoan) && !in_array(session('admin')->tendangnhap, ['SSA', $hoso->tendangnhap_xl]))
                     $hoso->thaotac = false;
                 //lấy thông tin cán bộ xử lý cuối cùng
-                $m_canbo_xl=dshosothiduakhenthuong_xuly::where('mahosotdkt',$hoso->mahosotdkt)->orderby('created_at','desc')->get();
-                if(count($m_canbo_xl) > 0){
-                    $canbo_xl=$m_canbo_xl->first();
-                    $thongtincanbo=dstaikhoan::where('tendangnhap',$canbo_xl->tendangnhap_xl)->first();
-                    if($thongtincanbo->phanloai == "VANTHU")
-                    {
-                        $hoso->dieukien_hs=false;
-                        $hoso->trangthai='DCXL';
-                        $hoso->trangthai_chuyenchuyenvien= true;
-
-                    }else{
-                        $hoso->dieukien_hs=true;
+                $m_canbo_xl = dshosothiduakhenthuong_xuly::where('mahosotdkt', $hoso->mahosotdkt)->orderby('created_at', 'desc')->get();
+                if (count($m_canbo_xl) > 0) {
+                    $canbo_xl = $m_canbo_xl->first();
+                    $thongtincanbo = dstaikhoan::where('tendangnhap', $canbo_xl->tendangnhap_xl)->first();
+                    if ($thongtincanbo->phanloai == "VANTHU") {
+                        $hoso->dieukien_hs = false;
+                        $hoso->trangthai = 'DCXL';
+                        $hoso->trangthai_chuyenchuyenvien = true;
+                    } else {
+                        $hoso->dieukien_hs = true;
                     }
 
                     //lấy thông tin cán bộ tiếp nhận để set trạng thái hồ sơ khi trưởng ban trả về văn thư
-                    $thongtin_canbonhan=dstaikhoan::where('tendangnhap',$canbo_xl->tendangnhap_tn)->first();
-                    if($thongtin_canbonhan-> phanloai == "VANTHU" && $hoso->trangthai_xl == "KDK"){
+                    $thongtin_canbonhan = dstaikhoan::where('tendangnhap', $canbo_xl->tendangnhap_tn)->first();
+                    if ($thongtin_canbonhan->phanloai == "VANTHU" && $hoso->trangthai_xl == "KDK") {
                         $hoso->trangthai_hoso = "KDK";
                         // $hoso->trangthai="KDK";
                     }
-                    if(session('admin')->phanloai == 'VANTHU'){
-                        $a_trangthai_hoso= array_column(trangthaihoso::where('mahoso',$hoso->mahosotdkt)->get()->toArray(),'trangthai');
-                        if(in_array('BTL',$a_trangthai_hoso)){
-                            $hoso->trangthai_chuyenchuyenvien= true;
+                    if (session('admin')->phanloai == 'VANTHU') {
+                        $a_trangthai_hoso = array_column(trangthaihoso::where('mahoso', $hoso->mahosotdkt)->get()->toArray(), 'trangthai');
+                        if (in_array('BTL', $a_trangthai_hoso)) {
+                            $hoso->trangthai_chuyenchuyenvien = true;
                         }
                     }
-
-                }else{
-                    if(session('admin')->phanloai == 'VANTHU'){
-                        $hoso->trangthai_chuyenchuyenvien= true;
+                } else {
+                    if (session('admin')->phanloai == 'VANTHU') {
+                        $hoso->trangthai_chuyenchuyenvien = true;
                     }
-                   
+                }
+                //xét phân loại tài khoản để hiển thị lại cho tài khoản phó giám đốc và giám đốc sở
+                if (session('admin')->phanloai == 'LANHDAO') {
+                    $inputs['taikhoanlanhdao'] = true;
                 }
             } elseif (count($a_donvilocdulieu) > 0) {
                 //lọc các hồ sơ theo thiết lập dữ liệu
@@ -242,12 +242,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
             }
         }
 
-        //xét phân loại tài khoản để hiển thị lại cho tài khoản phó giám đốc và giám đốc sở
-        if(session('admin')->phanloai == 'LANHDAO')
-        {
-            $inputs['taikhoanlanhdao']=true;
-        }
-        // dd($model);
+
         $inputs['trangthai'] = session('chucnang')['tnhosodenghikhenthuongcongtrang']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
         //dd($model->where('trangthai','CXKT')->where('madonvi_kt',''));
@@ -275,7 +270,12 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         //gán trạng thái hồ sơ để theo dõi
         $inputs['trangthai'] = 'BTL';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
-        setTraLaiXD($model, $inputs);
+        if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
+            setTraLai($model, $inputs);
+        }else{
+            setTraLaiXD($model, $inputs);
+        }
+
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
 
