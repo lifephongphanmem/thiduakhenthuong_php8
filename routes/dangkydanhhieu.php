@@ -8,22 +8,22 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'DangKyDanhHieu'], function () {
     Route::group(['prefix' => 'HoSo'], function () {
         Route::get('ThongTin', [dshosodangkyphongtraothiduaController::class, 'ThongTin']);
-        Route::post('Them', [dshosodangkyphongtraothiduaController::class, '@Them']);
-        Route::get('Sua', [dshosodangkyphongtraothiduaController::class, '@ThayDoi']);
-        Route::post('Sua', [dshosodangkyphongtraothiduaController::class, '@LuuHoSo']);
-        Route::get('Xem', [dshosodangkyphongtraothiduaController::class, '@XemHoSo']);
-        Route::post('CaNhan', [dshosodangkyphongtraothiduaController::class, '@ThemCaNhan']);
-        Route::post('TapThe', [dshosodangkyphongtraothiduaController::class, '@ThemTapThe']);
+        Route::post('Them', [dshosodangkyphongtraothiduaController::class, 'Them']);
+        Route::get('Sua', [dshosodangkyphongtraothiduaController::class, 'ThayDoi']);
+        Route::post('Sua', [dshosodangkyphongtraothiduaController::class, 'LuuHoSo']);
+        Route::get('Xem', [dshosodangkyphongtraothiduaController::class, 'XemHoSo']);
+        Route::post('CaNhan', [dshosodangkyphongtraothiduaController::class, 'ThemCaNhan']);
+        Route::post('TapThe', [dshosodangkyphongtraothiduaController::class, 'ThemTapThe']);
 
-        Route::post('ChuyenHoSo', [dshosodangkyphongtraothiduaController::class, '@ChuyenHoSo']);
-        Route::get('LayLyDo', [dshosodangkyphongtraothiduaController::class, '@LayLyDo']);
-        Route::post('Xoa', [dshosodangkyphongtraothiduaController::class, '@XoaHoSo']);
+        Route::post('ChuyenHoSo', [dshosodangkyphongtraothiduaController::class, 'ChuyenHoSo']);
+        Route::get('LayLyDo', [dshosodangkyphongtraothiduaController::class, 'LayLyDo']);
+        Route::post('Xoa', [dshosodangkyphongtraothiduaController::class, 'XoaHoSo']);
 
-        Route::get('LayCaNhan', [dshosodangkyphongtraothiduaController::class, '@LayCaNhan']);
-        Route::get('LayTapThe', [dshosodangkyphongtraothiduaController::class, '@LayTapThe']);
-        Route::post('XoaDoiTuong', [dshosodangkyphongtraothiduaController::class, '@XoaDoiTuong']);
-        Route::post('NhanExcelTapThe', [dshosodangkyphongtraothiduaController::class, '@NhanExcelTapThe']);
-        Route::post('NhanExcelCaNhan', [dshosodangkyphongtraothiduaController::class, '@NhanExcelCaNhan']);
+        Route::get('LayCaNhan', [dshosodangkyphongtraothiduaController::class, 'LayCaNhan']);
+        Route::get('LayTapThe', [dshosodangkyphongtraothiduaController::class, 'LayTapThe']);
+        Route::post('XoaDoiTuong', [dshosodangkyphongtraothiduaController::class, 'XoaDoiTuong']);
+        Route::post('NhanExcelTapThe', [dshosodangkyphongtraothiduaController::class, 'NhanExcelTapThe']);
+        Route::post('NhanExcelCaNhan', [dshosodangkyphongtraothiduaController::class, 'NhanExcelCaNhan']);
     });
 
     Route::group(['prefix' => 'XetDuyet'], function () {
