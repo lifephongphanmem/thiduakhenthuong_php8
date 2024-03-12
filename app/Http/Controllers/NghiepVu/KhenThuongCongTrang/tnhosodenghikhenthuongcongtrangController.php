@@ -241,7 +241,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
                     $model->forget($key);
             }
         }
-
+        // dd($model);
 
         $inputs['trangthai'] = session('chucnang')['tnhosodenghikhenthuongcongtrang']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
