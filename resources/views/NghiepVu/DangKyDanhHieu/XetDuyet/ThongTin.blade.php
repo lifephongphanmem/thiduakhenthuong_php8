@@ -37,10 +37,12 @@
                 <h3 class="card-label text-uppercase">Danh sách hồ sơ đăng ký thi đua</h3>
             </div>
             <div class="card-toolbar">
-                @if (chkPhanQuyen('dshosodangkythidua', 'thaydoi'))
-                    <button type="button" class="btn btn-success btn-xs" data-target="#taohoso-modal" data-toggle="modal">
-                        <i class="fa fa-plus"></i>&nbsp;Thêm mới</button>
-                @endif
+                <!-- Chức năng xét duyệt không có thêm mới (tdkt khánh hòa)
+                    @if (chkPhanQuyen('dshosodangkythidua', 'thaydoi'))
+    <button type="button" class="btn btn-success btn-xs" data-target="#taohoso-modal" data-toggle="modal">
+                            <i class="fa fa-plus"></i>&nbsp;Thêm mới</button>
+    @endif
+                        -->
             </div>
         </div>
         <div class="card-body">
@@ -95,20 +97,23 @@
                                         class="btn btn-sm btn-clean btn-icon" target="_blank">
                                         <i class="icon-lg la fa-eye text-dark"></i></a>
 
-                                    @if (in_array($tt->trangthai_hoso, ['CD']))
+                                    @if (in_array($tt->trangthai_hoso, ['CD','DD']))
                                         <button title="Trả lại hồ sơ" type="button"
                                             onclick="confirmTraLai('{{ $tt->mahosodk }}', '{{ $inputs['madonvi'] }}', '/DangKyDanhHieu/XetDuyet/TraLai')"
                                             class="btn btn-sm btn-clean btn-icon" data-target="#modal-tralai"
                                             data-toggle="modal">
                                             <i class="icon-lg la la-reply text-danger"></i></button>
-
+                                    @endif
+                                    @if (in_array($tt->trangthai_hoso, ['CD']))
                                         <button title="Nhận hồ sơ đăng ký" type="button"
                                             onclick="confirmNhan('{{ $tt->mahosodk }}','/DangKyDanhHieu/XetDuyet/NhanHoSo','{{ $inputs['madonvi'] }}')"
                                             class="btn btn-sm btn-clean btn-icon" data-target="#nhan-modal-confirm"
                                             data-toggle="modal">
-                                            <i class="icon-lg la fa-share-square text-success"></i></button>
+                                            {{-- <i class="icon-lg la fa-share-square text-success"></i> --}}
+                                            <i class="icon-lg flaticon-interface-5 text-success"></i>
+                                        </button>
                                     @endif
-                                    
+
                                 </td>
                             </tr>
                         @endforeach

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\DanhMuc\dsdonvi;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_tailieu;
+use App\Models\NghiepVu\DangKyDanhHieu\dshosodangkyphongtraothidua_tailieu;
+use App\Models\NghiepVu\DangKyDanhHieu\dshosothamgiaphongtraothidua_tailieu;
 use App\Models\NghiepVu\KhenCao\dshosodenghikhencao;
 use App\Models\NghiepVu\KhenCao\dshosodenghikhencao_tailieu;
 use App\Models\NghiepVu\KhenCao\dshosokhencao_tailieu;
@@ -24,7 +26,6 @@ class dungchung_nghiepvu_tailieuController extends Controller
             $inputs['tentailieu'] = $inputs['mahosotdkt'] . '.' . $inputs['phanloai'] . '.' . $filedk->getClientOriginalName();
             $filedk->move(public_path() . '/data/tailieudinhkem/', $inputs['tentailieu']);
         }
-        
         switch ($inputs['phanloaihoso']) {
             case 'dshosothiduakhenthuong': {
                     $model = dshosothiduakhenthuong_tailieu::where('id', $inputs['id'])->first();
@@ -82,6 +83,34 @@ class dungchung_nghiepvu_tailieuController extends Controller
                     $danhsach = dshosodenghikhencao_tailieu::where('mahosotdkt', $inputs['mahosotdkt'])->get();
                     break;
                 }
+            case 'dshosodangkythidua':{
+                $model = dshosodangkyphongtraothidua_tailieu::where('id', $inputs['id'])->first();
+                unset($inputs['id']);
+                if ($model == null) {
+                    dshosodangkyphongtraothidua_tailieu::create($inputs);
+                } else {
+                    if (file_exists('/data/tailieudinhkem/' . $model->tentailieu)) {
+                        File::Delete('/data/tailieudinhkem/' . $model->tentailieu);
+                    }
+                    $model->update($inputs);
+                }
+                $danhsach = dshosodangkyphongtraothidua_tailieu::where('mahosotdkt', $inputs['mahosotdkt'])->get();
+                break;
+            }
+            case 'dshosothidua':{
+                $model = dshosothamgiaphongtraothidua_tailieu::where('id', $inputs['id'])->first();
+                unset($inputs['id']);
+                if ($model == null) {
+                    dshosothamgiaphongtraothidua_tailieu::create($inputs);
+                } else {
+                    if (file_exists('/data/tailieudinhkem/' . $model->tentailieu)) {
+                        File::Delete('/data/tailieudinhkem/' . $model->tentailieu);
+                    }
+                    $model->update($inputs);
+                }
+                $danhsach = dshosothamgiaphongtraothidua_tailieu::where('mahosotdkt', $inputs['mahosotdkt'])->get();
+                break;
+            }
         }
 
         $result = array(
@@ -185,6 +214,14 @@ class dungchung_nghiepvu_tailieuController extends Controller
                     $model = dshosodenghikhencao_tailieu::where('id', $inputs['id'])->first();
                     break;
                 }
+                case 'dshosodangkythidua': {
+                    $model = dshosodangkyphongtraothidua_tailieu::where('id', $inputs['id'])->first();
+                    break;
+                }
+                case 'dshosothidua': {
+                    $model = dshosothamgiaphongtraothidua_tailieu::where('id', $inputs['id'])->first();
+                    break;
+                }
         }
         return response()->json($model);
     }
@@ -218,6 +255,18 @@ class dungchung_nghiepvu_tailieuController extends Controller
                     $model = dshosodenghikhencao_tailieu::where('id', $inputs['id'])->first();
                     $model->delete();
                     $danhsach = dshosodenghikhencao_tailieu::where('mahosotdkt', $model->mahosotdkt)->get();
+                    break;
+                }
+                case 'dshosodangkythidua': {
+                    $model = dshosodangkyphongtraothidua_tailieu::where('id', $inputs['id'])->first();
+                    $model->delete();
+                    $danhsach = dshosodangkyphongtraothidua_tailieu::where('mahosotdkt', $model->mahosotdkt)->get();
+                    break;
+                }
+                case 'dshosothidua': {
+                    $model = dshosothamgiaphongtraothidua_tailieu::where('id', $inputs['id'])->first();
+                    $model->delete();
+                    $danhsach = dshosothamgiaphongtraothidua_tailieu::where('mahosotdkt', $model->mahosotdkt)->get();
                     break;
                 }
         }

@@ -135,7 +135,7 @@ class dungchung_duthaokhenthuongController extends Controller
     public function LuuToTrinhDeNghiKhenThuong(Request $request)
     {
         $inputs = $request->all();
-
+        $inputs['phanloaihoso'] = $inputs['phanloaihoso'] ?? 'dshosothiduakhenthuong';
         switch ($inputs['phanloaihoso']) {
             case 'dshosothiduakhenthuong': {
                     $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();

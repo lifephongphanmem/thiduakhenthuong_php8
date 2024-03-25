@@ -124,7 +124,7 @@ class dshosokhenthuongthiduaController extends Controller
         $inputs['trangthai'] = session('chucnang')['dshosokhenthuongthidua']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] == 'ALL' ? 'CC' : $inputs['trangthai'];
         $a_donviql = getDonViQuanLyDiaBan($donvi);
-        //dd($model);
+        // dd($model);
         return view('NghiepVu.ThiDuaKhenThuong.HoSoThiDuaKT.ThongTin')
             ->with('inputs', $inputs)
             ->with('model', $model->sortby('tungay'))

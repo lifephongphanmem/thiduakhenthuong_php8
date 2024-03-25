@@ -1473,6 +1473,14 @@ function getPhanLoaiTaiLieuDK($phanloaihoso = 'ALL')
             'QDKT' => 'Quyết định khen thưởng',
         ];
     }
+    // //Đăng ký phong trào thi đua
+    // if($phanloaihoso == "PHONGTRAO")
+    // {
+    //     return [
+    //         'BIENBAN'=>'Biên bản cuộc họp',
+    //         'KHAC'=>'Tài liệu khác'
+    //     ];
+    // }
     //dd($phanloaihoso);
     //Hồ sơ khen thưởng
     $a_kq = [
