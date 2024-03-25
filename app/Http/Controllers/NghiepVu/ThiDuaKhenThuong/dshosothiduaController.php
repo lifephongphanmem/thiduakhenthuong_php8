@@ -15,6 +15,7 @@ use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
 use App\Models\DanhMuc\duthaoquyetdinh;
 use App\Models\HeThong\trangthaihoso;
+use App\Models\NghiepVu\DangKyDanhHieu\dshosothamgiaphongtraothidua_tailieu;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothamgiaphongtraotd;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothamgiaphongtraotd_canhan;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothamgiaphongtraotd_hogiadinh;
@@ -148,7 +149,6 @@ class dshosothiduaController extends Controller
         $inputs['phamviapdung'] = $inputs['phamviapdung'] ?? 'ALL';
         $inputs['phanloai'] = $inputs['phanloai'] ?? 'ALL';
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
-
         //lấy hết phong trào cấp tỉnh
         $model = viewdonvi_dsphongtrao::wherein('phamviapdung', ['T', 'TW'])->orderby('tungay')->get();
 
@@ -156,16 +156,19 @@ class dshosothiduaController extends Controller
             case 'X': {
                     //đơn vị cấp xã => chỉ các phong trào trong huyện, xã
                     $model_xa = viewdonvi_dsphongtrao::wherein('madiaban', [$donvi->madiaban, $donvi->madiabanQL])->orderby('tungay')->get();
+                    $a_phamvi=getPhamViPhongTrao('H');
                     break;
                 }
             case 'H': {
                     //đơn vị cấp huyện =>chỉ các phong trào trong huyện
                     $model_xa = viewdonvi_dsphongtrao::where('madiaban', $donvi->madiaban)->orderby('tungay')->get();
+                    $a_phamvi=getPhamViPhongTrao('T');
                     break;
                 }
             case 'T': {
                     //Phong trào theo SBN
                     $model_xa = viewdonvi_dsphongtrao::where('madonvi', $inputs['madonvi'])->orderby('tungay')->get();
+                    $a_phamvi=getPhamViPhongTrao('T');
                     break;
                 }
         }
@@ -180,7 +183,11 @@ class dshosothiduaController extends Controller
         $ngayhientai = date('Y-m-d');
         $m_hoso = dshosothamgiaphongtraotd::wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
 
-        foreach ($model as $DangKy) {
+        foreach ($model as $key=>$DangKy) {
+            //Lọc phạm vi áp dụng phong trào để lấy theo đơn vị huyện xã
+            if($donvi->capdo == 'X' && $DangKy->phamviapdung == 'T'){
+                    $model->forget($key);
+            }
             KiemTraPhongTrao($DangKy, $ngayhientai);
             $HoSo = $m_hoso->where('maphongtraotd', $DangKy->maphongtraotd)->wherein('trangthai', ['CD', 'DD', 'CNXKT', 'DXKT', 'CXKT', 'DKT']);
             $DangKy->sohoso = $HoSo == null ? 0 : $HoSo->count();
@@ -195,13 +202,17 @@ class dshosothiduaController extends Controller
         }
         $inputs['trangthai'] = session('chucnang')['dshosothidua']['trangthai'] ?? 'CC';
         //  dd($inputs);
+        // dd(getDonViXetDuyetDiaBan($donvi));
+
+
         return view('NghiepVu.ThiDuaKhenThuong.HoSoThiDua.ThongTin')
             ->with('inputs', $inputs)
             ->with('model', $model->sortby('tungay'))
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
             ->with('a_donviql', getDonViXetDuyetDiaBan($donvi))
-            ->with('a_phamvi', getPhamViPhongTrao())
+            // ->with('a_phamvi', getPhamViPhongTrao())
+            ->with('a_phamvi', $a_phamvi)
             ->with('a_phanloai', getPhanLoaiPhongTraoThiDua(true))
             ->with('a_trangthaihoso', getTrangThaiTDKT())
             ->with('pageTitle', 'Danh sách hồ sơ thi đua');
@@ -254,6 +265,7 @@ class dshosothiduaController extends Controller
         $inputs['url_qd'] = '/KhenThuongHoSoThiDua/';
         $inputs['maloaihinhkt'] = session('chucnang')['dshosothidua']['maloaihinhkt'] ?? 'ALL';
         $inputs['mahinhthuckt'] = session('chucnang')['dshosothidua']['mahinhthuckt'] ?? 'ALL';
+        $inputs['phanloaihoso'] = 'dshosothidua';
         $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahosothamgiapt'])->first();
         // $donvi = viewdiabandonvi::where('madonvi', $model->madonvi)->first();
         // $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo);
@@ -266,7 +278,8 @@ class dshosothiduaController extends Controller
         $m_phongtrao = dsphongtraothidua::where('maphongtraotd', $model->maphongtraotd)->first();
         $model->tendonvi = getThongTinDonVi($model->madonvi, 'tendonvi');
         $model->tenphongtrao = $m_phongtrao->noidung;
-
+        $model->mahosotdkt=$model->mahosothamgiapt;
+        $model_tailieu = dshosothamgiaphongtraothidua_tailieu::where('mahosotdkt', $model->mahosotdkt)->get();
         $model_canhan = dshosothamgiaphongtraotd_canhan::where('mahosothamgiapt', $model->mahosothamgiapt)->get();
         $model_tapthe = dshosothamgiaphongtraotd_tapthe::where('mahosothamgiapt', $model->mahosothamgiapt)->get();
         $model_hogiadinh = dshosothamgiaphongtraotd_hogiadinh::where('mahosothamgiapt', $model->mahosothamgiapt)->get();
@@ -287,6 +300,7 @@ class dshosothiduaController extends Controller
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)
             ->with('model_tapthe', $model_tapthe)
+            ->with('model_tailieu', $model_tailieu)
             ->with('model_hogiadinh', $model_hogiadinh)
             ->with('model_tieuchuan', $model_tieuchuan)
             ->with('a_hogiadinh', $a_hogiadinh)

@@ -66,6 +66,59 @@
     </div>
     {!! Form::close() !!}
 </div>
+
+<!--Modal Xử lý hồ sơ-->
+<div id="modal-xulyhoso" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade kt_select2_modal">
+    {!! Form::open(['url' => '', 'id' => 'frm_xulyhoso']) !!}
+    <input type="hidden" name="mahoso" />
+    <input type="hidden" name="madonvi" />
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <h4 id="modal-header-primary-label" class="modal-title">Thông tin xử lý hồ sơ</h4>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label class="control-label">Cán bộ chuyển hồ sơ</label>
+                        {{-- {!! Form::select('tendangnhap_xl', $a_taikhoanchuyenvien, null, ['class' => 'form-control select2_modal']) !!} --}}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label class="control-label">Cán bộ tiếp nhận hồ sơ</label>
+                        {{-- {!! Form::select('tendangnhap_tn', $a_taikhoanchuyenvien, null, ['class' => 'form-control select2_modal']) !!} --}}
+                    </div>
+                </div>
+                <!-- Tài khoản quản lý + SSA: có thông tin trạng thái hồ sơ -->
+                {{-- @if (getPhanLoaiTaiKhoanTiepNhan()) --}}
+                    <div class="form-group row" id="dieukien_hs">
+                        <div class="col-md-12">
+                            <label class="control-label">Trạng thái hồ sơ</label>
+                            {!! Form::select('trangthai', getTrangThaiXuLyHoSo(), null, ['class' => 'form-control select2_modal']) !!}
+                        </div>
+                    </div>
+                {{-- @endif --}}
+
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <label class=" control-label">Diễn giải nội dung</label>
+                        {!! Form::textarea('noidungxuly_xl', null, ['rows' => 3, 'cols' => 10, 'class' => 'form-control']) !!}
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
+                <button type="submit" data-dismiss="modal" class="btn btn-primary" onclick="clickXuLyHoSo()">Đồng
+                    ý</button>
+            </div>
+        </div>
+    </div>
+    {!! Form::close() !!}
+</div>
 <script>
     function clickChuyen() {
         var str = '';

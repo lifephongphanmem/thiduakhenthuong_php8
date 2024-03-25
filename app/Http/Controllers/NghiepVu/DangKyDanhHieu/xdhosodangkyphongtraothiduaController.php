@@ -62,6 +62,7 @@ class xdhosodangkyphongtraothiduaController extends Controller
             } else
                 getDonViChuyen($inputs['madonvi'], $hoso);
         }
+        // dd($model);
         return view('NghiepVu.DangKyDanhHieu.XetDuyet.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
@@ -107,7 +108,7 @@ class xdhosodangkyphongtraothiduaController extends Controller
             return view('errors.noperm')->with('machucnang', 'xdhosodangkythidua')->with('tenphanquyen', 'hoanthanh');
         }
         $inputs = $request->all();
-        dd($inputs);
+        // dd($inputs);
         $model = dshosodangkyphongtraothidua::where('mahosodk', $inputs['mahoso'])->first();
         $m_donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi_nhan'])->first();
         $model->trangthai_h = 'DD';

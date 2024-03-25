@@ -74,12 +74,13 @@
 
                                 <td style="text-align: center">
                                     @include('NghiepVu._DungChung.TD_XemThongTinTDKT')
-
                                     @if (in_array($tt->trangthai, ['CC', 'BTL', 'CXD']) && chkPhanQuyen('xdhosodenghikhenthuongthidua', 'thaydoi'))
                                         @if (in_array($inputs['trangthai'], ['CC', 'CD']))
+                                      
                                             {{-- Trường hợp cũ đầy đủ quy trình --}}
                                             @include('NghiepVu._DungChung.HoSo.TD_TrangThai_CC')
                                         @else
+
                                             {{-- Trường hợp gộp các quy trình vào làm một để chỉ theo dõi hồ sơ --}}
                                             @include('NghiepVu._DungChung.HoSo.TD_TrangThai_CXKT')
                                         @endif

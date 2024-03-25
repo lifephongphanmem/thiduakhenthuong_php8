@@ -10,13 +10,13 @@
     <span
         class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{ $tt->soluongkhenthuong }}</span>
 </a>
-@if (session('admin')->opt_duthaototrinh)    
+@if (session('admin')->opt_duthaototrinh)
     <a title="Tạo dự thảo đề nghị khen thưởng" target="_blank"
-            href="{{ url('/DungChung/DuThao/ToTrinhDeNghiKhenThuong?mahosotdkt=' . $tt->mahosotdkt) }}"
-            class="btn btn-sm btn-clean btn-icon">
-            {{-- class="btn btn-sm btn-clean btn-icon {{ $tt->soluongkhenthuong == 0 ? 'disabled' : '' }}"> --}}
-            <i class="icon-lg la flaticon-clipboard text-success"></i>
-        </a>
+        href="{{ url('/DungChung/DuThao/ToTrinhDeNghiKhenThuong?mahosotdkt=' . $tt->mahosotdkt) }}"
+        class="btn btn-sm btn-clean btn-icon">
+        {{-- class="btn btn-sm btn-clean btn-icon {{ $tt->soluongkhenthuong == 0 ? 'disabled' : '' }}"> --}}
+        <i class="icon-lg la flaticon-clipboard text-success"></i>
+    </a>
 @endif
 @if ($tt->trangthai == 'BTL')
     <button title="Lý do hồ sơ bị trả lại" type="button"
@@ -25,11 +25,25 @@
         <i class="icon-lg la flaticon2-information text-info"></i>
     </button>
 @endif
-<button title="Trình hồ sơ đăng ký" type="button"
-    onclick="confirmChuyen('{{ $tt->mahosotdkt }}','{{ $inputs['url_hs'] . 'ChuyenHoSo' }}', '{{ $tt->phanloai }}','{{ $tt->madonvi_xd }}')"
-    class="btn btn-sm btn-clean btn-icon">
-    <i class="icon-lg la fa-share text-primary"></i>
+@if ($tt->tendangnhapxl)
+    <button title="Trình hồ sơ đăng ký" type="button"
+        onclick="confirmChuyen('{{ $tt->mahosotdkt }}','{{ $inputs['url_hs'] . 'ChuyenHoSo' }}', '{{ $tt->phanloai }}','{{ $tt->madonvi_xd }}')"
+        class="btn btn-sm btn-clean btn-icon">
+        <i class="icon-lg la fa-share text-primary"></i>
+    </button>
+@else
+<button title="Xử lý hồ sơ" type="button"
+onclick="confirmChuyen('{{ $tt->mahosotdkt }}','{{ $inputs['url_hs'] . 'ChuyenHoSo' }}', '{{ $tt->phanloai }}','{{ $tt->madonvi_xd }}')"
+class="btn btn-sm btn-clean btn-icon">
+<i class="icon-lg la flaticon-list text-primary"></i>
 </button>
+    {{-- <button title="Xử lý hồ sơ" type="button"
+        onclick="confirmXuLyHoSo('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}','{{ $tt->dieukien_hs == true ? 1 : 0 }}','{{ $tt->trangthai_xl }}', '{{ $inputs['url_xd'] . 'XuLyHoSo' }}','{{ $tt->tendangnhap_xl }}')"
+        class="btn btn-sm btn-clean btn-icon" data-target="#modal-xulyhoso" data-toggle="modal">
+        <i class="icon-lg la flaticon-list text-success"></i>
+    </button> --}}
+@endif
+
 
 <button type="button" onclick="confirmDelete('{{ $tt->id }}','{{ $inputs['url_hs'] . 'Xoa' }}')"
     class="btn btn-sm btn-clean btn-icon" data-target="#delete-modal-confirm" data-toggle="modal">

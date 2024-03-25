@@ -15,6 +15,7 @@ use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\DangKyDanhHieu\dshosodangkyphongtraothidua;
 use App\Models\NghiepVu\DangKyDanhHieu\dshosodangkyphongtraothidua_canhan;
 use App\Models\NghiepVu\DangKyDanhHieu\dshosodangkyphongtraothidua_chitiet;
+use App\Models\NghiepVu\DangKyDanhHieu\dshosodangkyphongtraothidua_tailieu;
 use App\Models\NghiepVu\DangKyDanhHieu\dshosodangkyphongtraothidua_tapthe;
 use App\Models\View\viewdiabandonvi;
 use Illuminate\Support\Facades\File;
@@ -85,7 +86,10 @@ class dshosodangkyphongtraothiduaController extends Controller
         }
         $inputs = $request->all();
         $inputs['url'] = 'DangKyDanhHieu/HoSo/';
+        $inputs['phanloaihoso'] = 'dshosodangkythidua';
+
         $model = dshosodangkyphongtraothidua::where('mahosodk', $inputs['mahosodk'])->first();
+        $model->mahosotdkt=$model->mahosodk;
         $donvi = viewdiabandonvi::where('madonvi', $model->madonvi)->first();
         $model->tendonvi = $donvi->tendonvi;
                $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo);
@@ -93,7 +97,7 @@ class dshosodangkyphongtraothiduaController extends Controller
        
        
        
-
+        $model_tailieu = dshosodangkyphongtraothidua_tailieu::where('mahosotdkt', $model->mahosotdkt)->get();
         $model_canhan = dshosodangkyphongtraothidua_canhan::where('mahosodk', $inputs['mahosodk'])->get();
         $model_tapthe = dshosodangkyphongtraothidua_tapthe::where('mahosodk', $inputs['mahosodk'])->get();
         $model->tendonvi = getThongTinDonVi($model->madonvi, 'tendonvi');
@@ -106,6 +110,7 @@ class dshosodangkyphongtraothiduaController extends Controller
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)
             ->with('model_tapthe', $model_tapthe)
+            ->with('model_tailieu', $model_tailieu)
             //->with('m_donvi', $m_donvi)
             //->with('m_diaban', $m_diaban)
             //->with('m_danhhieu', $m_danhhieu)

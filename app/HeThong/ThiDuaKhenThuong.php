@@ -362,7 +362,7 @@ function getDonViXetDuyetDiaBan($donvi, $kieudulieu = 'ARRAY')
     //Lấy đơn vị quản lý địa bàn và đơn vi
     $m_diaban = \App\Models\DanhMuc\dsdiaban::where('madiaban', $donvi->madiaban)->first();
     //$a_donvi = [$m_diaban->madonviKT, $donvi->madonvi]; 2023.05.25 bỏ chức năng tự gửi hồ sơ đề nghị lên đơn mình do đã tách hồ sơ khen thưởng tại đơn vị
-    $a_donvi = [$m_diaban->madonviKT];
+    $a_donvi = [$m_diaban->madonviKT,$m_diaban->madonviQL];
     $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
 
     if ($m_diabanQL != null)
@@ -385,6 +385,35 @@ function getDonViXetDuyetDiaBan($donvi, $kieudulieu = 'ARRAY')
     }
 }
 
+function getDonViXDDiaBan($donvi, $kieudulieu = 'ARRAY')
+{
+    /*
+    Lấy thông tin đơn vị theo Đơn vị QL để thực hiện quy trình cán bộ tdkt huyện-> UBND huyện
+    */
+        //Lấy đơn vị quản lý địa bàn và đơn vi
+        $m_diaban = \App\Models\DanhMuc\dsdiaban::where('madiaban', $donvi->madiaban)->first();
+        //$a_donvi = [$m_diaban->madonviKT, $donvi->madonvi]; 2023.05.25 bỏ chức năng tự gửi hồ sơ đề nghị lên đơn mình do đã tách hồ sơ khen thưởng tại đơn vị
+        $a_donvi = [$m_diaban->madonviKT];
+        $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
+        if ($m_diabanQL != null)
+            $a_donvi = array_merge($a_donvi, [$m_diabanQL->madonviQL]);
+    
+        //2023.05.25 thêm điều kiện đơn vị không gửi đc cho chính mính (kể cả đơn vị quản lý ở cấp H)
+        // if ($donvi->capdo != 'T') {
+        //     $a_donvi = array_diff($a_donvi, [$donvi->madonvi]);
+        // }
+    // dd($a_donvi);
+        $model = \App\Models\DanhMuc\dsdonvi::wherein('madonvi', $a_donvi)->get();
+    
+        switch ($kieudulieu) {
+            case 'MODEL': {
+                    return $model;
+                    break;
+                }
+            default:
+                return array_column($model->toarray(), 'tendonvi', 'madonvi');
+        }
+}
 function getDonViXetDuyetPhongTrao($donvi, $phongtrao, $kieudulieu = 'ARRAY')
 {
     /*
@@ -1102,14 +1131,22 @@ function setHoanThanhDV($madonvi, $hoso, $a_hoanthanh)
 //Làm cho chức năng trạng thái == CC
 function setTraLaiXD(&$model, &$inputs)
 {
+
     $model->trangthai = $inputs['trangthai'];
     $model->thoigian = $inputs['thoigian'];
     $model->lydo = $inputs['lydo'];
-
+    
+    //Xét có tồn tại các trường trong db không để cập nhật
+    $a_keys=array_keys($model->toarray());
+    if(in_array('trangthaixd',$a_keys))
     $model->trangthai_xd = $model->trangthai;
+    if(in_array('thoigian_xd',$a_keys))
     $model->thoigian_xd = $model->thoigian;
+    if(in_array('trangthai_xl',$a_keys))
     $model->trangthai_xl = null;
+    if(in_array('tendangnhap_xl',$a_keys))
     $model->tendangnhap_xl = null;
+
     $model->save();
 
     //Lưu trạng thái
@@ -1338,6 +1375,34 @@ function setChuyenDV(&$model, &$inputs)
     $model->trangthai_xd = $model->trangthai;
     $model->thoigian_xd = $model->thoigian;
     $model->madonvi_xd = $model->madonvi_nhan;
+    //dd($model);
+    $model->save();
+
+    //Lưu trạng thái
+    $trangthai = new trangthaihoso();
+    $trangthai->trangthai = $inputs['trangthai'];
+    $trangthai->madonvi = $model->madonvi;
+    $trangthai->madonvi_nhan = $inputs['madonvi_nhan'];
+    $trangthai->phanloai = 'dshosothiduakhenthuong';
+    $trangthai->mahoso = $model->mahosotdkt;
+    $trangthai->thoigian = $model->thoigian;
+    $trangthai->thongtin = 'Chuyển hồ sơ đề nghị khen thưởng đã chỉnh sửa lại theo yêu cầu.';
+    $trangthai->save();
+}
+
+//Chuyển hồ sơ trong Huyện
+function setChuyenDV_Huyen($model, $inputs)
+{
+        dd($inputs);
+    $model->trangthai = $inputs['trangthai'];
+    $model->thoigian = $inputs['thoigian'];
+    $model->lydo = $inputs['lydo'];
+    $model->madonvi_nhan = $inputs['madonvi_nhan'];
+
+
+    // $model->trangthai_xd = $model->trangthai;
+    // $model->thoigian_xd = $model->thoigian;
+    // $model->madonvi_xd = $model->madonvi_nhan;
     //dd($model);
     $model->save();
 
