@@ -1393,14 +1393,14 @@ function setChuyenDV(&$model, &$inputs)
 //Chuyển hồ sơ trong Huyện
 function setChuyenDV_Huyen($model, $inputs)
 {
-        dd($inputs);
     $model->trangthai = $inputs['trangthai'];
     $model->thoigian = $inputs['thoigian'];
     $model->lydo = $inputs['lydo'];
     $model->madonvi_nhan = $inputs['madonvi_nhan'];
 
 
-    // $model->trangthai_xd = $model->trangthai;
+    $model->trangthai_xl = $model->trangthai;
+    $model->tendangnhap_xl = $model->madonvi_nhan;
     // $model->thoigian_xd = $model->thoigian;
     // $model->madonvi_xd = $model->madonvi_nhan;
     //dd($model);
