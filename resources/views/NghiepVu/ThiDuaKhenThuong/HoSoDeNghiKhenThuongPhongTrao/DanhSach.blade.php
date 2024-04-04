@@ -74,7 +74,7 @@
 
                                 <td style="text-align: center">
                                     @include('NghiepVu._DungChung.TD_XemThongTinTDKT')
-                                    @if (in_array($tt->trangthai, ['CC', 'CD','BTL', 'CXD']) && chkPhanQuyen('xdhosodenghikhenthuongthidua', 'thaydoi'))
+                                    @if (in_array($tt->trangthai, ['CH','CC', 'CD','BTL', 'CXD']) && chkPhanQuyen('xdhosodenghikhenthuongthidua', 'thaydoi'))
                                         @if (in_array($inputs['trangthai'], ['CC', 'CD']))
                                       
                                             {{-- Trường hợp cũ đầy đủ quy trình --}}
