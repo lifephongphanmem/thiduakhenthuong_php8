@@ -104,4 +104,9 @@
             <i class="icon-lg la fa-share-square text-success"></i>
         </button>
     @endif
+    <a title="Xem chi tiết xử lý hồ sơ" target="_blank"
+    href="{{ url($inputs['url_xd'] . 'QuaTrinhXuLyHoSo?mahosotdkt=' . $tt->mahosotdkt) }}"
+    class="btn btn-sm btn-clean btn-icon">
+    <i class="icon-lg la flaticon-list-1 text-dark"></i>
+</a>
 @endif

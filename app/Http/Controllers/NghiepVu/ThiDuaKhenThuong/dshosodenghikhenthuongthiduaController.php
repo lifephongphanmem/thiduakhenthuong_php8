@@ -560,7 +560,8 @@ class dshosodenghikhenthuongthiduaController extends Controller
         $inputs['trangthai'] = getTrangThaiChuyenHS(session('chucnang')['dshosodenghikhenthuongthidua']['trangthai'] ?? 'CC');
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         $inputs['lydo'] = ''; //Xóa lý do trả lại
-        setChuyenDV($model, $inputs);
+        // setChuyenDV($model, $inputs);
+        setChuyenDV_Huyen($model, $inputs);
         $inputs['tendangnhap_xl']=$model->madonvi;
         $inputs['tendangnhap_tn']=$inputs['madonvi_nhan'];
         $inputs['noidungxuly_xl']='';
@@ -585,7 +586,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
 
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
-        $model->lydo = $model->lydo_xd;
+        $model->lydo = $model->lydo;
         die(json_encode($model));
     }
 

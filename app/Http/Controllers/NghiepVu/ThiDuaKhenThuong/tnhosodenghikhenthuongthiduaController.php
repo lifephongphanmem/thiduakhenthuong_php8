@@ -323,7 +323,8 @@ class tnhosodenghikhenthuongthiduaController extends Controller
             //$hoso->soluongkhenthuong = 1;
             //Gán lại trạng thái hồ sơ
             $hoso->madonvi_hoso = $hoso->madonvi_xd;
-            $hoso->trangthai_hoso = $hoso->trangthai_xd;
+            // $hoso->trangthai_hoso = $hoso->trangthai_xd;
+            $hoso->trangthai_hoso = $hoso->trangthai;
             $hoso->thoigian_hoso = $hoso->thoigian_xd;
             $hoso->lydo_hoso = $hoso->lydo_xd;
             $hoso->madonvi_nhan_hoso = $hoso->madonvi_kt;
@@ -347,10 +348,12 @@ class tnhosodenghikhenthuongthiduaController extends Controller
                     $hoso->thaotac = true;
                 }
                 //xử lý nút trả lại
-                if($dv_xl == $inputs['madonvi']&&$dv_xl == $hoso->madonvi_nhan && in_array($trangthai_xl,['DTN','KDK']))
+                if($dv_xl == $inputs['madonvi']&&$dv_xl == $hoso->madonvi_nhan_h && in_array($trangthai_xl,['DTN','KDK','CD']))
                 {
                     $hoso->thaotac_tralai=true;
                 }
+            }else{
+                $hoso->thaotac_tralai=true;
             }
             // dd(getPhanLoaiTaiKhoanTiepNhan());
 
@@ -369,7 +372,7 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         $inputs['trangthai'] = session('chucnang')['tnhosodenghikhenthuongthidua']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
         //dd($model->where('trangthai','CXKT')->where('madonvi_kt',''));
-        //dd($model);
+        // dd($model);
 
         return view('NghiepVu.ThiDuaKhenThuong.TiepNhanHoSo.DanhSach')
             ->with('model', $model)
@@ -397,6 +400,11 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         $inputs['trangthai'] = 'BTL';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         setTraLaiXD($model, $inputs);
+        
+        //Xóa hết lịch sử xử lý hồ sơ
+        $hoso_xuly=dshosothiduakhenthuong_xuly::where('mahosotdkt', $inputs['mahoso'])->delete();
+        //Xóa hết trạng thái hồ sơ
+        trangthaihoso::where('mahoso', $inputs['mahoso'])->delete();
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi'] . '&maphongtraotd=' . $model->maphongtraotd);
     }
 
@@ -412,6 +420,7 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         $model->trangthai = 'DD';
         $model->trangthai_xd = $model->trangthai;
         $model->thoigian_xd = $thoigian;
+        $model->madonvi_xd = $inputs['madonvi_nhan'];
         $model->save();
         trangthaihoso::create([
             'mahoso' => $inputs['mahoso'],
