@@ -698,7 +698,7 @@ function chkPhanQuyen($machucnang = null, $tenphanquyen = null)
     if (in_array($capdo, ['SSA', 'ssa',])) {
         return true;
     }
-    //dd(session('phanquyen'));
+    // dd(session('phanquyen'));
     return session('phanquyen')[$machucnang][$tenphanquyen] ?? 0;
 }
 
@@ -718,7 +718,6 @@ function getDonVi($capdo, $chucnang = null, $tenquyen = null)
     } else {
         $m_donvi = App\Models\View\viewdiabandonvi::where('madonvi', session('admin')->madonvi)->get();
     }
-
     if ($chucnang != null) {
         $a_tk = App\Models\DanhMuc\dstaikhoan::wherein('madonvi', array_column($m_donvi->toarray(), 'madonvi'))->get('tendangnhap');
         $a_tk_pq = App\Models\DanhMuc\dstaikhoan_phanquyen::where('machucnang', $chucnang)->where('phanquyen', '1')
