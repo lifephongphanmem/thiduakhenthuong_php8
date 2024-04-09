@@ -287,20 +287,24 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         $a_donvilocdulieu = getDiaBanCumKhoi(session('admin')->tendangnhap);
         // dd($a_donvilocdulieu);
         // dd($donvi);
+        
         // $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->get()->toarray(), 'tentaikhoan', 'tendangnhap');
         $a_taikhoanchuyenvien = array_column($m_donvi->toarray(), 'tendonvi', 'madonvi');
-        // dd($a_donvi);
+        // dd($donvi);
         //Lấy đơn vị cấp trên để chuyển hồ sơ
         if ($donvi->capdo == 'T') {
-            $madiaban = $donvi->madiaban;
+            // $madiaban = $donvi->madiaban;
+            $madiaban = $donvi->madonviQL;
         } else {
-            $madiaban = $donvi->madiabanQL;
+            // $madiaban = $donvi->madiabanQL;
+            $madiaban = $donvi->madonviQL;
         }
-        $a_donvi_QL = array_column(dsdonvi::where('madiaban', $madiaban)->get()->toarray(), 'tendonvi', 'madonvi');
+        // dd($madiaban);
+        $a_donvi_QL = array_column(dsdonvi::where('madonvi', $madiaban)->get()->toarray(), 'tendonvi', 'madonvi');
+        // dd($a_donvi_QL);
         // $a_taikhoanchuyenvien = array_merge($a_donvi, $a_donvi_QL);
-        foreach($a_donvi_QL as $key=>$ct)
-        {
-            $a_taikhoanchuyenvien[$key]=$ct;
+        foreach ($a_donvi_QL as $key => $ct) {
+            $a_taikhoanchuyenvien[$key] = $ct;
         }
         // dd($a_taikhoanchuyenvien);
         //Lấy đơn vị thay vì lấy tài khoản
@@ -317,6 +321,14 @@ class tnhosodenghikhenthuongthiduaController extends Controller
             $a_tendangnhap_tn = array_column($hs_xuly->toarray(), 'tendangnhap_tn');
             if (!in_array($inputs['madonvi'], $a_tendangnhap_tn)) {
                 $model->forget($key);
+                continue;
+            }
+            $hs_kdk = $hs_xuly->where('tendangnhap_xl', $inputs['madonvi'])->first();
+            if (isset($hs_kdk)) {
+                if ($hs_kdk->trangthai_xl == 'KDK') {
+                    $model->forget($key);
+                    continue;
+                }
             }
             $hoso->soluongkhenthuong = $m_khencanhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + $m_khentapthe->where('mahosotdkt', $hoso->mahosotdkt)->count();
@@ -333,27 +345,29 @@ class tnhosodenghikhenthuongthiduaController extends Controller
 
             //xử lý ẩn hiện nút trình xét duyệt hồ sơ
             $hs_phongtrao = dsphongtraothidua::where('maphongtraotd', $hoso->maphongtraotd)->first();
-            if (isset($hs_phongtrao)) {
-                if ($donvi->capdo == $hs_phongtrao->phamviapdung) {
-                    $hoso->thaotac_xd = true;
-                }
-            }
+
             //xử lý ẩn hiện nút xử lý hồ sơ
             if (count($hs_xuly) > 0) {
                 $dv_xl = $hs_xuly->first()->tendangnhap_tn;
-                $trangthai_xl=$hs_xuly->first()->trangthai_xl;
+                $trangthai_xl = $hs_xuly->first()->trangthai_xl;
                 // dd($hs_xuly->where('tendangnhap_xl',$inputs['madonvi'])->first());
-                $hoso->madonvi_nhan_hoso = $hs_xuly->where('tendangnhap_xl',$inputs['madonvi'])->first()->tendangnhap_tn??'';
+                $hoso->madonvi_nhan_hoso = $hs_xuly->where('tendangnhap_xl', $inputs['madonvi'])->first()->tendangnhap_tn ?? '';
                 if ($dv_xl == $inputs['madonvi']) {
                     $hoso->thaotac = true;
                 }
                 //xử lý nút trả lại
-                if($dv_xl == $inputs['madonvi']&&$dv_xl == $hoso->madonvi_nhan_h && in_array($trangthai_xl,['DTN','KDK','CD']))
-                {
-                    $hoso->thaotac_tralai=true;
+                if ($dv_xl == $inputs['madonvi'] && $dv_xl == $hoso->madonvi_nhan_h && in_array($trangthai_xl, ['DTN', 'KDK', 'CD'])) {
+                    $hoso->thaotac_tralai = true;
                 }
-            }else{
-                $hoso->thaotac_tralai=true;
+
+                if (isset($hs_phongtrao)) {
+                    if ($donvi->capdo == $hs_phongtrao->phamviapdung) {
+                        $hoso->thaotac_xd = true;
+                        $hoso->thaotac = false;
+                    }
+                }
+            } else {
+                $hoso->thaotac_tralai = true;
             }
             // dd(getPhanLoaiTaiKhoanTiepNhan());
 
@@ -381,7 +395,8 @@ class tnhosodenghikhenthuongthiduaController extends Controller
             ->with('a_capdo', getPhamViApDung())
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
-            ->with('a_donviql', getDonViQuanLyDiaBan($donvi))
+            // ->with('a_donviql', getDonViQuanLyDiaBan($donvi))
+            ->with('a_donviql', $a_donvi_QL)
             ->with('a_phanloaihs', getPhanLoaiHoSo('KHENTHUONG'))
             ->with('a_taikhoanchuyenvien', $a_taikhoanchuyenvien)
             ->with('a_loaihinhkt', array_column($m_loaihinh->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
@@ -400,9 +415,9 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         $inputs['trangthai'] = 'BTL';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         setTraLaiXD($model, $inputs);
-        
+
         //Xóa hết lịch sử xử lý hồ sơ
-        $hoso_xuly=dshosothiduakhenthuong_xuly::where('mahosotdkt', $inputs['mahoso'])->delete();
+        $hoso_xuly = dshosothiduakhenthuong_xuly::where('mahosotdkt', $inputs['mahoso'])->delete();
         //Xóa hết trạng thái hồ sơ
         trangthaihoso::where('mahoso', $inputs['mahoso'])->delete();
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi'] . '&maphongtraotd=' . $model->maphongtraotd);

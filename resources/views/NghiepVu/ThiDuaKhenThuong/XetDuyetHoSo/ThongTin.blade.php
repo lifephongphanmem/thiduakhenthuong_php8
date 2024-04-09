@@ -37,7 +37,8 @@
     <div class="card card-custom wave wave-animate-slow wave-info" style="min-height: 600px">
         <div class="card-header flex-wrap border-1 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label text-uppercase">Danh sách hồ sơ thi đua từ đơn vị cấp dưới</h3>
+                {{-- <h3 class="card-label text-uppercase">Danh sách hồ sơ thi đua từ đơn vị cấp dưới</h3> --}}
+                <h3 class="card-label text-uppercase">Danh sách hồ sơ trình kết quả khen thưởng</h3>
             </div>
             <div class="card-toolbar">
             </div>
