@@ -78,7 +78,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
             case 'X': {
                     //Xã: Đơn vị + Huyện quản lý
                     $model = viewdonvi_dsphongtrao::wherein('madiaban', [$donvi->madiaban, $donvi->madiabanQL])->orderby('tungay')->get();
-                    $a_phamvi=getPhamViPhongTrao('H');
+                    $a_phamvi = getPhamViPhongTrao('H');
                     break;
                 }
             case 'H': {
@@ -86,7 +86,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
                     $model = viewdonvi_dsphongtrao::where('madiaban', $donvi->madiaban)
                         ->orwherein('phamviapdung', ['T', 'TW'])
                         ->orderby('tungay')->get();
-                        $a_phamvi=getPhamViPhongTrao('T');
+                    $a_phamvi = getPhamViPhongTrao('T');
                     break;
                 }
             case 'T': {
@@ -94,7 +94,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
                     $model = viewdonvi_dsphongtrao::where('madonvi', $inputs['madonvi'])
                         ->orwherein('phamviapdung', ['T', 'TW'])
                         ->orderby('tungay')->get();
-                        $a_phamvi=getPhamViPhongTrao('T');
+                    $a_phamvi = getPhamViPhongTrao('T');
                     break;
                 }
         }
@@ -112,11 +112,11 @@ class dshosodenghikhenthuongthiduaController extends Controller
             ->wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
         $a_trangthai = array_unique(array_column($m_hoso->toarray(), 'trangthai'));
 
-        foreach ($model as $key=>$ct) {
+        foreach ($model as $key => $ct) {
             KiemTraPhongTrao($ct, $ngayhientai);
-            if($donvi->capdo == 'X' && $ct->phamviapdung == 'T'){
+            if ($donvi->capdo == 'X' && $ct->phamviapdung == 'T') {
                 $model->forget($key);
-        }
+            }
             $khenthuong = $m_hoso->where('maphongtraotd', $ct->maphongtraotd);
             foreach ($a_trangthai as $trangthai) {
                 $ct->$trangthai = $khenthuong->where('trangthai', $trangthai)->count();
@@ -151,6 +151,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
             return view('errors.noperm')->with('machucnang', 'dshosodenghikhenthuongthidua')->with('tenphanquyen', 'danhsach');
         }
         $inputs = $request->all();
+        // dd($inputs);
         $inputs['trangthai'] = session('chucnang')['dshosodenghikhenthuongthidua']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
         $inputs['url_hs'] = '/HoSoDeNghiKhenThuongThiDua/';
@@ -165,13 +166,31 @@ class dshosodenghikhenthuongthiduaController extends Controller
         KiemTraPhongTrao($m_phongtrao, $ngayhientai);
 
         $donvi = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
+        //Lấy đơn vị quản lý địa bàn
         $model = dshosothiduakhenthuong::where('maphongtraotd', $inputs['maphongtraotd'])
-            ->where('madonvi', $inputs['madonvi'])->get();
+            ->where('madonvi', $inputs['madonvi'])
+            ->get();
 
+
+
+        //   dd($model);  
         $model_hoso = dshosothamgiaphongtraotd::wherein('trangthai', ['CD', 'DD', 'CXKT', 'DKT', 'DXKT'])
             ->where('maphongtraotd', $inputs['maphongtraotd'])
             ->where('madonvi_nhan', $inputs['madonvi'])->get();
+        //trường hợp phạm vi phong trào của tỉnh
+        if($m_phongtrao->phamviapdung == 'T')
+        {
+            $phongtraotinh=dsphongtraothidua::where('maphongtraotd_coso',$inputs['maphongtraotd'])->get();
+            $a_phongtraocoso=array_column($phongtraotinh->toarray(),'maphongtraotd');
+            $m_hoso_coso=dshosothamgiaphongtraotd::wherein('trangthai', ['CD', 'DD', 'CXKT', 'DKT', 'DXKT'])
+            ->wherein('maphongtraotd',$a_phongtraocoso)
+            ->where('madonvi_nhan', $inputs['madonvi'])->get();
+            $colection=collect([$model_hoso,$m_hoso_coso]);
+            // dd($colection);
+            $model_hoso=$colection->collapse();
 
+        }
+        // dd($model_hoso);
         foreach ($model as $key => $hoso) {
             $hoso->soluongkhenthuong = dshosothiduakhenthuong_canhan::where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + dshosothiduakhenthuong_tapthe::where('mahosotdkt', $hoso->mahosotdkt)->count();
@@ -181,8 +200,11 @@ class dshosodenghikhenthuongthiduaController extends Controller
             // $hoso->thoigian_hoso = $hoso->thoigian_xd;
             // $hoso->lydo_hoso = $hoso->lydo_xd;
             // $hoso->madonvi_nhan_hoso = $hoso->madonvi_nhan_xd;
+            //Lấy phạm vi áp dụng của hồ sơ để gửi xét duyệt ở huyện hoặc gửi lên trên 
+            $phamviapdung = dsphongtraothidua::where('maphongtraotd', $hoso->maphongtraotd)->first();
+            $hoso->phamviapdung = $phamviapdung->phamviapdung;
         }
-
+        // dd($model);
         //dd($m_phongtrao);
         //getDonViXetDuyetDiaBan()
         // dd(getDonViXetDuyetDiaBan($donvi));
@@ -195,7 +217,8 @@ class dshosodenghikhenthuongthiduaController extends Controller
             ->with('a_phanloaihs', getPhanLoaiHoSo('KHENTHUONG'))
             ->with('m_phongtrao', $m_phongtrao)
             // ->with('a_donviql', getDonViXetDuyetPhongTrao($donvi, $m_phongtrao))
-            ->with('a_donviql', getDonViXetDuyetDiaBan($donvi))
+            // ->with('a_donviql', getDonViXetDuyetDiaBan($donvi))
+            ->with('a_donviql', getDonViXDDiaBan($donvi))
             ->with('a_donvinganh', getDonViQuanLyNganh($donvi))
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
             ->with('pageTitle', 'Danh sách hồ sơ đăng ký thi đua');
@@ -206,7 +229,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
         if (!chkPhanQuyen('dshosodenghikhenthuongthidua', 'thaydoi')) {
             return view('errors.noperm')->with('machucnang', 'dshosodenghikhenthuongthidua')->with('tenphanquyen', 'thaydoi');
         }
-        $inputs = $request->all();        
+        $inputs = $request->all();
         $m_phongtrao = dsphongtraothidua::where('maphongtraotd', $inputs['maphongtraotd'])->first();
 
         //Lấy danh sách hồ sơ theo phong trào; theo địa bàn,; theo đơn vi nhận
@@ -493,56 +516,56 @@ class dshosodenghikhenthuongthiduaController extends Controller
         $phamviapdung = dsphongtraothidua::where('maphongtraotd', $model->maphongtraotd)->first()->phamviapdung ?? 'PHAMVI';
         $donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi_nhan'])->first();
         $capdo = $donvi->capdo ?? 'CAPDO';
-        switch ($phamviapdung) {
-            case 'X': {
-                    if ($phamviapdung != $capdo) {
-                        return view('errors.404')
-                            ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
-                            ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
-                    }
-                    break;
-                }
-            case 'H': {
-                    if (!in_array($capdo, ['X', 'H'])) {
-                        return view('errors.404')
-                            ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
-                            ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
-                    }
-                    break;
-                }
-            case 'SBN': {
-                    if (!in_array($capdo, ['T'])) {
-                        return view('errors.404')
-                            ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . ' </b>không thể nhận đề nghị xét khen thưởng.')
-                            ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
-                    }
-                    break;
-                }
-            case 'T': {
-                    if (!in_array($capdo, ['T'])) {
-                        return view('errors.404')
-                            ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
-                            ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
-                    }
-                    break;
-                }
-            default: {
-                    // return view('errors.404')
-                    //     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị không thể xét khen thưởng.')
-                    //     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
-                }
-        }
-        //dd($phamviapdung);
+        // switch ($phamviapdung) {
+        //     case 'X': {
+        //             if ($phamviapdung != $capdo) {
+        //                 return view('errors.404')
+        //                     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
+        //                     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
+        //             }
+        //             break;
+        //         }
+        //     case 'H': {
+        //             if (!in_array($capdo, ['X', 'H'])) {
+        //                 return view('errors.404')
+        //                     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
+        //                     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
+        //             }
+        //             break;
+        //         }
+        //     case 'SBN': {
+        //             if (!in_array($capdo, ['T'])) {
+        //                 return view('errors.404')
+        //                     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . ' </b>không thể nhận đề nghị xét khen thưởng.')
+        //                     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
+        //             }
+        //             break;
+        //         }
+        //     case 'T': {
+        //             if (!in_array($capdo, ['T'])) {
+        //                 return view('errors.404')
+        //                     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
+        //                     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
+        //             }
+        //             break;
+        //         }
+        //     default: {
+        //             // return view('errors.404')
+        //             //     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị không thể xét khen thưởng.')
+        //             //     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
+        //         }
+        // }
+        // dd($phamviapdung);
+        // dd(session('chucnang')['dshosodenghikhenthuongthidua']['trangthai']);
         $inputs['trangthai'] = getTrangThaiChuyenHS(session('chucnang')['dshosodenghikhenthuongthidua']['trangthai'] ?? 'CC');
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         $inputs['lydo'] = ''; //Xóa lý do trả lại
-        if($model->tendangnhapxl){
-            setChuyenDV($model, $inputs);
-        }else{
-            setChuyenDV_Huyen($model,$inputs);
-            dd(2);
-        }
         // setChuyenDV($model, $inputs);
+        setChuyenDV_Huyen($model, $inputs);
+        $inputs['tendangnhap_xl']=$model->madonvi;
+        $inputs['tendangnhap_tn']=$inputs['madonvi_nhan'];
+        $inputs['noidungxuly_xl']='';
+        setXuLyHoSo($model, $inputs, 'dshosothiduakhenthuong');
 
         return redirect(static::$url . 'DanhSach?madonvi=' . $model->madonvi . '&maphongtraotd=' . $model->maphongtraotd);
     }
@@ -563,7 +586,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
 
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
-        $model->lydo = $model->lydo_xd;
+        $model->lydo = $model->lydo;
         die(json_encode($model));
     }
 

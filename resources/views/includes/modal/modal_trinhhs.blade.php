@@ -14,12 +14,12 @@
             <div class="modal-body">
                 <p style="color: #0000FF">Hồ sơ trình xét duyệt kết quả khen thưởng. Bạn cần liên hệ đơn vị tiếp
                     nhận để chỉnh sửa hồ sơ nếu cần!</p>
-                {{-- <div class="form-group row">
+                <div class="form-group row">
                     <div class="col-md-12">
                         <label class="control-label">Cơ quan tiếp nhận<span class="require">*</span></label>
                         {!! Form::select('madonvi_nhan', $a_donviql, null, ['class' => 'form-control select2_modal']) !!}
                     </div>
-                </div> --}}
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>

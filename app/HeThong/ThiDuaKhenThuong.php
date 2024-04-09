@@ -362,7 +362,7 @@ function getDonViXetDuyetDiaBan($donvi, $kieudulieu = 'ARRAY')
     //Lấy đơn vị quản lý địa bàn và đơn vi
     $m_diaban = \App\Models\DanhMuc\dsdiaban::where('madiaban', $donvi->madiaban)->first();
     //$a_donvi = [$m_diaban->madonviKT, $donvi->madonvi]; 2023.05.25 bỏ chức năng tự gửi hồ sơ đề nghị lên đơn mình do đã tách hồ sơ khen thưởng tại đơn vị
-    $a_donvi = [$m_diaban->madonviKT,$m_diaban->madonviQL];
+    $a_donvi = [$m_diaban->madonviKT];
     $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
 
     if ($m_diabanQL != null)
@@ -393,10 +393,12 @@ function getDonViXDDiaBan($donvi, $kieudulieu = 'ARRAY')
         //Lấy đơn vị quản lý địa bàn và đơn vi
         $m_diaban = \App\Models\DanhMuc\dsdiaban::where('madiaban', $donvi->madiaban)->first();
         //$a_donvi = [$m_diaban->madonviKT, $donvi->madonvi]; 2023.05.25 bỏ chức năng tự gửi hồ sơ đề nghị lên đơn mình do đã tách hồ sơ khen thưởng tại đơn vị
-        $a_donvi = [$m_diaban->madonviKT];
-        $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
-        if ($m_diabanQL != null)
-            $a_donvi = array_merge($a_donvi, [$m_diabanQL->madonviQL]);
+        $a_donvi = [$m_diaban->madonviKT,$m_diaban->madonviQL];
+        // dd($a_donvi);
+        // $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
+        // dd($m_diaban);
+        // if ($m_diabanQL != null)
+        //     $a_donvi = array_merge($a_donvi, [$m_diabanQL->madonviQL]);
     
         //2023.05.25 thêm điều kiện đơn vị không gửi đc cho chính mính (kể cả đơn vị quản lý ở cấp H)
         // if ($donvi->capdo != 'T') {
@@ -696,7 +698,7 @@ function chkPhanQuyen($machucnang = null, $tenphanquyen = null)
     if (in_array($capdo, ['SSA', 'ssa',])) {
         return true;
     }
-    //dd(session('phanquyen'));
+    // dd(session('phanquyen'));
     return session('phanquyen')[$machucnang][$tenphanquyen] ?? 0;
 }
 
@@ -716,7 +718,6 @@ function getDonVi($capdo, $chucnang = null, $tenquyen = null)
     } else {
         $m_donvi = App\Models\View\viewdiabandonvi::where('madonvi', session('admin')->madonvi)->get();
     }
-
     if ($chucnang != null) {
         $a_tk = App\Models\DanhMuc\dstaikhoan::wherein('madonvi', array_column($m_donvi->toarray(), 'madonvi'))->get('tendangnhap');
         $a_tk_pq = App\Models\DanhMuc\dstaikhoan_phanquyen::where('machucnang', $chucnang)->where('phanquyen', '1')
@@ -1391,16 +1392,18 @@ function setChuyenDV(&$model, &$inputs)
 }
 
 //Chuyển hồ sơ trong Huyện
-function setChuyenDV_Huyen($model, $inputs)
+function setChuyenDV_Huyen($model, $inputs,$phamviapdung = null)
 {
-        dd($inputs);
     $model->trangthai = $inputs['trangthai'];
     $model->thoigian = $inputs['thoigian'];
-    $model->lydo = $inputs['lydo'];
-    $model->madonvi_nhan = $inputs['madonvi_nhan'];
-
-
-    // $model->trangthai_xd = $model->trangthai;
+    // $model->lydo = $inputs['lydo'];
+    // $model->madonvi_nhan = $inputs['madonvi_nhan'];
+    $model->lydo_h = $inputs['lydo'];
+    $model->madonvi_nhan_h = $inputs['madonvi_nhan'];
+    if($phamviapdung == 'H')
+    {
+        $model->trangthai_xd='CD';
+    }
     // $model->thoigian_xd = $model->thoigian;
     // $model->madonvi_xd = $model->madonvi_nhan;
     //dd($model);
