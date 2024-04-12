@@ -380,7 +380,7 @@ class xdhosodenghikhenthuongthiduaController extends Controller
             $hoso->lydo_hoso = $hoso->lydo_xd;
             $hoso->madonvi_nhan_hoso = $hoso->madonvi_nhan_xd;
         }
-
+        // dd(getDonViPheDuyetPhongTrao($donvi, $m_phongtrao));
         return view('NghiepVu.ThiDuaKhenThuong.XetDuyetHoSo.DanhSach')
             ->with('inputs', $inputs)
             ->with('model', $model)
@@ -433,8 +433,8 @@ class xdhosodenghikhenthuongthiduaController extends Controller
             return view('errors.noperm')->with('machucnang', 'xdhosodenghikhenthuongthidua')->with('tenphanquyen', 'hoanthanh');
         }
         $inputs = $request->all();
-        $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
-        // $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
+        // $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
+        $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
         //gán trạng thái hồ sơ để theo dõi
         $inputs['trangthai'] = 'BTL';
         $inputs['thoigian'] = date('Y-m-d H:i:s');

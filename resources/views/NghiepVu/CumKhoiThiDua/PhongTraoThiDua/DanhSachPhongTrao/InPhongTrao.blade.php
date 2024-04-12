@@ -4,10 +4,12 @@
     <table id="data_header" class="header" width="96%" border="0" cellspacing="0" cellpadding="8"
         style="margin:0 auto 25px; text-align: center;">
         <tr>
-            <td style="text-align: left;width: 60%">
+            {{-- <td style="text-align: left;width: 60%">
                 <b>{{ $m_donvi->tendvcqhienthi }}</b>
+            </td> --}}
+            <td style="text-align: left;width: 60%">
+                <b>{{ $cumkhoi->tencumkhoi }}</b>
             </td>
-
             <td style="text-align: center; font-weight: bold">
             </td>
         </tr>
@@ -32,11 +34,11 @@
             <td class="text-left" width="15%">Tên đơn vị: {{ $m_donvi->tendonvi }}</td>
         </tr>
         <tr>
-            <td>Hình thức tổ chức: {{ $a_phanloai[$model->phanloai] ?? '' }}</td>
+            <td>Hình thức tổ chức: {{ $a_phanloai[$model->phuongthuctochuc] ?? '' }}</td>
         </tr>
-        <tr>
+        {{-- <tr>
             <td>Phạm vi phát động: {{ $a_phamvi[$model->phamviapdung] ?? '' }}</td>
-        </tr>
+        </tr> --}}
         <tr>
             <td>Số quyết định: {{ $model->soqd }} ngày: {{ getDayVn($model->ngayqd) }} </td>
         </tr>

@@ -79,8 +79,8 @@
             </button>
         @endif
 
-        {{-- @if (in_array($tt->trangthai_hoso, ['DTN', 'CD', 'BTLXD', 'KDK'])) --}}
-        @if ($tt->thaotac_tralai)
+        @if (in_array($tt->trangthai_hoso, ['DTN', 'CD', 'BTLXD', 'KDK']))
+        {{-- @if ($tt->thaotac_tralai) --}}
             <button title="Huỷ tiếp nhận và trả lại hồ sơ" type="button"
                 onclick="confirmTraLai('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}', '{{ $inputs['url_xd'] . 'TraLai' }}')"
                 class="btn btn-sm btn-clean btn-icon" data-target="#modal-tralai" data-toggle="modal">
@@ -88,15 +88,15 @@
             </button>
         @endif
     @endif
-    @if (in_array($tt->trangthai_hoso, ['DTN', 'BTLXD', 'BTL']) && $tt->thaotac &&
+    {{-- @if (in_array($tt->trangthai_hoso, ['DTN', 'BTLXD', 'BTL']) && $tt->thaotac &&
             chkPhanQuyen($inputs['phanquyen'], 'xuly'))
         <button title="Xử lý hồ sơ" type="button"
             onclick="confirmXuLyHoSo_DiaBan('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}','{{$tt->dieukien_hs == true?1:0}}','{{$tt->trangthai_xl}}', '{{ $inputs['url_xd'] . 'XuLyHoSo' }}','{{ $tt->tendangnhap_xl }}')"
             class="btn btn-sm btn-clean btn-icon" data-target="#modal-xulyhoso-diaban" data-toggle="modal">
             <i class="icon-lg la flaticon-list text-success"></i>
         </button>
-    @endif
-    @if (in_array($tt->trangthai_hoso, ['DTN', 'BTLXD']) && chkPhanQuyen($inputs['phanquyen'], 'hoanthanh')&& $tt->thaotac_xd)
+    @endif --}}
+    @if (in_array($tt->trangthai_hoso, ['DTN', 'BTLXD']) && chkPhanQuyen($inputs['phanquyen'], 'hoanthanh'))
         <button title="Chuyển xét duyệt khen thưởng" type="button"
             onclick="confirmTrinhHS('{{ $tt->mahosotdkt }}','{{ $inputs['url_xd'] . 'ChuyenHoSo' }}','{{ $inputs['madonvi'] }}')"
             class="btn btn-sm btn-clean btn-icon" {{ $tt->soluongkhenthuong == 0 ? 'disabled' : '' }}

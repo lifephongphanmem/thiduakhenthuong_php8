@@ -456,8 +456,9 @@ function getDonViPheDuyetPhongTrao($donvi, $phongtrao, $kieudulieu = 'ARRAY')
         $a_donvi = [$donvi->madonvi];
     } else {
         $m_diaban = \App\Models\DanhMuc\dsdiaban::where('madiaban', $donvi->madiaban)->first();
-        $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
-        $a_donvi = [$m_diabanQL->madonviQL ?? ''];
+        // $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
+        // $a_donvi = [$m_diabanQL->madonviQL ?? ''];
+        $a_donvi = [$m_diaban->madonviQL ?? ''];
     }
 
     $model = \App\Models\DanhMuc\dsdonvi::wherein('madonvi', $a_donvi)->get();

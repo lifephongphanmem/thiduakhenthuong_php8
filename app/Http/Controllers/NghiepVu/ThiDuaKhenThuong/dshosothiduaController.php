@@ -184,10 +184,10 @@ class dshosothiduaController extends Controller
         $m_hoso = dshosothamgiaphongtraotd::wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
 
         foreach ($model as $key=>$DangKy) {
-            //Lọc phạm vi áp dụng phong trào để lấy theo đơn vị huyện xã
-            if($donvi->capdo == 'X' && $DangKy->phamviapdung == 'T'){
-                    $model->forget($key);
-            }
+            // //Lọc phạm vi áp dụng phong trào để lấy theo đơn vị huyện xã
+            // if($donvi->capdo == 'X' && $DangKy->phamviapdung == 'T'){
+            //         $model->forget($key);
+            // }
             KiemTraPhongTrao($DangKy, $ngayhientai);
             $HoSo = $m_hoso->where('maphongtraotd', $DangKy->maphongtraotd)->wherein('trangthai', ['CD', 'DD', 'CNXKT', 'DXKT', 'CXKT', 'DKT']);
             $DangKy->sohoso = $HoSo == null ? 0 : $HoSo->count();
@@ -427,16 +427,15 @@ class dshosothiduaController extends Controller
         $inputs = $request->all();
         $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
         $m_donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi_nhan'])->first();
-       
-        $inputs['trangthai'] = getTrangThaiChuyenHS(session('chucnang')['dshosothidua']['trangthai'] ?? 'CC'); 
+        $inputs['trangthai'] = getTrangThaiChuyenHS(session('chucnang')['dshosothidua']['trangthai'] ?? 'CC');
+        // dd($inputs['trangthai']);
         //Thiết lập lại do chỉ có 2 bước trong quy trình
-        $inputs['trangthai'] = $inputs['trangthai'] != 'CC' ? 'DD' : $inputs['trangthai'];
+        // $inputs['trangthai'] = $inputs['trangthai'] != 'CC' ? 'DD' : $inputs['trangthai'];
         // dd($inputs['trangthai']);
         $model->trangthai = $inputs['trangthai'];
         $model->madonvi_nhan = $inputs['madonvi_nhan'];
         $model->thoigian = date('Y-m-d H:i:s');
         setChuyenHoSo($m_donvi->capdo, $model, ['madonvi' => $inputs['madonvi_nhan'], 'thoigian' => $model->thoigian, 'trangthai' => $model->trangthai]);
-        //dd($model);
         $model->save();
 
         $trangthai = new trangthaihoso();

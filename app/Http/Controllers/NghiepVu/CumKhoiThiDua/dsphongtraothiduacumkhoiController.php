@@ -48,11 +48,16 @@ class dsphongtraothiduacumkhoiController extends Controller
         $inputs['url'] = static::$url;
         //2023.11.28 Chỉ các đơn vị trưởng cụm khối mới thêm đc phong trào
         
-        $m_donvi = getDonViTruongCumKhoi('MODEL');       
+        $model_donvi = getDonViTruongCumKhoi('MODEL');
+        // $m_donvi=dsdonvi::wherein('madonvi',array_column($model_donvi->toarray(),'madonvi'))->get();
+        $a_madonvi=array_column($model_donvi->toarray(),'madonvi'); 
+        $m_donvi = getDonVi(session('admin')->capdo, 'dsphongtraothiduacumkhoi');
+        // $m_donvi=$m_donvi->wherein('madonvi',$a_madonvi);      
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
-       
+    //    dd($m_diaban);
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
+        // dd($inputs['madonvi']);
         $inputs['phanloai'] = $inputs['phanloai'] ?? 'ALL';
         $inputs['phamviapdung'] = $inputs['phamviapdung'] ?? 'ALL';
         $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
@@ -127,10 +132,12 @@ class dsphongtraothiduacumkhoiController extends Controller
         $model->tendonvi = getThongTinDonVi($model->madonvi, 'tendonvi');
         $model_tieuchi = dsphongtraothiduacumkhoi_tieuchuan::where('maphongtraotd', $model->maphongtraotd)->orderby('phanloaidoituong')->get();
         $m_donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
+        $cumkhoi=dscumkhoi::where('macumkhoi',$model->macumkhoi)->first();
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.DanhSachPhongTrao.InPhongTrao')
             ->with('model', $model)
             ->with('model_tieuchi', $model_tieuchi)
             ->with('m_donvi', $m_donvi)
+            ->with('cumkhoi', $cumkhoi)
             ->with('a_phamvi', getPhamViPhongTrao('T'))
             ->with('a_phanloai', getPhanLoaiPhongTraoThiDua(true))
             ->with('a_phanloaidt', getPhanLoaiTDKT())
@@ -145,6 +152,7 @@ class dsphongtraothiduacumkhoiController extends Controller
             return view('errors.noperm')->with('machucnang', 'dsphongtraothiduacumkhoi');
         }
         $inputs = $request->all();
+        // dd($inputs);
         if (isset($inputs['qdkt'])) {
             $filedk = $request->file('qdkt');
             $inputs['qdkt'] = $inputs['maphongtraotd'] . '_qd.' . $filedk->getClientOriginalExtension();
@@ -422,5 +430,18 @@ class dsphongtraothiduacumkhoiController extends Controller
         $model->save();
 
         return redirect('/CumKhoiThiDua/PhongTraoThiDua/ThongTin?madonvi=' . $model->madonvi);
+    }
+    public function Xoa(Request $request)
+    {
+        if (!chkPhanQuyen('dsphongtraothiduacumkhoi', 'thaydoi')) {
+            return view('errors.noperm')->with('machucnang', 'dsphongtraothiduacumkhoi')->with('tenphanquyen', 'thaydoi');
+        }
+        $id=$request->id;
+        $model=dsphongtraothiduacumkhoi::findOrFail($id);
+        if(isset($model)){
+            $model->delete();
+        }
+
+        return redirect('/CumKhoiThiDua/PhongTraoThiDua/ThongTin');
     }
 }

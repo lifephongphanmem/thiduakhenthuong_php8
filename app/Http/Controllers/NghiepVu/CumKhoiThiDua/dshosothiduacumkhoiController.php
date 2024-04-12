@@ -95,15 +95,17 @@ class dshosothiduacumkhoiController extends Controller
         //$inputs['url'] = static::$url;
         $inputs['url_hs'] = static::$url;
         $inputs['url_qd'] = '/CumKhoiThiDua/PheDuyetThiDua/';
-        $m_donvi = getDonViCK(session('admin')->capdo);
-        // $m_donvi = getDonVi(session('admin')->capdo, 'dshosothiduacumkhoi');
+        // $m_donvi = getDonViCK(session('admin')->capdo);
+        $m_donvi = getDonVi(session('admin')->capdo, 'dshosothiduacumkhoi');
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         $inputs['phamviapdung'] = $inputs['phamviapdung'] ?? 'ALL';
         $inputs['phanloai'] = $inputs['phanloai'] ?? 'ALL';
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
-
+        $m_cumkhoi_chitiet = dscumkhoi_chitiet::where('madonvi', $inputs['madonvi'])->get();
+        $model_cumkhoi = dscumkhoi::wherein('macumkhoi', array_column($m_cumkhoi_chitiet->toarray(), 'macumkhoi'))->get();
+        $inputs['macumkhoi']=$inputs['macumkhoi']??$model_cumkhoi->first()->macumkhoi;
         //lấy hết phong trào cấp tỉnh
         $model = view_dsphongtrao_cumkhoi::where('macumkhoi',$inputs['macumkhoi'])->orderby('tungay')->get();
 
@@ -136,9 +138,16 @@ class dshosothiduacumkhoiController extends Controller
             $DangKy->mahoso = $hoso == null ? -1 : $hoso->mahoso;
             $DangKy->mahosotdkt = $hoso->mahosotdkt ?? '-1';
         }
+        // dd($model);
         $inputs['trangthai'] = session('chucnang')['dshosothiduacumkhoi']['trangthai'] ?? 'CC';
         $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
         $m_truongcum = view_dstruongcumkhoi::where('macumkhoi',$inputs['macumkhoi'])->get();
+        $a_donviql=array();
+        if(count($m_truongcum)>0){
+            $a_truongcum=array_column($m_cumkhoi->where('phanloai','TRUONGKHOI')->toarray(),'madonvi');
+            $a_donviql=array_column(dsdonvi::wherein('madonvi',$a_truongcum)->get()->toarray(),'tendonvi','madonvi');
+        }
+        
         if($m_cumkhoi->count() == 0){
             return view('errors.404')->with('message', 'Cụm, khối thi đua chưa có trưởng cụm, khối. Bạn hãy liên hệ đơn vị quản lý để thêm trưởng cụm khối')
             ->with('url', '/CumKhoiThiDua/ThamGiaThiDua/ThongTin?madonvi='.$inputs['madonvi']);
@@ -150,7 +159,8 @@ class dshosothiduacumkhoiController extends Controller
             ->with('m_donvi', $m_donvi)
             ->with('m_cumkhoi', $m_cumkhoi)
             ->with('m_diaban', $m_diaban)
-            ->with('a_donviql', array_column($m_truongcum->toarray(),'tendonvi', 'madonvi'))
+            // ->with('a_donviql', array_column($m_truongcum->toarray(),'tendonvi', 'madonvi'))
+            ->with('a_donviql', $a_donviql)
             ->with('a_phamvi', getPhamViPhongTrao())
             ->with('a_phanloai', getPhanLoaiPhongTraoThiDua(true))
             ->with('a_trangthaihoso', getTrangThaiTDKT())
