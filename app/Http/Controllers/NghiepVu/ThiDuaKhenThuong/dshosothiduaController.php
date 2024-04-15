@@ -450,6 +450,45 @@ class dshosothiduaController extends Controller
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }
 
+    public function NhanHoSo(Request $request)
+    {
+        if (!chkPhanQuyen('xdhosodenghikhenthuongthidua', 'hoanthanh')) {
+            return view('errors.noperm')->with('machucnang', 'xdhosodenghikhenthuongthidua')->with('tenphanquyen', 'hoanthanh');
+        }
+
+        $inputs = $request->all();
+        $thoigian = date('Y-m-d H:i:s');
+        $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
+        //gán lại trạng thái hồ sơ để theo dõi
+        $model->trangthai = 'DD';
+        $model->trangthai_h = 'DD';
+        // $model->thoigian_xd = $thoigian;
+        $model->save();
+        trangthaihoso::create([
+            'mahoso' => $inputs['mahoso'],
+            'phanloai' => 'dshosothiduakhenthuong',
+            'trangthai' => $model->trangthai,
+            'thoigian' => $thoigian,
+            'madonvi' => $model->madonvi_nhan,
+            'thongtin' => 'Tiếp nhận hồ sơ đề nghị khen thưởng.',
+        ]);
+        return redirect('/HoSoDeNghiKhenThuongThiDua/DSHoSoThamGia?madonvi=' . $model->madonvi_nhan . '&maphongtraotd=' . $model->maphongtraotd);
+    }
+    public function TraLai(Request $request)
+    {
+        if (!chkPhanQuyen('xdhosodenghikhenthuongthidua', 'hoanthanh')) {
+            return view('errors.noperm')->with('machucnang', 'xdhosodenghikhenthuongthidua')->with('tenphanquyen', 'hoanthanh');
+        }
+        $inputs = $request->all();
+        $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
+        //gán trạng thái hồ sơ để theo dõi
+        $inputs['trangthai'] = 'BTL';
+        $inputs['thoigian'] = date('Y-m-d H:i:s');
+        setTraLaiXD($model, $inputs);
+        return redirect('/HoSoDeNghiKhenThuongThiDua/DSHoSoThamGia?madonvi=' . $model->madonvi . '&maphongtraotd=' . $model->maphongtraotd);
+    }
+
+
     public function LayTieuChuan(Request $request)
     {
         $result = array(

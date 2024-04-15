@@ -469,6 +469,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
             ->with('pageTitle', 'Danh sách hồ sơ đăng ký thi đua');
     }
 
+
     public function XemDanhSach(Request $request)
     {
         $inputs = $request->all();

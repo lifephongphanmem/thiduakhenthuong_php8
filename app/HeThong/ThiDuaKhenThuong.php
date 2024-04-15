@@ -1140,7 +1140,7 @@ function setTraLaiXD(&$model, &$inputs)
     
     //Xét có tồn tại các trường trong db không để cập nhật
     $a_keys=array_keys($model->toarray());
-    if(in_array('trangthaixd',$a_keys))
+    if(in_array('trangthai_xd',$a_keys))
     $model->trangthai_xd = $model->trangthai;
     if(in_array('thoigian_xd',$a_keys))
     $model->thoigian_xd = $model->thoigian;

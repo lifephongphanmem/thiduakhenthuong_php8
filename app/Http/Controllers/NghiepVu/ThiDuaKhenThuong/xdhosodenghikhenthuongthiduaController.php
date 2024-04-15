@@ -368,7 +368,8 @@ class xdhosodenghikhenthuongthiduaController extends Controller
         KiemTraPhongTrao($m_phongtrao, $ngayhientai);
         $donvi = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
         $model = dshosothiduakhenthuong::where('maphongtraotd', $inputs['maphongtraotd'])
-            ->where('madonvi_xd', $inputs['madonvi'])->get();
+            ->where('madonvi_xd', $inputs['madonvi'])
+            ->wherenotin('trangthai_xd', ['BTLXD'])->get();
 
         foreach ($model as $key => $hoso) {
             $hoso->soluongkhenthuong = dshosothiduakhenthuong_canhan::where('mahosotdkt', $hoso->mahosotdkt)->count()
@@ -433,8 +434,7 @@ class xdhosodenghikhenthuongthiduaController extends Controller
             return view('errors.noperm')->with('machucnang', 'xdhosodenghikhenthuongthidua')->with('tenphanquyen', 'hoanthanh');
         }
         $inputs = $request->all();
-        // $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
-        $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
+        $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         //gán trạng thái hồ sơ để theo dõi
         $inputs['trangthai'] = 'BTL';
         $inputs['thoigian'] = date('Y-m-d H:i:s');

@@ -149,7 +149,8 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
         $m_phongtrao = dsphongtraothidua::where('maphongtraotd', $inputs['maphongtraotd'])->first();
         $model = dshosothiduakhenthuong::where('madonvi_xd', $inputs['madonvi'])
-            ->where('maphongtraotd', $inputs['maphongtraotd']);
+            ->where('maphongtraotd', $inputs['maphongtraotd'])
+            ->wherenotin('trangthai', ['BTL']);
         //->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC',])
         //->where('maloaihinhkt', $inputs['maloaihinhkt']); //->orderby('ngayhoso')->get();
 

@@ -90,14 +90,15 @@
                                     @if ($tt->nhanhoso == 'DANGNHAN')
                                         @if (in_array($tt->trangthai_hoso, ['CD', 'CNXKT', 'CC']))
                                             <button title="Nhận hồ sơ đăng ký" type="button"
-                                                onclick="confirmNhan('{{ $tt->mahosothamgiapt }}','/XetDuyetHoSoThiDua/NhanHoSo','{{ $inputs['madonvi'] }}')"
+                                                {{-- onclick="confirmNhan('{{ $tt->mahosothamgiapt }}','/XetDuyetHoSoThiDua/NhanHoSo','{{ $inputs['madonvi'] }}')" --}}
+                                                onclick="confirmNhan('{{ $tt->mahosothamgiapt }}','/HoSoThiDua/NhanHoSo','{{ $inputs['madonvi'] }}')"
                                                 class="btn btn-sm btn-clean btn-icon" data-target="#nhan-modal-confirm"
                                                 data-toggle="modal">
                                                 <i class="icon-lg flaticon-interface-5 text-success"></i>
                                             </button>
                                         @endif
                                         <button title="Trả lại hồ sơ" type="button"
-                                            onclick="confirmTraLai('{{ $tt->mahosothamgiapt }}', '{{ $inputs['madonvi'] }}', '/XetDuyetHoSoThiDua/TraLai')"
+                                            onclick="confirmTraLai('{{ $tt->mahosothamgiapt }}', '{{ $inputs['madonvi'] }}', '/HoSoThiDua/TraLai')"
                                             class="btn btn-sm btn-clean btn-icon" data-target="#modal-tralai"
                                             data-toggle="modal">
                                             <i class="icon-lg la la-reply text-danger"></i>
