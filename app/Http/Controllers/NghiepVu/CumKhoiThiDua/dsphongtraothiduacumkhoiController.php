@@ -54,16 +54,22 @@ class dsphongtraothiduacumkhoiController extends Controller
         $m_donvi = getDonVi(session('admin')->capdo, 'dsphongtraothiduacumkhoi');
         // $m_donvi=$m_donvi->wherein('madonvi',$a_madonvi);      
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
+        
     //    dd($m_diaban);
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
-        $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
+        // $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         // dd($inputs['madonvi']);
         $inputs['phanloai'] = $inputs['phanloai'] ?? 'ALL';
         $inputs['phamviapdung'] = $inputs['phamviapdung'] ?? 'ALL';
-        $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
+        // $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
+        // dd($m_cumkhoi);
+        $m_cumkhoi = view_dscumkhoi::all();
+        // $m_donvi=$m_donvi->wherein('madonvi',array_column($m_cumkhoi->toarray(),'madonvi'));
+        // dd($m_donvi);
+        $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
+        // dd($m_cumkhoi);
         $inputs['macumkhoi'] = $inputs['macumkhoi'] ?? $m_cumkhoi->first()->macumkhoi;
         $inputs['phanloaihoso'] = 'dshosotdktcumkhoi';
-
         $model = dsphongtraothiduacumkhoi::where('madonvi', $inputs['madonvi']);
         if ($inputs['nam'] != 'ALL')
             $model = $model->whereYear('ngayqd', $inputs['nam']);
@@ -74,7 +80,7 @@ class dsphongtraothiduacumkhoiController extends Controller
             ->with('model', $model->orderby('ngayqd')->get())
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
-            ->with('m_cumkhoi', $m_cumkhoi)
+            ->with('m_cumkhoi', $m_cumkhoi->unique('macumkhoi'))
             ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('a_phamvi', getPhamViPhongTrao($m_donvi->where('madonvi', $inputs['madonvi'])->first()->capdo ?? 'T'))
             ->with('a_phanloai', getPhanLoaiPhongTraoThiDua(true))
