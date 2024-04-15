@@ -45,6 +45,8 @@ Route::group(['prefix' => 'HoSoThiDua'], function () {
     Route::get('LayTieuChuan', [dshosothiduaController::class, 'LayTieuChuan']);
     Route::get('LuuTieuChuan', [dshosothiduaController::class, 'LuuTieuChuan']);
     Route::post('ChuyenHoSo', [dshosothiduaController::class, 'ChuyenHoSo']);
+    Route::post('TraLai', [dshosothiduaController::class, 'TraLai']);
+    Route::post('NhanHoSo', [dshosothiduaController::class, 'NhanHoSo']);
     Route::post('delete', [dshosothiduaController::class, 'delete']);
     Route::get('LayLyDo', [dshosothiduaController::class, 'LayLyDo']);
     Route::get('XoaDoiTuong', [dshosothiduaController::class, 'XoaDoiTuong']);

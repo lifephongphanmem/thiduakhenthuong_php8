@@ -96,6 +96,7 @@
                                 @if (chkPhanQuyen('dshosothiduacumkhoi', 'phanquyen'))
                                     <li class="menu-item" aria-haspopup="true">
                                         <a href="{{ url('/CumKhoiThiDua/ThamGiaThiDua/ThongTin') }}" class="menu-link">
+                                            {{-- <a href="{{ url('/CumKhoiThiDua/ThamGiaThiDua/DanhSach') }}" class="menu-link"> --}}
                                             <i class="menu-bullet menu-bullet-dot">
                                                 <span></span>
                                             </i>

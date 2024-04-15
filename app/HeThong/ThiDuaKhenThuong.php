@@ -456,8 +456,9 @@ function getDonViPheDuyetPhongTrao($donvi, $phongtrao, $kieudulieu = 'ARRAY')
         $a_donvi = [$donvi->madonvi];
     } else {
         $m_diaban = \App\Models\DanhMuc\dsdiaban::where('madiaban', $donvi->madiaban)->first();
-        $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
-        $a_donvi = [$m_diabanQL->madonviQL ?? ''];
+        // $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
+        // $a_donvi = [$m_diabanQL->madonviQL ?? ''];
+        $a_donvi = [$m_diaban->madonviQL ?? ''];
     }
 
     $model = \App\Models\DanhMuc\dsdonvi::wherein('madonvi', $a_donvi)->get();
@@ -1139,7 +1140,7 @@ function setTraLaiXD(&$model, &$inputs)
     
     //Xét có tồn tại các trường trong db không để cập nhật
     $a_keys=array_keys($model->toarray());
-    if(in_array('trangthaixd',$a_keys))
+    if(in_array('trangthai_xd',$a_keys))
     $model->trangthai_xd = $model->trangthai;
     if(in_array('thoigian_xd',$a_keys))
     $model->thoigian_xd = $model->thoigian;

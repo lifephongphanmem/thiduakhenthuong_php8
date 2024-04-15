@@ -184,8 +184,9 @@
                 <form action="{{ '/VanPhongHoTro/Xoa' }}" method="POST" id="frm_delete">
                     @csrf
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                         <h4 class="modal-title">Đồng ý xóa?</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+
                     </div>
                     <input type="hidden" name="maso" id="maso">
                     <div class="modal-footer">

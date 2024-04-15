@@ -184,10 +184,10 @@ class dshosothiduaController extends Controller
         $m_hoso = dshosothamgiaphongtraotd::wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
 
         foreach ($model as $key=>$DangKy) {
-            //Lọc phạm vi áp dụng phong trào để lấy theo đơn vị huyện xã
-            if($donvi->capdo == 'X' && $DangKy->phamviapdung == 'T'){
-                    $model->forget($key);
-            }
+            // //Lọc phạm vi áp dụng phong trào để lấy theo đơn vị huyện xã
+            // if($donvi->capdo == 'X' && $DangKy->phamviapdung == 'T'){
+            //         $model->forget($key);
+            // }
             KiemTraPhongTrao($DangKy, $ngayhientai);
             $HoSo = $m_hoso->where('maphongtraotd', $DangKy->maphongtraotd)->wherein('trangthai', ['CD', 'DD', 'CNXKT', 'DXKT', 'CXKT', 'DKT']);
             $DangKy->sohoso = $HoSo == null ? 0 : $HoSo->count();
@@ -427,16 +427,15 @@ class dshosothiduaController extends Controller
         $inputs = $request->all();
         $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
         $m_donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi_nhan'])->first();
-       
-        $inputs['trangthai'] = getTrangThaiChuyenHS(session('chucnang')['dshosothidua']['trangthai'] ?? 'CC'); 
+        $inputs['trangthai'] = getTrangThaiChuyenHS(session('chucnang')['dshosothidua']['trangthai'] ?? 'CC');
+        // dd($inputs['trangthai']);
         //Thiết lập lại do chỉ có 2 bước trong quy trình
-        $inputs['trangthai'] = $inputs['trangthai'] != 'CC' ? 'DD' : $inputs['trangthai'];
+        // $inputs['trangthai'] = $inputs['trangthai'] != 'CC' ? 'DD' : $inputs['trangthai'];
         // dd($inputs['trangthai']);
         $model->trangthai = $inputs['trangthai'];
         $model->madonvi_nhan = $inputs['madonvi_nhan'];
         $model->thoigian = date('Y-m-d H:i:s');
         setChuyenHoSo($m_donvi->capdo, $model, ['madonvi' => $inputs['madonvi_nhan'], 'thoigian' => $model->thoigian, 'trangthai' => $model->trangthai]);
-        //dd($model);
         $model->save();
 
         $trangthai = new trangthaihoso();
@@ -450,6 +449,45 @@ class dshosothiduaController extends Controller
 
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }
+
+    public function NhanHoSo(Request $request)
+    {
+        if (!chkPhanQuyen('xdhosodenghikhenthuongthidua', 'hoanthanh')) {
+            return view('errors.noperm')->with('machucnang', 'xdhosodenghikhenthuongthidua')->with('tenphanquyen', 'hoanthanh');
+        }
+
+        $inputs = $request->all();
+        $thoigian = date('Y-m-d H:i:s');
+        $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
+        //gán lại trạng thái hồ sơ để theo dõi
+        $model->trangthai = 'DD';
+        $model->trangthai_h = 'DD';
+        // $model->thoigian_xd = $thoigian;
+        $model->save();
+        trangthaihoso::create([
+            'mahoso' => $inputs['mahoso'],
+            'phanloai' => 'dshosothiduakhenthuong',
+            'trangthai' => $model->trangthai,
+            'thoigian' => $thoigian,
+            'madonvi' => $model->madonvi_nhan,
+            'thongtin' => 'Tiếp nhận hồ sơ đề nghị khen thưởng.',
+        ]);
+        return redirect('/HoSoDeNghiKhenThuongThiDua/DSHoSoThamGia?madonvi=' . $model->madonvi_nhan . '&maphongtraotd=' . $model->maphongtraotd);
+    }
+    public function TraLai(Request $request)
+    {
+        if (!chkPhanQuyen('xdhosodenghikhenthuongthidua', 'hoanthanh')) {
+            return view('errors.noperm')->with('machucnang', 'xdhosodenghikhenthuongthidua')->with('tenphanquyen', 'hoanthanh');
+        }
+        $inputs = $request->all();
+        $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
+        //gán trạng thái hồ sơ để theo dõi
+        $inputs['trangthai'] = 'BTL';
+        $inputs['thoigian'] = date('Y-m-d H:i:s');
+        setTraLaiXD($model, $inputs);
+        return redirect('/HoSoDeNghiKhenThuongThiDua/DSHoSoThamGia?madonvi=' . $model->madonvi . '&maphongtraotd=' . $model->maphongtraotd);
+    }
+
 
     public function LayTieuChuan(Request $request)
     {

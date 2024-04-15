@@ -32,9 +32,13 @@ class hethongchungController extends Controller
             else
                 $model_vp = vanphonghotro::orderBy('stt')->get();
             $a_vp = a_unique(array_column($model_vp->toArray(), 'vanphong'));
+            $col =(int) 12 / (count($a_vp)>0?count($a_vp) : 1);
+            $col = $col < 4 ? 4 : $col;
+            // dd($model_vp);
             return view('HeThong.dashboard')
                 ->with('model_vp', $model_vp)
                 ->with('a_vp', $a_vp)
+                ->with('col',$col)
                 ->with('model', getHeThongChung())
                 ->with('pageTitle', 'Thông tin hỗ trợ');
         } else {

@@ -41,6 +41,7 @@ class dsphongtraothiduaController extends Controller
         }
         $inputs = $request->all();
         $m_donvi = getDonVi(session('admin')->capdo, 'dsphongtraothidua');
+        // dd($m_donvi);
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
