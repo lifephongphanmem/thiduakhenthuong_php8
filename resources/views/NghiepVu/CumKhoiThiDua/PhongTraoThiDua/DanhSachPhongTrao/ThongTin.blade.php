@@ -33,7 +33,7 @@
             </div>
             <div class="card-toolbar">
                 <!--begin::Button-->
-                @if (chkPhanQuyen('dsphongtraothiduacumkhoi', 'thaydoi'))
+                @if (chkPhanQuyen('dsphongtraothiduacumkhoi', 'thaydoi') && $inputs['thaotacthem'])
                     <a href="{{ url($inputs['url'] . 'Them?madonvi=' . $inputs['madonvi'] . '&nam=' . $inputs['nam']) }}"
                         class="btn btn-success btn-xs">
                         <i class="fa fa-plus"></i> Thêm mới</a>

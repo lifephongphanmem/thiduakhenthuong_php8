@@ -101,7 +101,7 @@
         <div class="card-footer">
             <div class="row text-center">
                 <div class="col-lg-12">
-                    <a href="{{ url('/HoSoDeNghiKhenThuongThiDua/ThongTin?madonvi=' . $inputs['madonvi']) }}"
+                    <a href="{{ url('/CumKhoiThiDua/DeNghiThiDua/DanhSach?macumkhoi='.$m_phongtrao->macumkhoi.'&madonvi=' . $inputs['madonvi']) }}"
                         class="btn btn-danger mr-5"><i class="fa fa-reply"></i>&nbsp;Quay lại</a>
                 </div>
             </div>

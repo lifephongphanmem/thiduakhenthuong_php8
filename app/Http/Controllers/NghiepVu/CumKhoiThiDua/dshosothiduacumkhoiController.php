@@ -111,7 +111,9 @@ class dshosothiduacumkhoiController extends Controller
         $model = view_dsphongtrao_cumkhoi::where('macumkhoi',$inputs['macumkhoi'])->orderby('tungay')->get();
 
         $ngayhientai = date('Y-m-d');
-        $m_hoso = dshosothamgiathiduacumkhoi::wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
+        // $m_hoso = dshosothamgiathiduacumkhoi::wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
+        //Đơn vị chỉ nhìn thấy phong trào thuộc cụm khối 
+        $m_hoso = dshosothamgiathiduacumkhoi::wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->where('macumkhoi',$inputs['macumkhoi'])->get();
         //$m_hoso_khenthuong = dshosothamgiathiduacumkhoi::wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->where('trangthai', 'DKT')->get();
 
         foreach ($model as $DangKy) {
@@ -142,13 +144,14 @@ class dshosothiduacumkhoiController extends Controller
         // dd($model);
         $inputs['trangthai'] = session('chucnang')['dshosothiduacumkhoi']['trangthai'] ?? 'CC';
         $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
-        $m_truongcum = view_dstruongcumkhoi::where('macumkhoi',$inputs['macumkhoi'])->get();
+        $m_truongcum = view_dstruongcumkhoi::where('macumkhoi',$inputs['macumkhoi'])->orderBy('ngayden','desc')->get();
+        // dd($m_cumkhoi);
         $a_donviql=array();
         if(count($m_truongcum)>0){
-            $a_truongcum=array_column($m_cumkhoi->where('phanloai','TRUONGKHOI')->toarray(),'madonvi');
+            $a_truongcum=array_column($m_truongcum->unique('macumkhoi')->toarray(),'madonvi');
             $a_donviql=array_column(dsdonvi::wherein('madonvi',$a_truongcum)->get()->toarray(),'tendonvi','madonvi');
         }
-        
+        // dd($a_donviql);
         if($m_cumkhoi->count() == 0){
             return view('errors.404')->with('message', 'Cụm, khối thi đua chưa có trưởng cụm, khối. Bạn hãy liên hệ đơn vị quản lý để thêm trưởng cụm khối')
             ->with('url', '/CumKhoiThiDua/ThamGiaThiDua/ThongTin?madonvi='.$inputs['madonvi']);
