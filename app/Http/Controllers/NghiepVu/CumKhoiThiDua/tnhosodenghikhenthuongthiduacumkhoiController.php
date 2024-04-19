@@ -42,6 +42,7 @@ class tnhosodenghikhenthuongthiduacumkhoiController extends Controller
         $inputs['url_qd'] = '/CumKhoiThiDua/KhenThuongThiDua/';
         $inputs['url_xd'] = static::$url;
         $inputs['url_hs'] = '/CumKhoiThiDua/DeNghiThiDua/';
+        $inputs['phanquyen'] = 'tnhosodenghikhenthuongthiduacumkhoi';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosotdktcumkhoi';
         $inputs['phanloaikhenthuong'] = 'CUMKHOI';
@@ -57,7 +58,8 @@ class tnhosodenghikhenthuongthiduacumkhoiController extends Controller
         $inputs['maloaihinhkt'] = session('chucnang')['dshosodenghikhenthuongcongtrang']['maloaihinhkt'] ?? 'ALL';
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
 
-        $model = dshosotdktcumkhoi::where('madonvi_xd', $inputs['madonvi']);
+        $model = dshosotdktcumkhoi::where('madonvi_xd', $inputs['madonvi'])
+        ->wherenotin('trangthai_xd', ['BTL']);
             //->where('maloaihinhkt', $inputs['maloaihinhkt']); //->orderby('ngayhoso')->get();
 
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
@@ -92,6 +94,7 @@ class tnhosodenghikhenthuongthiduacumkhoiController extends Controller
             $hoso->thoigian_hoso = $hoso->thoigian_xd;
             $hoso->lydo_hoso = $hoso->lydo_xd;
             $hoso->madonvi_nhan_hoso = $hoso->madonvi_nhan_xd;
+            $hoso->thaotac = true;
             if (count($a_donvilocdulieu) > 0) {
                 //lọc các hồ sơ theo thiết lập dữ liệu
                 if (!in_array($hoso->madonvi, $a_donvilocdulieu))

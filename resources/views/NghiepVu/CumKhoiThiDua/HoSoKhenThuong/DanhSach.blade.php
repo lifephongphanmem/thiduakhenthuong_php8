@@ -122,6 +122,7 @@
                                         <i class="icon-lg la la-file-download text-dark"></i>
                                     </button>
                                     @if ($inputs['trangthai'] == 'CC')
+                                    
                                         @if (in_array($tt->trangthai, ['CC', 'BTL', 'CXD']) && $tt->madonvi == $inputs['madonvi'])
                                             @if (chkPhanQuyen('dshosodenghikhenthuongcumkhoi', 'thaydoi'))
                                                 <a title="Hồ sơ đề nghị khen thưởng"

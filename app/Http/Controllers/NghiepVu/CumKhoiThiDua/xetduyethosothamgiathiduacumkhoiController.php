@@ -49,6 +49,7 @@ class xetduyethosothamgiathiduacumkhoiController extends Controller
         }
         
         $m_phongtrao = dsphongtraothiduacumkhoi::where('maphongtraotd', $inputs['maphongtraotd'])->first();
+        
         $ngayhientai = date('Y-m-d');
         KiemTraPhongTrao($m_phongtrao, $ngayhientai);
 

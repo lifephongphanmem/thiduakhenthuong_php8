@@ -126,7 +126,7 @@
                                     @if (
                                         $tt->nhanhoso == 'KETTHUC' &&
                                             chkPhanQuyen('dshosodenghikhenthuongthidua', 'hoanthanh') &&
-                                            in_array($tt->trangthaikt, ['CC', 'DD', 'BTLXD', 'CXD']))
+                                            in_array($tt->trangthaikt, ['CC', 'DD', 'BTLXD', 'CXD','BTL']))
                                         @if ($tt->mahosotdkt == '-1')
                                             <button title="Tạo hồ sơ khen thưởng" type="button"
                                                 onclick="confirmKhenThuong('{{ $tt->maphongtraotd }}', '{{$inputs['macumkhoi']}}')"

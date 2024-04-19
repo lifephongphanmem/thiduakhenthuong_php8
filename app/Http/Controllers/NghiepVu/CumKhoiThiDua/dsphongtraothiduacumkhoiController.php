@@ -21,6 +21,7 @@ use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua_khenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua_tieuchuan;
 use App\Models\View\view_dscumkhoi;
+use App\Models\View\view_dstruongcumkhoi;
 use App\Models\View\viewdiabandonvi;
 use Illuminate\Support\Facades\Session;
 
@@ -64,10 +65,21 @@ class dsphongtraothiduacumkhoiController extends Controller
         // $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
         // dd($m_cumkhoi);
         $m_cumkhoi = view_dscumkhoi::all();
+
         // dd($m_cumkhoi);
         $inputs['macumkhoi'] = $inputs['macumkhoi'] ?? $m_cumkhoi->first()->macumkhoi;
         $inputs['phanloaihoso'] = 'dshosotdktcumkhoi';
         $model = dsphongtraothiduacumkhoi::where('madonvi', $inputs['madonvi']);
+        $truongcumkhoi=view_dstruongcumkhoi::where('macumkhoi',$inputs['macumkhoi'])->orderBy('ngayden','desc')->first();
+        if(isset($truongcumkhoi)){
+            if($truongcumkhoi->madonvi == $inputs['madonvi']){
+                $inputs['thaotacthem']=true;
+            }else{
+                $inputs['thaotacthem']=false;
+            }
+        }else{
+            $inputs['thaotacthem']=false;
+        }
         if ($inputs['nam'] != 'ALL')
             $model = $model->whereYear('ngayqd', $inputs['nam']);
         if ($inputs['phanloai'] != 'ALL')

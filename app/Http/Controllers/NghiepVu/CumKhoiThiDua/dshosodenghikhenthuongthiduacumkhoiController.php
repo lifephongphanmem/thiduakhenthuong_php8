@@ -134,6 +134,7 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
             //gán để ko in hồ sơ mahosothamgiapt
             $ct->mahosothamgiapt = '-1';
         }
+        // dd($model);
         $inputs['trangthai'] = session('chucnang')['dshosodenghikhenthuongthiduacumkhoi']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] == 'ALL' ? 'CC' : $inputs['trangthai'];
         
