@@ -52,12 +52,12 @@ class xdhosodenghikhenthuongnienhanController extends Controller
 
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
-        $inputs['maloaihinhkt'] = session('chucnang')['dshosodenghikhenthuongcongtrang']['maloaihinhkt'] ?? 'ALL';
+        $inputs['maloaihinhkt'] = session('chucnang')['dshosodenghikhenthuongnienhan']['maloaihinhkt'] ?? 'ALL';
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
 
         //Xác định xem có dùng chức năng tiếp nhận ko
         $a_trangthai_xd = ['DD', 'CXKT', 'DKT', 'BTLXD'];        
-        if(chkGiaoDien('tnhosodenghikhenthuongcongtrang') != '1'){
+        if(chkGiaoDien('tnhosodenghikhenthuongnienhan') != '1'){
             $a_trangthai_xd[] = 'CD';
         }
 
@@ -108,7 +108,7 @@ class xdhosodenghikhenthuongnienhanController extends Controller
         $inputs['trangthai'] = session('chucnang')['xdhosodenghikhenthuongnienhan']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
         //dd($model->where('trangthai','CXKT')->where('madonvi_kt',''));
-        //dd( $inputs);
+        // dd( $inputs);
         return view('NghiepVu.KhenThuongNienHan.XetDuyetHoSo.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))

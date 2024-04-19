@@ -41,6 +41,7 @@ class tnhosodenghikhenthuongnienhanController extends Controller
         $inputs['url_hs'] = '/KhenThuongNienHan/HoSo/';
         $inputs['url_xd'] = '/KhenThuongNienHan/TiepNhan/';
         $inputs['url_qd'] = '/KhenThuongNienHan/KhenThuong/';
+        $inputs['phanquyen'] = 'tnhosodenghikhenthuongnienhan';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
@@ -53,12 +54,13 @@ class tnhosodenghikhenthuongnienhanController extends Controller
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
-        $inputs['maloaihinhkt'] = session('chucnang')['dshosodenghikhenthuongcongtrang']['maloaihinhkt'] ?? 'ALL';
+        $inputs['maloaihinhkt'] = session('chucnang')['dshosodenghikhenthuongnienhan']['maloaihinhkt'] ?? 'ALL';
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
 
         $model = dshosothiduakhenthuong::where('madonvi_xd', $inputs['madonvi'])
             ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC',])
-            ->where('maloaihinhkt', $inputs['maloaihinhkt']); //->orderby('ngayhoso')->get();
+            ->where('maloaihinhkt', $inputs['maloaihinhkt']) //->orderby('ngayhoso')->get();
+            ->wherenotin('trangthai_xd', ['BTL']);
 
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
             $m_loaihinh = dmloaihinhkhenthuong::all();
@@ -115,7 +117,6 @@ class tnhosodenghikhenthuongnienhanController extends Controller
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
         //dd($model->where('trangthai','CXKT')->where('madonvi_kt',''));
         //    dd( $model);
-
         return view('NghiepVu.KhenThuongNienHan.TiepNhan.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))

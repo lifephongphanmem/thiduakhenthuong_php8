@@ -68,6 +68,7 @@ class dshosothiduacumkhoiController extends Controller
         $m_cumkhoi_chitiet = dscumkhoi_chitiet::where('madonvi', $inputs['madonvi'])->get();
         $model = dscumkhoi::wherein('macumkhoi', array_column($m_cumkhoi_chitiet->toarray(), 'macumkhoi'))->get();
         $m_hoso = dshosothamgiathiduacumkhoi::where('madonvi', $inputs['madonvi'])->get();
+        // dd($m_hoso);
         foreach ($model as $ct) {
             $ct->sohoso = $m_hoso->where('macumkhoi', $ct->macumkhoi)->count();
         }

@@ -89,7 +89,12 @@ class dshosodenghikhenthuongchuyendeController extends Controller
         } else {
             $m_loaihinh = dmloaihinhkhenthuong::where('maloaihinhkt', $inputs['maloaihinhkt'])->get();
         }
-
+        //Lấy danh sách hồ sơ cấp dưới gửi lên
+        $model_hoso = dshosothiduakhenthuong::where('maloaihinhkt', $inputs['maloaihinhkt'])
+            ->where('trangthai', 'DTN')
+            ->where(function ($qr) use ($inputs) {
+                $qr->where('madonvi_xd', $inputs['madonvi'])->orwhere('madonvi_kt', $inputs['madonvi']);
+            })->get();
         //Gán đường dẫn
         if ($inputs['trangthai'] == 'CC') {
             //Đi theo quy trình bình thường
@@ -107,6 +112,7 @@ class dshosodenghikhenthuongchuyendeController extends Controller
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
             ->with('a_capdo', getPhamViApDung())
             ->with('m_donvi', $m_donvi)
+            ->with('model_hoso', $model_hoso)
             ->with('a_diaban', $a_diaban)
             ->with('a_donviql', getDonViXetDuyetDiaBan($donvi))
             ->with('a_donvinganh', getDonViQuanLyNganh($donvi))
@@ -128,8 +134,9 @@ class dshosodenghikhenthuongchuyendeController extends Controller
         $inputs['url_qd'] = '/KhenThuongChuyenDe/KhenThuong/';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
-
+        // dd($inputs);
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+        // dd($model);
         $model_canhan = dshosothiduakhenthuong_canhan::where('mahosotdkt', $model->mahosotdkt)->get();
         $model_tapthe = dshosothiduakhenthuong_tapthe::where('mahosotdkt', $model->mahosotdkt)->get();
         $model_hogiadinh = dshosothiduakhenthuong_hogiadinh::where('mahosotdkt', $model->mahosotdkt)->get();
@@ -205,6 +212,88 @@ class dshosodenghikhenthuongchuyendeController extends Controller
             $inputs['totrinh'] = $inputs['mahosotdkt'] . '_totrinh.' . $filedk->getClientOriginalExtension();
             $filedk->move(public_path() . '/data/totrinh/', $inputs['totrinh']);
         }
+        //Kiểm tra trạng thái hồ sơ
+        setThongTinHoSo($inputs);
+        //Lưu nhật ký
+        dshosothiduakhenthuong::create($inputs);
+        $trangthai = new trangthaihoso();
+        $trangthai->trangthai = $inputs['trangthai'];
+        $trangthai->madonvi = $inputs['madonvi'];
+        $trangthai->thongtin = "Thêm mới hồ sơ đề nghị khen thưởng";
+        $trangthai->phanloai = 'dshosothiduakhenthuong';
+        $trangthai->mahoso = $inputs['mahosotdkt'];
+        $trangthai->thoigian = $inputs['ngayhoso'];
+        $trangthai->save();
+
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+    }
+
+    public function ThemTongHop(Request $request)
+    {
+        if (!chkPhanQuyen('dshosodenghikhenthuongchuyende', 'thaydoi')) {
+            return view('errors.noperm')->with('machucnang', 'dshosodenghikhenthuongcongtrang')->with('tenphanquyen', 'thaydoi');
+        }
+        $inputs = $request->all();
+
+        $inputs['mahosotdkt'] = (string)getdate()[0];
+        $inputs['phanloai'] = 'KHENTHUONG';
+        // dd($inputs);
+        //lấy danh sách chi tiết
+        if (isset($inputs['hoso'])) {
+            $a_hoso = array_keys($inputs['hoso']);
+            //Cá nhân
+            $m_canhan = dshosothiduakhenthuong_canhan::wherein('mahosotdkt', $a_hoso)->where('ketqua', 1)->get();
+            $a_canhan = [];
+            foreach ($m_canhan as $canhan) {
+                $a_canhan[] = [
+                    'mahosotdkt' => $inputs['mahosotdkt'],
+                    'maccvc' => $canhan->maccvc,
+                    'socancuoc' => $canhan->socancuoc,
+                    'tendoituong' => $canhan->tendoituong,
+                    'ngaysinh' => $canhan->ngaysinh,
+                    'gioitinh' => $canhan->gioitinh,
+                    'chucvu' => $canhan->chucvu,
+                    'diachi' => $canhan->diachi,
+                    'tencoquan' => $canhan->tencoquan,
+                    'tenphongban' => $canhan->tenphongban,
+                    'maphanloaicanbo' => $canhan->maphanloaicanbo,
+                    'ketqua' => 1,
+                    'madanhhieukhenthuong' => $canhan->madanhhieukhenthuong,
+                ];
+            }
+            dshosothiduakhenthuong_canhan::insert($a_canhan);
+            //Tập thể
+            $m_tapthe = dshosothiduakhenthuong_tapthe::wherein('mahosotdkt', $a_hoso)->where('ketqua', 1)->get();
+            $a_tapthe = [];
+            foreach ($m_tapthe as $tapthe) {
+                $a_tapthe[] = [
+                    'mahosotdkt' => $inputs['mahosotdkt'],
+                    'ketqua' => 1,
+                    'madanhhieukhenthuong' => $tapthe->madanhhieukhenthuong,
+                    'linhvuchoatdong' => $tapthe->linhvuchoatdong,
+                    'maphanloaitapthe' => $tapthe->maphanloaitapthe,
+                    'tentapthe' => $tapthe->tentapthe,
+                ];
+            }
+            dshosothiduakhenthuong_tapthe::insert($a_tapthe);
+            //Hộ gia đình
+            $m_hogiadinh = dshosothiduakhenthuong_hogiadinh::wherein('mahosotdkt', $a_hoso)->where('ketqua', 1)->get();
+            $a_hogiadinh = [];
+            foreach ($m_hogiadinh as $hogiadinh) {
+                $a_hogiadinh[] = [
+                    'mahosotdkt' => $inputs['mahosotdkt'],
+                    'ketqua' => 1,
+                    'madanhhieukhenthuong' => $hogiadinh->madanhhieukhenthuong,
+                    'linhvuchoatdong' => $hogiadinh->linhvuchoatdong,
+                    'maphanloaitapthe' => $hogiadinh->maphanloaitapthe,
+                    'tentapthe' => $hogiadinh->tentapthe,
+                ];
+            }
+            dshosothiduakhenthuong_hogiadinh::insert($a_hogiadinh);
+            //Cập nhật trạng thái hồ sơ
+            dshosothiduakhenthuong::wherein('mahosotdkt', $a_hoso)->update(['trangthai' => 'DTH', 'trangthai_xd' => 'DTH']);
+        }
+
         //Kiểm tra trạng thái hồ sơ
         setThongTinHoSo($inputs);
         //Lưu nhật ký

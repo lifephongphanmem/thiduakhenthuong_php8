@@ -57,16 +57,13 @@ class dsphongtraothiduacumkhoiController extends Controller
         
     //    dd($m_diaban);
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
-        // $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
+        $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         // dd($inputs['madonvi']);
         $inputs['phanloai'] = $inputs['phanloai'] ?? 'ALL';
         $inputs['phamviapdung'] = $inputs['phamviapdung'] ?? 'ALL';
         // $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
         // dd($m_cumkhoi);
         $m_cumkhoi = view_dscumkhoi::all();
-        // $m_donvi=$m_donvi->wherein('madonvi',array_column($m_cumkhoi->toarray(),'madonvi'));
-        // dd($m_donvi);
-        $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         // dd($m_cumkhoi);
         $inputs['macumkhoi'] = $inputs['macumkhoi'] ?? $m_cumkhoi->first()->macumkhoi;
         $inputs['phanloaihoso'] = 'dshosotdktcumkhoi';
