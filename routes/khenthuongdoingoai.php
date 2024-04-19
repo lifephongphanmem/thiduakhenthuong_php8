@@ -79,6 +79,8 @@ Route::group(['prefix' => 'KhenThuongDoiNgoai'], function () {
         Route::post('Xoa', [dshosodenghikhenthuongdoingoaiController::class, 'XoaHoSo']);
         Route::post('NhanExcel', [dshosodenghikhenthuongdoingoaiController::class, 'NhanExcel']);
 
+        Route::post('ThemTongHop', [dshosodenghikhenthuongdoingoaiController::class, 'ThemTongHop']);
+
         Route::post('ThemTapThe', [dshosodenghikhenthuongdoingoaiController::class, 'ThemTapThe']);
         Route::get('XoaTapThe', [dshosodenghikhenthuongdoingoaiController::class, 'XoaTapThe']);
         Route::get('LayTapThe', [dshosodenghikhenthuongdoingoaiController::class, 'LayTapThe']);        
