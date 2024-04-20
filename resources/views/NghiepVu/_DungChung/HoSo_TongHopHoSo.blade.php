@@ -111,11 +111,12 @@
                                                             <tr class="text-center">
                                                                 <th width="2%">STT</th>
                                                                 {{-- <th>Phân loại hồ sơ</th> --}}
+                                                                <th>Đơn vị đề nghị</th>
                                                                 <th>Nội dung hồ sơ</th>
                                                                 <th width="8%">Ngày tháng</th>
                                                                 <th width="8%">Trạng thái</th>
                                                                 <th width="20%">Đơn vị tiếp nhận</th>
-                                                                <th width="10%">Thao tác</th>
+                                                                <th width="8%">Thao tác</th>
                                                             </tr>
                                                         </thead>
 
@@ -123,6 +124,7 @@
                                                         @foreach ($model_hoso as $key => $tt)
                                                             <tr>
                                                                 <td class="text-center">{{ $i++ }}</td>
+                                                                <td>{{ $a_donvi[$tt->madonvi] ?? '' }}</td>
                                                                 <td>{{ $tt->noidung }}</td>
                                                                 <td class="text-center">
                                                                     {{ $tt->sototrinh }}<br>{{ getDayVn($tt->ngayhoso) }}
