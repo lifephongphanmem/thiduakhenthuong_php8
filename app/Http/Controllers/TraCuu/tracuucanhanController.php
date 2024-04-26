@@ -12,6 +12,12 @@ use App\Models\DanhMuc\dmhinhthuckhenthuong;
 use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dmnhomphanloai_chitiet;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_canhan;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_detai;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_hogiadinh;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tapthe;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua;
 use App\Models\View\view_tdkt_canhan;
 use App\Models\View\view_tdkt_detai;
 use App\Models\View\viewdiabandonvi;
@@ -71,9 +77,15 @@ class tracuucanhanController extends Controller
         //Nếu đơn vị quản lý địa bàn => xem đc tất cả
         //Nếu đơn vị nhập liệu => chỉ xem hồ sơ đơn vị gửi
         $model_khenthuong = view_tdkt_canhan::where('trangthai', 'DKT');
+
+        foreach($model_khenthuong as $ct)
+        {
+            //Xác định xem có file không để hiển thị nút tải hồ sơ
+        }
         $model_detai = view_tdkt_detai::query();
         $this->TimKiem($model_khenthuong, $model_detai, $inputs);
         $a_dhkt = getDanhHieuKhenThuong('ALL');
+        // dd($model_khenthuong);
         //dd( $model_khenthuong->toarray());
         return view('TraCuu.CaNhan.KetQua')
             ->with('model_khenthuong', $model_khenthuong)
@@ -163,5 +175,38 @@ class tracuucanhanController extends Controller
             $model_detai = $model_detai->where('tendoituong', 'Like', '%' . $inputs['tendoituong'] . '%');
         //Lấy kết quả đề tài
         $model_detai = $model_detai->get();
+    }
+
+    public function ThongTinHoSo(Request $request)
+    {
+        // $inputs=$request->all();
+        // // dd($inputs);
+
+        // $model=dshosothiduakhenthuong::where('mahosotdkt',$inputs['mahoso'])->first();
+        // $model_canhan=dshosothiduakhenthuong_canhan::where('mahosotdkt',$inputs['mahoso'])->first();
+        // dd($model);
+        $inputs = $request->all();
+        $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+        $model->tenphongtraotd = dsphongtraothidua::where('maphongtraotd', $model->maphongtraotd)->first()->noidung ?? '';
+        $model_canhan = dshosothiduakhenthuong_canhan::where('mahosotdkt', $model->mahosotdkt)->get();
+        // $model_tapthe = dshosothiduakhenthuong_tapthe::where('mahosotdkt', $model->mahosotdkt)->get();
+        // $model_detai = dshosothiduakhenthuong_detai::where('mahosotdkt', $model->mahosotdkt)->get();
+        // $model_hogiadinh = dshosothiduakhenthuong_hogiadinh::where('mahosotdkt', $inputs['mahosotdkt'])->get();
+        $a_phanloaidt = array_column(dmnhomphanloai_chitiet::all()->toarray(), 'tenphanloai', 'maphanloai');
+        $m_donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
+        $a_dhkt = getDanhHieuKhenThuong('ALL');
+        return view('TraCuu.CaNhan.Xem')
+            ->with('model', $model)
+            ->with('model_canhan', $model_canhan)
+            // ->with('model_tapthe', $model_tapthe)
+            // ->with('model_detai', $model_detai)
+            // ->with('model_hogiadinh', $model_hogiadinh)
+            ->with('m_donvi', $m_donvi)
+            ->with('a_phanloaidt', $a_phanloaidt)
+            ->with('a_dhkt', $a_dhkt)
+            ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
+            // ->with('a_hinhthuckt', array_column(dmhinhthuckhenthuong::all()->toArray(), 'tenhinhthuckt', 'mahinhthuckt'))
+            ->with('inputs', $inputs)
+            ->with('pageTitle', 'Thông tin hồ sơ đề nghị khen thưởng');
     }
 }

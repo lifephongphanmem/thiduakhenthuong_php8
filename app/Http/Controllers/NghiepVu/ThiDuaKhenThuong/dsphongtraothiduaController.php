@@ -18,6 +18,7 @@ use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua_khenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua_tieuchuan;
 use App\Models\View\viewdiabandonvi;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 
 class dsphongtraothiduaController extends Controller
@@ -75,6 +76,7 @@ class dsphongtraothiduaController extends Controller
         }
 
         $inputs = $request->all();
+        // dd($inputs);
         $inputs['maphongtraotd'] = $inputs['maphongtraotd'] ?? null;
         $model = dsphongtraothidua::where('maphongtraotd', $inputs['maphongtraotd'])->first();
         $inputs['madonvi'] = $inputs['madonvi'] ?? $model->madonvi;
@@ -108,7 +110,14 @@ class dsphongtraothiduaController extends Controller
         }
         $a_phamvi = getPhamViPhatDongPhongTrao($capdo);
         $a_phongtrao_captren = array_column(dsphongtraothidua::where('phamviapdung', getCapDoDiaBanCapTren($donvi->capdo))->get()->toarray(),'noidung','maphongtraotd');
+        $m_phongtrao_captren=dsphongtraothidua::where('maphongtraotd',$inputs['maphongtraotd_coso'])->first();
+        if(!isset($m_phongtrao_captren))
+        {
+            $m_phongtrao_captren=new Collection();
+        }
 
+        // dd($inputs);
+        // dd($m_phongtrao_captren);
         return view('NghiepVu.ThiDuaKhenThuong.PhongTraoThiDua.ThayDoi')
             ->with('model', $model)
             ->with('model_tieuchuan', $model_tieuchuan)
@@ -116,6 +125,7 @@ class dsphongtraothiduaController extends Controller
             ->with('a_loaihinhkt', array_column($m_loaihinh->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('a_hinhthuckt', array_column(dmhinhthuckhenthuong::all()->toArray(), 'tenhinhthuckt', 'mahinhthuckt'))
             ->with('a_phongtrao_captren', $a_phongtrao_captren)
+            ->with('m_phongtrao_captren', $m_phongtrao_captren)
             ->with('a_phamvi', $a_phamvi)
             ->with('a_phanloaidt', getPhanLoaiTDKT())
             ->with('inputs', $inputs)

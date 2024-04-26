@@ -54,14 +54,16 @@ class xetduyethosothamgiathiduacumkhoiController extends Controller
         KiemTraPhongTrao($m_phongtrao, $ngayhientai);
 
         $model = dshosothamgiathiduacumkhoi::where('madonvi_xd', $inputs['madonvi'])
-            ->where('maphongtraotd', $inputs['maphongtraotd'])->get();
+            ->where('maphongtraotd', $inputs['maphongtraotd'])
+            ->wherenotin('trangthai',['BTL'])
+            ->get();
         
         foreach ($model as $chitiet) {
             $chitiet->nhanhoso = $m_phongtrao->nhanhoso;
             // $chitiet->mahosodk = $m_hoso_dangky->where('madonvi', $chitiet->madonvi)->first()->mahosodk ?? null;
             getDonViChuyen($inputs['madonvi'], $chitiet);
         }
-        //dd($model);
+        // dd($model);
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.XetDuyetThamGiaThiDua.DanhSach')
             ->with('model', $model)
             ->with('m_phongtrao', $m_phongtrao)

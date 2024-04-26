@@ -29,6 +29,7 @@
             },
             dataType: 'JSON',
             success: function (data) {
+                console.log(data);
                 if (data.status == 'success') {
                     $('#dinh_kem').replaceWith(data.message);
                 }

@@ -11,10 +11,12 @@ use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstaikhoan;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_canhan;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_tapthe;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_xuly;
 use App\Models\View\view_dscumkhoi;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -185,5 +187,16 @@ class tnhosodenghikhenthuongthiduacumkhoiController extends Controller
             'thongtin' => 'Tiếp nhận hồ sơ đề nghị khen thưởng.',
         ]);
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi_xd);
+    }
+    public function QuaTrinhXuLyHoSo(Request $request)
+    {
+        $inputs = $request->all();
+        $model = dshosotdktcumkhoi_xuly::where('mahosotdkt', $inputs['mahosotdkt'])->OrderBy('created_at')->get();
+        $a_canbo = array_column(dstaikhoan::all()->toArray(), 'tentaikhoan', 'tendangnhap');
+        return view('NghiepVu._DungChung.InQuaTrinhXuLy')
+            ->with('model', $model)
+            ->with('a_canbo', $a_canbo)
+            ->with('a_trangthaihs', getTrangThaiHoSo())
+            ->with('pageTitle', 'Thông tin quá trình xử lý hồ sơ đề nghị khen thưởng');
     }
 }

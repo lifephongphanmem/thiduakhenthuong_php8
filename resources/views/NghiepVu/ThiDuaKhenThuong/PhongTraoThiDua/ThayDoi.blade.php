@@ -258,14 +258,14 @@
             <div class="form-group row">
                 <div class="col-lg-12">
                     <label>Tên phong trào</label>
-                    {!! Form::textarea('noidung', null, ['class' => 'form-control', 'rows' => 2]) !!}
+                    {!! Form::textarea('noidung', isset($inputs['maphongtraotd_coso'])?$m_phongtrao_captren->noidung:null, ['class' => 'form-control', 'rows' => 2]) !!}
                 </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-lg-12">
                     <label>Nội dung phong trào</label>
-                    {!! Form::textarea('khauhieu', null, ['class' => 'form-control', 'rows' => 2]) !!}
+                    {!! Form::textarea('khauhieu', isset($inputs['maphongtraotd_coso'])?$m_phongtrao_captren->khauhieu:null, ['class' => 'form-control', 'rows' => 2]) !!}
                 </div>
             </div>
 

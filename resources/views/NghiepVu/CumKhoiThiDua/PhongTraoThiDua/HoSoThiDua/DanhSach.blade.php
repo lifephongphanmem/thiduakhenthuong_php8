@@ -126,7 +126,7 @@
                                     </button>
 
                                     <button title="Tài liệu đính kèm" type="button"
-                                        onclick="get_attack('{{ $tt->mahoso }}', '/DungChung/DinhKemHoSoThamGia')"
+                                        onclick="get_attack('{{ $tt->mahoso }}', '/DungChung/DinhKemHoSoThamGiaCumKhoi')"
                                         class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"
                                         data-toggle="modal">
                                         <i class="icon-lg la la-file-download text-dark"></i>

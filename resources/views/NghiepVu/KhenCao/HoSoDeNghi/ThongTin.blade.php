@@ -130,7 +130,7 @@
     @include('NghiepVu._DungChung.HoSo_KhenCao_TaoHoSoDeNghi')
     @include('NghiepVu._DungChung.HoSo_TongHopHoSo')
     @include('NghiepVu._DungChung.InDuLieu_KhenCao')
-    {{-- @include('includes.modal.modal-delete') --}}
+    @include('includes.modal.modal-delete')
     @include('includes.modal.modal_chuyenhs')
     {{-- @include('includes.modal.modal_attackfile') --}}
     {{-- @include('includes.modal.modal-lydo') --}}

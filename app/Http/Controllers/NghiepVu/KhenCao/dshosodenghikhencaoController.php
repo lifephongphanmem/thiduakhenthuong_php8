@@ -18,6 +18,10 @@ use App\Models\NghiepVu\KhenCao\dshosokhencao;
 use App\Models\NghiepVu\KhenCao\dshosokhencao_canhan;
 use App\Models\NghiepVu\KhenCao\dshosokhencao_hogiadinh;
 use App\Models\NghiepVu\KhenCao\dshosokhencao_tapthe;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_canhan;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_hogiadinh;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tapthe;
 use App\Models\View\viewdiabandonvi;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
@@ -121,6 +125,87 @@ class dshosodenghikhencaoController extends Controller
         $trangthai->madonvi = $inputs['madonvi'];
         $trangthai->thongtin = "Thêm mới hồ sơ đề nghị khen thưởng";
         $trangthai->phanloai = 'dshosodenghikhencao';
+        $trangthai->mahoso = $inputs['mahosotdkt'];
+        $trangthai->thoigian = $inputs['ngayhoso'];
+        $trangthai->save();
+
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+    }
+    
+    public function ThemTongHop(Request $request)
+    {
+        if (!chkPhanQuyen('dshosodenghikhencao', 'thaydoi')) {
+            return view('errors.noperm')->with('machucnang', 'dshosodenghikhencao')->with('tenphanquyen', 'thaydoi');
+        }
+        $inputs = $request->all();
+
+        $inputs['mahosotdkt'] = (string)getdate()[0];
+        $inputs['phanloai'] = 'KHENTHUONG';
+        //lấy danh sách chi tiết
+        if (isset($inputs['hoso'])) {
+            $a_hoso = array_keys($inputs['hoso']);
+            //Cá nhân
+            $m_canhan = dshosokhencao_canhan::wherein('mahosotdkt', $a_hoso)->where('ketqua', 1)->get();
+            $a_canhan = [];
+            foreach ($m_canhan as $canhan) {
+                $a_canhan[] = [
+                    'mahosotdkt' => $inputs['mahosotdkt'],
+                    'maccvc' => $canhan->maccvc,
+                    'socancuoc' => $canhan->socancuoc,
+                    'tendoituong' => $canhan->tendoituong,
+                    'ngaysinh' => $canhan->ngaysinh,
+                    'gioitinh' => $canhan->gioitinh,
+                    'chucvu' => $canhan->chucvu,
+                    'diachi' => $canhan->diachi,
+                    'tencoquan' => $canhan->tencoquan,
+                    'tenphongban' => $canhan->tenphongban,
+                    'maphanloaicanbo' => $canhan->maphanloaicanbo,
+                    'ketqua' => 1,
+                    'madanhhieukhenthuong' => $canhan->madanhhieukhenthuong,
+                ];
+            }
+            dshosokhencao_canhan::insert($a_canhan);
+            //Tập thể
+            $m_tapthe = dshosokhencao_tapthe::wherein('mahosotdkt', $a_hoso)->where('ketqua', 1)->get();
+            $a_tapthe = [];
+            foreach ($m_tapthe as $tapthe) {
+                $a_tapthe[] = [
+                    'mahosotdkt' => $inputs['mahosotdkt'],
+                    'ketqua' => 1,
+                    'madanhhieukhenthuong' => $tapthe->madanhhieukhenthuong,
+                    'linhvuchoatdong' => $tapthe->linhvuchoatdong,
+                    'maphanloaitapthe' => $tapthe->maphanloaitapthe,
+                    'tentapthe' => $tapthe->tentapthe,
+                ];
+            }
+            dshosokhencao_tapthe::insert($a_tapthe);
+            //Hộ gia đình
+            $m_hogiadinh = dshosokhencao_hogiadinh::wherein('mahosotdkt', $a_hoso)->where('ketqua', 1)->get();
+            $a_hogiadinh = [];
+            foreach ($m_hogiadinh as $hogiadinh) {
+                $a_hogiadinh[] = [
+                    'mahosotdkt' => $inputs['mahosotdkt'],
+                    'ketqua' => 1,
+                    'madanhhieukhenthuong' => $hogiadinh->madanhhieukhenthuong,
+                    'linhvuchoatdong' => $hogiadinh->linhvuchoatdong,
+                    'maphanloaitapthe' => $hogiadinh->maphanloaitapthe,
+                    'tentapthe' => $hogiadinh->tentapthe,
+                ];
+            }
+            dshosokhencao_hogiadinh::insert($a_hogiadinh);
+            //Cập nhật trạng thái hồ sơ
+            dshosokhencao::wherein('mahosotdkt', $a_hoso)->update(['trangthai' => 'DTH', 'trangthai_xd' => 'DTH']);
+        }
+
+        //Kiểm tra trạng thái hồ sơ
+        setThongTinHoSo($inputs);
+        //Lưu nhật ký
+        dshosokhencao::create($inputs);
+        $trangthai = new trangthaihoso();
+        $trangthai->trangthai = $inputs['trangthai'];
+        $trangthai->madonvi = $inputs['madonvi'];
+        $trangthai->thongtin = "Thêm mới hồ sơ đề nghị khen thưởng";
+        $trangthai->phanloai = 'dshosothiduakhenthuong';
         $trangthai->mahoso = $inputs['mahosotdkt'];
         $trangthai->thoigian = $inputs['ngayhoso'];
         $trangthai->save();

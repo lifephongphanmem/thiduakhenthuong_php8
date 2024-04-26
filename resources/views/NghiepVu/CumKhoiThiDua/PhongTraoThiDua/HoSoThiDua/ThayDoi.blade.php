@@ -92,7 +92,7 @@
                     {!! Form::textarea('noidung', null, ['class' => 'form-control', 'rows' => 2]) !!}
                 </div>
             </div>
-
+            <!--
             <div class="form-group row">
                 <div class="col-lg-6">
                     <label>Tờ trình: </label>
@@ -139,6 +139,7 @@
                     @endif
                 </div>
             </div>
+        -->
 
            @include('NghiepVu._DungChung.HoSo_CumKhoi_ThiDua_DanhSachKhenThuong')
 
@@ -162,5 +163,6 @@
     @include('NghiepVu._DungChung.modal_CumKhoi_ThiDua_TapThe')
     @include('NghiepVu._DungChung.modal_HSPT_TieuChuan')
     @include('NghiepVu._DungChung.modal_HSPT_XoaDoiTuong')
+    @include('NghiepVu._DungChung.modal_TaiLieuDinhKem')
     {{-- @include('NghiepVu._DungChung.modal_Excel') --}}
 @stop

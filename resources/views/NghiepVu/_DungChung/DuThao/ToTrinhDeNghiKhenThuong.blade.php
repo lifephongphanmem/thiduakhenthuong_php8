@@ -52,7 +52,7 @@
 
             <div class="document-editor__toolbar"></div>
             <div class="form-control editor" style="height: auto; border: 1px solid #E4E6EF;">
-                {!! html_entity_decode($model->thongtintotrinhhoso) !!}
+                {!! html_entity_decode($model->thongtintotrinhdenghi) !!}
             </div>           
         </div>
         <div class="card-footer">

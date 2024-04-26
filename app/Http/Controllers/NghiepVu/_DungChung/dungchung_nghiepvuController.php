@@ -16,6 +16,8 @@ use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_canhan;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_hogiadinh;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_tapthe;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi_tailieu;
 use App\Models\NghiepVu\KhenCao\dshosokhencao;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothamgiaphongtraotd;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
@@ -316,8 +318,6 @@ class dungchung_nghiepvuController extends Controller
 
         die(json_encode($result));
     }
-
-
 
     public function DinhKemHoSoKhenCao(Request $request)
     {

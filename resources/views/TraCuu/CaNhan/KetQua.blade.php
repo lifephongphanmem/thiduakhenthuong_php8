@@ -69,7 +69,7 @@
                                     <td class="text-center">Số: {{ $tt->soqd }} </br> ngày {{ getDayVn($tt->ngayqd) }}
                                     </td>
                                     <td class="text-center">{{ $phamvi[$tt->capkhenthuong] ?? $tt->capkhenthuong }}</td>
-                                    <td>{{ $tt->tendoituong }}</td>
+                                    <td><a href="/TraCuu/CaNhan/ThongTinHoSo?mahosotdkt={{$tt->mahosotdkt}}" target="_blank">{{ $tt->tendoituong }}</a></td>
                                     <td>{{ $a_canhan[$tt->maphanloaicanbo] ?? '' }}</td>
                                     <td>{{ $tt->chucvu . ',' . $tt->tenphongban . ',' . $tt->tencoquan }}</td>
                                     <td>{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td>

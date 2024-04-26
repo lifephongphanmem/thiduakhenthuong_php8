@@ -74,7 +74,12 @@
                                         class="btn btn-sm btn-clean btn-icon" target="_blank">
                                         <i class="icon-lg la fa-eye text-dark"></i>
                                     </a>
-                                    
+                                    <button title="Tài liệu đính kèm" type="button"
+                                    onclick="get_attack('{{ $tt->mahoso }}', '/DungChung/DinhKemHoSoThamGiaCumKhoi')"
+                                    class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"
+                                    data-toggle="modal">
+                                    <i class="icon-lg la la-file-download text-dark"></i>
+                                </button>
                                     @if ($tt->nhanhoso == 'DANGNHAN')
                                         @if (in_array($tt->trangthai, ['CD', 'CNXKT', 'CC']))
                                             <button title="Nhận hồ sơ đăng ký" type="button"
@@ -111,4 +116,5 @@
     @include('includes.modal.modal-delete')
     @include('includes.modal.modal_unapprove_hs')
     @include('includes.modal.modal_accept_hs')
+    @include('includes.modal.modal_attackfile')
 @stop
