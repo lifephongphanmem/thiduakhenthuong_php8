@@ -79,7 +79,7 @@ class duthaoquyetdinhController extends Controller
         $inputs['url'] = static::$url;
         $model = duthaoquyetdinh::where('maduthao', $inputs['maduthao'])->first();
         //$model->codehtml = getQuyetDinhCKE('QUYETDINH');
-        //dd($model);
+        // dd($model);
         //return view('DanhMuc.DuThaoQuyetDinh.DuThao')
         return view('DanhMuc.DuThaoQuyetDinh.MauChung')
             ->with('model', $model)
@@ -90,6 +90,7 @@ class duthaoquyetdinhController extends Controller
     public function LuuDuThao(Request $request)
     {
         $inputs = $request->all();
+        // dd($inputs);
         $model = duthaoquyetdinh::where('maduthao', $inputs['maduthao'])->first();
         $model->codehtml = $inputs['codehtml'];
         $model->save();

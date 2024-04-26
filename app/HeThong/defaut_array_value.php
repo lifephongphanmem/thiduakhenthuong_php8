@@ -506,7 +506,6 @@ function getTaoDuThaoToTrinhHoSo(&$model, $maduthao = null)
         $donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
         $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
         $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
-
         $model->thongtintotrinhhoso = str_replace('[noidung]', $model->noidung, $model->thongtintotrinhhoso);
         $model->thongtintotrinhhoso = str_replace('[hinhthuckhenthuong]',  'Bằng khen', $model->thongtintotrinhhoso);
         $model->thongtintotrinhhoso = str_replace('[nguoikytotrinh]', $model->nguoikytotrinh, $model->thongtintotrinhhoso);
@@ -602,7 +601,6 @@ function getTaoDuThaoToTrinhPheDuyet(&$model, $maduthao = null)
         $donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
         $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
         $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
-
         $model->thongtintotrinhdenghi = str_replace('[noidung]', $model->noidung, $model->thongtintotrinhdenghi);
         $model->thongtintotrinhdenghi = str_replace('[hinhthuckhenthuong]',  'Bằng khen', $model->thongtintotrinhdenghi);
         $model->thongtintotrinhdenghi = str_replace('[nguoikytotrinh]', $model->nguoikytotrinh, $model->thongtintotrinhdenghi);
@@ -629,11 +627,11 @@ function getTaoQuyetDinhKT(&$model, $maduthao = null)
     if ($model->thongtinquyetdinh == '') {
         getTaoDuThaoKT($model, $maduthao);
     }
-    //dd($model);
+    // dd($model);
     $donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
     $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
     $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
-
+    
     $model->thongtinquyetdinh = str_replace('[nguoikytotrinh]', $model->nguoikytotrinh, $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[chucvunguoiky]', $model->chucvunguoiky, $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[chucvunguoikyqd]', $model->chucvunguoikyqd, $model->thongtinquyetdinh);
@@ -644,7 +642,8 @@ function getTaoQuyetDinhKT(&$model, $maduthao = null)
     $model->thongtinquyetdinh = str_replace('[ngayqd]',  Date2Str($model->ngayqd), $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[ngayhoso]',  Date2Str($model->ngayhoso), $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[donvidenghi]',  $donvi->tendvhienthi, $model->thongtinquyetdinh);
-    $model->thongtinquyetdinh = str_replace('[donvikhenthuong]', $donvi_kt->tendvhienthi ?? '', $model->thongtinquyetdinh);
+    // $model->thongtinquyetdinh = str_replace('[donvikhenthuong]', $donvi_kt->tendvhienthi ?? '', $model->thongtinquyetdinh);
+    $model->thongtinquyetdinh = str_replace('[donvikhenthuong]', $donvi_kt->tendvhienthi ? mb_strtoupper($donvi_kt->tendvhienthi, 'UTF-8'): '', $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[donvixetduyet]',  $donvi_xd->tendvhienthi ?? '', $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[sototrinhdenghi]',  $model->sototrinhdenghi ?? '', $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[ngaythangtotrinhdenghi]',  Date2Str($model->ngaythangtotrinhdenghi), $model->thongtinquyetdinh);

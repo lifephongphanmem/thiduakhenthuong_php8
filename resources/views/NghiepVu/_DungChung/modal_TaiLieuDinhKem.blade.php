@@ -163,7 +163,7 @@
                     contentType: false,
                     data: formData,
                     success: function(data) {
-                        // console.log(data);
+                        console.log(data);
                         if (data.status == 'success') {
                             $('#dstailieu').replaceWith(data.message);
                             TableManagedclass.init();

@@ -20,6 +20,7 @@ use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi_canhan;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi_tailieu;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi_tapthe;
 use App\Models\NghiepVu\CumKhoiThiDua\dsphongtraothiduacumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dsphongtraothiduacumkhoi_tieuchuan;
@@ -209,9 +210,14 @@ class dshosothiduacumkhoiController extends Controller
         $inputs['url_hs'] = static::$url;
         $inputs['url_xd'] = '/CumKhoiThiDua/DeNghiThiDua/';
         $inputs['url_qd'] = '/CumKhoiThiDua/PheDuyetThiDua/';
+        $inputs['phanloaihoso'] = 'dshosothamgiathiduacumkhoi';
 
         $inputs['mahinhthuckt'] = session('chucnang')['dshosothiduacumkhoi']['mahinhthuckt'] ?? 'ALL';
         $model = dshosothamgiathiduacumkhoi::where('mahoso', $inputs['mahoso'])->first();
+        if(isset($model))
+        {
+            $model->mahosotdkt=$model->mahoso;
+        }
         $donvi = viewdiabandonvi::where('madonvi', $model->madonvi)->first();
         $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo);
         $a_dhkt_tapthe = getDanhHieuKhenThuong($donvi->capdo, 'TAPTHE');
@@ -230,9 +236,11 @@ class dshosothiduacumkhoiController extends Controller
 
         $a_tapthe = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['TAPTHE'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         $a_canhan = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['CANHAN'])->get()->toarray(), 'tenphanloai', 'maphanloai');
+        $model_tailieu = dshosothamgiathiduacumkhoi_tailieu::where('mahoso', $model->mahoso)->get();
 
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.HoSoThiDua.ThayDoi')
             ->with('model', $model)
+            ->with('model_tailieu', $model_tailieu)
             ->with('model_canhan', $model_canhan)
             ->with('model_tapthe', $model_tapthe)
             ->with('model_tieuchuan', $model_tieuchuan)
@@ -241,6 +249,7 @@ class dshosothiduacumkhoiController extends Controller
             ->with('m_tieuchuan', $m_tieuchuan)
             ->with('a_tapthe', $a_tapthe)
             ->with('a_canhan', $a_canhan)
+            ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
             ->with('a_tieuchuan', array_column($m_tieuchuan->toArray(), 'tentieuchuandhtd', 'matieuchuandhtd'))
             ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('inputs', $inputs)

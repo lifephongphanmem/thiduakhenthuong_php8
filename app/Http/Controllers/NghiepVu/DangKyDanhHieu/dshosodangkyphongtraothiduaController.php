@@ -52,7 +52,7 @@ class dshosodangkyphongtraothiduaController extends Controller
             $model = $model->where('namdangky', $inputs['nam']);
         $model = $model->orderby('ngayhoso')->get();
         $inputs['trangthai'] = session('chucnang')['dshosodangkythidua']['trangthai'] ?? 'CC';
-        
+
         return view('NghiepVu.DangKyDanhHieu.HoSo.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
@@ -106,6 +106,7 @@ class dshosodangkyphongtraothiduaController extends Controller
         $m_danhhieu = dmdanhhieuthidua::all();
         $a_tapthe = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['TAPTHE', 'HOGIADINH'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         $a_canhan = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['CANHAN'])->get()->toarray(), 'tenphanloai', 'maphanloai');
+        // dd($model);
         return view('NghiepVu.DangKyDanhHieu.HoSo.ThayDoi')
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)
