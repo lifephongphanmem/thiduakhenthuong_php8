@@ -415,6 +415,7 @@ class dungchung_nghiepvu_tailieuController extends Controller
         $result['status'] = 'success';
 
         die(json_encode($result));
+        // die(json_encode($model));
     }
 
     public function DinhKemHoSoCumKhoi(Request $request)
@@ -428,6 +429,7 @@ class dungchung_nghiepvu_tailieuController extends Controller
         $result['message'] = '<div class="modal-body" id = "dinh_kem" >';
         $model = dshosotdktcumkhoi_tailieu::where('mahosotdkt', $inputs['mahs'])->get();
         if ($model->count() > 0) {
+            
             $a_pltailieu = getPhanLoaiTaiLieuDK();
             $a_donvi = array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi');
             $result['message'] .= '<div class="col-md-12">';
@@ -443,7 +445,12 @@ class dungchung_nghiepvu_tailieuController extends Controller
             $result['message'] .= '</thead>';
             $result['message'] .= '<tbody>';
             $i = 1;
-            foreach ($model as $tt) {
+            foreach ($model as $key=>$tt) {
+                if(!file_exists('/data/tailieudinhkem/' . $tt->tentailieu))
+                {
+                    $model->forget($key);
+                    continue;
+                }
                 $result['message'] .= '<tr class="odd gradeX">';
                 $result['message'] .= '<td class="text-center">' . $i++ . '</td>';
                 $result['message'] .= '<td>' . ($a_donvi[$tt->madonvi] ?? $tt->madonvi) . '</td>';

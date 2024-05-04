@@ -20,5 +20,6 @@ class dshosothamgiathiduacumkhoi_tapthe extends Model
         'lydo',
         'noidungkhenthuong', //in trên phôi bằng khen
         'madonvi', //phục vụ lấy dữ liệu
+        'linhvuchoatdong'
     ];
 }

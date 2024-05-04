@@ -108,8 +108,11 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
+        $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
+        $a_cumkhoi=array_unique(array_column($m_cumkhoi->toarray(),'macumkhoi'));
         //lấy hết phong trào cấp tỉnh
-        $model = view_dsphongtrao_cumkhoi::orderby('tungay')->get();
+        // $model = view_dsphongtrao_cumkhoi::orderby('tungay')->get();
+        $model = view_dsphongtrao_cumkhoi::orderby('tungay')->wherein('macumkhoi',$a_cumkhoi)->get();
 
         $ngayhientai = date('Y-m-d');
         $m_hoso = dshosothamgiathiduacumkhoi::wherein('trangthai', ['CD', 'DD', 'CXKT', 'DKT', 'DXKT'])->where('madonvi_nhan', $inputs['madonvi'])->get();
@@ -141,7 +144,7 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
         $a_donviql = getDonViXetDuyetDiaBan_Tam($donvi);
         //dd($a_donviql);  
         // dd($model);  
-        $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
+
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.HoSoDeNghi.DanhSach')
             ->with('inputs', $inputs)
             ->with('model', $model->sortby('tungay'))
@@ -276,7 +279,8 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
             $filedk->move(public_path() . '/data/tailieukhac/', $inputs['tailieukhac']);
         }
         $model->update($inputs);
-        return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
+        // return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
+        return redirect(static::$url . 'DanhSach?macumkhoi='.$model->macumkhoi.'&madonvi=' . $model->madonvi);
     }
 
     public function XetKT(Request $request)
@@ -341,9 +345,9 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
         $model = dshosotdktcumkhoi::where('mahosotdkt', $inputs['mahosotdkt'])->first();
         dshosotdktcumkhoi_canhan::where('mahosotdkt', $model->mahosotdkt)->delete();
         dshosotdktcumkhoi_tapthe::where('mahosotdkt', $model->mahosotdkt)->delete();
-        dshosothamgiathiduacumkhoi::where('mahosotdkt', $model->mahosotdkt)->update(['trangthai' => 'DD', 'mahosotdkt' => null]);
+        dshosothamgiathiduacumkhoi::where('mahoso', $model->mahosotdkt)->update(['trangthai' => 'DD', 'mahoso' => null]);
         $model->delete();
-        return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
+        return redirect(static::$url . 'DanhSach?macumkhoi='.$model->macumkhoi.'&madonvi=' . $model->madonvi);
     }
 
     public function XemHoSoKT(Request $request)

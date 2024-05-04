@@ -260,7 +260,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <a onclick="setInPT($(this), '/CumKhoiThiDua/PhongTraoThiDua/')"
+                            <a onclick="setInPT($(this), '/CumKhoiThiDua/PhongTraoThiDua/Xem')"
                                 class="btn btn-sm btn-clean text-dark font-weight-bold" target="_blank">
                                 <i class="la flaticon2-print"></i>Thông tin phong trào thi đua
                             </a>
@@ -311,6 +311,10 @@
 
         function setInQD(e, url) {
             e.prop('href', url + '?mahosotdkt=' + $('#frm_InDuLieu').find("[name='mahosotdkt']")
+                .val());
+        }
+        function setInPT(e, url) {
+            e.prop('href', url + '?maphongtraotd=' + $('#frm_InDuLieu').find("[name='maphongtraotd']")
                 .val());
         }
 

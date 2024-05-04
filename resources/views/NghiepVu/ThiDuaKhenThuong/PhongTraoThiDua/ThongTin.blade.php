@@ -37,7 +37,8 @@
                     <button class="btn btn-success btn-xs mr-2" data-target="#modal-phongtrao_captren" data-toggle="modal">
                         <i class="fa fa-plus"></i> Tiếp nhận từ cấp trên</button>
 
-                    <a href="{{ url('/PhongTraoThiDua/Them?madonvi=' . $inputs['madonvi']) }}"
+                    {{-- <a href="{{ url('/PhongTraoThiDua/Them?madonvi=' . $inputs['madonvi']) }}" --}}
+                    <a href="{{ url('/PhongTraoThiDua/Sua?madonvi=' . $inputs['madonvi']) }}"
                         class="btn btn-success btn-xs">
                         <i class="fa fa-plus"></i> Thêm mới</a>
                 @endif

@@ -109,13 +109,15 @@ class dsphongtraothiduaController extends Controller
                 $capdo = 'H';
         }
         $a_phamvi = getPhamViPhatDongPhongTrao($capdo);
-        $a_phongtrao_captren = array_column(dsphongtraothidua::where('phamviapdung', getCapDoDiaBanCapTren($donvi->capdo))->get()->toarray(),'noidung','maphongtraotd');
-        $m_phongtrao_captren=dsphongtraothidua::where('maphongtraotd',$inputs['maphongtraotd_coso'])->first();
-        if(!isset($m_phongtrao_captren))
-        {
-            $m_phongtrao_captren=new Collection();
+        $a_phongtrao_captren = array_column(dsphongtraothidua::where('phamviapdung', getCapDoDiaBanCapTren($donvi->capdo))->get()->toarray(), 'noidung', 'maphongtraotd');
+        if (isset($inputs['maphongtraotd_coso'])) {
+            $m_phongtrao_captren = dsphongtraothidua::where('maphongtraotd', $inputs['maphongtraotd_coso'])->first();
+            if (!isset($m_phongtrao_captren)) {
+                $m_phongtrao_captren = new Collection();
+            }
+        }else{
+            $m_phongtrao_captren = new Collection(); 
         }
-
         // dd($inputs);
         // dd($m_phongtrao_captren);
         return view('NghiepVu.ThiDuaKhenThuong.PhongTraoThiDua.ThayDoi')
@@ -269,7 +271,7 @@ class dsphongtraothiduaController extends Controller
 
                 $result['message'] .= '<td>' .
                     '<button type="button" data-target="#modal-tieuchuan" data-toggle="modal" class="btn btn-sm btn-clean btn-icon" onclick="getTieuChuan(' . $ct->id . ')" ><i class="icon-lg la fa-edit text-dark"></i></button>' .
-                    '<button type="button" data-target="#delete-modal" data-toggle="modal" class="btn btn-sm btn-clean btn-icon" onclick="editDanhHieu(' . $ct->id . ')"><i class="icon-lg la fa-trash-alt text-danger"></i></button>'
+                    '<button type="button" data-target="#delete-modal" data-toggle="modal" class="btn btn-sm btn-clean btn-icon" onclick="getId(' . $ct->id . ')"><i class="icon-lg la fa-trash-alt text-danger"></i></button>'
                     . '</td>';
 
                 $result['message'] .= '</tr>';
@@ -279,6 +281,7 @@ class dsphongtraothiduaController extends Controller
             $result['message'] .= '</div>';
             $result['message'] .= '</div>';
             $result['status'] = 'success';
+            $result['maphongtraotd']=$inputs['maphongtraotd'];
         }
         return response()->json($result);
     }

@@ -140,8 +140,11 @@ class dstruongcumkhoiController extends Controller
         $inputs = $request->all();
         $model = dstruongcumkhoi_chitiet::where('macumkhoi', $inputs['macumkhoi'])
             ->where('madanhsach', $inputs['madanhsach'])->first();
-
-        $model->update($inputs);
+        if(isset($model)){
+            $model->update($inputs);
+        }else{
+            dstruongcumkhoi_chitiet::create($inputs);
+        }
 
         return redirect(static::$url . 'DanhSach?madanhsach=' . $inputs['madanhsach']);
     }

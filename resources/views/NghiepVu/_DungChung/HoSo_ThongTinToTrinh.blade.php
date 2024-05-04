@@ -1,4 +1,4 @@
-<div class="form-group row">
+ <div class="form-group row">
     <div class="col-lg-6">
         <label>Số tờ trình</label>
         {!! Form::text('sototrinhdenghi', null, ['class' => 'form-control']) !!}
@@ -47,7 +47,7 @@
         {!! Form::hidden('phanloaitailieu', 'TOTRINHKQ') !!}
     </div>
 </div> --}}
-
+<!-- Bỏ tài liệu đính kèm
 <div class="form-group row">
     <div class="col-lg-12 text-right">
         <div class="btn-group" role="group">
@@ -106,3 +106,4 @@
         </table>
     </div>
 </div>
+-->

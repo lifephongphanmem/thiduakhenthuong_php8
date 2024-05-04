@@ -125,7 +125,7 @@
 
                                     @if (
                                         $tt->nhanhoso == 'KETTHUC' &&
-                                            chkPhanQuyen('dshosodenghikhenthuongthidua', 'hoanthanh') &&
+                                            chkPhanQuyen('dshosodenghikhenthuongthiduacumkhoi', 'hoanthanh') &&
                                             in_array($tt->trangthaikt, ['CC', 'DD', 'BTLXD', 'CXD','BTL']))
                                         @if ($tt->mahosotdkt == '-1')
                                             <button title="Tạo hồ sơ khen thưởng" type="button"

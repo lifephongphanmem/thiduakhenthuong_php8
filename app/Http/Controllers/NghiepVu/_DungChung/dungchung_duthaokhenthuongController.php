@@ -92,6 +92,7 @@ class dungchung_duthaokhenthuongController extends Controller
                 }
             case 'dshosotdktcumkhoi': {
                     $model = dshosotdktcumkhoi::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+                    // dd($model);
                     if ($model->thongtintotrinhdenghi == '') {
                         getTaoDuThaoToTrinhPheDuyetCumKhoi($model, $inputs['maduthao']);
                     }
@@ -254,7 +255,7 @@ class dungchung_duthaokhenthuongController extends Controller
         if ($model->thongtintotrinhdenghi == '') {
             getTaoDuThaoToTrinhPheDuyet($model, $inputs['maduthao']);
         }
-        //dd();
+        // dd($model);
         return view('NghiepVu._DungChung.DuThao.ToTrinhKetQuaKhenThuong')
             ->with('model', $model)
             ->with('a_duthao', $a_duthao)

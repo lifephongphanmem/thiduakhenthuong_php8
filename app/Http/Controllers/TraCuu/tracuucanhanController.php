@@ -11,7 +11,10 @@ use App\Models\DanhMuc\dmdanhhieuthidua;
 use App\Models\DanhMuc\dmhinhthuckhenthuong;
 use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dmnhomphanloai_chitiet;
+use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi_tailieu;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_canhan;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_detai;
@@ -77,14 +80,22 @@ class tracuucanhanController extends Controller
         //Nếu đơn vị quản lý địa bàn => xem đc tất cả
         //Nếu đơn vị nhập liệu => chỉ xem hồ sơ đơn vị gửi
         $model_khenthuong = view_tdkt_canhan::where('trangthai', 'DKT');
+        $model_cumkhoi=dshosothamgiathiduacumkhoi::join('dshosothamgiathiduacumkhoi_canhan','dshosothamgiathiduacumkhoi_canhan.mahoso','=','dshosothamgiathiduacumkhoi.mahoso')
+                                                    ->join('dsdonvi','dsdonvi.madonvi','dshosothamgiathiduacumkhoi.madonvi')
+                                                    ->select('dshosothamgiathiduacumkhoi_canhan.*','dshosothamgiathiduacumkhoi.ngayhoso','dshosothamgiathiduacumkhoi.noidung','dshosothamgiathiduacumkhoi.phanloai',
+                                                    'dshosothamgiathiduacumkhoi.maloaihinhkt','dshosothamgiathiduacumkhoi.maphongtraotd','dshosothamgiathiduacumkhoi.sototrinh','dshosothamgiathiduacumkhoi.chucvunguoiky',
+                                                    'dshosothamgiathiduacumkhoi.nguoikytotrinh','dshosothamgiathiduacumkhoi.madonvi','dshosothamgiathiduacumkhoi.macumkhoi','dsdonvi.madiaban');
 
+        $model_detai = view_tdkt_detai::query();
+        $this->TimKiem($model_khenthuong,$model_cumkhoi, $model_detai, $inputs);
+        $a_dhkt = getDanhHieuKhenThuong('ALL');
         foreach($model_khenthuong as $ct)
         {
-            //Xác định xem có file không để hiển thị nút tải hồ sơ
+            if(isset($ct->mahoso)){
+                $ct->mahosotdkt=$ct->mahoso;
+
+            }
         }
-        $model_detai = view_tdkt_detai::query();
-        $this->TimKiem($model_khenthuong, $model_detai, $inputs);
-        $a_dhkt = getDanhHieuKhenThuong('ALL');
         // dd($model_khenthuong);
         //dd( $model_khenthuong->toarray());
         return view('TraCuu.CaNhan.KetQua')
@@ -93,6 +104,7 @@ class tracuucanhanController extends Controller
             ->with('a_dhkt', $a_dhkt)
             ->with('phamvi', getPhamViApDung())
             ->with('inputs', $inputs)
+            ->with('a_cumkhoi', array_column(dscumkhoi::all()->toarray(),'tencumkhoi','macumkhoi'))
             ->with('a_danhhieu', array_column(dmdanhhieuthidua::all()->toArray(), 'tendanhhieutd', 'madanhhieutd'))
             ->with('a_hinhthuckt', array_column(dmhinhthuckhenthuong::all()->toArray(), 'tenhinhthuckt', 'mahinhthuckt'))
             ->with('a_canhan', array_column(dmnhomphanloai_chitiet::all()->toarray(), 'tenphanloai', 'maphanloai'))
@@ -104,8 +116,13 @@ class tracuucanhanController extends Controller
     {
         $inputs = $request->all();
         $model_khenthuong = view_tdkt_canhan::where('trangthai', 'DKT');
+        $model_cumkhoi=dshosothamgiathiduacumkhoi::join('dshosothamgiathiduacumkhoi_canhan','dshosothamgiathiduacumkhoi_canhan.mahoso','=','dshosothamgiathiduacumkhoi.mahoso')
+        ->join('dsdonvi','dsdonvi.madonvi','dshosothamgiathiduacumkhoi.madonvi')
+        ->select('dshosothamgiathiduacumkhoi_canhan.*','dshosothamgiathiduacumkhoi.ngayhoso','dshosothamgiathiduacumkhoi.noidung','dshosothamgiathiduacumkhoi.phanloai',
+        'dshosothamgiathiduacumkhoi.maloaihinhkt','dshosothamgiathiduacumkhoi.maphongtraotd','dshosothamgiathiduacumkhoi.sototrinh','dshosothamgiathiduacumkhoi.chucvunguoiky',
+        'dshosothamgiathiduacumkhoi.nguoikytotrinh','dshosothamgiathiduacumkhoi.madonvi','dsdonvi.madiaban');
         $model_detai = view_tdkt_detai::query();
-        $this->TimKiem($model_khenthuong, $model_detai, $inputs);
+        $this->TimKiem($model_khenthuong,$model_cumkhoi, $model_detai, $inputs);
         $a_dhkt = getDanhHieuKhenThuong('ALL');
 
         return view('TraCuu.CaNhan.InKetQua')
@@ -121,34 +138,42 @@ class tracuucanhanController extends Controller
             ->with('pageTitle', 'Kết quả tìm kiếm');
     }
 
-    function TimKiem(&$model_khenthuong, &$model_detai, $inputs)
+    function TimKiem(&$model_khenthuong, &$model_cumkhoi, &$model_detai, $inputs)
     {
         if ($inputs['tendoituong'] != '') {
             $model_khenthuong = $model_khenthuong->where('tendoituong', 'Like', '%' . $inputs['tendoituong'] . '%');
+            $model_cumkhoi = $model_cumkhoi->where('tendoituong', 'Like', '%' . $inputs['tendoituong'] . '%');
         }
 
         if ($inputs['tenphongban'] != '') {
             $model_khenthuong = $model_khenthuong->where('tenphongban', 'Like', '%' . $inputs['tenphongban'] . '%');
+            $model_cumkhoi = $model_cumkhoi->where('tenphongban', 'Like', '%' . $inputs['tenphongban'] . '%');
         }
 
-        if ($inputs['tencoquan'] != null && $inputs['tencoquan'] != '')
+        if ($inputs['tencoquan'] != null && $inputs['tencoquan'] != ''){
             $model_khenthuong = $model_khenthuong->where('tencoquan', 'Like', '%' . $inputs['tencoquan'] . '%');
-
-        if ($inputs['ngaytu'] != null)
+            $model_cumkhoi = $model_cumkhoi->where('tencoquan', 'Like', '%' . $inputs['tencoquan'] . '%');
+        }
+        if ($inputs['ngaytu'] != null){
             $model_khenthuong = $model_khenthuong->where('ngayqd', '>=', $inputs['ngaytu']);
-
-        if ($inputs['ngayden'] != null)
+            $model_cumkhoi = $model_cumkhoi->where('ngayqd', '>=', $inputs['ngaytu']);
+        }
+        if ($inputs['ngayden'] != null){
             $model_khenthuong = $model_khenthuong->where('ngayqd', '<=', $inputs['ngayden']);
-
-        if ($inputs['gioitinh'] != 'ALL')
+            $model_cumkhoi = $model_cumkhoi->where('ngayqd', '<=', $inputs['ngayden']);
+        }
+        if ($inputs['gioitinh'] != 'ALL'){
             $model_khenthuong = $model_khenthuong->where('gioitinh', $inputs['gioitinh']);
-
-        if ($inputs['maphanloaicanbo'] != 'ALL')
+            $model_cumkhoi = $model_cumkhoi->where('gioitinh', $inputs['gioitinh']);
+        }
+        if ($inputs['maphanloaicanbo'] != 'ALL'){
             $model_khenthuong = $model_khenthuong->where('maphanloaicanbo', $inputs['maphanloaicanbo']);
-
-        if ($inputs['maloaihinhkt'] != 'ALL')
+            $model_cumkhoi = $model_cumkhoi->where('maphanloaicanbo', $inputs['maphanloaicanbo']);
+        }
+        if ($inputs['maloaihinhkt'] != 'ALL'){
             $model_khenthuong = $model_khenthuong->where('maloaihinhkt', $inputs['maloaihinhkt']);
-
+            $model_cumkhoi = $model_cumkhoi->where('maloaihinhkt', $inputs['maloaihinhkt']);
+        }
         //Lọc các kết quả khen thưởng trên địa bàn
         $donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi'])->first();
 
@@ -156,17 +181,28 @@ class tracuucanhanController extends Controller
         if($donvi->madonvi == $donvi->madonviQL){
             $a_diaban = array_column(getDiaBanTraCuu($donvi)->toarray(), 'madiaban');
             // dd($m_diaban);
-            if ($inputs['madiaban'] == 'ALL')
+            if ($inputs['madiaban'] == 'ALL'){
                 $model_khenthuong = $model_khenthuong->wherein('madiaban', $a_diaban);
-            else
+                $model_cumkhoi = $model_cumkhoi->wherein('madiaban', $a_diaban);
+            }else{
                 $model_khenthuong = $model_khenthuong->where('madiaban', $inputs['madiaban']);
+                $model_cumkhoi = $model_cumkhoi->where('madiaban', $inputs['madiaban']);
+            }
         }else{
             $model_khenthuong = $model_khenthuong->where('madonvi', $inputs['madonvi']);
+            $model_cumkhoi = $model_cumkhoi->where('madonvi', $inputs['madonvi']);
         }
         //dd($donvi);        
 
         //Lấy kết quả khen thưởng
-        $model_khenthuong = $model_khenthuong->get();
+        $model_khenthuong = $model_khenthuong->get()->keyby('mahosotdkt');
+        $model_cumkhoi = $model_cumkhoi->get()->keyby('mahoso');
+        if(count($model_khenthuong)>0){
+            if(count($model_cumkhoi)>0)
+            {
+                $model_khenthuong=$model_khenthuong->union($model_cumkhoi);
+            }
+        }
         //dd($a_diaban);
 
         //Đề tài
@@ -186,6 +222,7 @@ class tracuucanhanController extends Controller
         // $model_canhan=dshosothiduakhenthuong_canhan::where('mahosotdkt',$inputs['mahoso'])->first();
         // dd($model);
         $inputs = $request->all();
+        dd($inputs);
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
         $model->tenphongtraotd = dsphongtraothidua::where('maphongtraotd', $model->maphongtraotd)->first()->noidung ?? '';
         $model_canhan = dshosothiduakhenthuong_canhan::where('mahosotdkt', $model->mahosotdkt)->get();
