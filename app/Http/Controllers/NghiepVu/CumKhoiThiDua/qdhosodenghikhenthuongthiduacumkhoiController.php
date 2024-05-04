@@ -706,8 +706,10 @@ class qdhosodenghikhenthuongthiduacumkhoiController extends Controller
         $model->capkhenthuong =  $donvi_kt->capdo;
         $model->donvikhenthuong =  $donvi_kt->tendonvi;
         $a_donvikt = array_unique(array_merge([$model->donvikhenthuong], getDonViKhenThuong()));
+        // dd($model);
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.KhenThuongHoSo.PheDuyetKT')
             ->with('model', $model)
+            ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
             ->with('model_canhan', $model_canhan)
             ->with('model_tapthe', $model_tapthe)
             ->with('model_tailieu', $model_tailieu)

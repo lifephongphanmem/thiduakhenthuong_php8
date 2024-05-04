@@ -229,7 +229,7 @@ class dshosothiduacumkhoiController extends Controller
 
         $model_canhan = dshosothamgiathiduacumkhoi_canhan::where('mahoso', $model->mahoso)->get();
         $model_tapthe = dshosothamgiathiduacumkhoi_tapthe::where('mahoso', $model->mahoso)->get();
-
+// dd($model_tapthe);
         $model_tieuchuan = dsphongtraothiduacumkhoi_tieuchuan::where('maphongtraotd', $model->maphongtraotd)->get();
         // $m_danhhieu = dmdanhhieuthidua::all();;
         $m_tieuchuan = dsphongtraothiduacumkhoi_tieuchuan::where('maphongtraotd', $model->maphongtraotd)->get();

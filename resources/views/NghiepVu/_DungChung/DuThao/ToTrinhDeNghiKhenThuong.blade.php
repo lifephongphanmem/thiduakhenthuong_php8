@@ -48,6 +48,7 @@
                 'enctype' => 'multipart/form-data',
             ]) !!}
             {{ Form::hidden('mahosotdkt', null) }}
+            {{ Form::hidden('phanloaihoso', $inputs['phanloaihoso']) }}
             {{ Form::hidden('thongtintotrinhhoso', null) }}
 
             <div class="document-editor__toolbar"></div>

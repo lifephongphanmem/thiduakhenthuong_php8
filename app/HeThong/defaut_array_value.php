@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dsdonvi;
 
 /**
@@ -408,8 +409,12 @@ function getTaoDuThaoToTrinhPheDuyetCumKhoi(&$model, $maduthao = null)
         $model->thongtintotrinhdenghi = $thongtintotrinhdenghi;
         //Gán thông tin
         $donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
-        $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
-        $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
+        // $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
+        // $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
+        //Lấy đơn vị xét duyệt và đơn vị khen thưởng theo dscumkhoi
+        $dscumkhoi=dscumkhoi::where('macumkhoi',$model->macumkhoi)->first();
+        $donvi_xd=isset($dscumkhoi)?dsdonvi::where('madonvi',$dscumkhoi->madonvixd)->first():'';
+        $donvi_kt=isset($dscumkhoi)?dsdonvi::where('madonvi',$dscumkhoi->madonvikt)->first():'';
 
         $model->thongtintotrinhdenghi = str_replace('[noidung]', $model->noidung, $model->thongtintotrinhdenghi);
         $model->thongtintotrinhdenghi = str_replace('[hinhthuckhenthuong]',  'Bằng khen', $model->thongtintotrinhdenghi);

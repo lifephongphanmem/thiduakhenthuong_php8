@@ -330,7 +330,6 @@ class xdhosodenghikhenthuongthiduacumkhoiController extends Controller
         //     $dinhkem = new dungchung_nghiepvu_tailieuController();
         //     $dinhkem->ThemTaiLieuDK($request, 'dshosotdktcumkhoi', 'totrinhdenghi', $model->madonvi_xd);
         // }
-        // dd($inputs);
         $maduthao = duthaoquyetdinh::where('phanloai', 'TOTRINHPHEDUYET')->first()->maduthao ?? '';
         if ($maduthao != '')
             getTaoDuThaoToTrinhPheDuyetCumKhoi($model, $maduthao);

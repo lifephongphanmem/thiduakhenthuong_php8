@@ -19,6 +19,7 @@ class dshosotdktcumkhoi extends Model
         'ghichu',
         'sototrinh',
         'nguoikytotrinh',
+        'chucvunguoiky',
         //File đính kèm
         'totrinh', //tờ trình khen thưởng
         'baocao', //báo cáo thành tích
