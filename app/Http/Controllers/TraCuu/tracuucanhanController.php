@@ -93,16 +93,8 @@ class tracuucanhanController extends Controller
         {
             if(isset($ct->mahoso)){
                 $ct->mahosotdkt=$ct->mahoso;
-                $tailieu=dshosothamgiathiduacumkhoi_tailieu::where('mahoso',$ct->mahoso)->get();
-                foreach($tailieu as $val)
-                {
-                    if (file_exists('/data/tailieudinhkem/' . $val->tentailieu)) {
-                       
-                    }
-                }
 
             }
-            //Xác định xem có file không để hiển thị nút tải hồ sơ
         }
         // dd($model_khenthuong);
         //dd( $model_khenthuong->toarray());
