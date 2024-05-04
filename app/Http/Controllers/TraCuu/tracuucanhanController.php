@@ -13,8 +13,11 @@ use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dmnhomphanloai_chitiet;
 use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi_canhan;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi_tailieu;
+use App\Models\NghiepVu\CumKhoiThiDua\dsphongtraothiduacumkhoi;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_canhan;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_detai;
@@ -222,10 +225,18 @@ class tracuucanhanController extends Controller
         // $model_canhan=dshosothiduakhenthuong_canhan::where('mahosotdkt',$inputs['mahoso'])->first();
         // dd($model);
         $inputs = $request->all();
-        dd($inputs);
+        // dd($inputs);
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
-        $model->tenphongtraotd = dsphongtraothidua::where('maphongtraotd', $model->maphongtraotd)->first()->noidung ?? '';
-        $model_canhan = dshosothiduakhenthuong_canhan::where('mahosotdkt', $model->mahosotdkt)->get();
+        if(!isset($model)){
+            $model=dshosothamgiathiduacumkhoi::where('mahoso',$inputs['mahosotdkt'])->first();
+            $model->tenphongtraotd = dsphongtraothiduacumkhoi::where('maphongtraotd', $model->maphongtraotd)->first()->noidung ?? '';
+            $model_canhan = dshosothamgiathiduacumkhoi_canhan::where('mahoso', $model->mahoso)->get();
+        }else{
+            $model->tenphongtraotd = dsphongtraothidua::where('maphongtraotd', $model->maphongtraotd)->first()->noidung ?? '';
+            $model_canhan = dshosothiduakhenthuong_canhan::where('mahosotdkt', $model->mahosotdkt)->get();
+        }
+        // dd($model);
+
         // $model_tapthe = dshosothiduakhenthuong_tapthe::where('mahosotdkt', $model->mahosotdkt)->get();
         // $model_detai = dshosothiduakhenthuong_detai::where('mahosotdkt', $model->mahosotdkt)->get();
         // $model_hogiadinh = dshosothiduakhenthuong_hogiadinh::where('mahosotdkt', $inputs['mahosotdkt'])->get();
