@@ -74,8 +74,8 @@ class qdhosodenghikhenthuongthiduacumkhoiController extends Controller
             ->wherein('trangthai', ['CXKT', 'DKT'])
             ->where('maphongtraotd', $inputs['maphongtraotd'])
             ->get();
-        
-        //dd($model);
+        // dd(session('admin'));
+        // dd($model);
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.KhenThuongHoSo.ThongTin')
             ->with('inputs', $inputs)
             ->with('model', $model->sortby('tungay'))

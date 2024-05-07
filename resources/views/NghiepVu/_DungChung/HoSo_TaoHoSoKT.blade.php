@@ -13,13 +13,19 @@
                     <div class="form-group row">
                         <div class="col-6">
                             <label>Loại hình khen thưởng</label>
-                            {!! Form::select('maloaihinhkt', $a_loaihinhkt, $inputs['maloaihinhkt'], ['class' => 'form-control']) !!}
+                            {{-- {!! Form::select('maloaihinhkt', $a_loaihinhkt, $inputs['maloaihinhkt'], ['class' => 'form-control select2basic']) !!} --}}
+                            <select name="maloaihinhkt" id="" class="form-control select2basic" style="width:100%">
+                                @foreach ( $a_loaihinhkt as $key=>$val)
+                                <option value="{{$key}}" {{$key == $inputs['maloaihinhkt']?'selected':''}}>{{$val}}</option>   
+                                @endforeach
+
+                            </select>
                         </div>
 
                         <div class="col-3">
                             <label>Trạng thái hồ sơ</label>
                             {!! Form::select('trangthai', getTrangThaiChucNangHoSo($inputs['trangthai']), $inputs['trangthai'], [
-                                'class' => 'form-control',
+                                'class' => 'form-control select2basic',
                             ]) !!}
                         </div>
 
