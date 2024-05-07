@@ -382,11 +382,11 @@ class dungchung_nghiepvu_tailieuController extends Controller
             $result['message'] .= '<tbody>';
             $i = 1;
             foreach ($model as $key=>$tt) {
-                if(!file_exists('/data/tailieudinhkem/' . $tt->tentailieu))
-                {
-                    $model->forget($key);
-                    continue;
-                }
+                // if(!file_exists('/data/tailieudinhkem/' . $tt->tentailieu))
+                // {
+                //     $model->forget($key);
+                //     continue;
+                // }
                 $result['message'] .= '<tr class="odd gradeX">';
                 $result['message'] .= '<td class="text-center">' . $i++ . '</td>';
                 $result['message'] .= '<td>' . ($a_donvi[$tt->madonvi] ?? $tt->madonvi) . '</td>';
