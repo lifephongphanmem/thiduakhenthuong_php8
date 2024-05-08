@@ -490,7 +490,9 @@ class dungchung_nghiepvu_tailieuController extends Controller
 
         $inputs = $request->all();
         $result['message'] = '<div class="modal-body" id = "dinh_kem" >';
-        $model = dshosodenghikhencao_tailieu::where('mahosotdkt', $inputs['mahs'])->get();
+        // $model = dshosodenghikhencao_tailieu::where('mahosotdkt', $inputs['mahs'])->get();
+        // $model = dshosothamgiathiduacumkhoi_tailieu::where('mahoso', $inputs['mahs'])->get();
+        $model = dshosotdktcumkhoi_tailieu::where('mahosotdkt', $inputs['mahs'])->get();
         if ($model->count() > 0) {
             $a_pltailieu = getPhanLoaiTaiLieuDK();
             $a_donvi = array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi');
