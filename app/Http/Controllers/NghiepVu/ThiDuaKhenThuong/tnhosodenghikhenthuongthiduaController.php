@@ -46,6 +46,8 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         $inputs['phanquyen'] = 'tnhosodenghikhenthuongthidua';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
+
         $m_donvi = getDonVi(session('admin')->capdo, 'tnhosodenghikhenthuongthidua', null, 'MODEL');
         if (count($m_donvi) == 0) {
             return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongthidua')->with('tenphanquyen', 'danhsach');

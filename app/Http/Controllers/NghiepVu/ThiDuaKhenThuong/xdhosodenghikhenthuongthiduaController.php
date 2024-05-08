@@ -60,6 +60,7 @@ class xdhosodenghikhenthuongthiduaController extends Controller
         $inputs['url_qd'] = '/KhenThuongHoSoThiDua/';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         $m_donvi = getDonVi(session('admin')->capdo, 'xdhosodenghikhenthuongthidua', null, 'MODEL');
         if (count($m_donvi) == 0) {

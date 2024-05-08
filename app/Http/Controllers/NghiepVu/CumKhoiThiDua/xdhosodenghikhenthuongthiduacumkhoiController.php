@@ -106,6 +106,7 @@ class xdhosodenghikhenthuongthiduacumkhoiController extends Controller
         }
         $inputs['trangthai'] = session('chucnang')['xdhosodenghikhenthuongthiduacumkhoi']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoCumKhoi';
         //dd($model->where('trangthai','CXKT')->where('madonvi_kt',''));
         //dd( $inputs);
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.XetDuyetDeNghi.ThongTin')
