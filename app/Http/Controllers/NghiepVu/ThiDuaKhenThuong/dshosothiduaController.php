@@ -149,9 +149,10 @@ class dshosothiduaController extends Controller
         $inputs['phamviapdung'] = $inputs['phamviapdung'] ?? 'ALL';
         $inputs['phanloai'] = $inputs['phanloai'] ?? 'ALL';
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
+        // dd($donvi);
         //lấy hết phong trào cấp tỉnh
         $model = viewdonvi_dsphongtrao::wherein('phamviapdung', ['T', 'TW'])->orderby('tungay')->get();
-
+        // dd($model);
         switch ($donvi->capdo) {
             case 'X': {
                     //đơn vị cấp xã => chỉ các phong trào trong huyện, xã
@@ -172,6 +173,7 @@ class dshosothiduaController extends Controller
         foreach ($model_xa as $ct) {
             $model->add($ct);
         }
+
         //kết quả
         if ($inputs['phamviapdung'] != 'ALL') {
             $model = $model->where('phamviapdung', $inputs['phamviapdung']);
@@ -179,7 +181,7 @@ class dshosothiduaController extends Controller
 
         $ngayhientai = date('Y-m-d');
         $m_hoso = dshosothamgiaphongtraotd::wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
-
+// dd($model);
         foreach ($model as $key=>$DangKy) {
             // //Lọc phạm vi áp dụng phong trào để lấy theo đơn vị huyện xã
             // if($donvi->capdo == 'X' && $DangKy->phamviapdung == 'T'){

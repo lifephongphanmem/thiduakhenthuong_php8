@@ -58,7 +58,6 @@ class hethongchungController extends Controller
     public function XacNhanDangNhap(Request $request)
     {
         $input = $request->all();
-        // dd($input);
         $ttuser = dstaikhoan::where('tendangnhap', $input['tendangnhap'])->first();
         //Tài khoản không tồn tại
         if ($ttuser == null) {

@@ -99,6 +99,7 @@ class dshosodenghikhenthuongcongtrangController extends Controller
                 $qr->where('madonvi_xd', $inputs['madonvi'])->orwhere('madonvi_kt', $inputs['madonvi']);
             })->get();
         // dd($model_hoso);
+        // dd($model);
         return view('NghiepVu.KhenThuongCongTrang.HoSoKhenThuong.ThongTin')
             ->with('model', $model)
             ->with('model_hoso', $model_hoso)

@@ -5,7 +5,7 @@
 </button>
 
 <button title="Tài liệu đính kèm" type="button"
-    onclick="get_attack('{{ $tt->mahosotdkt }}', '/DungChung/DinhKemHoSoCumKhoi')"
+    onclick="get_attack('{{ $tt->mahosotdkt }}', '/DungChung/DinhKemHoSoKhenThuong')"
     class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm" data-toggle="modal">
     <i class="icon-lg la la-file-download text-dark icon-2x"></i>
 </button>
