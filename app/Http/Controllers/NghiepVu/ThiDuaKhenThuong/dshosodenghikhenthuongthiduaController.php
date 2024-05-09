@@ -160,6 +160,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
         $inputs['url_qd'] = '/KhenThuongHoSoThiDua/';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         $m_phongtrao = dsphongtraothidua::where('maphongtraotd', $inputs['maphongtraotd'])->first();
         $ngayhientai = date('Y-m-d');
