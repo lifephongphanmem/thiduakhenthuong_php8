@@ -1374,6 +1374,7 @@ function setChuyenDV(&$model, &$inputs)
     $model->madonvi_nhan = $inputs['madonvi_nhan'];
 
 
+
     $model->trangthai_xd = $model->trangthai;
     $model->thoigian_xd = $model->thoigian;
     $model->madonvi_xd = $model->madonvi_nhan;

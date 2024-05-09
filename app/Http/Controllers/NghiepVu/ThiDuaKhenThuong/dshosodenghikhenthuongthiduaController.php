@@ -13,6 +13,7 @@ use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dmnhomphanloai_chitiet;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstaikhoan;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\DangKyDanhHieu\dshosodangkyphongtraothidua;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothamgiaphongtraotd;
@@ -564,6 +565,9 @@ class dshosodenghikhenthuongthiduaController extends Controller
         $inputs['trangthai'] = getTrangThaiChuyenHS(session('chucnang')['dshosodenghikhenthuongthidua']['trangthai'] ?? 'CC');
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         $inputs['lydo'] = ''; //Xóa lý do trả lại
+        $tendangnhap=dstaikhoan::where('madonvi',$inputs['madonvi_nhan'])->first();
+        // dd($tendangnhap);
+        $model->tendangnhap_xl = $tendangnhap->tendangnhap??'';
         setChuyenDV($model, $inputs);
         // setChuyenDV_Huyen($model, $inputs);
         // $inputs['tendangnhap_xl']=$model->madonvi;
