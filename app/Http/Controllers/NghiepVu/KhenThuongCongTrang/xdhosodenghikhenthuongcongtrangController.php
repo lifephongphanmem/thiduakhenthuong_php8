@@ -355,10 +355,10 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
     {
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
-        // if (isset($inputs['totrinhdenghi'])) {
-        //     $dinhkem = new dungchung_nghiepvu_tailieuController();
-        //     $dinhkem->ThemTaiLieuDK($request, 'dshosothiduakhenthuong', 'totrinhdenghi', $model->madonvi_xd);
-        // }
+        if (isset($inputs['totrinhdenghi'])) {
+            $dinhkem = new dungchung_nghiepvu_tailieuController();
+            $dinhkem->ThemTaiLieuDK($request, 'dshosothiduakhenthuong', 'totrinhdenghi', $model->madonvi_xd);
+        }
         $maduthao = duthaoquyetdinh::where('phanloai', 'TOTRINHPHEDUYET')->first()->maduthao ?? '';
         if ($maduthao != '')
             getTaoDuThaoToTrinhPheDuyet($model, $maduthao);

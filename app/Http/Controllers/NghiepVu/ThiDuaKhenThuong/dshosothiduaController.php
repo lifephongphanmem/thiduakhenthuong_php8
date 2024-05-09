@@ -432,6 +432,7 @@ class dshosothiduaController extends Controller
         $model->trangthai = $inputs['trangthai'];
         $model->madonvi_nhan = $inputs['madonvi_nhan'];
         $model->thoigian = date('Y-m-d H:i:s');
+        // dd($m_donvi);
         setChuyenHoSo($m_donvi->capdo, $model, ['madonvi' => $inputs['madonvi_nhan'], 'thoigian' => $model->thoigian, 'trangthai' => $model->trangthai]);
         $model->save();
 
@@ -458,8 +459,11 @@ class dshosothiduaController extends Controller
         $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
         //gán lại trạng thái hồ sơ để theo dõi
         $model->trangthai = 'DD';
-        $model->trangthai_h = 'DD';
+        // $model->trangthai_h = 'DD';
         // $model->thoigian_xd = $thoigian;
+        //set trạng thái hồ sơ khi chuyển
+        setTrangThaiHoSo($model->madonvi_nhan,$model, ['madonvi' => $model->madonvi_nhan, 'thoigian' => $model->thoigian, 'trangthai' => $model->trangthai]);
+        // dd($model);
         $model->save();
         trangthaihoso::create([
             'mahoso' => $inputs['mahoso'],
@@ -644,14 +648,15 @@ class dshosothiduaController extends Controller
         $inputs = $request->all();
         $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahosotdkt'])->first();
 
-        $result['message'] = '<div class="col-md-12" id="showlido">';
-        $result['message'] .= $model->lydo;
+        // $result['message'] = '<div class="col-md-12" id="showlido">';
+        // $result['message'] .= $model->lydo;
 
-        $result['message'] .= '</div>';
-        $result['status'] = 'success';
+        // $result['message'] .= '</div>';
+        // $result['status'] = 'success';
 
 
-        die(json_encode($result));
+        // die(json_encode($result));
+        die(json_encode($model));
     }
 
     public function TaiLieuDinhKem(Request $request)
