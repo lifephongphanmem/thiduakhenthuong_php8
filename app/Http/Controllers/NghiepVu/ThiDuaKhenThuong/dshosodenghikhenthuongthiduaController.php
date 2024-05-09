@@ -450,7 +450,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
                     ->where('madonvi_nhan', $inputs['madonvi'])
                     ->orwhere('madonvi_nhan_h', $inputs['madonvi'])
                     ->orwhere('madonvi_nhan_t', $inputs['madonvi'])->get();
-            })->get();
+            })->wherenotin('trangthai',['BTL'])->get();
             // dd($model);
         $m_hoso_dangky = dshosodangkyphongtraothidua::all();
         //Kiểm tra phong trào => nếu đã hết hạn thì ko cho thao tác nhận, trả hồ sơ
