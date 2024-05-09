@@ -500,7 +500,7 @@ class dungchung_inphoi_khenthuongController extends Controller
             $doituong->quyetdinh = $doituong->quyetdinh != '' ? $doituong->quyetdinh : ('Số: ' . $m_hoso->soqd . ', ' . Date2Str($m_hoso->ngayqd) . '</br>Số bằng: 01');
             $doituong->toado_quyetdinh = $doituong->toado_quyetdinh != '' ? $doituong->toado_quyetdinh : ($m_toado->toado_quyetdinh ?? '');
         }
-        //dd($model);
+        // dd($model);
         return view('BaoCao.DonVi.InMauBangKhenTapThe')
             ->with('model', $model)
             ->with('m_donvi', $m_donvi)
@@ -608,6 +608,7 @@ class dungchung_inphoi_khenthuongController extends Controller
             $doituong->quyetdinh = $doituong->quyetdinh != '' ? $doituong->quyetdinh : ('Số: ' . $m_hoso->soqd . ', ' . Date2Str($m_hoso->ngayqd) . '</br>Số bằng: 01');
             $doituong->toado_quyetdinh = $doituong->toado_quyetdinh != '' ? $doituong->toado_quyetdinh : ($m_toado->toado_quyetdinh ?? '');
         }
+        // dd($model);
         //dd($m_donvi);
         return view('BaoCao.DonVi.InMauGiayKhenTapThe')
             ->with('model', $model)
