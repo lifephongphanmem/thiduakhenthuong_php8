@@ -214,7 +214,7 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         $inputs['trangthai'] = session('chucnang')['tnhosodenghikhenthuongthidua']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
         //dd($model->where('trangthai','CXKT')->where('madonvi_kt',''));
-        dd($model);
+        // dd($model);
 
         return view('NghiepVu.ThiDuaKhenThuong.TiepNhanHoSo.DanhSach')
             ->with('model', $model)
