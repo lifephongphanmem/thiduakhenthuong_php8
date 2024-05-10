@@ -76,7 +76,9 @@ class qdhosodenghikhenthuongthiduaController extends Controller
         }
         $ngayhientai = date('Y-m-d');
 
-        $m_hoso = dshosothiduakhenthuong::where('madonvi_xd', $inputs['madonvi'])
+        // $m_hoso = dshosothiduakhenthuong::where('madonvi_xd', $inputs['madonvi'])
+        //     ->wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
+            $m_hoso = dshosothiduakhenthuong::where('madonvi_kt', $inputs['madonvi'])
             ->wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
 
         //dd($ngayhientai);
@@ -90,7 +92,7 @@ class qdhosodenghikhenthuongthiduaController extends Controller
                 $ct->$trangthai = $khenthuong->where('trangthai', $trangthai)->count();
             }
         }
-
+// dd($a_trangthai);
         $inputs['trangthai'] = session('chucnang')['qdhosodenghikhenthuongthidua']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] == 'ALL' ? 'CC' : $inputs['trangthai'];
         //dd($model);
