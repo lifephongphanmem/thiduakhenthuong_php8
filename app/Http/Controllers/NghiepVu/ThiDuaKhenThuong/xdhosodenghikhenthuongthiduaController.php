@@ -109,7 +109,7 @@ class xdhosodenghikhenthuongthiduaController extends Controller
 
         $m_hoso = dshosothiduakhenthuong::where('madonvi_xd', $inputs['madonvi'])
             ->wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
-
+// dd($m_hoso);
         //dd($ngayhientai);
         $a_trangthai = array_unique(array_column($m_hoso->toarray(), 'trangthai'));
 
