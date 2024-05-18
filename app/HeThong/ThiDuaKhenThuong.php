@@ -390,31 +390,31 @@ function getDonViXDDiaBan($donvi, $kieudulieu = 'ARRAY')
     /*
     Lấy thông tin đơn vị theo Đơn vị QL để thực hiện quy trình cán bộ tdkt huyện-> UBND huyện
     */
-        //Lấy đơn vị quản lý địa bàn và đơn vi
-        $m_diaban = \App\Models\DanhMuc\dsdiaban::where('madiaban', $donvi->madiaban)->first();
-        //$a_donvi = [$m_diaban->madonviKT, $donvi->madonvi]; 2023.05.25 bỏ chức năng tự gửi hồ sơ đề nghị lên đơn mình do đã tách hồ sơ khen thưởng tại đơn vị
-        $a_donvi = [$m_diaban->madonviKT,$m_diaban->madonviQL];
-        // dd($a_donvi);
-        // $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
-        // dd($m_diaban);
-        // if ($m_diabanQL != null)
-        //     $a_donvi = array_merge($a_donvi, [$m_diabanQL->madonviQL]);
-    
-        //2023.05.25 thêm điều kiện đơn vị không gửi đc cho chính mính (kể cả đơn vị quản lý ở cấp H)
-        // if ($donvi->capdo != 'T') {
-        //     $a_donvi = array_diff($a_donvi, [$donvi->madonvi]);
-        // }
+    //Lấy đơn vị quản lý địa bàn và đơn vi
+    $m_diaban = \App\Models\DanhMuc\dsdiaban::where('madiaban', $donvi->madiaban)->first();
+    //$a_donvi = [$m_diaban->madonviKT, $donvi->madonvi]; 2023.05.25 bỏ chức năng tự gửi hồ sơ đề nghị lên đơn mình do đã tách hồ sơ khen thưởng tại đơn vị
+    $a_donvi = [$m_diaban->madonviKT, $m_diaban->madonviQL];
     // dd($a_donvi);
-        $model = \App\Models\DanhMuc\dsdonvi::wherein('madonvi', $a_donvi)->get();
-    
-        switch ($kieudulieu) {
-            case 'MODEL': {
-                    return $model;
-                    break;
-                }
-            default:
-                return array_column($model->toarray(), 'tendonvi', 'madonvi');
-        }
+    // $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
+    // dd($m_diaban);
+    // if ($m_diabanQL != null)
+    //     $a_donvi = array_merge($a_donvi, [$m_diabanQL->madonviQL]);
+
+    //2023.05.25 thêm điều kiện đơn vị không gửi đc cho chính mính (kể cả đơn vị quản lý ở cấp H)
+    // if ($donvi->capdo != 'T') {
+    //     $a_donvi = array_diff($a_donvi, [$donvi->madonvi]);
+    // }
+    // dd($a_donvi);
+    $model = \App\Models\DanhMuc\dsdonvi::wherein('madonvi', $a_donvi)->get();
+
+    switch ($kieudulieu) {
+        case 'MODEL': {
+                return $model;
+                break;
+            }
+        default:
+            return array_column($model->toarray(), 'tendonvi', 'madonvi');
+    }
 }
 function getDonViXetDuyetPhongTrao($donvi, $phongtrao, $kieudulieu = 'ARRAY')
 {
@@ -1137,17 +1137,17 @@ function setTraLaiXD(&$model, &$inputs)
     $model->trangthai = $inputs['trangthai'];
     $model->thoigian = $inputs['thoigian'];
     $model->lydo = $inputs['lydo'];
-    
+
     //Xét có tồn tại các trường trong db không để cập nhật
-    $a_keys=array_keys($model->toarray());
-    if(in_array('trangthai_xd',$a_keys))
-    $model->trangthai_xd = $model->trangthai;
-    if(in_array('thoigian_xd',$a_keys))
-    $model->thoigian_xd = $model->thoigian;
-    if(in_array('trangthai_xl',$a_keys))
-    $model->trangthai_xl = null;
-    if(in_array('tendangnhap_xl',$a_keys))
-    $model->tendangnhap_xl = null;
+    $a_keys = array_keys($model->toarray());
+    if (in_array('trangthai_xd', $a_keys))
+        $model->trangthai_xd = $model->trangthai;
+    if (in_array('thoigian_xd', $a_keys))
+        $model->thoigian_xd = $model->thoigian;
+    if (in_array('trangthai_xl', $a_keys))
+        $model->trangthai_xl = null;
+    if (in_array('tendangnhap_xl', $a_keys))
+        $model->tendangnhap_xl = null;
 
     $model->save();
 
@@ -1167,6 +1167,7 @@ function setTraLai($model, $inputs)
 {
     $model->trangthai = $inputs['trangthai'];
     $model->thoigian = $inputs['thoigian'];
+    $model->ykien=null;
 
 
     $model->trangthai_xd = $model->trangthai;
@@ -1190,6 +1191,29 @@ function setTraLai($model, $inputs)
         'madonvi' => $model->madonvi_xd,
         'thongtin' => 'Trả lại hồ sơ đề nghị khen thưởng.',
     ]);
+}
+
+function setTraLai_TL($mahosotdkt, $chucnang)
+{
+
+
+    switch ($chucnang) {
+        case 'trinhdenghi':
+            $a_dieukien = ['TOTRINHKQ', 'YKIEN'];
+            break;
+        default:
+            $a_dieukien = array();
+            break;
+    }
+
+
+    $model_tailieu = dshosothiduakhenthuong_tailieu::where('mahosotdkt', $mahosotdkt)->wherein('phanloai', $a_dieukien)->get();
+    foreach ($model_tailieu as $tl) {
+        if (file_exists('/data/tailieudinhkem/' . $tl->tentailieu)) {
+            File::Delete('/data/tailieudinhkem/' . $tl->tentailieu);
+        }
+        $tl->delete();
+    }
 }
 
 function setChuyenChuyenVienXD(&$model, &$inputs, $phanloai)
@@ -1394,7 +1418,7 @@ function setChuyenDV(&$model, &$inputs)
 }
 
 //Chuyển hồ sơ trong Huyện
-function setChuyenDV_Huyen($model, $inputs,$phamviapdung = null)
+function setChuyenDV_Huyen($model, $inputs, $phamviapdung = null)
 {
     $model->trangthai = $inputs['trangthai'];
     $model->thoigian = $inputs['thoigian'];
@@ -1402,9 +1426,8 @@ function setChuyenDV_Huyen($model, $inputs,$phamviapdung = null)
     // $model->madonvi_nhan = $inputs['madonvi_nhan'];
     $model->lydo_h = $inputs['lydo'];
     $model->madonvi_nhan_h = $inputs['madonvi_nhan'];
-    if($phamviapdung == 'H')
-    {
-        $model->trangthai_xd='CD';
+    if ($phamviapdung == 'H') {
+        $model->trangthai_xd = 'CD';
     }
     // $model->thoigian_xd = $model->thoigian;
     // $model->madonvi_xd = $model->madonvi_nhan;
@@ -1481,7 +1504,7 @@ function getToaDoMacDinh($inputs)
             ->where('phanloaiphoi', $inputs['phanloaiphoi'])
             ->where('madonvi', session('admin')->madonvi_inphoi)
             ->first();
-        //dd($model);
+        // dd($model);
     }
     return $model;
 }
@@ -1713,4 +1736,23 @@ function ColumnName()
         'V' => 21,
         'W' => 22
     ];
+}
+
+function getPhanNhomTL($phanloai = null)
+{
+    if (isset($phanloai)) {
+        $a_phanloai = [
+            'ALL' => 'Tất cả',
+            'TW' => 'Tài liệu Trung Ương',
+            'T' => 'Tài liệu Tỉnh',
+            'S' => 'Tài liệu Sở'
+        ];
+    } else {
+        $a_phanloai = [
+            'TW' => 'Tài liệu Trung Ương',
+            'T' => 'Tài liệu Tỉnh',
+            'S' => 'Tài liệu Sở'
+        ];
+    }
+    return $a_phanloai;
 }

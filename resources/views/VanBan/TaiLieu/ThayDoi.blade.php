@@ -49,6 +49,10 @@
                     {!! Form::text('kyhieuvb', null, ['id' => 'kyhieuvb', 'class' => 'form-control required']) !!}
                 </div>
                 <div class="col-lg-3">
+                    <label class="control-label">Phân nhóm</label>
+                    {!! Form::select('phannhom', getPhanNhomTL(), null, ['class' => 'form-control select2basic']) !!}
+                </div>
+                <div class="col-lg-3">
                     <label class="control-label">Ngày ban hành</label>
                     {!! Form::input('date', 'ngayqd', null, ['class' => 'form-control', 'required']) !!}
                 </div>

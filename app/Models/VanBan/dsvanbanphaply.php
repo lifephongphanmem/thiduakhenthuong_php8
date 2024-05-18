@@ -29,5 +29,7 @@ class dsvanbanphaply extends Model
         'tinhtrang',
         'ngaytinhtrang',
         'vanbanbosung',
+        //14/05/2024
+        'phannhom'
     ];
 }

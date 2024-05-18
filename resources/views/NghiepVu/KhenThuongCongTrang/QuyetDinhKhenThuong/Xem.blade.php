@@ -47,7 +47,9 @@
             <td>Mô tả hồ sơ: {{ $model->noidung }}</td>
         </tr>
 
-
+        <tr>
+            <td>Ý kiến đóng góp: {{ $model->ykiendonggop }}</td>
+        </tr>
         <tr>
             <td>Tên đơn vị quyết định khen thưởng: {{ $model->tendvcqhienthi }}</td>
         </tr>

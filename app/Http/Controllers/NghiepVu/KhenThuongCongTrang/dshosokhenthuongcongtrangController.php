@@ -147,6 +147,7 @@ class dshosokhenthuongcongtrangController extends Controller
             $model->donvikhenthuong = $khenthuong->tendonvi;
         }
         $a_donvikt = array_unique(array_merge([$model->donvikhenthuong => $model->donvikhenthuong], getDonViKhenThuong()));
+        // dd(session('admin'));
         return view('NghiepVu.KhenThuongCongTrang.HoSoKT.ThayDoi')
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)

@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <title>{{$pageTitle}} | TDKT</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <title>{{ $pageTitle }} | TDKT</title>
     <link rel="shortcut icon" href="{{ url('assets/media/logos/LIFESOFT.png') }}" />
     <style type="text/css">
         /* .header tr td {
@@ -119,64 +120,111 @@
             document.body.removeChild(fileDownload);
         }
 
+        // function exportTableToExcel() {
+        //     var downloadLink;
+        //     var dataType = 'application/vnd.ms-excel';
+        //     var tableHTML = '';
+        //     //Tiêu đề
+        //     var data_header = document.getElementById('data_header');
+        //     if (data_header) {
+        //         tableHTML = tableHTML + data_header.outerHTML.replace(/ /g, '%20');
+        //     }
+
+        //     //Nội dung 1
+        //     var data_body = document.getElementById('data_body');
+        //     if (data_body) {
+        //         tableHTML = tableHTML + data_body.outerHTML.replace(/ /g, '%20');
+        //     }
+        //     //Nội dung 2
+        //     var data_body1 = document.getElementById('data_body1');
+        //     if (data_body1) {
+        //         tableHTML = tableHTML + data_body1.outerHTML.replace(/ /g, '%20');
+        //     }
+        //     //Nội dung 3
+        //     var data_body2 = document.getElementById('data_body2');
+        //     if (data_body2) {
+        //         tableHTML = tableHTML + data_body2.outerHTML.replace(/ /g, '%20');
+        //     }
+        //     //Nội dung 4
+        //     var data_body3 = document.getElementById('data_body3');
+        //     if (data_body3) {
+        //         tableHTML = tableHTML + data_body3.outerHTML.replace(/ /g, '%20');
+        //     }
+        //     //Nội dung 5
+        //     var data_body4 = document.getElementById('data_body4');
+        //     if (data_body4) {
+        //         tableHTML = tableHTML + data_body4.outerHTML.replace(/ /g, '%20');
+        //     }
+        //     //Nội dung 6
+        //     var data_body5 = document.getElementById('data_body5');
+        //     if (data_body5) {
+        //         tableHTML = tableHTML + data_body5.outerHTML.replace(/ /g, '%20');
+        //     }
+
+        //     //Chữ ký
+        //     var data_footer = document.getElementById('data_footer');
+        //     if (data_footer) {
+        //         tableHTML = tableHTML + data_footer.outerHTML.replace(/ /g, '%20');
+        //     }
+        //     //Xác nhận
+        //     var data_footer1 = document.getElementById('data_footer1');
+        //     if (data_footer1) {
+        //         tableHTML = tableHTML + data_footer1.outerHTML.replace(/ /g, '%20');
+        //     }
+
+        //     // Specify file name
+        //     var filename = $('#title').val() + '.xls';
+
+        //     // Create download link element
+        //     downloadLink = document.createElement("a");
+
+        //     document.body.appendChild(downloadLink);
+
+        //     if (navigator.msSaveOrOpenBlob) {
+        //         var blob = new Blob(['\ufeff', tableHTML], {
+        //             type: dataType
+        //         });
+        //         navigator.msSaveOrOpenBlob(blob, filename);
+        //     } else {
+        //         // Create a link to the file
+        //         downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+        //         // Setting the file name
+        //         downloadLink.download = filename;
+
+        //         //triggering the function
+        //         downloadLink.click();
+        //     }
+        // }
         function exportTableToExcel() {
-            var downloadLink;
             var dataType = 'application/vnd.ms-excel';
             var tableHTML = '';
-            //Tiêu đề
-            var data_header = document.getElementById('data_header');
-            if (data_header) {
-                tableHTML = tableHTML + data_header.outerHTML.replace(/ /g, '%20');
-            }
 
-            //Nội dung 1
-            var data_body = document.getElementById('data_body');
-            if (data_body) {
-                tableHTML = tableHTML + data_body.outerHTML.replace(/ /g, '%20');
-            }
-            //Nội dung 2
-            var data_body1 = document.getElementById('data_body1');
-            if (data_body1) {
-                tableHTML = tableHTML + data_body1.outerHTML.replace(/ /g, '%20');
-            }
-            //Nội dung 3
-            var data_body2 = document.getElementById('data_body2');
-            if (data_body2) {
-                tableHTML = tableHTML + data_body2.outerHTML.replace(/ /g, '%20');
-            }
-            //Nội dung 4
-            var data_body3 = document.getElementById('data_body3');
-            if (data_body3) {
-                tableHTML = tableHTML + data_body3.outerHTML.replace(/ /g, '%20');
-            }
-            //Nội dung 5
-            var data_body4 = document.getElementById('data_body4');
-            if (data_body4) {
-                tableHTML = tableHTML + data_body4.outerHTML.replace(/ /g, '%20');
-            }
-            //Nội dung 6
-            var data_body5 = document.getElementById('data_body5');
-            if (data_body5) {
-                tableHTML = tableHTML + data_body5.outerHTML.replace(/ /g, '%20');
-            }
+            var elementIds = [
+                'data_header',
+                'data_body',
+                'data_body1',
+                'data_body2',
+                'data_body3',
+                'data_body4',
+                'data_body5',
+                'data_footer',
+                'data_footer1'
+            ];
 
-            //Chữ ký
-            var data_footer = document.getElementById('data_footer');
-            if (data_footer) {
-                tableHTML = tableHTML + data_footer.outerHTML.replace(/ /g, '%20');
-            }
-            //Xác nhận
-            var data_footer1 = document.getElementById('data_footer1');
-            if (data_footer1) {
-                tableHTML = tableHTML + data_footer1.outerHTML.replace(/ /g, '%20');
-            }
+
+            elementIds.forEach(function(id) {
+                var element = document.getElementById(id);
+                if (element) {
+                    tableHTML += element.outerHTML.replace(/ /g, '%20');
+                }
+            });
 
             // Specify file name
             var filename = $('#title').val() + '.xls';
 
             // Create download link element
-            downloadLink = document.createElement("a");
-
+            var downloadLink = document.createElement("a");
             document.body.appendChild(downloadLink);
 
             if (navigator.msSaveOrOpenBlob) {
@@ -191,9 +239,12 @@
                 // Setting the file name
                 downloadLink.download = filename;
 
-                //triggering the function
+                // Triggering the download
                 downloadLink.click();
             }
+
+            // Remove the download link from the document
+            document.body.removeChild(downloadLink);
         }
     </script>
 </head>

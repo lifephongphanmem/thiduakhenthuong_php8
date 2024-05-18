@@ -1471,6 +1471,13 @@ function getPhanLoaiTaiLieuDK($phanloaihoso = 'ALL')
             'TOTRINHKQ' => 'Tờ trình kết quả khen thưởng',
         ];
     }
+        //Tờ trình kết quả khen thưởng & ý kiến đóng góp
+        if ($phanloaihoso == 'TOTRINHKQ&YKIEN') {
+            return [
+                'TOTRINHKQ' => 'Tờ trình kết quả khen thưởng',
+                'YKIEN'=>'Ý kiến đóng góp'
+            ];
+        }
     //Quyết định khen thưởng
     if ($phanloaihoso == 'QDKT') {
         return [
@@ -1495,6 +1502,7 @@ function getPhanLoaiTaiLieuDK($phanloaihoso = 'ALL')
         'SANGKIEN' => 'Sáng kiến sáng tạo',
         'TOTRINHKQ' => 'Tờ trình kết quả khen thưởng',
         'QDKT' => 'Quyết định khen thưởng',
+        'YKIEN' => 'Ý kiến đóng góp',
         'KHAC' => 'Tài liệu khác',
     ];
     return $a_kq;

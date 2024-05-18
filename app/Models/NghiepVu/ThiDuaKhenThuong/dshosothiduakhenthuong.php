@@ -92,5 +92,7 @@ class dshosothiduakhenthuong extends Model
         //Xử lý hồ so theo TQ
         'trangthai_xl',//Trạng thái xử lý hồ sơ
         'tendangnhap_xl',//Tài khoản đang xử lý hồ sơ
+        //14/05/2024
+        'ykiendonggop'
     ];
 }

@@ -552,15 +552,15 @@
         <script src="/assets/js/pages/dataTables.bootstrap.js"></script>
         <script src="/assets/js/pages/table-lifesc.js"></script>
         <!-- END PAGE LEVEL PLUGINS -->
-        <script>
+        {{-- <script>
             jQuery(document).ready(function() {
                 TableManaged3.init();
                 // var toggleElement = document.querySelector("#kt_aside_toggle);
                 //     var toggle = KTToggle.getInstance(toggleElement); toggle.disabled();
             });
-        </script>
+        </script> --}}
 
-
+        @yield('custom-script-footer')
     </div>
 </body>
 <!--end::Body-->
