@@ -50,6 +50,7 @@ class tnhosodenghikhencaoController extends Controller
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosokhencao';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         // $m_donvi = getDonVi(session('admin')->capdo, 'tnhosodenghikhencao');
         $m_donvi = getDonVi(session('admin')->capdo);

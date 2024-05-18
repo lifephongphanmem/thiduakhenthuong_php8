@@ -58,6 +58,7 @@
                                 <th width="2%">STT</th>
                                 <th width="15%">Đơn vị ban hành</th>
                                 <th>Số hiệu<br>văn bản</th>
+                                <th>Phân nhóm</th>
                                 <th>Nội dung</th>
                                 <th>Ngày<br>áp dụng</th>
                                 <th>Trạng thái</th>
@@ -70,6 +71,7 @@
                                     <td style="text-align: center">{{ $key + 1 }}</td>
                                     <td class="active">{{ $tt->dvbanhanh }}</td>
                                     <td class="text-center">{{ $tt->kyhieuvb }}<br>{{ getDayVn($tt->ngayqd) }}</td>
+                                    <td>{{ getPhanNhomTL()[$tt->phannhom]??'' }}</td>
                                     <td>{{ $tt->tieude }}</td>
                                     <td style="text-align: center">{{ getDayVn($tt->ngayapdung) }}</td>
                                     <td style="text-align: center">{{ $a_tinhtrang[$tt->tinhtrang] ?? '' }}

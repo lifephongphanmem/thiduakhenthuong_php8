@@ -51,6 +51,7 @@ class dshosodenghikhencaoController extends Controller
         $inputs['url_qd'] = '/KhenCao/PeDuyetDeNghi/';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosokhencao';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenCao';
 
         $m_donvi = getDonVi(session('admin')->capdo);
         // $m_donvi = getDonVi(session('admin')->capdo, 'dshosodenghikhencao');

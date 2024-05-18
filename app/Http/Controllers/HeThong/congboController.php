@@ -38,7 +38,11 @@ class congboController extends Controller
     {
         $inputs = $request->all();
         $inputs['url'] = '/QuanLyVanBan/VanBanPhapLy';
-        $model = dsvanbanphaply::all();
+        $inputs['phannhom']=$inputs['phannhom']??'ALL';
+        // $model = dsvanbanphaply::all();
+        $model = dsvanbanphaply::when($inputs['phannhom'] !== 'ALL', function($q) use($inputs) {
+            return $q->where('phannhom', $inputs['phannhom']);
+        })->get();
         $hethong = hethongchung::first();
         return view('CongBo.VanBan')
             ->with('model', $model)

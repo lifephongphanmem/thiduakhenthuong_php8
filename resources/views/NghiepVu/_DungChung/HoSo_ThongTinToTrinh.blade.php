@@ -33,9 +33,15 @@
         {!! Form::text('nguoikytotrinhdenghi', null, ['class' => 'form-control']) !!}
     </div>
 </div>
+<div class="form-group row">
+    <div class="col-12">
+        <label>Ý kiến đóng góp</label>
+        {!! Form::textarea('ykiendonggop', null, ['class' => 'form-control', 'rows' => 2]) !!}
+    </div>
+</div>
 
 <div class="form-group row">
-    <div class="col-6">
+    {{-- <div class="col-6">
         <label>Tờ trình kết quả khen thưởng: </label>
         {!! Form::file('totrinhdenghi', null, ['id' => 'totrinhdenghi', 'class' => 'form-control']) !!}
         @if ($model->totrinhdenghi != '')
@@ -45,9 +51,9 @@
             </span>
         @endif
         {!! Form::hidden('phanloaitailieu', 'TOTRINHKQ') !!}
-    </div>
+    </div> --}}
 </div>
-<!-- Bỏ tài liệu đính kèm
+
 <div class="form-group row">
     <div class="col-lg-12 text-right">
         <div class="btn-group" role="group">
@@ -106,4 +112,4 @@
         </table>
     </div>
 </div>
--->
+

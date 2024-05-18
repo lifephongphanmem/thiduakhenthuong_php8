@@ -28,7 +28,8 @@
     <div class="card card-custom wave wave-animate-slow wave-info" style="min-height: 600px">
         <div class="card-header flex-wrap border-1 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label text-uppercase">Danh sách hồ sơ khen thưởng theo chuyên đề</h3>
+                {{-- <h3 class="card-label text-uppercase">Danh sách hồ sơ khen thưởng theo chuyên đề</h3> --}}
+                <h3 class="card-label text-uppercase">Danh sách hồ sơ khen thưởng theo phong trào thi đua</h3>
             </div>
             <div class="card-toolbar">
                 @if (chkPhanQuyen('dshosokhenthuongchuyende', 'thaydoi'))

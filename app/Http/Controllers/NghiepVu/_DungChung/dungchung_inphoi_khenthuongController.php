@@ -238,6 +238,7 @@ class dungchung_inphoi_khenthuongController extends Controller
 
         $m_donvi = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
         $m_toado = getToaDoMacDinh($inputs);
+        // dd($m_toado);
         foreach ($model as $doituong) {
             //dd($doituong);
             $doituong->noidungkhenthuong = $doituong->noidungkhenthuong != '' ? $doituong->noidungkhenthuong : ($m_hoso->noidung != '' ? catchuoi($m_hoso->noidung, $m_donvi->sochu) : 'Nội dung khen thưởng');
