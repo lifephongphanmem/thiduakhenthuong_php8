@@ -1,7 +1,11 @@
 <?php
 
+use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstaikhoan;
 use App\Models\DanhMuc\dstaikhoan_phamvi;
 use App\Models\HeThong\trangthaihoso;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tailieu;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_xuly;
 use App\Models\View\view_dscumkhoi;
 
 use App\Models\View\viewdiabandonvi;
@@ -1167,7 +1171,7 @@ function setTraLai($model, $inputs)
 {
     $model->trangthai = $inputs['trangthai'];
     $model->thoigian = $inputs['thoigian'];
-    $model->ykien=null;
+    $model->ykiendonggop = null;
 
 
     $model->trangthai_xd = $model->trangthai;
@@ -1179,8 +1183,12 @@ function setTraLai($model, $inputs)
         $model->lydo = $inputs['lydo'];
         $model->trangthai_xl = null;
         $model->tendangnhap_xl = null;
+        dshosothiduakhenthuong_xuly::where('mahosotdkt', $model->mahosotdkt)->delete();
     }
     $model->save();
+    //Xóa trạng thái xử lý hồ sơ
+
+
     //Lưu trạng thái
     trangthaihoso::create([
         'mahoso' => $inputs['mahoso'],
@@ -1755,4 +1763,15 @@ function getPhanNhomTL($phanloai = null)
         ];
     }
     return $a_phanloai;
+}
+
+function getPhanLoaiTKTiepNhan($madonvi)
+{
+    $m_taikhoantiepnhan = dsdonvi::where('madonvi', $madonvi)->first();
+    if (isset($m_taikhoantiepnhan->taikhoantiepnhan)) {
+        $taikhoantiepnhan = $m_taikhoantiepnhan->taikhoantiepnha;
+    } else {
+        $taikhoantiepnhan = dstaikhoan::where('madonvi', $madonvi)->first()->tendangnhap ?? '';
+    }
+    return $taikhoantiepnhan;
 }

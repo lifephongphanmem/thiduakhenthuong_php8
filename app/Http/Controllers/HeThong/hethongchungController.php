@@ -374,10 +374,19 @@ class hethongchungController extends Controller
         foreach ($model as $ct) {
             $ct->tendonvi = $a_donvi[$ct->madonvi] ?? $ct->madonvi;
         }
+        
+        $model_vp = vanphonghotro::orderBy('stt')->get();
+        $a_vp = a_unique(array_column($model_vp->toArray(), 'vanphong'));
+        $col = (int) 12 / (count($a_vp) > 0 ? count($a_vp) : 1);
+        $col = $col < 4 ? 4 : $col;
         //dd($inputs);
         return view('HeThong.DanhSachHoTro')
             ->with('model', $model)
             ->with('inputs', $inputs)
+            ->with('model_vp', $model_vp)
+            ->with('a_vp', $a_vp)
+            ->with('col', $col)
+            ->with('model_hethong', getHeThongChung())
             ->with('hethong', hethongchung::first())
             ->with('a_diaban', array_column(dsdiaban::all()->toArray(), 'tendiaban', 'madiaban'))
             ->with('pageTitle', 'Thông tin hỗ trợ');
