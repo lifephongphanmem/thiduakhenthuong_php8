@@ -148,7 +148,7 @@ class tailieuhuongdanController extends Controller
         } else {
             // Create a new base path
             // $basePath = 'data/' . Str::slug(Str::limit($model->tentailieu, 145) . time()) . '/tailieuhuongdan/';
-            $basePath = 'data/tailieuhuongdan/video';
+            $basePath = 'data/tailieuhuongdan/video/';
         }
     
         // Define the final path to store the file
