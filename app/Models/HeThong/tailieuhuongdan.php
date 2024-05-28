@@ -16,6 +16,7 @@ class tailieuhuongdan extends Model
         'phanloai',
         'noidung',
         'link1',
-        'link2'
+        'link2',
+        'file'
     ];
 }

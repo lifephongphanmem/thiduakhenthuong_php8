@@ -64,7 +64,7 @@
             </div>
             <div class="card-toolbar">
                 <!--begin::Button-->
-                @if (session()->has('admin') && chkPhanQuyen('tailieuhuongdan', 'thaydoi'))
+                @if (chkPhanQuyen('tailieuhuongdan', 'thaydoi'))
                     <button type="button" class="btn btn-success btn-xs" data-target="#taohoso-modal" data-toggle="modal">
                         <i class="fa fa-plus"></i>&nbsp;Thêm mới</button>
                 @endif
@@ -72,41 +72,22 @@
             </div>
         </div>
         <div class="card-body">
-            {{-- <div class="form-group row">
-                <div class="col-9">
-                    <label style="font-weight: bold">Đơn vị</label>
-                    <select class="form-control select2basic" id="madonvi">
-                        @foreach ($a_diaban as $key => $val)
-                            <optgroup label="{{ $val }}">
-                                <?php $donvi = $m_donvi->where('madiaban', $key); ?>
-                                @foreach ($donvi as $ct)
-                                    <option {{ $ct->madonvi == $inputs['madonvi'] ? 'selected' : '' }}
-                                        value="{{ $ct->madonvi }}">{{ $ct->tendonvi }}</option>
-                                @endforeach
-                            </optgroup>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-3">
-                    <label style="font-weight: bold">Năm</label>
-                    {!! Form::select('nam', getNam(), $inputs['nam'], ['class' => 'form-control select2basic', 'id' => 'nam']) !!}
-
-                </div>
-            </div> --}}
-
             <div class="form-group row">
                 <div class="col-md-12">
                     <table class="table table-bordered table-hover" id="sample_3">
                         <thead>
                             <tr class="text-center">
-                                <th width="5%">STT</th>
-                                <th>Tên tài liệu</th>
+                                <th rowspan="2" width="5%">STT</th>
+                                <th rowspan="2">Tên tài liệu</th>
+                                <th rowspan="2">Diễn giải</th>
+                                <th colspan="2">File dữ liệu</th>
+                                @if (chkPhanQuyen('tailieuhuongdan', 'thaydoi'))
+                                    <th width="20%" rowspan="2">Thao tác</th>
+                                @endif
+                            </tr>
+                            <tr class="text-center">
                                 <th>File văn bản</th>
                                 <th>Video</th>
-                                @if (chkPhanQuyen('tailieuhuongdan', 'thaydoi'))
-                                    <th width="20%">Thao tác</th>
-                                @endif
-
                             </tr>
                         </thead>
                         <?php $i = 1; ?>
@@ -114,9 +95,10 @@
                             <tr>
                                 <td style="text-align: center">{{ $i++ }}</td>
                                 <td class="active" name="tentailieu">{{ $tt->tentailieu }}</td>
+                                <td name="noidung">{{$tt->noidung}}</td>
                                 <td class="active">
                                     <a target = "_blank"
-                                        href = "{{ url('/data/tailieuhuongdan/' . $tt->noidung) }}">{{ $tt->noidung }}</a>
+                                        href = "{{ url('/data/tailieuhuongdan/' . $tt->file) }}">{{ $tt->file }}</a>
                                 </td>
                                 <td name='video' style="width: 15%">
                                     @if ($tt->link1 && Illuminate\Support\Facades\File::exists($tt->link1))
@@ -128,13 +110,6 @@
                                 {{-- <td class="active">{{ $tt->noidung }}</td> --}}
                                 @if (chkPhanQuyen('tailieuhuongdan', 'thaydoi'))
                                 <td class=" text-center">
-                                    {{-- @if (chkPhanQuyen('quykhenthuong', 'thaydoi')) --}}
-                                    {{-- <a title="Thông tin hồ sơ"
-                                        href="{{ url($inputs['url'] . 'Sua?matailieu=' . $tt->matailieu) }}"
-                                        data-target="#edit" data-toggle="modal" class="btn btn-sm btn-clean btn-icon">
-                                        <i class="icon-lg la flaticon-edit-1 text-success"></i>
-                                    </a> --}}
-
                                         <button title="Sửa thông tin"
                                             onclick="edit(this,'{{ $tt->id }}', '{{ $tt->noidung }}','{{ $tt->link1 }}', '{{ $tt->link2 }}')"
                                             data-target="#edit" data-toggle="modal" class="btn btn-sm btn-clean btn-icon">
@@ -147,7 +122,6 @@
                                             data-toggle="modal">
                                             <i class="icon-lg la fa-trash text-danger"></i>
                                         </button>
-
                                 </td>
                                 @endif
                             </tr>
@@ -176,12 +150,16 @@
                             <label>Tên tài liệu</label>
                             {!! Form::text('tentailieu', null, ['class' => 'form-control']) !!}
                         </div>
+                        <div class="col-lg-12">
+                            <label>Diễn giải</label>
+                            {!! Form::textarea('noidung', null, ['class' => 'form-control', 'rows' => 3]) !!}
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
                             <label>File tài liệu</label>
                             {{-- {!! Form::file('noidung', null, ['class' => 'form-control','accept'=>'.pdf,.doc,.docx,.xls,.xlsx']) !!} --}}
-                            <input type="file" name='noidung' accept=".pdf,.doc,.docx,.xls,.xlsx">
+                            <input type="file" name='file' accept=".pdf,.doc,.docx,.xls,.xlsx">
                         </div>
                         <div class="col-lg-12">
                             <span class="text-danger">* Chỉ sử dụng cho các file: pdf, wolrd, excel</span>
@@ -213,11 +191,15 @@
                                 <label class="control-label">Tên tài liệu<span class="require">*</span></label>
                                 <input type="text" name="tentailieu" id="tentailieu" class="form-control" required>
                             </div>
-
-                            {{-- <div class="col-md-12 mb-5">
-                                    <label class="control-label">Số thứ tự của bài học</label>
-                                    <input type="text" name="stt" id="stt" class="form-control">
-                                </div> --}}
+                            <div class="col-md-12 mb-5">
+                                <label>Diễn giải</label>
+                                {!! Form::textarea('noidung', null, ['id'=>'noidung','class' => 'form-control', 'rows' => 3]) !!}
+                            </div>
+                               <div class="col-md-12 mb-5">
+                                    <label>File tài liệu</label>
+                                    {{-- {!! Form::file('noidung', null, ['class' => 'form-control','accept'=>'.pdf,.doc,.docx,.xls,.xlsx']) !!} --}}
+                                    <input type="file" name='file' accept=".pdf,.doc,.docx,.xls,.xlsx">
+                                </div>
 
                             <div class="col-md-12 mb-5">
                                 <label class="control-label">Video</label>
@@ -270,6 +252,7 @@
             var baseURL = window.location.origin + "/";
 
             $('#tentailieu').val($(tr).find('td[name=tentailieu]').text());
+            $('#noidung').val($(tr).find('td[name=noidung]').text());
             // $('#stt').val($(tr).find('td[name=stt]').text());
             if (link1 != '') {
                 $('#video-link').val(link1);

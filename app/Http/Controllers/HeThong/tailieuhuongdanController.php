@@ -40,10 +40,10 @@ class tailieuhuongdanController extends Controller
     {
         $inputs=$request->all();
         $inputs['matailieu'] = (string) getdate()[0];
-        if (isset($inputs['noidung'])) {
-            $filedk =$request->file('noidung');
-            $inputs['noidung'] = $inputs['matailieu'].$filedk->getClientOriginalName();
-            $filedk->move(public_path() . '/data/tailieuhuongdan/', $inputs['noidung']);
+        if (isset($inputs['file'])) {
+            $filedk =$request->file('file');
+            $inputs['file'] = $inputs['matailieu'].$filedk->getClientOriginalName();
+            $filedk->move(public_path() . '/data/tailieuhuongdan/', $inputs['file']);
         }
 
         tailieuhuongdan::create($inputs);
@@ -56,8 +56,8 @@ class tailieuhuongdanController extends Controller
         $id=$request->id;
         $model = tailieuhuongdan::findOrFail($id);
         if (isset($model)) {
-            if (file_exists('/data/tailieuhuongdan/' . $model->noidung)) {
-                File::Delete('/data/tailieuhuongdan/' . $model->noidung);
+            if (file_exists('/data/tailieuhuongdan/' . $model->file)) {
+                File::Delete('/data/tailieuhuongdan/' . $model->file);
             }
             $model->delete();
         }
@@ -188,44 +188,45 @@ class tailieuhuongdanController extends Controller
         $model = tailieuhuongdan::findOrFail($id);
 // dd($model);
         if (isset($model)) {
-            if ($request->hasFile('anh-nen-video')) {
-                if (File::exists($model->link2)) {
-                    File::delete($model->link2);
-                }
-                $filedk =$request->file('anh-nen-video');
-                // $filePath = 'data/tailieuhuongdan/anhvideo/';
+            // if ($request->hasFile('anh-nen-video')) {
+            //     if (File::exists($model->link2)) {
+            //         File::delete($model->link2);
+            //     }
+            //     $filedk =$request->file('anh-nen-video');
+            //     // $filePath = 'data/tailieuhuongdan/anhvideo/';
 
-                // $finalPath = public_path($filePath);
+            //     // $finalPath = public_path($filePath);
 
-                // $extension = $request->file('anh-nen-video')->getClientOriginalExtension();
-                // $fileName = Str::limit(str_replace("." . $extension, "", $request->file('anh-nen-video')->getClientOriginalName()), 210);
+            //     // $extension = $request->file('anh-nen-video')->getClientOriginalExtension();
+            //     // $fileName = Str::limit(str_replace("." . $extension, "", $request->file('anh-nen-video')->getClientOriginalName()), 210);
 
-                // $fileName .= "_" . md5(time()) . "." . $extension;
+            //     // $fileName .= "_" . md5(time()) . "." . $extension;
 
-                // $request->file('anh-nen-video')->move($finalPath, $fileName);
+            //     // $request->file('anh-nen-video')->move($finalPath, $fileName);
                 
 
-                // $model->update([
-                //     'link2' => $filePath . $fileName
-                // ]);
-                $filedk =$request->file('anh-nen-video');
-                $inputs['link2'] = $model->matailieu.$filedk->getClientOriginalName();
-                $filedk->move(public_path() . '/data/tailieuhuongdan/anhvideo/', $inputs['link2']);
-                $model->update(['link2'=>$inputs['link2']]);
-            }
+            //     // $model->update([
+            //     //     'link2' => $filePath . $fileName
+            //     // ]);
+            //     $filedk =$request->file('anh-nen-video');
+            //     $inputs['link2'] = $model->matailieu.$filedk->getClientOriginalName();
+            //     $filedk->move(public_path() . '/data/tailieuhuongdan/anhvideo/', $inputs['link2']);
+            //     $model->update(['link2'=>$inputs['link2']]);
+            // }
 
-            if($request->hasFile('noidung')){
-                if (File::exists($model->noidung)) {
-                    File::delete($model->noidung);
+            if($request->hasFile('file')){
+                if (File::exists($model->file)) {
+                    File::delete($model->file);
                 }
-                $filedk =$request->file('noidung');
-                $inputs['noidung'] = $model->matailieu.$filedk->getClientOriginalName();
-                $filedk->move(public_path() . '/data/tailieuhuongdan/', $inputs['noidung']);
-                $model->update(['noidung'=>$inputs['noidung']]);
+                $filedk =$request->file('file');
+                $inputs['file'] = $model->matailieu.$filedk->getClientOriginalName();
+                $filedk->move(public_path() . '/data/tailieuhuongdan/', $inputs['file']);
+                $model->update(['file'=>$inputs['file']]);
             }
 
             $model->update([
                 'tentailieu' => $request['tentailieu'],
+                'noidung'=>$request['noidung']
                 // 'stt' => $request['stt']
             ]);
         }
