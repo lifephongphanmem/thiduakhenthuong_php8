@@ -81,7 +81,11 @@
                     <label>Địa bàn quản lý</label>
                     {!! Form::select('madiaban', getDiaBan_All(), null, array('class'=>'form-control select2basic'))!!}
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-4">
+                    <label>Tài khoản tiếp nhận hồ sơ</label>
+                    {!! Form::select('taikhoantiepnhan', $a_taikhoan, null, array('class'=>'form-control select2basic'))!!}
+                </div>
+                <div class="col-lg-4">
                     <label>Ngành, lĩnh vực</label>
                     {!! Form::select('linhvuchoatdong', setArrayAll(getNganhLinhVuc(),'Không chọn','') ,null, array('class'=>'form-control select2basic'))!!}
                 </div>

@@ -133,8 +133,11 @@ class dsdonviController extends Controller
         }
         $inputs = $request->all();
         $model = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
+        $m_taikhoan=dstaikhoan::where('madonvi',$inputs['madonvi'])->get();
+        $a_taikhoan=array_column($m_taikhoan->toarray(),'tentaikhoan','tendangnhap');
         return view('HeThongChung.DonVi.Sua')
             ->with('model', $model)
+            ->with('a_taikhoan', $a_taikhoan)
             ->with('pageTitle', 'Chỉnh sửa thông tin đơn vị');
     }
 

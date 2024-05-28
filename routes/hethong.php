@@ -6,6 +6,7 @@ use App\Http\Controllers\HeThong\dsdonviController;
 use App\Http\Controllers\HeThong\dstaikhoanController;
 use App\Http\Controllers\HeThong\dsvanphonghotroController;
 use App\Http\Controllers\HeThong\hethongchungController;
+use App\Http\Controllers\HeThong\tailieuhuongdanController;
 use Illuminate\Support\Facades\Route;
 
 //Đăng nhập
@@ -75,4 +76,14 @@ Route::group(['prefix' => 'VanPhongHoTro'], function () {
     Route::post('Them', [dsvanphonghotroController::class, 'Them']);
     Route::get('LayChucNang', [dsvanphonghotroController::class, 'LayChucNang']);
     Route::post('Xoa', [dsvanphonghotroController::class, 'XoaChucNang']);
+});
+
+Route::prefix('TaiLieuHuongDan')->group(function(){
+    Route::get('ThongTin',[tailieuhuongdanController::class,'index']);
+    Route::post('Them',[tailieuhuongdanController::class,'store']);
+    Route::post('Xoa',[tailieuhuongdanController::class,'delete']);
+    Route::post('update/{id}',[tailieuhuongdanController::class,'update']);
+    Route::post('uploadvideo/{id}',[tailieuhuongdanController::class,'upload']);
+    Route::post('XoaVideo/{id}',[tailieuhuongdanController::class,'XoaVideo']);
+
 });

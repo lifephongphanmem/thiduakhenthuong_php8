@@ -314,7 +314,7 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         // dd($a_taikhoanchuyenvien);
         // $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->where('phanloai', '<>', 'QUANLY')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
         $a_hosoxuly = getHoSoXuLy(array_column($model->toarray(), 'mahosotdkt'), session('admin')->tendangnhap, 'dshosothiduakhenthuong');
-        $a_trangthai_taikhoan = ['DCCVXD', 'DCCVKT', 'DTN', 'DDK', 'KDD', 'BTL'];
+        $a_trangthai_taikhoan = ['DCCVXD', 'DCCVKT', 'DTN', 'DDK', 'KDD', 'BTL', 'BTLXD'];
         foreach ($model as $key => $hoso) {
             // dd($hoso);
             //xét hồ sơ xử lý để hiển thị hồ sơ theo đơn vị
@@ -375,7 +375,7 @@ class tnhosodenghikhenthuongthiduaController extends Controller
             if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
                 //Nghiên cứu xây dựng lọc hồ sơ theo phân loại tài khoản getPhanLoaiTaiKhoan()             
                 //Nếu trạng thái thì mới mở các chức năng theo phân quyền lấy theo tendangnhap_xl
-                if (in_array($hoso->trangthai_xd, $a_trangthai_taikhoan) && !in_array(session('admin')->tendangnhap, ['SSA', $hoso->tendangnhap_xl]))
+                if (!in_array($hoso->trangthai_xd, $a_trangthai_taikhoan) && !in_array(session('admin')->tendangnhap, ['SSA', $hoso->tendangnhap_xl]))
                     $hoso->thaotac = false;
             } elseif (count($a_donvilocdulieu) > 0) {
                 //lọc các hồ sơ theo thiết lập dữ liệu

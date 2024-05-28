@@ -70,7 +70,8 @@
                                 @if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN')
                                 <td>{{ $tt->tendangnhap_xl }}</td>
                                 @endif
-                                <td>{{ $a_donvi[$tt->madonvi_nhan_hoso] ?? '' }}</td>
+                                {{-- <td>{{ $a_donvi[$tt->madonvi_nhan_hoso] ?? '' }}</td> --}}
+                                <td>{{ $a_donvi[$tt->madonvi_hoso] ?? '' }}</td>
 
                                 <td style="text-align: center">
                                     @include('NghiepVu._DungChung.TD_XemThongTinTDKT')

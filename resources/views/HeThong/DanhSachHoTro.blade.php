@@ -42,8 +42,37 @@
             </div>
             <!--end::Iconbox-->
         </div>
+        @foreach ($a_vp as $vp)
+            <?php $vanphong = $model_vp->where('vanphong', $vp); ?>
+            <div class="col-lg-6 col-xl-12 mb-5">
+                <div class="card card-custom mb-8 mb-lg-0">
+                    <div class="card-header">
+                        <div class="card-title p-5 ml-20">
+                            <h3 class="card-label text-uppercase font-weight-bold font-size-h4">
+                                {{ $vp }}
+                            </h3>
+                        </div>
+                    </div>
 
-        <div class="col-lg-6 col-xl-6 mb-5">
+                    <!--begin::Iconbox-->
+                    <div class="card-body">
+                        <div class="text-dark-75 p-5 ml-19">
+                            @foreach ($vanphong as $ct)
+                                <p class="col-xl-6 float-left">
+                                    {{-- <span class="label label-danger label-dot mr-2"></span> --}}
+                                    <span><i class='fas fa-user-tie mr-2'></i></span>
+                                    <span style="color:blue">{{ $ct->hoten }}</span>- Số điện thoại:
+                                    <span style="color:blue">{{ $ct->sdt }}</span>
+                                </p>
+                            @endforeach
+
+                        </div>
+                    </div>
+                    <!--end::Iconbox-->
+                </div>
+            </div>
+        @endforeach
+        {{-- <div class="col-lg-6 col-xl-6 mb-5">
             <!--begin::Iconbox-->
             <div class="card card-custom mb-8 mb-lg-0">
                 <div class="card-body">
@@ -141,6 +170,7 @@
                 </div>
             </div>
             <!--end::Iconbox-->
-        </div>
+        </div> --}}
+    
     </div>
 @stop
