@@ -1229,9 +1229,10 @@ function getLoaiVanBan()
         'nghiquyet' => 'Nghị quyết',
         'thongtu' => 'Thông tư',
         'quyetdinh' => 'Quyết định',
-        'vbhdcd' => 'Văn bản hướng dẫn, chỉ đạo',
+        // 'vbhdcd' => 'Văn bản hướng dẫn, chỉ đạo',
+        'vbpl' => 'Văn bản pháp lý',
         'vbdh' => 'Văn bản điều hành',
-        'vbkhac' => 'Báo cáo, văn bản có liên quan khác',
+        'vbkhac' => 'Văn bản khác',
     );
     return $vbqlnn;
 }
