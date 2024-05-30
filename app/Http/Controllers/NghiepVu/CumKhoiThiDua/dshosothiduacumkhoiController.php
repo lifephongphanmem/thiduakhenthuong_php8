@@ -15,6 +15,8 @@ use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dscumkhoi_chitiet;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstruongcumkhoi;
+use App\Models\DanhMuc\dstruongcumkhoi_chitiet;
 use App\Models\DanhMuc\duthaoquyetdinh;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
@@ -71,7 +73,13 @@ class dshosothiduacumkhoiController extends Controller
         $m_hoso = dshosothamgiathiduacumkhoi::where('madonvi', $inputs['madonvi'])->get();
         // dd($m_hoso);
         // $m_phongtrao=dsphongtraothiduacumkhoi::all();
-        $a_truongcumkhoi = array_column(dscumkhoi_chitiet::where('phanloai', 'TRUONGKHOI')->get()->toarray(), 'madonvi', 'macumkhoi');
+        $firstDayOfYear = $firstDayOfYear = Carbon::now()->startOfYear();
+        $lastDayOfYear = $lastDayOfYear = Carbon::now()->endOfYear();
+        $tungay=$firstDayOfYear->toDateString();
+        $denngay=$lastDayOfYear->toDateString();
+        $dsphantruongcumkhoi=dstruongcumkhoi::where('ngaytu','>=',$tungay)->where('ngayden','<=',$denngay)->first();
+        // dd($dsphantruongcumkhoi);
+        $a_truongcumkhoi = array_column(dstruongcumkhoi_chitiet::where('madanhsach', $dsphantruongcumkhoi->madanhsach)->get()->toarray(), 'madonvi', 'macumkhoi');
         // dd($m_phongtrao);
         // dd($m_hoso);
         foreach ($model as $ct) {
