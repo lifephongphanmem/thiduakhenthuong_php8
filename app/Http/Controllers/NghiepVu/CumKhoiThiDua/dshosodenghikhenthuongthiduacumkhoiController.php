@@ -17,6 +17,8 @@ use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dscumkhoi_chitiet;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstruongcumkhoi;
+use App\Models\DanhMuc\dstruongcumkhoi_chitiet;
 use App\Models\DanhMuc\duthaoquyetdinh;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
@@ -71,8 +73,18 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
         $m_cumkhoi_chitiet = dscumkhoi_chitiet::where('madonvi', $inputs['madonvi'])->get();
         $model = dscumkhoi::wherein('macumkhoi', array_column($m_cumkhoi_chitiet->toarray(), 'macumkhoi'))->get();
         $m_hoso = dshosotdktcumkhoi::where('madonvi', $inputs['madonvi'])->get();
+        $firstDayOfYear = $firstDayOfYear = Carbon::now()->startOfYear();
+        $lastDayOfYear = $lastDayOfYear = Carbon::now()->endOfYear();
+        $tungay=$firstDayOfYear->toDateString();
+        $denngay=$lastDayOfYear->toDateString();
+        $dsphantruongcumkhoi=dstruongcumkhoi::where('ngaytu','>=',$tungay)->where('ngayden','<=',$denngay)->first();
+        $a_truongcumkhoi = array_column(dstruongcumkhoi_chitiet::where('madanhsach', $dsphantruongcumkhoi->madanhsach)->get()->toarray(), 'madonvi', 'macumkhoi');
         foreach ($model as $ct) {
-            $ct->sohoso = $m_hoso->where('macumkhoi', $ct->macumkhoi)->count();
+            // $ct->sohoso = $m_hoso->where('macumkhoi', $ct->macumkhoi)->count();
+            $model_cumkhoi = view_dsphongtrao_cumkhoi::where('macumkhoi', $ct->macumkhoi)->orderby('tungay')->get();
+            $ct->sohoso = dshosotdktcumkhoi::wherein('maphongtraotd', array_column($model_cumkhoi->toarray(), 'maphongtraotd'))
+                ->where('macumkhoi', $ct->macumkhoi)->wherein('trangthai', ['CD', 'DD', 'CNXKT', 'DXKT', 'CXKT', 'DKT'])->get()->count();
+            $ct->madonviql = $a_truongcumkhoi[$ct->macumkhoi] ?? '';
         }
 
         //dd($model);
@@ -80,6 +92,7 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
             ->with('model', $model)
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
+            ->with('a_truongcumkhoi', $a_truongcumkhoi)
             ->with('a_donvi', array_column($m_donvi->toArray(), 'tendonvi', 'madonvi'))
             ->with('a_capdo', getPhamViApDung())
             ->with('inputs', $inputs)

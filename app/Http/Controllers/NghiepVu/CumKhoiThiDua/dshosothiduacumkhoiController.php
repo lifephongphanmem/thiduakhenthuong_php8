@@ -78,7 +78,6 @@ class dshosothiduacumkhoiController extends Controller
         $tungay=$firstDayOfYear->toDateString();
         $denngay=$lastDayOfYear->toDateString();
         $dsphantruongcumkhoi=dstruongcumkhoi::where('ngaytu','>=',$tungay)->where('ngayden','<=',$denngay)->first();
-        // dd($dsphantruongcumkhoi);
         $a_truongcumkhoi = array_column(dstruongcumkhoi_chitiet::where('madanhsach', $dsphantruongcumkhoi->madanhsach)->get()->toarray(), 'madonvi', 'macumkhoi');
         // dd($m_phongtrao);
         // dd($m_hoso);
