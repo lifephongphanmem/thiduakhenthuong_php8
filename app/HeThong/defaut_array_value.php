@@ -1398,6 +1398,10 @@ function getTrangThai_TD_HoSo($trangthai)
             'trangthai' => 'Trả lại<br>xét duyệt',
             'class' => 'badge badge-danger'
         ],
+        'BTLTN' => [
+            'trangthai' => 'Trả lại<br>tiếp nhận',
+            'class' => 'badge badge-danger'
+        ],
 
         'CNXKT' => [
             'trangthai' => 'Chờ nhận<br>để xét<br>khen thưởng',

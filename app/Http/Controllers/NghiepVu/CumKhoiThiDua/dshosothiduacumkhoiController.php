@@ -70,11 +70,11 @@ class dshosothiduacumkhoiController extends Controller
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
         $m_cumkhoi_chitiet = dscumkhoi_chitiet::where('madonvi', $inputs['madonvi'])->get();
         $model = dscumkhoi::wherein('macumkhoi', array_column($m_cumkhoi_chitiet->toarray(), 'macumkhoi'))->get();
-        $m_hoso = dshosothamgiathiduacumkhoi::where('madonvi', $inputs['madonvi'])->get();
+        // $m_hoso = dshosothamgiathiduacumkhoi::where('madonvi', $inputs['madonvi'])->get();
         // dd($m_hoso);
         // $m_phongtrao=dsphongtraothiduacumkhoi::all();
-        $firstDayOfYear = $firstDayOfYear = Carbon::now()->startOfYear();
-        $lastDayOfYear = $lastDayOfYear = Carbon::now()->endOfYear();
+        $firstDayOfYear = Carbon::now()->startOfYear();
+        $lastDayOfYear = Carbon::now()->endOfYear();
         $tungay=$firstDayOfYear->toDateString();
         $denngay=$lastDayOfYear->toDateString();
         $dsphantruongcumkhoi=dstruongcumkhoi::where('ngaytu','>=',$tungay)->where('ngayden','<=',$denngay)->first();

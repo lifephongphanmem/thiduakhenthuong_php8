@@ -38,9 +38,12 @@
                         <i class="fa fa-plus"></i> Tiếp nhận từ cấp trên</button>
 
                     {{-- <a href="{{ url('/PhongTraoThiDua/Them?madonvi=' . $inputs['madonvi']) }}" --}}
-                    <a href="{{ url('/PhongTraoThiDua/Sua?madonvi=' . $inputs['madonvi']) }}"
+                    {{-- <a href="{{ url('/PhongTraoThiDua/Sua?madonvi=' . $inputs['madonvi']) }}"
                         class="btn btn-success btn-xs">
-                        <i class="fa fa-plus"></i> Thêm mới</a>
+                        <i class="fa fa-plus"></i> Thêm mới</a> --}}
+                    <button type="button" class="btn btn-success btn-xs" data-target="#taohoso-modal" data-toggle="modal">
+                        <i class="fa fa-plus"></i>&nbsp;Thêm mới
+                    </button>
                 @endif
                 <!--end::Button-->
             </div>
@@ -62,20 +65,20 @@
                     </select>
                 </div>
 
-                <div class="col-md-5">
+                {{-- <div class="col-md-5">
                     <label style="font-weight: bold">Phạm vi phát động</label>
                     {!! Form::select('phamviapdung', setArrayAll($a_phamvi, 'Tất cả', 'ALL'), $inputs['phamviapdung'], [
                         'id' => 'phamviapdung',
                         'class' => 'form-control select2basic',
                     ]) !!}
-                </div>
-                {{-- <div class="col-md-4">
-                    <label style="font-weight: bold">Hình thức tổ chức</label>
-                    {!! Form::select('phanloai', setArrayAll($a_phanloai, 'Tất cả', 'ALL'), $inputs['phanloai'], [
-                        'id' => 'phanloai',
+                </div> --}}
+                <div class="col-md-4">
+                    <label style="font-weight: bold">Hình thức thi đua</label>
+                    {!! Form::select('phuongthuctochuc', setArrayAll(getPhuongThucToChucPhongTrao(), 'Tất cả', 'ALL'), $inputs['phuongthuctochuc'], [
+                        'id' => 'phuongthuctochuc',
                         'class' => 'form-control select2basic',
                     ]) !!}
-                </div> --}}
+                </div>
                 <div class="col-md-2">
                     <label style="font-weight: bold">Năm</label>
                     {!! Form::select('nam', getNam(true), $inputs['nam'], ['id' => 'nam', 'class' => 'form-control select2basic']) !!}
@@ -91,9 +94,9 @@
                                 <th width="2%">STT</th>
                                 <th>Tên phong trào thi đua</th>
                                 {{-- <th>Loại hình khen thưởng</th> --}}
-                                <th>Văn bản</th>
-                                <th>Phạm vi phát động</th>
-                                {{-- <th>Hình thức tổ chức</th> --}}
+                                <th>Số văn bản</th>
+                                {{-- <th>Phạm vi phát động</th> --}}
+                                <th>Hình thức thi đua</th>
                                 <th width="5%">Trạng thái</th>
                                 <th width="10%">Thao tác</th>
                             </tr>
@@ -105,8 +108,8 @@
                                 <td class="active">{{ $tt->noidung }}</td>
                                 {{-- <td>{{ $a_loaihinhkt[$tt->maloaihinhkt] ?? '' }}</td> --}}
                                 <td class="text-center">Số: {{ $tt->soqd }}</br> Ngày: {{ getDayVn($tt->ngayqd) }}</td>
-                                <td>{{ $a_phamvi[$tt->phamviapdung] ?? '' }}</td>
-                                {{-- <td>{{ $a_phanloai[$tt->phanloai] ?? '' }}</td> --}}
+                                {{-- <td>{{ $a_phamvi[$tt->phamviapdung] ?? '' }}</td> --}}
+                                <td>{{ $a_phanloai[$tt->phuongthuctochuc] ?? '' }}</td>
                                 @include('includes.td.td_trangthai_phongtrao')
                                 <td class=" text-center">
                                     <a title="Xem chi tiết"
@@ -122,7 +125,7 @@
                                     @if (chkPhanQuyen('dsphongtraothidua', 'thaydoi'))
                                         @if ($tt->trangthai == 'CC')
                                             <a title="Chỉnh sửa"
-                                                href="{{ url('/PhongTraoThiDua/Sua?maphongtraotd=' . $tt->maphongtraotd) }}"
+                                                href="{{ url('/PhongTraoThiDua/Sua?maphongtraotd=' . $tt->maphongtraotd.'&phuongthuctochuc='.$tt->phuongthuctochuc) }}"
                                                 class="btn btn-sm btn-clean btn-icon"><i
                                                     class="icon-lg la fa-edit text-success"></i>
                                             </a>
@@ -283,7 +286,7 @@
 
                                         <td class=" text-center">
                                             <a title="Tiếp nhận và phát động phong trào"
-                                                href="{{ url('/PhongTraoThiDua/Them?maphongtraotd_coso=' . $tt->maphongtraotd . '&madonvi=' . $inputs['madonvi']) }}"
+                                                href="{{ url('/PhongTraoThiDua/Them?maphongtraotd_coso=' . $tt->maphongtraotd . '&madonvi=' . $inputs['madonvi']).'&phuongthuctochuc='.$tt->phuongthuctochuc }}"
                                                 class="btn btn-sm btn-clean btn-icon" target="_blank">
                                                 <i class="icon-lg la fa-edit text-dark"></i>
                                             </a>
@@ -302,6 +305,45 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
+    <!--Modal Nhận hồ sơ-->
+    {{-- {!! Form::open([
+        'url' => '/PhongTraoThiDua/Them?madonvi=' . $inputs['madonvi'],
+        'method' => 'GET',
+        'id' => 'frm_hoso'
+    ]) !!} --}}
+    <form action="{{'/PhongTraoThiDua/Them'}}" method="GET" id="frm_hoso" >
+    <input type="hidden" name="madonvi" value="{{ $inputs['madonvi'] }}" />
+    <div id="taohoso-modal" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade kt_select2_modal">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header modal-header-primary">
+                    <h4 id="modal-header-primary-label" class="modal-title">Đồng ý tạo danh sách?</h4>
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label>Phương thức tổ chức</label>
+                            {!! Form::select('phuongthuctochuc', getPhuongThucToChucPhongTrao(), null, ['class' => 'form-control']) !!}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
+                    <button type="submit" class="btn btn-primary">Đồng ý</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+    {{-- {!! Form::close() !!} --}}
     @include('includes.modal.modal-delete')
     @include('includes.modal.modal_attackfile')
+    {{-- <script>
+        function chkThongTinHoSo() {
+            $("#frm_hoso").unbind('submit').submit();
+        }
+    </script> --}}
 @stop

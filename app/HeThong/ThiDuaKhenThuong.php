@@ -1145,7 +1145,7 @@ function setTraLaiXD(&$model, &$inputs)
     //Xét có tồn tại các trường trong db không để cập nhật
     $a_keys = array_keys($model->toarray());
     if (in_array('trangthai_xd', $a_keys))
-        $model->trangthai_xd = $model->trangthai;
+        $model->trangthai_xd = $inputs['trangthai'];
     if (in_array('thoigian_xd', $a_keys))
         $model->thoigian_xd = $model->thoigian;
     if (in_array('trangthai_xl', $a_keys))
@@ -1159,7 +1159,7 @@ function setTraLaiXD(&$model, &$inputs)
     trangthaihoso::create([
         'mahoso' => $inputs['mahoso'],
         'phanloai' => 'dshosothiduakhenthuong',
-        'trangthai' => $model->trangthai,
+        'trangthai' => $inputs['trangthai'],
         'thoigian' => $model->thoigian,
         'madonvi_nhan' => $model->madonvi,
         'madonvi' => $model->madonvi_xd,
@@ -1769,7 +1769,7 @@ function getPhanLoaiTKTiepNhan($madonvi)
 {
     $m_taikhoantiepnhan = dsdonvi::where('madonvi', $madonvi)->first();
     if (isset($m_taikhoantiepnhan->taikhoantiepnhan)) {
-        $taikhoantiepnhan = $m_taikhoantiepnhan->taikhoantiepnha;
+        $taikhoantiepnhan = $m_taikhoantiepnhan->taikhoantiepnhan;
     } else {
         $taikhoantiepnhan = dstaikhoan::where('madonvi', $madonvi)->first()->tendangnhap ?? '';
     }

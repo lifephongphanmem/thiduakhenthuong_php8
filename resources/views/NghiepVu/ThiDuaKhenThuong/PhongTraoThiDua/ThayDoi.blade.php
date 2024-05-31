@@ -250,7 +250,7 @@
                 
                 <div class="col-lg-4">
                     <label>Phương thức tổ chức</label>
-                    {!! Form::select('phuongthuctochuc', getPhuongThucToChucPhongTrao(), null, ['class' => 'form-control select2basic']) !!}
+                    {!! Form::select('phuongthuctochuc', getPhuongThucToChucPhongTrao(), $inputs['phuongthuctochuc'], ['class' => 'form-control select2basic', 'disabled'=>'disabled']) !!}
                 </div>
             </div>
 

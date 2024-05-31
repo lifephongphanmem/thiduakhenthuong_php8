@@ -108,6 +108,10 @@ class tnhosodenghikhenthuongnienhanController extends Controller
                 //Nếu trạng thái thì mới mở các chức năng theo phân quyền lấy theo tendangnhap_xl
                 if (!in_array($hoso->trangthai_xd, $a_trangthai_taikhoan) && !in_array(session('admin')->tendangnhap, ['SSA', $hoso->tendangnhap_xl]))
                     $hoso->thaotac = false;
+
+                    if (session('admin')->tendangnhap == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
+                        $hoso->taikhoantiepnhan = true;
+                    }
             } elseif (count($a_donvilocdulieu) > 0) {
                 //lọc các hồ sơ theo thiết lập dữ liệu
                 if (!in_array($hoso->madonvi, $a_donvilocdulieu))
