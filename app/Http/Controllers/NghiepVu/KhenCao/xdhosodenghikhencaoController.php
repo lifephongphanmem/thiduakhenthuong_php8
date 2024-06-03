@@ -52,6 +52,8 @@ class xdhosodenghikhencaoController extends Controller
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosokhencao';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
+
         $m_donvi = getDonVi(session('admin')->capdo);
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
 
@@ -59,7 +61,13 @@ class xdhosodenghikhencaoController extends Controller
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         $inputs['maloaihinhkt'] = session('chucnang')['dshosodenghikhenthuongchuyende']['maloaihinhkt'] ?? 'ALL';
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
-        $model = dshosokhencao::where('madonvi_xd', $inputs['madonvi']);
+        //Xác định xem có dùng chức năng tiếp nhận ko
+        $a_trangthai_xd = ['DD', 'CXKT', 'DKT'];        
+        if(chkGiaoDien('tnhosodenghikhenthuongcongtrang') != '1'){
+            $a_trangthai_xd[] = 'CD';
+        }
+        
+        $model = dshosokhencao::where('madonvi_xd', $inputs['madonvi'])->wherein('trangthai_xd', $a_trangthai_xd);
 
         $inputs['phanloai'] = $inputs['phanloai'] ?? 'ALL';
         if ($inputs['phanloai'] != 'ALL')
@@ -120,20 +128,27 @@ class xdhosodenghikhencaoController extends Controller
         $inputs = $request->all();
         $model = dshosokhencao::where('mahosotdkt', $inputs['mahoso'])->first();
         //gán trạng thái hồ sơ để theo dõi
-        $model->trangthai = 'BTL';
-        $model->thoigian = date('Y-m-d H:i:s');
-        $model->lydo = $inputs['lydo'];
-        $model->madonvi_nhan = null;
-        //dd($model);
-        $model->trangthai_xd = null;
-        $model->thoigian_xd = null;
-        $model->madonvi_nhan_xd = null;
-        $model->madonvi_xd = null;
+        // $model->trangthai = 'BTLXD';
+        // $model->thoigian = date('Y-m-d H:i:s');
+        // $model->lydo = $inputs['lydo'];
+        // $model->madonvi_nhan = null;
+        // //dd($model);
+        // $model->trangthai_xd = null;
+        // $model->thoigian_xd = null;
+        // $model->madonvi_nhan_xd = null;
+        // $model->madonvi_xd = null;
 
-        $model->madonvi_kt = null;
-        $model->trangthai_kt = null;
-        $model->thoigian_kt = null;
-        $model->save();
+        // $model->madonvi_kt = null;
+        // $model->trangthai_kt = null;
+        // $model->thoigian_kt = null;
+        // $model->save();
+        $inputs['trangthai'] = 'BTLXD';
+        $inputs['thoigian'] = date('Y-m-d H:i:s');
+        if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
+            setTraLai($model, $inputs);
+        }else{
+            setTraLaiXD($model, $inputs);
+        }
 
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }

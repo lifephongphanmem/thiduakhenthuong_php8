@@ -50,6 +50,8 @@ class dshosodenghikhenthuongcongtrangController extends Controller
         $inputs = $request->all();
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
+
         $m_donvi = getDonVi(session('admin')->capdo, 'dshosodenghikhenthuongcongtrang');
         $a_diaban = array_column($m_donvi->toArray(), 'tendiaban', 'madiaban');
 
@@ -98,7 +100,8 @@ class dshosodenghikhenthuongcongtrangController extends Controller
             ->where(function ($qr) use ($inputs) {
                 $qr->where('madonvi_xd', $inputs['madonvi'])->orwhere('madonvi_kt', $inputs['madonvi']);
             })->get();
-        //dd($model_hoso);
+        // dd($model_hoso);
+        // dd($model);
         return view('NghiepVu.KhenThuongCongTrang.HoSoKhenThuong.ThongTin')
             ->with('model', $model)
             ->with('model_hoso', $model_hoso)

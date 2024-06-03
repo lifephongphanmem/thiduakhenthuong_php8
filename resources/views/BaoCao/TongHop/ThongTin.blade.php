@@ -98,11 +98,11 @@
                                 data-target="#modal-khenthuongnhanuoc" data-toggle="modal">Báo
                                 cáo hình thức khen thưởng (Khen thưởng cấp nhà nước - Mẫu 02)</button>
                         </li>
-                        {{-- <li>
+                        <li>
                             <button type="button" onclick="setBaoCaoKT('frm_quykhenthuong','/BaoCao/TongHop/QuyKhenThuong')"
                                 class="btn btn-clean text-dark" data-target="#modal-quykhenthuong" data-toggle="modal">
                                 Tổng hợp trích lập và sử dụng quỹ thi đua, khen thưởng</button>
-                        </li> --}}
+                        </li>
                         <li>
                             <button type="button" onclick="setBaoCaoKT('frm_thongtu03','/BaoCao/TongHop/Mau0701')"
                                 class="btn btn-clean text-dark" data-target="#modal-thongtu03" data-toggle="modal">Số

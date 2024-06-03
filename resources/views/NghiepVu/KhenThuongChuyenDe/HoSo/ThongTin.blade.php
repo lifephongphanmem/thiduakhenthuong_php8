@@ -28,10 +28,15 @@
     <div class="card card-custom wave wave-animate-slow wave-info" style="min-height: 600px">
         <div class="card-header flex-wrap border-1 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label text-uppercase">Danh sách hồ sơ trình khen thưởng chuyên đề</h3>
+                {{-- <h3 class="card-label text-uppercase">Danh sách hồ sơ trình khen thưởng chuyên đề</h3> --}}
+                <h3 class="card-label text-uppercase">Danh sách hồ sơ trình khen thưởng phong trào thi đua</h3>
             </div>
             <div class="card-toolbar">
                 @if (chkPhanQuyen('dshosodenghikhenthuongchuyende', 'thaydoi'))
+                    <button type="button" class="btn btn-success btn-xs mr-2" data-toggle="modal"
+                        data-target="#tonghophoso-modal">
+                        <i class="fa fa-plus"></i>&nbsp;Tổng hợp
+                    </button>
                     <button type="button" class="btn btn-success btn-xs" data-target="#taohoso-modal" data-toggle="modal">
                         <i class="fa fa-plus"></i>&nbsp;Thêm mới</button>
                 @endif
@@ -117,6 +122,7 @@
 
     @include('NghiepVu._DungChung.modal_PheDuyet')
     @include('NghiepVu._DungChung.HoSo_TaoHoSo')
+    @include('NghiepVu._DungChung.HoSo_TongHopHoSo')
     @include('NghiepVu._DungChung.InDuLieu')
     @include('includes.modal.modal-delete')
     @include('includes.modal.modal_chuyenhs')

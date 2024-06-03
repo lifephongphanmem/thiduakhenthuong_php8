@@ -167,7 +167,7 @@
                 </div>
             </div>
 
-            <div class="form-group row">
+            {{-- <div class="form-group row">
                 <div class="col-lg-6">
                     <label>Biên bản cuộc họp: </label>
                     {!! Form::file('bienban', null, ['id' => 'bienban', 'class' => 'form-control']) !!}
@@ -189,7 +189,7 @@
                         </span>
                     @endif
                 </div>
-            </div>
+            </div> --}}
 
             <div class="row">
                 <div class="col-md-12">
@@ -213,14 +213,14 @@
                                             <span class="nav-text">Khen thưởng cá nhân</span>
                                         </a>
                                     </li>
-                                    {{-- <li class="nav-item">
+                                    <li class="nav-item">
                                         <a class="nav-link" data-toggle="tab" href="#kt_tailieu">
                                             <span class="nav-icon">
                                                 <i class="far flaticon-folder-1"></i>
                                             </span>
                                             <span class="nav-text">Tài liệu đính kèm</span>
                                         </a>
-                                    </li> --}}
+                                    </li>
                                 </ul>
                             </div>
                             <div class="card-toolbar">

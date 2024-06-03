@@ -13,6 +13,7 @@ use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dmnhomphanloai_chitiet;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstaikhoan;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\DangKyDanhHieu\dshosodangkyphongtraothidua;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothamgiaphongtraotd;
@@ -58,6 +59,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
         $inputs['url_qd'] = '/KhenThuongHoSoThiDua/';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         $m_donvi = getDonVi(session('admin')->capdo, 'dshosodenghikhenthuongthidua', null, 'MODEL');
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
@@ -159,6 +161,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
         $inputs['url_qd'] = '/KhenThuongHoSoThiDua/';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         $m_phongtrao = dsphongtraothidua::where('maphongtraotd', $inputs['maphongtraotd'])->first();
         $ngayhientai = date('Y-m-d');
@@ -449,7 +452,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
                     ->where('madonvi_nhan', $inputs['madonvi'])
                     ->orwhere('madonvi_nhan_h', $inputs['madonvi'])
                     ->orwhere('madonvi_nhan_t', $inputs['madonvi'])->get();
-            })->get();
+            })->wherenotin('trangthai',['BTL'])->get();
             // dd($model);
         $m_hoso_dangky = dshosodangkyphongtraothidua::all();
         //Kiểm tra phong trào => nếu đã hết hạn thì ko cho thao tác nhận, trả hồ sơ
@@ -468,6 +471,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
             ->with('pageTitle', 'Danh sách hồ sơ đăng ký thi đua');
     }
+
 
     public function XemDanhSach(Request $request)
     {
@@ -561,6 +565,9 @@ class dshosodenghikhenthuongthiduaController extends Controller
         $inputs['trangthai'] = getTrangThaiChuyenHS(session('chucnang')['dshosodenghikhenthuongthidua']['trangthai'] ?? 'CC');
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         $inputs['lydo'] = ''; //Xóa lý do trả lại
+        $tendangnhap=dstaikhoan::where('madonvi',$inputs['madonvi_nhan'])->first();
+        // dd($tendangnhap);
+        $model->tendangnhap_xl = $tendangnhap->tendangnhap??'';
         setChuyenDV($model, $inputs);
         // setChuyenDV_Huyen($model, $inputs);
         // $inputs['tendangnhap_xl']=$model->madonvi;

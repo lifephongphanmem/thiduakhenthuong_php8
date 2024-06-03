@@ -107,7 +107,13 @@
 
                 <div class="col-4">
                     <label>Tên đơn vị công tác</label>
-                    {!! Form::text('tencoquan', null, ['class' => 'form-control']) !!}
+                    {{-- {!! Form::text('tencoquan', null, ['class' => 'form-control']) !!} --}}
+                    <select name="tencoquan" class="form-control select2basic" style="width:100%">
+                        <option value="">-- Chọn đơn vị công tác --</option>
+                        @foreach ( getDsCoQuan() as $k=>$ct )
+                        <option value="{{$k}}">{{$ct}}</option>
+                    @endforeach
+                    </select>
                 </div>
             </div>
 
@@ -146,6 +152,28 @@
                 <div class="col-md-6">
                     <label class="form-control-label">Loại hình khen thưởng</label>
                     {!! Form::select('maloaihinhkt', setArrayAll($a_loaihinhkt, 'Tất cả', 'ALL'), null, [
+                        'class' => 'form-control select2basic',
+                    ]) !!}
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label class="form-control-label">Hình thức khen thưởng</label>
+                    {!! Form::select('mahinhthuckt', setArrayAll(getDHTDVaHinhThucKT('HINHTHUCKT','CANHAN'), 'Tất cả', 'ALL'), null, [
+                        'class' => 'form-control select2basic',
+                    ]) !!}
+                </div>
+
+                {{-- <div class="col-md-6">
+                    <label class="form-control-label">Lĩnh vực khen thưởng</label>
+                    {!! Form::select('maloaihinhkt', setArrayAll($a_loaihinhkt, 'Tất cả', 'ALL'), null, [
+                        'class' => 'form-control select2basic',
+                    ]) !!}
+                </div> --}}
+                <div class="col-md-6">
+                    <label class="form-control-label">Danh hiệu thi đua</label>
+                    {!! Form::select('madanhhieuthidua', setArrayAll(getDHTDVaHinhThucKT('DANHHIEUTD','CANHAN'), 'Tất cả', 'ALL'), null, [
                         'class' => 'form-control select2basic',
                     ]) !!}
                 </div>

@@ -35,11 +35,13 @@
             <td>Đơn vị khen thưởng: {{ $m_donvi->tendonvi }}</td>
         </tr>
         <tr>
-            <td>Cấp độ khen thưởng: {{ $m_donvi->capdokhenthuong }}</td>
+            {{-- <td>Cấp độ khen thưởng: {{ $m_donvi->capdokhenthuong }}</td> --}}
+            <td>Cấp độ khen thưởng: {{ getPhamViApDung()[$model->capkhenthuong] }}</td>
         </tr>
 
         <tr>
-            <td>Nôi dung khen thưởng: {{ $m_donvi->noidung }}</td>
+            {{-- <td>Nôi dung khen thưởng: {{ $m_donvi->noidung }}</td> --}}
+            <td>Nôi dung khen thưởng: {{ $model->noidung }}</td>
         </tr>
 
         <tr>
@@ -50,7 +52,8 @@
             <td>Chức vụ người ký: {{ $m_donvi->chucvunguoiky }}</td>
         </tr>
         <tr>
-            <td>Họ tên người ký: {{ $m_donvi->chucvunguoiky }}</td>
+            {{-- <td>Họ tên người ký: {{ $m_donvi->chucvunguoiky }}</td> --}}
+            <td>Họ tên người ký: {{ $m_donvi->nguoikytotrinh }}</td>
         </tr>     
           
     </table>

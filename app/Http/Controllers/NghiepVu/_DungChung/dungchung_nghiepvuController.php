@@ -16,7 +16,10 @@ use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_canhan;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_hogiadinh;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_tapthe;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi_tailieu;
 use App\Models\NghiepVu\KhenCao\dshosokhencao;
+use App\Models\NghiepVu\KhenCao\dshosokhencao_tailieu;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothamgiaphongtraotd;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_canhan;
@@ -317,9 +320,7 @@ class dungchung_nghiepvuController extends Controller
         die(json_encode($result));
     }
 
-
-
-    public function DinhKemHoSoKhenCao(Request $request)
+    public function DinhKemHoSoKhenCao16052024(Request $request)
     {
         $result = array(
             'status' => 'fail',
@@ -375,6 +376,68 @@ class dungchung_nghiepvuController extends Controller
         $result['status'] = 'success';
 
         die(json_encode($result));
+    }
+    public function DinhKemHoSoKhenCao(Request $request)
+    {
+        $result = array(
+            'status' => 'fail',
+            'message' => 'error',
+        );
+
+        $inputs = $request->all();
+        $result['message'] = '<div class="modal-body" id = "dinh_kem" >';
+        $model = dshosokhencao_tailieu::where('mahosotdkt', $inputs['mahs'])->get();
+        if ($model->count() > 0) {
+            $a_pltailieu = getPhanLoaiTaiLieuDK();
+            $a_donvi = array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi');
+            $result['message'] .= '<div class="col-md-12">';
+            $result['message'] .= '<table class="table table-bordered table-hover dulieubang">';
+            $result['message'] .= '<thead>';
+            $result['message'] .= '<tr class="text-center">';
+            $result['message'] .= '<th width="2%">STT</th>';
+            $result['message'] .= '<th width="20%">Đơn vị tải lên</th>';
+            $result['message'] .= '<th width="20%">Phân loại tài liệu</th>';
+            $result['message'] .= '<th>Nội dung tóm tắt</th>';
+            $result['message'] .= '<th width="15%">Thao tác</th>';
+            $result['message'] .= '</tr>';
+            $result['message'] .= '</thead>';
+            $result['message'] .= '<tbody>';
+            $i = 1;
+            foreach ($model as $key=>$tt) {
+                // if(!file_exists('/data/tailieudinhkem/' . $tt->tentailieu))
+                // {
+                //     $model->forget($key);
+                //     continue;
+                // }
+                $result['message'] .= '<tr class="odd gradeX">';
+                $result['message'] .= '<td class="text-center">' . $i++ . '</td>';
+                $result['message'] .= '<td>' . ($a_donvi[$tt->madonvi] ?? $tt->madonvi) . '</td>';
+                $result['message'] .= '<td>' . ($a_pltailieu[$tt->phanloai] ?? '') . '</td>';
+                $result['message'] .= '<td>' . $tt->noidung . '</td>';
+                $result['message'] .= '<td class="text-center">';
+
+                if ($tt->tentailieu != '')
+                    $result['message'] .= '<a target="_blank" title="Tải file đính kèm"
+                            href="/data/tailieudinhkem/' . $tt->tentailieu . '" class="btn btn-clean btn-icon btn-sm"><i class="fa flaticon-download text-info"></i></a>';
+                $result['message'] .= '</td>';
+                $result['message'] .= '</tr>';
+            }
+            $result['message'] .= '</tbody>';
+            $result['message'] .= '</table>';
+            $result['message'] .= '</div>';
+            // foreach ($model as $tailieu) {
+            //     $result['message'] .= '<div class="form-group row">';
+            //     $result['message'] .= '<label class="col-3 col-form-label font-weight-bold" >' . ($a_pltailieu[$tailieu->phanloai] ?? $tailieu->phanloai) . ':</label>';
+            //     $result['message'] .= '<div class="col-9 form-control"><a target = "_blank" href = "' . url('/data/tailieudinhkem/' . $tailieu->tentailieu) . '">' . $tailieu->tentailieu . '</a ></div>';
+            //     $result['message'] .= '</div>';
+            // }
+
+        }
+        $result['message'] .= '</div>';
+        $result['status'] = 'success';
+
+        die(json_encode($result));
+        // die(json_encode($model));
     }
 
     function htmlPheDuyetCaNhan(&$result, $model)

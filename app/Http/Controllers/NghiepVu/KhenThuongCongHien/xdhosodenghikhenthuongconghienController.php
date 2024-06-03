@@ -50,6 +50,7 @@ class xdhosodenghikhenthuongconghienController extends Controller
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         $m_donvi = getDonVi(session('admin')->capdo, 'xdhosodenghikhenthuongconghien');
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
@@ -134,6 +135,7 @@ class xdhosodenghikhenthuongconghienController extends Controller
         //gán trạng thái hồ sơ để theo dõi
         $inputs['trangthai'] = 'BTLXD';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
+        setTraLai_TL($inputs['mahoso'],'trinhdenghi');
         if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
             setTraLai($model, $inputs);
         }else{

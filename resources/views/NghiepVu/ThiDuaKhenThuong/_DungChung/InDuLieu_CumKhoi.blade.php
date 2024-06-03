@@ -21,7 +21,6 @@
                         </a>
                     </div>
                 </div>
-
                 <div id="div_inHoSo">
                     <div class="row">
                         <div class="col-lg-12">

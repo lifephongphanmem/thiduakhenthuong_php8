@@ -83,7 +83,8 @@
                                 <th>Nội dung hồ sơ</th>
                                 <th>Trạng thái</th>
                                 <th>Đơn vị tiếp nhận</th>
-                                <th>Phạm vị phát động</th>
+                                {{-- <th>Phạm vị phát động</th> --}}
+                                <th>Trạng thái</th>
                                 <th width="25%">Tên phong trào thi đua</th>
                             </tr>
                         </thead>
@@ -108,7 +109,7 @@
                                     </button>
 
                                     <button title="Tài liệu đính kèm" type="button"
-                                        onclick="get_attack('{{ $tt->mahosotdkt }}', '/DungChung/DinhKemHoSoKhenThuong')"
+                                        onclick="get_attack('{{ $tt->mahosotdkt }}', '/DungChung/DinhKemHoSoDeNghiCumKhoi')"
                                         class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"
                                         data-toggle="modal">
                                         <i class="icon-lg la la-file-download text-dark"></i>
@@ -125,8 +126,8 @@
 
                                     @if (
                                         $tt->nhanhoso == 'KETTHUC' &&
-                                            chkPhanQuyen('dshosodenghikhenthuongthidua', 'hoanthanh') &&
-                                            in_array($tt->trangthaikt, ['CC', 'DD', 'BTLXD', 'CXD']))
+                                            chkPhanQuyen('dshosodenghikhenthuongthiduacumkhoi', 'hoanthanh') &&
+                                            in_array($tt->trangthaikt, ['CC', 'DD', 'BTLXD', 'CXD','BTL']))
                                         @if ($tt->mahosotdkt == '-1')
                                             <button title="Tạo hồ sơ khen thưởng" type="button"
                                                 onclick="confirmKhenThuong('{{ $tt->maphongtraotd }}', '{{$inputs['macumkhoi']}}')"

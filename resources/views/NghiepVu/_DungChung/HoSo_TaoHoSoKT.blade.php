@@ -11,23 +11,56 @@
 
                 <div class="modal-body">
                     <div class="form-group row">
-                        <div class="col-6">
+                        <div class="{{getDVPhanLoaiHS()?'col-8':'col-6'}}">
                             <label>Loại hình khen thưởng</label>
-                            {!! Form::select('maloaihinhkt', $a_loaihinhkt, $inputs['maloaihinhkt'], ['class' => 'form-control']) !!}
+                            {{-- {!! Form::select('maloaihinhkt', $a_loaihinhkt, $inputs['maloaihinhkt'], ['class' => 'form-control select2basic']) !!} --}}
+                            <select name="maloaihinhkt" id="" class="form-control select2basic"
+                                style="width:100%">
+                                @foreach ($a_loaihinhkt as $key => $val)
+                                    <option value="{{ $key }}"
+                                        {{ $key == $inputs['maloaihinhkt'] ? 'selected' : '' }}>{{ $val }}</option>
+                                @endforeach
+
+                            </select>
                         </div>
 
-                        <div class="col-3">
+                        <div class="{{getDVPhanLoaiHS()?'col-4':'col-3'}}">
                             <label>Trạng thái hồ sơ</label>
-                            {!! Form::select('trangthai', getTrangThaiChucNangHoSo($inputs['trangthai']), $inputs['trangthai'], [
-                                'class' => 'form-control',
-                            ]) !!}
-                        </div>
+                            {{-- {!! Form::select('trangthai', getTrangThaiChucNangHoSo($inputs['trangthai']), $inputs['trangthai'], [
+                                'class' => 'form-control select2basic',
+                            ]) !!} --}}
+                            <select name="trangthai" id="" class="form-control select2basic"
+                                style="width:100%">
+                                @foreach (getTrangThaiChucNangHoSo($inputs['trangthai']) as $key => $val)
+                                    <option value="{{ $key }}"
+                                        {{ $key == $inputs['trangthai'] ? 'selected' : '' }}>{{ $val }}</option>
+                                @endforeach
 
-                        <div class="col-3">
+                            </select>
+                        </div>
+                        @if (getDVPhanLoaiHS())
+                        <div class="col-8">
+                            <label>Phân loại hồ sơ</label>
+                            {!! Form::select('phanloai', getPhanLoaiHoSo(isset($inputs['khangchien'])?'KHANGCHIEN':'KHENTHUONG'), null, ['class' => 'form-control']) !!}
+                        </div> 
+                        @endif
+                        <div class="{{getDVPhanLoaiHS()?'col-4':'col-3'}}">
                             <label>Ngày quyết định</label>
                             {!! Form::input('date', 'ngayhoso', date('Y-m-d'), ['class' => 'form-control']) !!}
                         </div>
+
                     </div>
+                    {{-- <div class="form-group row">
+                        <div class="col-8">
+                            <label>Phân loại hồ sơ</label>
+                            {!! Form::select('phanloai', getPhanLoaiHoSo('KHENTHUONG'), null, ['class' => 'form-control']) !!}
+                        </div>
+
+                        <div class="col-4">
+                            <label>Ngày quyết định</label>
+                            {!! Form::input('date', 'ngayhoso', date('Y-m-d'), ['class' => 'form-control']) !!}
+                        </div>
+                    </div> --}}
 
                     @if ($inputs['taototrinh'])
                         <div class="form-group row">

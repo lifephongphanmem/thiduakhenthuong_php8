@@ -51,6 +51,7 @@ class dshosokhenthuongconghienController extends Controller
         $inputs['url_qd'] = '/KhenThuongCongHien/HoSoKT/';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         $m_donvi = getDonVi(session('admin')->capdo, 'dshosokhenthuongconghien');
         $a_diaban = array_column($m_donvi->toArray(), 'tendiaban', 'madiaban');
@@ -68,7 +69,8 @@ class dshosokhenthuongconghienController extends Controller
         // }
 
         $model = dshosothiduakhenthuong::where('madonvi', $inputs['madonvi'])
-            ->where('phanloai', 'KTDONVI')
+            // ->where('phanloai', 'KTDONVI')
+            ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTDONVI'])
             ->where('maloaihinhkt', $inputs['maloaihinhkt']);
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
             $m_loaihinh = dmloaihinhkhenthuong::all();
@@ -220,7 +222,7 @@ class dshosokhenthuongconghienController extends Controller
         $inputs = $request->all();
 
         $inputs['mahosotdkt'] = (string)getdate()[0];
-        $inputs['phanloai'] = 'KTDONVI';
+        $inputs['phanloai'] = $inputs['phanloai']??'KTDONVI';
 
         //Kiểm tra trạng thái hồ sơ
         setThongTinHoSoKT($inputs);
@@ -235,7 +237,7 @@ class dshosokhenthuongconghienController extends Controller
         $trangthai->thoigian = $inputs['ngayhoso'];
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&phanloai='.$inputs['phanloai']);
     }
 
     public function LuuHoSo(Request $request)

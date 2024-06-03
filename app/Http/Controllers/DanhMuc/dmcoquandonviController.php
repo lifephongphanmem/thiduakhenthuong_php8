@@ -5,6 +5,7 @@ namespace App\Http\Controllers\DanhMuc;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\DanhMuc\dmcoquandonvi;
+use App\Models\DanhMuc\dsdonvi;
 use Illuminate\Support\Facades\Session;
 
 class dmcoquandonviController extends Controller
@@ -70,5 +71,30 @@ class dmcoquandonviController extends Controller
         $inputs = $request->all();
         $model = dmcoquandonvi::findorfail($inputs['id']);
         return die($model);
+    }
+
+    public function LayDonVi()
+    {
+        if (!chkPhanQuyen('dmcoquandonvi', 'thaydoi')) {
+            return view('errors.noperm')->with('machucnang', 'dmcoquandonvi');
+        }
+
+        $model=dsdonvi::all();
+        $m_coquan=dmcoquandonvi::all();
+        $a_macoquan=array_column($m_coquan->toarray(),'macoquandonvi');
+        $a_donvi=array();
+        if(count($model) > 0){
+            foreach($model as $ct){
+                if(in_array($ct->madonvi,$a_macoquan)){
+                    continue;
+                }
+                // $a_donvi[$k]=[$ct->madonvi=>$ct->tendonvi];
+                $a_donvi['macoquandonvi']=$ct->madonvi;
+                $a_donvi['tencoquandonvi']=$ct->tendonvi;
+
+                dmcoquandonvi::create($a_donvi);
+            }
+        }
+        return redirect('/CoQuanDonVi/ThongTin');
     }
 }

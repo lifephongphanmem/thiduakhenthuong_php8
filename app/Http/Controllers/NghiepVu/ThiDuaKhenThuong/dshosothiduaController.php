@@ -149,9 +149,10 @@ class dshosothiduaController extends Controller
         $inputs['phamviapdung'] = $inputs['phamviapdung'] ?? 'ALL';
         $inputs['phanloai'] = $inputs['phanloai'] ?? 'ALL';
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
+        // dd($donvi);
         //lấy hết phong trào cấp tỉnh
         $model = viewdonvi_dsphongtrao::wherein('phamviapdung', ['T', 'TW'])->orderby('tungay')->get();
-
+        // dd($model);
         switch ($donvi->capdo) {
             case 'X': {
                     //đơn vị cấp xã => chỉ các phong trào trong huyện, xã
@@ -172,6 +173,7 @@ class dshosothiduaController extends Controller
         foreach ($model_xa as $ct) {
             $model->add($ct);
         }
+
         //kết quả
         if ($inputs['phamviapdung'] != 'ALL') {
             $model = $model->where('phamviapdung', $inputs['phamviapdung']);
@@ -179,7 +181,7 @@ class dshosothiduaController extends Controller
 
         $ngayhientai = date('Y-m-d');
         $m_hoso = dshosothamgiaphongtraotd::wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
-
+// dd($model);
         foreach ($model as $key=>$DangKy) {
             KiemTraPhongTrao($DangKy, $ngayhientai);
             $HoSo = $m_hoso->where('maphongtraotd', $DangKy->maphongtraotd)->wherein('trangthai', ['CD', 'DD', 'CNXKT', 'DXKT', 'CXKT', 'DKT']);
@@ -196,8 +198,7 @@ class dshosothiduaController extends Controller
         $inputs['trangthai'] = session('chucnang')['dshosothidua']['trangthai'] ?? 'CC';
         //  dd($inputs);
         // dd(getDonViXetDuyetDiaBan($donvi));
-
-
+        // dd($model);
         return view('NghiepVu.ThiDuaKhenThuong.HoSoThiDua.ThongTin')
             ->with('inputs', $inputs)
             ->with('model', $model->sortby('tungay'))
@@ -427,6 +428,7 @@ class dshosothiduaController extends Controller
         $model->trangthai = $inputs['trangthai'];
         $model->madonvi_nhan = $inputs['madonvi_nhan'];
         $model->thoigian = date('Y-m-d H:i:s');
+        // dd($m_donvi);
         setChuyenHoSo($m_donvi->capdo, $model, ['madonvi' => $inputs['madonvi_nhan'], 'thoigian' => $model->thoigian, 'trangthai' => $model->trangthai]);
         $model->save();
 
@@ -442,6 +444,46 @@ class dshosothiduaController extends Controller
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }
 
+    public function NhanHoSo(Request $request)
+    {
+        if (!chkPhanQuyen('xdhosodenghikhenthuongthidua', 'hoanthanh')) {
+            return view('errors.noperm')->with('machucnang', 'xdhosodenghikhenthuongthidua')->with('tenphanquyen', 'hoanthanh');
+        }
+
+        $inputs = $request->all();
+        $thoigian = date('Y-m-d H:i:s');
+        $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
+        //gán lại trạng thái hồ sơ để theo dõi
+        $model->trangthai = 'DD';
+        // $model->trangthai_h = 'DD';
+        // $model->thoigian_xd = $thoigian;
+        //set trạng thái hồ sơ khi chuyển
+        setTrangThaiHoSo($model->madonvi_nhan,$model, ['madonvi' => $model->madonvi_nhan, 'thoigian' => $model->thoigian, 'trangthai' => $model->trangthai]);
+        // dd($model);
+        $model->save();
+        trangthaihoso::create([
+            'mahoso' => $inputs['mahoso'],
+            'phanloai' => 'dshosothiduakhenthuong',
+            'trangthai' => $model->trangthai,
+            'thoigian' => $thoigian,
+            'madonvi' => $model->madonvi_nhan,
+            'thongtin' => 'Tiếp nhận hồ sơ đề nghị khen thưởng.',
+        ]);
+        return redirect('/HoSoDeNghiKhenThuongThiDua/DSHoSoThamGia?madonvi=' . $model->madonvi_nhan . '&maphongtraotd=' . $model->maphongtraotd);
+    }
+    public function TraLai(Request $request)
+    {
+        if (!chkPhanQuyen('xdhosodenghikhenthuongthidua', 'hoanthanh')) {
+            return view('errors.noperm')->with('machucnang', 'xdhosodenghikhenthuongthidua')->with('tenphanquyen', 'hoanthanh');
+        }
+        $inputs = $request->all();
+        $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
+        //gán trạng thái hồ sơ để theo dõi
+        $inputs['trangthai'] = 'BTL';
+        $inputs['thoigian'] = date('Y-m-d H:i:s');
+        setTraLaiXD($model, $inputs);
+        return redirect('/HoSoDeNghiKhenThuongThiDua/DSHoSoThamGia?madonvi=' . $model->madonvi . '&maphongtraotd=' . $model->maphongtraotd);
+    }
 
 
     public function LayTieuChuan(Request $request)
@@ -602,14 +644,15 @@ class dshosothiduaController extends Controller
         $inputs = $request->all();
         $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahosotdkt'])->first();
 
-        $result['message'] = '<div class="col-md-12" id="showlido">';
-        $result['message'] .= $model->lydo;
+        // $result['message'] = '<div class="col-md-12" id="showlido">';
+        // $result['message'] .= $model->lydo;
 
-        $result['message'] .= '</div>';
-        $result['status'] = 'success';
+        // $result['message'] .= '</div>';
+        // $result['status'] = 'success';
 
 
-        die(json_encode($result));
+        // die(json_encode($result));
+        die(json_encode($model));
     }
 
     public function TaiLieuDinhKem(Request $request)

@@ -6,15 +6,19 @@
 
 @section('custom-script-footer')
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script src="/assets/js/pages/select2.js"></script>
+    {{-- <script src="/assets/js/pages/select2.js"></script>
     <script src="/assets/js/pages/jquery.dataTables.min.js"></script>
     <script src="/assets/js/pages/dataTables.bootstrap.js"></script>
-    <script src="/assets/js/pages/table-lifesc.js"></script>
+    <script src="/assets/js/pages/table-lifesc.js"></script> --}}
     <!-- END PAGE LEVEL PLUGINS -->
     <script>
         jQuery(document).ready(function() {
             TableManaged3.init();
+            $('#phannhom').change(function() {
+                window.location.href = "/CongBo/VanBan?phannhom="+$('#phannhom').val();
+            });
         });
+
     </script>
 @stop
 
@@ -32,12 +36,12 @@
             </div>
         </div>
         <div class="card-body">
-            {{-- <div class="form-group row">
+            <div class="form-group row">
                 <div class="col-lg-6">
-                    <label>Địa bàn</label>
-                    {!! Form::select('madiaban', getDiaBan_All(), null, ['id' => 'madiaban', 'class' => 'form-control select2basic']) !!}
+                    <label>Phân nhóm</label>
+                    {!! Form::select('phannhom', getPhanNhomTL('ALL'), $inputs['phannhom'], ['id' => 'phannhom', 'class' => 'form-control select2basic']) !!}
                 </div>
-            </div> --}}
+            </div>
 
             <div class="row">
                 <div class="col-md-12">

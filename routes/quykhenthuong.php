@@ -7,6 +7,7 @@ Route::group(['prefix'=>'QuyKhenThuong'], function(){
     Route::get('ThongTin',[dsquanlyquykhenthuongController::class,'ThongTin']);
     Route::post('Them',[dsquanlyquykhenthuongController::class,'Them']);
     Route::get('Sua',[dsquanlyquykhenthuongController::class,'ThayDoi']);
+    Route::post('Xoa',[dsquanlyquykhenthuongController::class,'Xoa']);
 
     Route::post('ThemThu', [dsquanlyquykhenthuongController::class, 'ThemThu']);
     Route::post('ThemChi', [dsquanlyquykhenthuongController::class, 'ThemChi']);

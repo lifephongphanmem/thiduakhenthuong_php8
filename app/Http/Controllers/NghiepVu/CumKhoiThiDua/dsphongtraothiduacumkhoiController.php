@@ -21,6 +21,7 @@ use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua_khenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua_tieuchuan;
 use App\Models\View\view_dscumkhoi;
+use App\Models\View\view_dstruongcumkhoi;
 use App\Models\View\viewdiabandonvi;
 use Illuminate\Support\Facades\Session;
 
@@ -54,17 +55,31 @@ class dsphongtraothiduacumkhoiController extends Controller
         $m_donvi = getDonVi(session('admin')->capdo, 'dsphongtraothiduacumkhoi');
         // $m_donvi=$m_donvi->wherein('madonvi',$a_madonvi);      
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
+        
     //    dd($m_diaban);
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         // dd($inputs['madonvi']);
         $inputs['phanloai'] = $inputs['phanloai'] ?? 'ALL';
         $inputs['phamviapdung'] = $inputs['phamviapdung'] ?? 'ALL';
-        $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
+        // $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
+        // dd($m_cumkhoi);
+        $m_cumkhoi = view_dscumkhoi::all();
+
+        // dd($m_cumkhoi);
         $inputs['macumkhoi'] = $inputs['macumkhoi'] ?? $m_cumkhoi->first()->macumkhoi;
         $inputs['phanloaihoso'] = 'dshosotdktcumkhoi';
-
         $model = dsphongtraothiduacumkhoi::where('madonvi', $inputs['madonvi']);
+        $truongcumkhoi=view_dstruongcumkhoi::where('macumkhoi',$inputs['macumkhoi'])->orderBy('ngayden','desc')->first();
+        if(isset($truongcumkhoi)){
+            if($truongcumkhoi->madonvi == $inputs['madonvi']){
+                $inputs['thaotacthem']=true;
+            }else{
+                $inputs['thaotacthem']=false;
+            }
+        }else{
+            $inputs['thaotacthem']=false;
+        }
         if ($inputs['nam'] != 'ALL')
             $model = $model->whereYear('ngayqd', $inputs['nam']);
         if ($inputs['phanloai'] != 'ALL')
@@ -74,7 +89,7 @@ class dsphongtraothiduacumkhoiController extends Controller
             ->with('model', $model->orderby('ngayqd')->get())
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
-            ->with('m_cumkhoi', $m_cumkhoi)
+            ->with('m_cumkhoi', $m_cumkhoi->unique('macumkhoi'))
             ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('a_phamvi', getPhamViPhongTrao($m_donvi->where('madonvi', $inputs['madonvi'])->first()->capdo ?? 'T'))
             ->with('a_phanloai', getPhanLoaiPhongTraoThiDua(true))
@@ -98,19 +113,21 @@ class dsphongtraothiduacumkhoiController extends Controller
         $donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi'])->first();
 
         if ($model == null) {
-            $model = new dsphongtraothidua();
+            $model = new dsphongtraothiduacumkhoi();
             $model->madonvi = $inputs['madonvi'];
-            $model->maphongtraotd = getdate()[0];
+            $model->maphongtraotd = $inputs['maphongtraotd']??getdate()[0];
             $model->trangthai = 'CC';
             $model->phanloai = $donvi->capdo;
             // $model->macumkhoi = $inputs['macumkhoi'];
             $model->maloaihinhkt = session('chucnang')['dsphongtraothiduacumkhoi']['mahinhthuckt'] ?? '';
+            // $model->save();
         }
+        // dd($model);
         $m_cumkhoi = view_dscumkhoi::where('madonvi', $inputs['madonvi'])->get();
         // $m_cumkhoi = dscumkhoi::where('macumkhoi', $model->macumkhoi)->get();//lấy cụm khối theo đơn vị
         $model->tendonvi = getThongTinDonVi($model->madonvi, 'tendonvi');
         $model_tieuchuan = dsphongtraothiduacumkhoi_tieuchuan::where('maphongtraotd', $model->maphongtraotd)->orderby('phanloaidoituong')->get();
-        //dd($model_tieuchuan);
+        // dd($model_tieuchuan);
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.DanhSachPhongTrao.ThayDoi')
             ->with('model', $model)
             ->with('model_tieuchuan', $model_tieuchuan)
@@ -318,7 +335,6 @@ class dsphongtraothiduacumkhoiController extends Controller
             $model->phanloaidoituong = $inputs['phanloaidoituong'];
             $model->save();
         }
-
         $modelct = dsphongtraothiduacumkhoi_tieuchuan::where('maphongtraotd', $inputs['maphongtraotd'])->orderby('phanloaidoituong')->get();
         if (isset($modelct)) {
             $a_phanloaidt = getPhanLoaiTDKT();
@@ -354,7 +370,7 @@ class dsphongtraothiduacumkhoiController extends Controller
 
                 $result['message'] .= '<td>' .
                     '<button type="button" data-target="#modal-tieuchuan" data-toggle="modal" class="btn btn-sm btn-clean btn-icon" onclick="getTieuChuan(' . $ct->id . ')" ><i class="icon-lg la fa-edit text-dark"></i></button>' .
-                    '<button type="button" data-target="#delete-modal" data-toggle="modal" class="btn btn-sm btn-clean btn-icon" onclick="editDanhHieu(' . $ct->id . ')"><i class="icon-lg la fa-trash-alt text-dangert"></i></button>'
+                    '<button type="button" data-target="#delete-modal" data-toggle="modal" class="btn btn-sm btn-clean btn-icon" onclick="getId(' . $ct->id . ')"><i class="icon-lg la fa-trash-alt text-danger"></i></button>'
                     . '</td>';
 
                 $result['message'] .= '</tr>';
@@ -364,8 +380,21 @@ class dsphongtraothiduacumkhoiController extends Controller
             $result['message'] .= '</div>';
             $result['message'] .= '</div>';
             $result['status'] = 'success';
+            $result['maphongtraotd']=$inputs['maphongtraotd'];
         }
         die(json_encode($result));
+    }
+
+    public function XoaTieuChuan(Request $request)
+    {
+        if (!chkPhanQuyen('dsphongtraothiduacumkhoi', 'thaydoi')) {
+            return view('errors.noperm')->with('machucnang', 'dsphongtraothiduacumkhoi');
+        }
+        $inputs = $request->all();
+        $model = dsphongtraothiduacumkhoi_tieuchuan::findorfail($inputs['id']);
+        $model->delete();
+        // return redirect(static::$url . 'Them?madonvi='.$inputs['madonvi'].'&maphongtraotd=' . $model->maphongtraotd);
+        return redirect(static::$url . 'Sua?madonvi='.$inputs['madonvi'].'&maphongtraotd=' . $model->maphongtraotd);
     }
 
     public function LayTieuChuan(Request $request)

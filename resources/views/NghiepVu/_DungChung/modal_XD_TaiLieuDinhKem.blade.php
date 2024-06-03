@@ -21,7 +21,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label class="control-label">Phân loại tài liệu</label>
-                            {!! Form::select('phanloai', getPhanLoaiTaiLieuDK('TOTRINHKQ'), null, [
+                            {!! Form::select('phanloai', getPhanLoaiTaiLieuDK('TOTRINHKQ&YKIEN'), null, [
                                 'class' => 'form-control',
                             ]) !!}
                         </div>

@@ -14,6 +14,7 @@ use App\Models\DanhMuc\dsdonvi;
 use App\Models\View\view_dscumkhoi;
 use App\Models\View\viewdiabandonvi;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\File;
 
 class dscumkhoiController extends Controller
 {
@@ -67,7 +68,7 @@ class dscumkhoiController extends Controller
         $a_donviql = array_column($model_chitiet->toarray(), 'tendonvi', 'madonvi');
         $a_donvixd = getDonViXetDuyetCumKhoi();
         $a_donvikt = getDonViPheDuyetCumKhoi();
-        
+        // dd($model_chitiet);
         // $m_donvi = dsdonvi::wherein('madonvi', function ($qr) {
         //     $qr->select('madonviQL')->from('dsdiaban')->get();
         // })->get();
@@ -88,7 +89,7 @@ class dscumkhoiController extends Controller
         if (isset($inputs['ipf1'])) {
             $filedk = $request->file('ipf1');
             $inputs['ipf1'] = $inputs['macumkhoi'] . '_qd.' . $filedk->getClientOriginalExtension();
-            $filedk->move(public_path() . '/data/qdkt/', $inputs['ipf1']);
+            $filedk->move(public_path() . '/data/quyetdinh/', $inputs['ipf1']);
         }
 
         if (isset($inputs['ipf2'])) {
@@ -111,7 +112,16 @@ class dscumkhoiController extends Controller
             return view('errors.noperm')->with('machucnang', 'dscumkhoithidua')->with('tenphanquyen', 'thaydoi');
         }
         $inputs = $request->all();
-        dscumkhoi::findorfail($inputs['id'])->delete();
+        $dscumkhoi=dscumkhoi::findorfail($inputs['id']);
+        if(isset($dscumkhoi)){
+            if (file_exists('/data/quyetdinh/' . $dscumkhoi->ipf1)){
+                File::Delete('/data/quyetdinh/' . $dscumkhoi->ipf1);
+            }
+            if (file_exists('/data/tailieukhac/' . $dscumkhoi->ipf2)){
+                File::Delete('/data/tailieukhac/' . $dscumkhoi->ipf2);
+            }
+            $dscumkhoi->delete();
+        }
         return redirect(static::$url . 'ThongTin');
     }
 

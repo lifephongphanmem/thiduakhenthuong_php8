@@ -46,9 +46,11 @@ class tnhosodenghikhencaoController extends Controller
         $inputs['url_hs'] = '/KhenCao/HoSoDeNghi/';
         $inputs['url_xd'] = static::$url;
         $inputs['url_qd'] = '/KhenCao/PheDuyetDeNghi/';
+        $inputs['phanquyen'] = 'tnhosodenghikhencao';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosokhencao';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         // $m_donvi = getDonVi(session('admin')->capdo, 'tnhosodenghikhencao');
         $m_donvi = getDonVi(session('admin')->capdo);
@@ -63,7 +65,8 @@ class tnhosodenghikhencaoController extends Controller
 
         $model = dshosokhencao::where('madonvi_xd', $inputs['madonvi'])
             ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH','KHENCAOTHUTUONG' ,'KHENCAOCHUTICHNUOC',])
-            ; //->orderby('ngayhoso')->get();
+            ->wherenotin('trangthai_xd', ['BTL']);
+             //->orderby('ngayhoso')->get();
 
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
             $m_loaihinh = dmloaihinhkhenthuong::all();
@@ -100,6 +103,7 @@ class tnhosodenghikhencaoController extends Controller
             $hoso->thoigian_hoso = $hoso->thoigian_xd;
             $hoso->lydo_hoso = $hoso->lydo_xd;
             $hoso->madonvi_nhan_hoso = $hoso->madonvi_kt;
+            $hoso->thaotac = true;
             if (count($a_donvilocdulieu) > 0) {
                 //lọc các hồ sơ theo thiết lập dữ liệu
                 if (!in_array($hoso->madonvi, $a_donvilocdulieu))
@@ -136,6 +140,25 @@ class tnhosodenghikhencaoController extends Controller
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         setTraLaiXD($model, $inputs);
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
+    }
+    public function LayLyDo(Request $request)
+    {
+        $result = array(
+            'status' => 'fail',
+            'message' => 'error',
+        );
+        if (!Session::has('admin')) {
+            $result = array(
+                'status' => 'fail',
+                'message' => 'permission denied',
+            );
+            die(json_encode($result));
+        }
+
+        $inputs = $request->all();
+        $model = dshosokhencao::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+        $model->lydo = $model->lydo_xd;
+        die(json_encode($model));
     }
     
     public function ChuyenHoSo(Request $request)
@@ -235,4 +258,5 @@ class tnhosodenghikhencaoController extends Controller
             ->with('a_trangthaihs', getTrangThaiHoSo())
             ->with('pageTitle', 'Thông tin quá trình xử lý hồ sơ đề nghị khen thưởng');
     }
+    
 }

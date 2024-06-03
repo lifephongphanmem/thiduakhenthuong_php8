@@ -34,7 +34,8 @@
                 dataType: 'JSON',
                 success: function(data) {
                     if (data.status == 'success') {
-                        toastr.success("Bổ xung thông tin thành công!");
+                        toastr.success("Bổ sung thông tin thành công!");
+                        $('#frm_ThayDoi').find("[name='maphongtraotd']").val(data.maphongtraotd)
                         $('#dstieuchuan').replaceWith(data.message);
                         jQuery(document).ready(function() {
                             TableManaged4.init();
@@ -228,7 +229,7 @@
                                         <td class="text-center"></td>
                                     @else
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-clean btn-icon">
+                                            <button class="btn btn-sm btn-clean btn-icon" disabled>
                                                 <i class="icon-lg la fa-check text-success"></i></button>
                                         </td>
                                     @endif
@@ -322,6 +323,7 @@
                     <h4 id="modal-header-primary-label" class="modal-title">Đồng ý xoá?</h4>
                     <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
                     <input type="hidden" name="id" />
+                    <input type="hidden" name="madonvi" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
@@ -334,7 +336,9 @@
     </div>
     <script>
         function getId(id) {
+            madonvi=$('#frm_ThayDoi').find("[name='madonvi']").val()
             $('#frm_delete').find("[name='id']").val(id);
+            $('#frm_delete').find("[name='madonvi']").val(madonvi);
         }
 
         function clickdelete() {

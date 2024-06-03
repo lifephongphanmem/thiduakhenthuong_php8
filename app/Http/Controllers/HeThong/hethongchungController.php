@@ -58,7 +58,6 @@ class hethongchungController extends Controller
     public function XacNhanDangNhap(Request $request)
     {
         $input = $request->all();
-        // dd($input);
         $ttuser = dstaikhoan::where('tendangnhap', $input['tendangnhap'])->first();
         //Tài khoản không tồn tại
         if ($ttuser == null) {
@@ -235,6 +234,15 @@ class hethongchungController extends Controller
         Session::put('chucnang', hethongchung_chucnang::all()->keyBy('machucnang')->toArray());
         //gán phân quyền của User
         Session::put('phanquyen', dstaikhoan_phanquyen::where('tendangnhap', $input['tendangnhap'])->get()->keyBy('machucnang')->toArray());
+
+        $trangthai = new trangthaihoso();
+        $trangthai->trangthai = 'DANGNHAP';
+        $trangthai->madonvi = $ttuser->madonvi;
+        $trangthai->thongtin = "Đăng nhập hệ thống";
+        $trangthai->phanloai = 'dstaikhoan';
+        $trangthai->tendangnhap = $ttuser->tendangnhap;
+        $trangthai->thoigian = date('Y-m-d H:i:s');
+        $trangthai->save();
         //dd(session('admin'));
         return redirect('/')
             ->with('pageTitle', 'Tổng quan');
@@ -272,6 +280,14 @@ class hethongchungController extends Controller
     public function DangXuat()
     {
         if (Session::has('admin')) {
+            $trangthai = new trangthaihoso();
+            $trangthai->trangthai = 'DANGXUAT';
+            $trangthai->madonvi = session('admin')->madonvi;
+            $trangthai->thongtin = "Đăng xuất hệ thống";
+            $trangthai->phanloai = 'dstaikhoan';
+            $trangthai->tendangnhap = session('admin')->tendangnhap;
+            $trangthai->thoigian = date('Y-m-d H:i:s');
+            $trangthai->save();
             Session::flush();
             return redirect('/DangNhap');
         } else {
@@ -375,10 +391,19 @@ class hethongchungController extends Controller
         foreach ($model as $ct) {
             $ct->tendonvi = $a_donvi[$ct->madonvi] ?? $ct->madonvi;
         }
+        
+        $model_vp = vanphonghotro::orderBy('stt')->get();
+        $a_vp = a_unique(array_column($model_vp->toArray(), 'vanphong'));
+        $col = (int) 12 / (count($a_vp) > 0 ? count($a_vp) : 1);
+        $col = $col < 4 ? 4 : $col;
         //dd($inputs);
         return view('HeThong.DanhSachHoTro')
             ->with('model', $model)
             ->with('inputs', $inputs)
+            ->with('model_vp', $model_vp)
+            ->with('a_vp', $a_vp)
+            ->with('col', $col)
+            ->with('model_hethong', getHeThongChung())
             ->with('hethong', hethongchung::first())
             ->with('a_diaban', array_column(dsdiaban::all()->toArray(), 'tendiaban', 'madiaban'))
             ->with('pageTitle', 'Thông tin hỗ trợ');

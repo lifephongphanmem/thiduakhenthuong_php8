@@ -74,6 +74,7 @@ Route::group(['prefix' => 'CoQuanDonVi'], function () {
     Route::post('Them', [dmcoquandonviController::class, 'store']);
     Route::post('Xoa', [dmcoquandonviController::class, 'delete']);
     Route::get('LayChiTiet', [dmcoquandonviController::class, 'LayChiTiet']);
+    Route::post('LayDonVi',[dmcoquandonviController::class,'LayDonVi']);
 });
 
 Route::group(['prefix' => 'DeTaiSangKien'], function () {

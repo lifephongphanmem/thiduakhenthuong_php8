@@ -108,6 +108,13 @@
                                             class="btn btn-sm btn-clean btn-icon">
                                             <i class="icon-lg la fa-share text-primary"></i>
                                         </button>
+                                        @if (in_array($tt->trangthai, ['BTL']))
+                                        <button title="Lý do hồ sơ bị trả lại" type="button"
+                                            onclick="viewLyDo('{{ $tt->mahosotdkt }}','{{ $inputs['madonvi'] }}', '{{ $inputs['url_hs'] . 'LayLyDo' }}')"
+                                            class="btn btn-sm btn-clean btn-icon" data-target="#tralai-modal" data-toggle="modal">
+                                            <i class="icon-lg la flaticon2-information text-info"></i>
+                                        </button>
+                                        @endif
 
                                         <button type="button"
                                             onclick="confirmDelete('{{ $tt->id }}','{{ $inputs['url_hs'] . 'Xoa' }}')"
@@ -130,8 +137,8 @@
     @include('NghiepVu._DungChung.HoSo_KhenCao_TaoHoSoDeNghi')
     @include('NghiepVu._DungChung.HoSo_TongHopHoSo')
     @include('NghiepVu._DungChung.InDuLieu_KhenCao')
-    {{-- @include('includes.modal.modal-delete') --}}
+    @include('includes.modal.modal-delete')
     @include('includes.modal.modal_chuyenhs')
-    {{-- @include('includes.modal.modal_attackfile') --}}
-    {{-- @include('includes.modal.modal-lydo') --}}
+    @include('includes.modal.modal_attackfile')
+    @include('includes.modal.modal-lydo')
 @stop

@@ -33,8 +33,9 @@
             </div>
             <div class="card-toolbar">
                 <!--begin::Button-->
-                @if (chkPhanQuyen('dsphongtraothiduacumkhoi', 'thaydoi'))
-                    <a href="{{ url($inputs['url'] . 'Them?madonvi=' . $inputs['madonvi'] . '&nam=' . $inputs['nam']) }}"
+                @if (chkPhanQuyen('dsphongtraothiduacumkhoi', 'thaydoi') && $inputs['thaotacthem'])
+                    {{-- <a href="{{ url($inputs['url'] . 'Them?madonvi=' . $inputs['madonvi'] . '&nam=' . $inputs['nam']) }}" --}}
+                    <a href="{{ url($inputs['url'] . 'Sua?madonvi=' . $inputs['madonvi'] . '&nam=' . $inputs['nam']) }}"
                         class="btn btn-success btn-xs">
                         <i class="fa fa-plus"></i> Thêm mới</a>
                     {{-- <a href="{{ url($inputs['url'] . 'Them?madonvi=' . $inputs['madonvi'] . '&macumkhoi=' . $inputs['macumkhoi']) }}"
@@ -103,7 +104,8 @@
                         <thead>
                             <tr class="text-center">
                                 <th width="2%">STT</th>
-                                <th>Nội dung phong trào</th>
+                                {{-- <th>Nội dung phong trào</th> --}}
+                                <th>Tên phong trào thi đua</th>
                                 <th width="15%">Loại hình khen thưởng</th>
                                 <th>Ngày quyết định</th>
                                 {{-- <th width="15%">Phạm vi phát động</th> --}}

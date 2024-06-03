@@ -14,7 +14,7 @@
     <!-- END PAGE LEVEL PLUGINS -->
     <script>
         jQuery(document).ready(function() {
-            TableManaged3.init();            
+            TableManaged3.init();
         });
 
         function add() {
@@ -37,8 +37,8 @@
                 success: function(data) {
                     var form = $('#frm_modify');
                     form.find("[name='macoquandonvi']").attr('readonly', false);
-                    form.find("[name='macoquandonvi']").val(data.macoquandonvi);                  
-                    form.find("[name='tencoquandonvi']").val(data.tencoquandonvi);                  
+                    form.find("[name='macoquandonvi']").val(data.macoquandonvi);
+                    form.find("[name='tencoquandonvi']").val(data.tencoquandonvi);
                 }
             });
         }
@@ -55,14 +55,18 @@
             <div class="card-toolbar">
                 <!--begin::Button-->
                 @if (chkPhanQuyen('dmcoquandonvi', 'thaydoi'))
-                    <button type="button" onclick="add()" class="btn btn-success btn-xs"
-                        data-target="#modify-modal" data-toggle="modal">
+                    <button type="button" class="btn btn-success btn-xs mr-2" data-target="#laydonvi-modal"
+                        data-toggle="modal">
+                        <i class="fa fa-plus"></i>&nbsp;Lấy đơn vị</button>
+
+                    <button type="button" onclick="add()" class="btn btn-success btn-xs" data-target="#modify-modal"
+                        data-toggle="modal">
                         <i class="fa fa-plus"></i>&nbsp;Thêm mới</button>
                 @endif
                 <!--end::Button-->
             </div>
         </div>
-        <div class="card-body">            
+        <div class="card-body">
 
             <div class="row">
                 <div class="col-md-12">
@@ -71,9 +75,9 @@
                             <tr class="text-center">
                                 <th width="5%">STT</th>
                                 <th width="20%">Mã số</th>
-                                <th>Tên cơ quan, đơn vị, tập thể</th>                              
-                                <th width="10%" >Thao tác</th>
-                            </tr>                            
+                                <th>Tên cơ quan, đơn vị, tập thể</th>
+                                <th width="10%">Thao tác</th>
+                            </tr>
                         </thead>
                         <tbody>
                             <?php $i = 1; ?>
@@ -125,15 +129,35 @@
 
                         <div class="form-group row">
                             <div class="col-12">
-                                <label class="control-label">Tên cơ quan, đơn vị, tập thể<span class="require">*</span></label>
+                                <label class="control-label">Tên cơ quan, đơn vị, tập thể<span
+                                        class="require">*</span></label>
                                 {!! Form::text('tencoquandonvi', null, ['class' => 'form-control', 'required' => 'required']) !!}
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
                     <button type="submit" id="submit" name="submit" value="submit" class="btn btn-primary">Đồng
+                        ý</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {!! Form::close() !!}
+
+    {!! Form::open(['url' => '/CoQuanDonVi/LayDonVi', 'id' => 'laydonvi']) !!}
+    <div id="laydonvi-modal" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-primary">
+                    <h4 id="modal-header-primary-label" class="modal-title">Đồng ý lấy dữ liệu từ danh sách đơn vị?</h4>
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                    <input type="hidden" name="id" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
+                    <button type="submit" class="btn btn-primary">Đồng
                         ý</button>
                 </div>
             </div>

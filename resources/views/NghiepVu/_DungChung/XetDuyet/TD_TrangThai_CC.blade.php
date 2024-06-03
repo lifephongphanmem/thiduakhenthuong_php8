@@ -6,7 +6,7 @@
     </button>
 @endif
 
-@if (in_array($tt->trangthai_hoso, ['DD', 'BTLXD', 'DTN']))
+@if (in_array($tt->trangthai_hoso, ['DD', 'BTLXD', 'DTN','BTLPD']))
     
     @if (session('admin')->opt_duthaototrinh)
         <a title="Tạo dự thảo tờ trình kết quả khen thưởng" target="_blank"
@@ -31,7 +31,8 @@
     </button>
 @endif
 
-@if ($tt->trangthai_hoso == 'BTLXD')
+{{-- @if ($tt->trangthai_hoso == 'BTLXD') --}}
+@if (in_array($tt->trangthai_hoso,['BTLXD','BTLPD']))
     <button title="Lý do hồ sơ bị trả lại" type="button"
         onclick="viewLyDo('{{ $tt->mahosotdkt }}','{{ $inputs['madonvi'] }}', '{{ $inputs['url_xd'] . 'LayLyDo' }}')"
         class="btn btn-sm btn-clean btn-icon" data-target="#tralai-modal" data-toggle="modal">
@@ -39,7 +40,7 @@
     </button>
 @endif
 
-@if (in_array($tt->trangthai_hoso, ['DD', 'CD', 'BTLXD']))
+@if (in_array($tt->trangthai_hoso, ['DD', 'CD', 'BTLXD','BTLPD']))
     <button title="Trả lại hồ sơ" type="button"
         onclick="confirmTraLai('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}', '{{ $inputs['url_xd'] . 'TraLai' }}')"
         class="btn btn-sm btn-clean btn-icon" data-target="#modal-tralai" data-toggle="modal">

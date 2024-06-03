@@ -39,5 +39,6 @@ Route::group(['prefix' => 'BaoCao'], function () {
         Route::post('PhongTraoThiDua', [baocaocumkhoiController::class, 'PhongTraoThiDua']);
         Route::post('HoSoKhenThuong', [baocaocumkhoiController::class, 'HoSoKhenThuong']);
         Route::post('HinhThucKhenThuong', [baocaocumkhoiController::class, 'HinhThucKhenThuong']);
+        Route::get('GetHsPheDuyet',[baocaocumkhoiController::class,'getHsPheDuyetCumKhoi']);
     });
 });

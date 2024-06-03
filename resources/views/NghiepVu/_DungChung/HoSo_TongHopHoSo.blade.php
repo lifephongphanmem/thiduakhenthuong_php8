@@ -71,11 +71,12 @@
                                                         'class' => 'form-control',
                                                     ]) !!}
                                                 </div>
-
+                                                @if (isset($inputs['khangchien']))
                                                 <div class="col-4">
-                                                    <label>Số tờ trình</label>
-                                                    {!! Form::text('sototrinh', null, ['class' => 'form-control']) !!}
-                                                </div>
+                                                    <label>Phân loại hồ sơ</label>
+                                                    {!! Form::select('phanloai', getPhanLoaiHoSo(isset($inputs['khangchien'])?'KHANGCHIEN':'KHENTHUONG'), null, ['class' => 'form-control']) !!}
+                                                </div>     
+                                                @endif
                                                 <div class="col-4">
                                                     <label>Ngày tạo hồ sơ</label>
                                                     {!! Form::input('date', 'ngayhoso', date('Y-m-d'), ['class' => 'form-control']) !!}
@@ -83,6 +84,10 @@
                                             </div>
 
                                             <div class="form-group row">
+                                                <div class="col-4">
+                                                    <label>Số tờ trình</label>
+                                                    {!! Form::text('sototrinh', null, ['class' => 'form-control']) !!}
+                                                </div>
                                                 <div class="col-4">
                                                     <label>Chức vụ người ký tờ trình</label>
                                                     {!! Form::text('chucvunguoiky', null, ['class' => 'form-control']) !!}
@@ -111,11 +116,13 @@
                                                             <tr class="text-center">
                                                                 <th width="2%">STT</th>
                                                                 {{-- <th>Phân loại hồ sơ</th> --}}
+                                                                <th>Đơn vị đề nghị</th>
                                                                 <th>Nội dung hồ sơ</th>
                                                                 <th width="8%">Ngày tháng</th>
                                                                 <th width="8%">Trạng thái</th>
-                                                                <th width="20%">Đơn vị tiếp nhận</th>
-                                                                <th width="10%">Thao tác</th>
+                                                                {{-- <th width="20%">Đơn vị tiếp nhận</th> --}}
+                                                                <th width="20%">Phân loại hồ sơ</th>
+                                                                <th width="8%">Thao tác</th>
                                                             </tr>
                                                         </thead>
 
@@ -123,12 +130,14 @@
                                                         @foreach ($model_hoso as $key => $tt)
                                                             <tr>
                                                                 <td class="text-center">{{ $i++ }}</td>
+                                                                <td>{{ $a_donvi[$tt->madonvi] ?? '' }}</td>
                                                                 <td>{{ $tt->noidung }}</td>
                                                                 <td class="text-center">
                                                                     {{ $tt->sototrinh }}<br>{{ getDayVn($tt->ngayhoso) }}
                                                                 </td>
                                                                 @include('includes.td.td_trangthai_hosotonghop')
-                                                                <td>{{ $a_donvi[$tt->madonvi_nhan] ?? '' }}</td>
+                                                                {{-- <td>{{ $a_donvi[$tt->madonvi_nhan] ?? '' }}</td> --}}
+                                                                <td>{{$a_phanloaihs[$tt->phanloai] ?? $tt->phanloai }}</td>
                                                                 <td class="text-center">
                                                                     <input type="checkbox" name="{{ 'hoso[' . $tt->mahosotdkt . ']' }}" />
                                                                 </td>

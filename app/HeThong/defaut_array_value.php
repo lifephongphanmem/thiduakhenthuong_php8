@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dsdonvi;
 
 /**
@@ -148,9 +149,18 @@ function getPhanLoaiHoSo($phanloai = 'ALL')
             }
         case 'KHENTHUONG': {
                 $a_kq = array(
+                    'KTDONVI' => 'Hồ sơ khen thưởng tại đơn vị',
                     'KHENTHUONG' => 'Hồ sơ đề nghị cấp trên khen thưởng',
                     'KHENCAOTHUTUONG' => 'Hồ sơ đề nghị Thủ tướng chính phủ khen thưởng',
                     'KHENCAOCHUTICHNUOC' => 'Hồ sơ đề nghị Chủ tịch nước khen thưởng',
+                );
+                break;
+            }
+            case 'KHANGCHIEN': {
+                $a_kq = array(
+                    'KTCHONGPHAP' => 'Hồ sơ khen thưởng kháng chiến chống Pháp',
+                    'KTCHONGMY' => 'Hồ sơ khen thưởng kháng chiến chống Mỹ',
+
                 );
                 break;
             }
@@ -408,8 +418,12 @@ function getTaoDuThaoToTrinhPheDuyetCumKhoi(&$model, $maduthao = null)
         $model->thongtintotrinhdenghi = $thongtintotrinhdenghi;
         //Gán thông tin
         $donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
-        $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
-        $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
+        // $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
+        // $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
+        //Lấy đơn vị xét duyệt và đơn vị khen thưởng theo dscumkhoi
+        $dscumkhoi=dscumkhoi::where('macumkhoi',$model->macumkhoi)->first();
+        $donvi_xd=isset($dscumkhoi)?dsdonvi::where('madonvi',$dscumkhoi->madonvixd)->first():'';
+        $donvi_kt=isset($dscumkhoi)?dsdonvi::where('madonvi',$dscumkhoi->madonvikt)->first():'';
 
         $model->thongtintotrinhdenghi = str_replace('[noidung]', $model->noidung, $model->thongtintotrinhdenghi);
         $model->thongtintotrinhdenghi = str_replace('[hinhthuckhenthuong]',  'Bằng khen', $model->thongtintotrinhdenghi);
@@ -506,7 +520,6 @@ function getTaoDuThaoToTrinhHoSo(&$model, $maduthao = null)
         $donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
         $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
         $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
-
         $model->thongtintotrinhhoso = str_replace('[noidung]', $model->noidung, $model->thongtintotrinhhoso);
         $model->thongtintotrinhhoso = str_replace('[hinhthuckhenthuong]',  'Bằng khen', $model->thongtintotrinhhoso);
         $model->thongtintotrinhhoso = str_replace('[nguoikytotrinh]', $model->nguoikytotrinh, $model->thongtintotrinhhoso);
@@ -602,7 +615,6 @@ function getTaoDuThaoToTrinhPheDuyet(&$model, $maduthao = null)
         $donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
         $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
         $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
-
         $model->thongtintotrinhdenghi = str_replace('[noidung]', $model->noidung, $model->thongtintotrinhdenghi);
         $model->thongtintotrinhdenghi = str_replace('[hinhthuckhenthuong]',  'Bằng khen', $model->thongtintotrinhdenghi);
         $model->thongtintotrinhdenghi = str_replace('[nguoikytotrinh]', $model->nguoikytotrinh, $model->thongtintotrinhdenghi);
@@ -629,11 +641,11 @@ function getTaoQuyetDinhKT(&$model, $maduthao = null)
     if ($model->thongtinquyetdinh == '') {
         getTaoDuThaoKT($model, $maduthao);
     }
-    //dd($model);
+    // dd($model);
     $donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
     $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
     $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
-
+    
     $model->thongtinquyetdinh = str_replace('[nguoikytotrinh]', $model->nguoikytotrinh, $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[chucvunguoiky]', $model->chucvunguoiky, $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[chucvunguoikyqd]', $model->chucvunguoikyqd, $model->thongtinquyetdinh);
@@ -644,7 +656,8 @@ function getTaoQuyetDinhKT(&$model, $maduthao = null)
     $model->thongtinquyetdinh = str_replace('[ngayqd]',  Date2Str($model->ngayqd), $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[ngayhoso]',  Date2Str($model->ngayhoso), $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[donvidenghi]',  $donvi->tendvhienthi, $model->thongtinquyetdinh);
-    $model->thongtinquyetdinh = str_replace('[donvikhenthuong]', $donvi_kt->tendvhienthi ?? '', $model->thongtinquyetdinh);
+    // $model->thongtinquyetdinh = str_replace('[donvikhenthuong]', $donvi_kt->tendvhienthi ?? '', $model->thongtinquyetdinh);
+    $model->thongtinquyetdinh = str_replace('[donvikhenthuong]', $donvi_kt->tendvhienthi ? mb_strtoupper($donvi_kt->tendvhienthi, 'UTF-8'): '', $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[donvixetduyet]',  $donvi_xd->tendvhienthi ?? '', $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[sototrinhdenghi]',  $model->sototrinhdenghi ?? '', $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[ngaythangtotrinhdenghi]',  Date2Str($model->ngaythangtotrinhdenghi), $model->thongtinquyetdinh);
@@ -1225,9 +1238,10 @@ function getLoaiVanBan()
         'nghiquyet' => 'Nghị quyết',
         'thongtu' => 'Thông tư',
         'quyetdinh' => 'Quyết định',
-        'vbhdcd' => 'Văn bản hướng dẫn, chỉ đạo',
+        // 'vbhdcd' => 'Văn bản hướng dẫn, chỉ đạo',
+        'vbpl' => 'Văn bản pháp lý',
         'vbdh' => 'Văn bản điều hành',
-        'vbkhac' => 'Báo cáo, văn bản có liên quan khác',
+        'vbkhac' => 'Văn bản khác',
     );
     return $vbqlnn;
 }
@@ -1393,6 +1407,10 @@ function getTrangThai_TD_HoSo($trangthai)
             'trangthai' => 'Trả lại<br>xét duyệt',
             'class' => 'badge badge-danger'
         ],
+        'BTLTN' => [
+            'trangthai' => 'Trả lại<br>tiếp nhận',
+            'class' => 'badge badge-danger'
+        ],
 
         'CNXKT' => [
             'trangthai' => 'Chờ nhận<br>để xét<br>khen thưởng',
@@ -1467,6 +1485,13 @@ function getPhanLoaiTaiLieuDK($phanloaihoso = 'ALL')
             'TOTRINHKQ' => 'Tờ trình kết quả khen thưởng',
         ];
     }
+        //Tờ trình kết quả khen thưởng & ý kiến đóng góp
+        if ($phanloaihoso == 'TOTRINHKQ&YKIEN') {
+            return [
+                'TOTRINHKQ' => 'Tờ trình kết quả khen thưởng',
+                'YKIEN'=>'Ý kiến đóng góp'
+            ];
+        }
     //Quyết định khen thưởng
     if ($phanloaihoso == 'QDKT') {
         return [
@@ -1491,6 +1516,7 @@ function getPhanLoaiTaiLieuDK($phanloaihoso = 'ALL')
         'SANGKIEN' => 'Sáng kiến sáng tạo',
         'TOTRINHKQ' => 'Tờ trình kết quả khen thưởng',
         'QDKT' => 'Quyết định khen thưởng',
+        'YKIEN' => 'Ý kiến đóng góp',
         'KHAC' => 'Tài liệu khác',
     ];
     return $a_kq;

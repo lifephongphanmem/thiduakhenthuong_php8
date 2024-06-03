@@ -94,7 +94,7 @@
                             <tr class="text-center">
                                 <th rowspan="2" width="2%">STT</th>
                                 <th rowspan="2">Đơn vị phát động</th>
-                                <th rowspan="2">Nội dung hồ sơ</th>
+                                <th rowspan="2">Tên phong trào thi đua</th>
                                 <th colspan="3">Thông tin phong trào</th>
                                 <th rowspan="2">Hồ sơ của đơn vị</th>
                                 <th rowspan="2" width="15%">Thao tác</th>
@@ -126,7 +126,7 @@
                                     </button>
 
                                     <button title="Tài liệu đính kèm" type="button"
-                                        onclick="get_attack('{{ $tt->mahoso }}', '/DungChung/DinhKemHoSoThamGia')"
+                                        onclick="get_attack('{{ $tt->mahoso }}', '/DungChung/DinhKemHoSoThamGiaCumKhoi')"
                                         class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"
                                         data-toggle="modal">
                                         <i class="icon-lg la la-file-download text-dark"></i>
@@ -260,7 +260,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <a onclick="setInPT($(this), '/CumKhoiThiDua/PhongTraoThiDua/')"
+                            <a onclick="setInPT($(this), '/CumKhoiThiDua/PhongTraoThiDua/Xem')"
                                 class="btn btn-sm btn-clean text-dark font-weight-bold" target="_blank">
                                 <i class="la flaticon2-print"></i>Thông tin phong trào thi đua
                             </a>
@@ -311,6 +311,10 @@
 
         function setInQD(e, url) {
             e.prop('href', url + '?mahosotdkt=' + $('#frm_InDuLieu').find("[name='mahosotdkt']")
+                .val());
+        }
+        function setInPT(e, url) {
+            e.prop('href', url + '?maphongtraotd=' + $('#frm_InDuLieu').find("[name='maphongtraotd']")
                 .val());
         }
 

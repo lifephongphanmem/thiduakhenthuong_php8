@@ -82,6 +82,7 @@
     @include('includes.modal.modal_unapprove_hs')
     @include('includes.modal.modal_accept_hs')
     @include('includes.modal.modal_trinhhs')
+    @include('includes.modal.modal_chuyenchuyenvien')
     @include('NghiepVu._DungChung.InDuLieu')
     @include('includes.modal.modal_attackfile')
     @include('includes.modal.modal-lydo')

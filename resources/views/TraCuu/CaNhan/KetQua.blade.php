@@ -50,6 +50,7 @@
                                 <th rowspan="2" width="15%">Tên cá nhân</th>
                                 <th rowspan="2">Phân loại cán bộ</th>
                                 <th rowspan="2">Thông tin công tác</th>
+                                <th rowspan="2">Cụm khối</th>
                                 <th rowspan="2">Danh hiệu thi đua</br>/Hình thức khen thưởng</th>
                                 <th rowspan="2">Loại hình khen thưởng</th>
                                 <th rowspan="2" width="5%">Thao tác</th>
@@ -69,18 +70,29 @@
                                     <td class="text-center">Số: {{ $tt->soqd }} </br> ngày {{ getDayVn($tt->ngayqd) }}
                                     </td>
                                     <td class="text-center">{{ $phamvi[$tt->capkhenthuong] ?? $tt->capkhenthuong }}</td>
-                                    <td>{{ $tt->tendoituong }}</td>
+                                    <td><a href="/TraCuu/CaNhan/ThongTinHoSo?mahosotdkt={{$tt->mahosotdkt}}" target="_blank">{{ $tt->tendoituong }}</a></td>
                                     <td>{{ $a_canhan[$tt->maphanloaicanbo] ?? '' }}</td>
                                     <td>{{ $tt->chucvu . ',' . $tt->tenphongban . ',' . $tt->tencoquan }}</td>
+                                    <td>{{$a_cumkhoi[$tt->macumkhoi]??''}}</td>
                                     <td>{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td>
                                     <td>{{ $a_loaihinhkt[$tt->maloaihinhkt] ?? '' }}</td>
                                     <td>
+                                        @if ($tt->mahoso)
                                         <button title="Tài liệu đính kèm" type="button"
-                                            onclick="get_attack('{{ $tt->mahosotdkt }}', '/DungChung/DinhKemHoSoKhenThuong')"
-                                            class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"
-                                            data-toggle="modal">
-                                            <i class="icon-lg la la-file-download text-dark icon-2x"></i>
-                                        </button>
+                                        onclick="get_attack('{{ $tt->mahosotdkt }}', '/DungChung/DinhKemHoSoCumKhoi')"
+                                        class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"
+                                        data-toggle="modal">
+                                        <i class="icon-lg la la-file-download text-dark icon-2x"></i>
+                                    </button>
+                                        @else
+                                        <button title="Tài liệu đính kèm" type="button"
+                                        onclick="get_attack('{{ $tt->mahosotdkt }}', '/DungChung/DinhKemHoSoKhenThuong')"
+                                        class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"
+                                        data-toggle="modal">
+                                        <i class="icon-lg la la-file-download text-dark icon-2x"></i>
+                                    </button>
+                                        @endif
+
                                     </td>
                                 </tr>
                             @endforeach

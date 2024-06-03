@@ -46,6 +46,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
         $inputs = $request->all();
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         $m_donvi = getDonVi(session('admin')->capdo, 'dshosodenghikhenthuongnienhan');
         $a_diaban = array_column($m_donvi->toArray(), 'tendiaban', 'madiaban');
@@ -76,6 +77,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
             $hoso->soluongkhenthuong = $model_canhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + $model_tapthe->where('mahosotdkt', $hoso->mahosotdkt)->count();
         }
+        
 
         //Gán đường dẫn
         if ($inputs['trangthai'] == 'CC') {
@@ -95,7 +97,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
             ->where(function ($qr) use ($inputs) {
                 $qr->where('madonvi_xd', $inputs['madonvi'])->orwhere('madonvi_kt', $inputs['madonvi']);
             })->get();
-        //dd($model_hoso);
+        // dd($model_hoso);
         return view('NghiepVu.KhenThuongNienHan.HoSoKhenThuong.ThongTin')
             ->with('model', $model)
             ->with('model_hoso', $model_hoso)
@@ -312,7 +314,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
             return view('errors.noperm')->with('machucnang', 'dshosodenghikhenthuongnienhan')->with('tenphanquyen', 'thaydoi');
         }
         $inputs = $request->all();
-        //dd($inputs);
+        // dd($inputs);
         dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first()->update($inputs);
 
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);

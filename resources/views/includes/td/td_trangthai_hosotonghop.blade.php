@@ -13,6 +13,10 @@
     @case('DKT')
     @case('DXKT')
     @case('DD')
+    <td align="center">
+        <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+    </td>
+    @break
     @case('BTLXD')
     <td align="center">
         <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>

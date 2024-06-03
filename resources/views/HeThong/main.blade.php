@@ -320,7 +320,11 @@
                 <div class="row gutter-b">
                     <!--begin::Item-->
                     <div class="col-12">
-                        <a href="{{ url('/data/download/' . session('admin')->ipf1) }}" target="_blank"
+                        {{-- <a href="{{ url('/data/download/' . session('admin')->ipf1) }}" target="_blank"
+                            class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-5 px-5">
+                            <span class="d-block font-weight-bold font-size-h6 mt-2">Tài liệu hướng dẫn</span>
+                        </a> --}}
+                        <a href="{{ url('/TaiLieuHuongDan/ThongTin') }}"
                             class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-5 px-5">
                             <span class="d-block font-weight-bold font-size-h6 mt-2">Tài liệu hướng dẫn</span>
                         </a>

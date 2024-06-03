@@ -49,6 +49,7 @@ class dungchung_duthaokhenthuongController extends Controller
                     break;
                 }
         }
+        
         $model->thongtintotrinhhoso = str_replace('<p>[sangtrangmoi]</p>', '<div class=&#34;sangtrangmoi&#34;></div>', $model->thongtintotrinhhoso);
         $model->thongtinquyetdinh = $model->thongtintotrinhhoso;
         return view('NghiepVu._DungChung.DuThao.InDuThao')
@@ -62,6 +63,7 @@ class dungchung_duthaokhenthuongController extends Controller
     {
         $inputs = $request->all();
         $a_duthao = array_column(duthaoquyetdinh::where('phanloai', 'TOTRINHHOSO')->get()->toArray(), 'noidung', 'maduthao');
+        // dd($a_duthao);
         if (count($a_duthao) == 0) {
             return view('errors.nodata')
                 ->with('messegae', 'Hệ thống chưa có mẫu dự thảo tờ trình đề nghị khen thưởng. Hãy liên hệ với đơn vị quản lý để tạo mẫu thảo.')
@@ -70,10 +72,12 @@ class dungchung_duthaokhenthuongController extends Controller
         $inputs['maduthao'] = $inputs['maduthao'] ?? array_key_first($a_duthao);
 
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+
         $inputs['phanloaihoso'] = $inputs['phanloaihoso'] ?? 'dshosothiduakhenthuong';
         switch ($inputs['phanloaihoso']) {
             case 'dshosothiduakhenthuong': {
                     $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+                    // dd($model);
                     if ($model->thongtintotrinhdenghi == '') {
                         getTaoDuThaoToTrinhPheDuyet($model, $inputs['maduthao']);
                     }
@@ -88,13 +92,14 @@ class dungchung_duthaokhenthuongController extends Controller
                 }
             case 'dshosotdktcumkhoi': {
                     $model = dshosotdktcumkhoi::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+                    // dd($model);
                     if ($model->thongtintotrinhdenghi == '') {
                         getTaoDuThaoToTrinhPheDuyetCumKhoi($model, $inputs['maduthao']);
                     }
                     break;
                 }
         }
-
+// dd($model);
         return view('NghiepVu._DungChung.DuThao.ToTrinhDeNghiKhenThuong')
             ->with('model', $model)
             ->with('a_duthao', $a_duthao)
@@ -105,6 +110,7 @@ class dungchung_duthaokhenthuongController extends Controller
     public function TaoToTrinhDeNghiKhenThuong(Request $request)
     {
         $inputs = $request->all();
+        // dd($inputs);
         $inputs['phanloaihoso'] = $inputs['phanloaihoso'] ?? 'dshosothiduakhenthuong';
         switch ($inputs['phanloaihoso']) {
             case 'dshosothiduakhenthuong': {
@@ -129,12 +135,14 @@ class dungchung_duthaokhenthuongController extends Controller
                     break;
                 }
         }
+        // dd($model);
         return redirect('/DungChung/DuThao/ToTrinhDeNghiKhenThuong?mahosotdkt=' . $inputs['mahosotdkt'] . '&phanloaihoso=' . $inputs['phanloaihoso']);
     }
 
     public function LuuToTrinhDeNghiKhenThuong(Request $request)
     {
         $inputs = $request->all();
+        // dd($inputs);
         $inputs['phanloaihoso'] = $inputs['phanloaihoso'] ?? 'dshosothiduakhenthuong';
         switch ($inputs['phanloaihoso']) {
             case 'dshosothiduakhenthuong': {
@@ -172,9 +180,11 @@ class dungchung_duthaokhenthuongController extends Controller
                 ->with('pageTitle', 'Thông báo lỗi');
         }
         $inputs['maduthao'] = $inputs['maduthao'] ?? array_key_first($a_duthao);
+        // dd($inputs);
         switch ($inputs['phanloaihoso']) {
             case 'dshosothiduakhenthuong': {
                     $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+                    // dd($model);
                     if ($model->thongtintotrinhdenghi == '') {
                         getTaoDuThaoToTrinhPheDuyet($model, $inputs['maduthao']);
                     }
@@ -195,7 +205,7 @@ class dungchung_duthaokhenthuongController extends Controller
                     break;
                 }
         }
-        //dd($model);
+        // dd($model);
         $model->thongtintotrinhdenghi = str_replace('<p>[sangtrangmoi]</p>', '<div class=&#34;sangtrangmoi&#34;></div>', $model->thongtintotrinhdenghi);
         $model->thongtinquyetdinh = $model->thongtintotrinhdenghi;
         return view('NghiepVu._DungChung.DuThao.InDuThao')
@@ -245,7 +255,7 @@ class dungchung_duthaokhenthuongController extends Controller
         if ($model->thongtintotrinhdenghi == '') {
             getTaoDuThaoToTrinhPheDuyet($model, $inputs['maduthao']);
         }
-        //dd();
+        // dd($model);
         return view('NghiepVu._DungChung.DuThao.ToTrinhKetQuaKhenThuong')
             ->with('model', $model)
             ->with('a_duthao', $a_duthao)

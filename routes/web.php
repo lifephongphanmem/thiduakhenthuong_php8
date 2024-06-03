@@ -38,6 +38,7 @@ Route::group(['prefix' => 'DungChung'], function () {
     Route::get('DinhKemHoSoThamGia', [dungchung_nghiepvuController::class, 'DinhKemHoSoThamGia']);    
     
     Route::get('DinhKemHoSoDeNghiCumKhoi', [dungchung_nghiepvu_tailieuController::class, 'DinhKemHoSoDeNghiCumKhoi']);
+    Route::get('DinhKemHoSoThamGiaCumKhoi', [dungchung_nghiepvu_tailieuController::class, 'DinhKemHoSoThamGiaCumKhoi']);
 
     Route::group(['prefix' => 'InPhoiKhenThuong'], function () {
         Route::get('DanhSach', [dungchung_inphoi_khenthuongController::class, 'DanhSach']);
@@ -154,3 +155,4 @@ include('vanbantailieu.php');
 include('congbo.php');
 include('quykhenthuong.php');
 include('vanphonghotro.php');
+include('nhatky.php');

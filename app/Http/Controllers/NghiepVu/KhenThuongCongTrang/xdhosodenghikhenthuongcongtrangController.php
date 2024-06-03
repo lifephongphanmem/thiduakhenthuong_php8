@@ -24,6 +24,7 @@ use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tailieu;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tapthe;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua;
 use App\Models\View\viewdiabandonvi;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 
 class xdhosodenghikhenthuongcongtrangController extends Controller
@@ -52,6 +53,7 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         $m_donvi = getDonVi(session('admin')->capdo, 'xdhosodenghikhenthuongcongtrang');
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
@@ -140,6 +142,8 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
         // $inputs['trangthai'] = 'BTL';
         $inputs['trangthai'] = 'BTLXD';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
+        setTraLai_TL($inputs['mahoso'],'trinhdenghi');
+        // dd($model);
         if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
             setTraLai($model, $inputs);
         }else{
@@ -338,13 +342,13 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
 
         $inputs['mahinhthuckt'] = session('chucnang')['xdhosodenghikhenthuongcongtrang']['mahinhthuckt'] ?? 'ALL';
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
-        $model_tailieu = dshosothiduakhenthuong_tailieu::where('mahosotdkt', $inputs['mahosotdkt'])->get();
+        $model_tailieu = dshosothiduakhenthuong_tailieu::where('mahosotdkt', $inputs['mahosotdkt'])->wherein('phanloai',['YKIEN','TOTRINHKQ'])->get();
         //$inputs['madonvi'] = $model->madonvi_xd;//Gán đơn vị tải tài liệu đính kèm
         //dd($model_tailieu);
         return view('NghiepVu.KhenThuongCongTrang.XetDuyetHoSo.TrinhKetQua')
             ->with('model', $model)
             ->with('model_tailieu', $model_tailieu)
-            ->with('a_pltailieu', getPhanLoaiTaiLieuDK())
+            ->with('a_pltailieu', getPhanLoaiTaiLieuDK('TOTRINHKQ&YKIEN'))
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
             ->with('inputs', $inputs)
             ->with('pageTitle', 'Thông tin tờ trình đề nghị khen thưởng');
@@ -354,10 +358,10 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
     {
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
-        // if (isset($inputs['totrinhdenghi'])) {
-        //     $dinhkem = new dungchung_nghiepvu_tailieuController();
-        //     $dinhkem->ThemTaiLieuDK($request, 'dshosothiduakhenthuong', 'totrinhdenghi', $model->madonvi_xd);
-        // }
+        if (isset($inputs['totrinhdenghi'])) {
+            $dinhkem = new dungchung_nghiepvu_tailieuController();
+            $dinhkem->ThemTaiLieuDK($request, 'dshosothiduakhenthuong', 'totrinhdenghi', $model->madonvi_xd);
+        }
         $maduthao = duthaoquyetdinh::where('phanloai', 'TOTRINHPHEDUYET')->first()->maduthao ?? '';
         if ($maduthao != '')
             getTaoDuThaoToTrinhPheDuyet($model, $maduthao);

@@ -60,6 +60,7 @@ class xdhosodenghikhenthuongthiduaController extends Controller
         $inputs['url_qd'] = '/KhenThuongHoSoThiDua/';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         $m_donvi = getDonVi(session('admin')->capdo, 'xdhosodenghikhenthuongthidua', null, 'MODEL');
         if (count($m_donvi) == 0) {
@@ -108,7 +109,7 @@ class xdhosodenghikhenthuongthiduaController extends Controller
 
         $m_hoso = dshosothiduakhenthuong::where('madonvi_xd', $inputs['madonvi'])
             ->wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
-
+// dd($m_hoso);
         //dd($ngayhientai);
         $a_trangthai = array_unique(array_column($m_hoso->toarray(), 'trangthai'));
 
@@ -362,14 +363,18 @@ class xdhosodenghikhenthuongthiduaController extends Controller
         $inputs['url_qd'] = '/KhenThuongHoSoThiDua/';
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         $m_phongtrao = dsphongtraothidua::where('maphongtraotd', $inputs['maphongtraotd'])->first();
         $ngayhientai = date('Y-m-d');
         KiemTraPhongTrao($m_phongtrao, $ngayhientai);
+                //Xác định xem có dùng chức năng tiếp nhận ko
+                $a_trangthai_xd = ['DD', 'CXKT', 'DKT','BTLPD']; 
         $donvi = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
         $model = dshosothiduakhenthuong::where('maphongtraotd', $inputs['maphongtraotd'])
-            ->where('madonvi_xd', $inputs['madonvi'])->get();
-
+            ->where('madonvi_xd', $inputs['madonvi'])
+            ->wherein('trangthai_xd', $a_trangthai_xd)->get();
+// dd($model);
         foreach ($model as $key => $hoso) {
             $hoso->soluongkhenthuong = dshosothiduakhenthuong_canhan::where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + dshosothiduakhenthuong_tapthe::where('mahosotdkt', $hoso->mahosotdkt)->count();
@@ -434,11 +439,17 @@ class xdhosodenghikhenthuongthiduaController extends Controller
         }
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
+
         // $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
+
         //gán trạng thái hồ sơ để theo dõi
-        $inputs['trangthai'] = 'BTL';
+        $inputs['trangthai'] = 'BTLTN';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
-        setTraLaiXD($model, $inputs);
+        if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
+            setTraLai($model, $inputs);
+        }else{
+            setTraLaiXD($model, $inputs);
+        }
         return redirect(static::$url . 'DanhSach?madonvi=' . $model->madonvi . '&maphongtraotd=' . $model->maphongtraotd);
     }
 

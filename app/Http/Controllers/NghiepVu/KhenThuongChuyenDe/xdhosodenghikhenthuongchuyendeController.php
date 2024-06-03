@@ -50,6 +50,7 @@ class xdhosodenghikhenthuongchuyendeController extends Controller
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
 
         // $m_donvi = getDonViXetDuyetHoSo(session('admin')->capdo, null, null, 'MODEL');
         // $m_diaban = getDiaBanXetDuyetHoSo(session('admin')->capdo, null, null, 'MODEL');
@@ -149,6 +150,7 @@ class xdhosodenghikhenthuongchuyendeController extends Controller
         // $model->save();
         $inputs['trangthai'] = 'BTLXD';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
+        setTraLai_TL($inputs['mahoso'],'trinhdenghi');
         if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
             setTraLai($model, $inputs);
         }else{

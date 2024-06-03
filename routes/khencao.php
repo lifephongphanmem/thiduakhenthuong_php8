@@ -15,13 +15,15 @@ Route::group(['prefix' => 'KhenCao'], function () {
         Route::post('Them', [dshosodenghikhencaoController::class, 'Them']);
         Route::get('Sua', [dshosodenghikhencaoController::class, 'ThayDoi']);
         Route::post('Sua', [dshosodenghikhencaoController::class, 'LuuHoSo']);
+        Route::post('Xoa', [dshosodenghikhencaoController::class, 'XoaHoSo']);
         Route::post('ThemTapThe', [dshosodenghikhencaoController::class, 'ThemTapThe']);
         Route::get('XoaTapThe', [dshosodenghikhencaoController::class, 'XoaTapThe']);
         Route::get('LayTapThe', [dshosodenghikhencaoController::class, 'LayTapThe']);
         Route::post('ThemCaNhan', [dshosodenghikhencaoController::class, 'ThemCaNhan']);
         Route::get('XoaCaNhan', [dshosodenghikhencaoController::class, 'XoaCaNhan']);
         Route::get('LayCaNhan', [dshosodenghikhencaoController::class, 'LayCaNhan']);
-
+        Route::post('ThemTongHop', [dshosodenghikhencaoController::class, 'ThemTongHop']);
+        Route::get('LayLyDo', [dshosodenghikhencaoController::class, 'LayLyDo']);
         Route::post('ChuyenHoSo', [dshosodenghikhencaoController::class, 'ChuyenHoSo']);
         Route::get('InHoSo', [dshosodenghikhencaoController::class, 'XemHoSo']);
         // Route::get('InHoSoKT', [dshosokhencaochinhphuController::class, 'InHoSoKT']);
@@ -43,6 +45,7 @@ Route::group(['prefix' => 'KhenCao'], function () {
     Route::group(['prefix' => 'TiepNhanDeNghi'], function () {
         Route::get('ThongTin', [tnhosodenghikhencaoController::class, 'ThongTin']);
         Route::post('TraLai', [tnhosodenghikhencaoController::class, 'TraLai']);
+        Route::get('LayLyDo', [tnhosodenghikhencaoController::class, 'LayLyDo']);
         Route::post('NhanHoSo', [tnhosodenghikhencaoController::class, 'NhanHoSo']);
         Route::post('ChuyenHoSo', [tnhosodenghikhencaoController::class, 'ChuyenHoSo']);
         Route::post('ChuyenChuyenVien', [tnhosodenghikhencaoController::class, 'ChuyenChuyenVien']);
@@ -54,6 +57,7 @@ Route::group(['prefix' => 'KhenCao'], function () {
     Route::group(['prefix' => 'XetDuyetHoSoDN'], function () {
         Route::get('ThongTin', [xdhosodenghikhencaoController::class, 'ThongTin']);        
         Route::post('TraLai', [xdhosodenghikhencaoController::class, 'TraLai']);
+        Route::get('LayLyDo', [xdhosodenghikhencaoController::class, 'LayLyDo']);
         Route::post('NhanHoSo', [xdhosodenghikhencaoController::class, 'NhanHoSo']);
         Route::post('ChuyenHoSo', [xdhosodenghikhencaoController::class, 'ChuyenHoSo']);      
     });

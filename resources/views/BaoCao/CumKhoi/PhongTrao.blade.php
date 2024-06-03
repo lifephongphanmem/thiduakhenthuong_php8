@@ -1,7 +1,8 @@
-@extends('HeThong.main_baocao')
+{{-- @extends('HeThong.main_baocao') --}}
+@extends('BaoCao.main_baocao')
 
 @section('content')
-    <table class="header" width="96%" border="0" cellspacing="0" cellpadding="8"
+    <table id='data_header' class="header" width="96%" border="0" cellspacing="0" cellpadding="8"
         style="margin:0 auto 25px; text-align: center;">
         <tr>
             <td style="text-align: left;width: 60%">
@@ -29,7 +30,7 @@
 
         <tr>
             <td colspan="2" style="text-align: center; font-weight: bold; font-style: italic">
-                {{getThoiDiem()[$inputs['thoidiem']] }}
+                {{ getThoiDiem()[$inputs['thoidiem']] }}
             </td>
         </tr>
 
@@ -41,12 +42,14 @@
 
     </table>
 
-    <table cellspacing="0" cellpadding="0" border="1" style="margin: 20px auto; border-collapse: collapse;">
+    <table id="data_body" cellspacing="0" cellpadding="0" border="1"
+        style="margin: 20px auto; border-collapse: collapse;">
         <thead>
             <tr class="text-center">
                 <th rowspan="2" style="width: 3%">STT</th>
                 <th rowspan="2">Tên phong trào thi đua</th>
                 <th rowspan="2">Tên cụm, khối thi đua</th>
+                <th rowspan="2">Số quyết định</th>
                 <th rowspan="2">Tổng số</th>
                 <th colspan="{{ chkSoKhong(count($a_hinhthuckt_xa)) }}">Khen thưởng cấp Xã</th>
                 <th colspan="{{ chkSoKhong(count($a_hinhthuckt_huyen)) }}">Khen thưởng cấp Huyện</th>
@@ -85,6 +88,9 @@
                 <td class="text-center">{{ $i++ }}</td>
                 <td>{{ $ct->noidung }}</td>
                 <td>{{ $a_cumkhoi[$ct->macumkhoi] ?? '' }}</td>
+                <td>
+                   <a href="/BaoCao/CumKhoi/GetHsPheDuyet?maphongtraotd={{$ct->maphongtraotd}}&macumkhoi={{$ct->macumkhoi}}" target="_blank">{{ $ct->soqd }}</a> 
+                </td>
                 <td class="text-center">{{ $ct->tongcong }}</td>
                 @if (count($a_hinhthuckt_xa) > 0)
                     @foreach ($a_hinhthuckt_xa as $item)
@@ -114,10 +120,10 @@
 
     </table>
 
-    <table width="96%" border="0" cellspacing="0" style="text-align: center">
+    <table id='data_footer' width="96%" border="0" cellspacing="0" style="text-align: center">
         <tr>
             <td style="width: 50%"></td>
-            <td style="width: 50%">{{$m_donvi->diadanh}}, Ngày…...tháng …… năm ……</td>
+            <td style="width: 50%">{{ $m_donvi->diadanh }}, Ngày…...tháng …… năm ……</td>
         </tr>
         <tr>
             <td>{{ $m_donvi->cdketoan }}</td>
