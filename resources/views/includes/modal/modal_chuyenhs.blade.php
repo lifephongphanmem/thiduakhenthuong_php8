@@ -166,7 +166,7 @@
     }
 
     function confirmChuyen(mahs, url, phanloaihs, madonvi = '') {
-        var arNhom = ['KHENTHUONG', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC', ];
+        var arNhom = ['KHENTHUONG', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTCHONGMY','KTCHONGPHAP' ];
         if (arNhom.includes(phanloaihs)) {
             $('#frm_chuyen').attr('action', url);
             $('#frm_chuyen').find("[name='mahoso']").val(mahs);

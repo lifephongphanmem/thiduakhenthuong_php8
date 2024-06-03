@@ -1798,30 +1798,67 @@ function getDVPhanLoaiHS()
     }
 }
 
-function getDHTDVaHinhThucKT($phanloai,$doituong)
+function getDHTDVaHinhThucKT($phanloai,$doituong=null)
 {
     $a_ketqua = [];
     $model=dmhinhthuckhenthuong::all();
 
-    if($phanloai == 'DANHHIEUTD'){
-        $m_danhhieu=$model->where('phanloai',$phanloai);
-        foreach($m_danhhieu as $ct)
-        {
-            $a_doituong=explode(';', $ct->doituongapdung);
-            if(in_array($doituong,$a_doituong)){
-                $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+    switch ($phanloai){
+        case 'DANHHIEUTD':{
+            $m_danhhieu=$model->where('phanloai',$phanloai);
+            foreach($m_danhhieu as $ct)
+            {
+                $a_doituong=explode(';', $ct->doituongapdung);
+                if(in_array($doituong,$a_doituong)){
+                    $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+                }
             }
+            break;
         }
-    }else{
-        $m_danhhieu=$model->where('phanloai','<>',$phanloai);
-        foreach($m_danhhieu as $ct)
-        {
-            $a_doituong=explode(';', $ct->doituongapdung);
-            if(in_array($doituong,$a_doituong)){
-                $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+        case 'KHANGCHIEN':{
+            $phanloai=['HUANCHUONG','HUYCHUONG','KYNIEMCHUONG'];
+            $m_danhhieu=$model->wherein('phanloai',$phanloai);
+            foreach($m_danhhieu as $ct)
+            {
+                // $a_doituong=explode(';', $ct->doituongapdung);
+                // if(in_array($doituong,$a_doituong)){
+                    $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+                // }
             }
+            break;
+        }
+
+        default:{
+            $m_danhhieu=$model->where('phanloai','<>',$phanloai);
+            foreach($m_danhhieu as $ct)
+            {
+                $a_doituong=explode(';', $ct->doituongapdung);
+                if(in_array($doituong,$a_doituong)){
+                    $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+                }
+            }
+            break;
         }
     }
+    // if($phanloai == 'DANHHIEUTD'){
+    //     $m_danhhieu=$model->where('phanloai',$phanloai);
+    //     foreach($m_danhhieu as $ct)
+    //     {
+    //         $a_doituong=explode(';', $ct->doituongapdung);
+    //         if(in_array($doituong,$a_doituong)){
+    //             $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+    //         }
+    //     }
+    // }else{
+    //     $m_danhhieu=$model->where('phanloai','<>',$phanloai);
+    //     foreach($m_danhhieu as $ct)
+    //     {
+    //         $a_doituong=explode(';', $ct->doituongapdung);
+    //         if(in_array($doituong,$a_doituong)){
+    //             $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+    //         }
+    //     }
+    // }
 
     return $a_ketqua;
 

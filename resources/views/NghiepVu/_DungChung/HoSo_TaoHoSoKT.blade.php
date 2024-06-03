@@ -41,7 +41,7 @@
                         @if (getDVPhanLoaiHS())
                         <div class="col-8">
                             <label>Phân loại hồ sơ</label>
-                            {!! Form::select('phanloai', getPhanLoaiHoSo('KHENTHUONG'), null, ['class' => 'form-control']) !!}
+                            {!! Form::select('phanloai', getPhanLoaiHoSo(isset($inputs['khangchien'])?'KHANGCHIEN':'KHENTHUONG'), null, ['class' => 'form-control']) !!}
                         </div> 
                         @endif
                         <div class="{{getDVPhanLoaiHS()?'col-4':'col-3'}}">

@@ -17,8 +17,7 @@
             TableManaged3.init();
             $('#madonvi, #nam, #phanloai, #trangthaihoso').change(function() {
                 window.location.href = "{{ $inputs['url_xd'] }}" + 'ThongTin?madonvi=' + $('#madonvi')
-                    .val() + '&nam=' + $('#nam').val() + "&phanloai=" + $('#phanloai').val() +
-                    "&trangthaihoso=" + $('#trangthaihoso').val();
+                    .val() + '&nam=' + $('#nam').val() + "&phanloai=" + $('#phanloai').val()+ "&trangthaihoso=" + $('#trangthaihoso').val();
             });
         });
     </script>
@@ -29,10 +28,10 @@
     <div class="card card-custom wave wave-animate-slow wave-info" style="min-height: 600px">
         <div class="card-header flex-wrap border-1 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label text-uppercase">Tiếp nhận hồ sơ trình khen thưởng kháng chiến</h3>
+                <h3 class="card-label text-uppercase">Danh sách hồ sơ trình khen thưởng công trạng và thành tích</h3>
             </div>
             <div class="card-toolbar">
-                {{-- @if (chkPhanQuyen('tnhosodenghikhenthuongcongtrang', 'thaydoi'))
+                {{-- @if (chkPhanQuyen('xdhosodenghikhenthuongcongtrang', 'thaydoi'))
                     <button type="button" class="btn btn-success btn-xs" data-target="#taohoso-modal" data-toggle="modal">
                         <i class="fa fa-plus"></i>&nbsp;Thêm mới</button>
                 @endif --}}
@@ -50,10 +49,8 @@
                                 <th>Tên đơn vị trình</th>
                                 <th>Phân loại hồ sơ</th>
                                 <th>Nội dung hồ sơ</th>
+                                {{-- <th>Ngày tạo</th> --}}
                                 <th width="8%">Trạng thái</th>
-                                @if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN')
-                                    <th>Cán bộ đang xử lý</th>
-                                @endif
                                 <th>Đơn vị tiếp nhận</th>
                                 <th width="15%">Thao tác</th>
                             </tr>
@@ -66,16 +63,20 @@
                                 <td>{{ $a_donvi[$tt->madonvi] ?? '' }}</td>
                                 <td>{{ $a_phanloaihs[$tt->phanloai] ?? $tt->phanloai }}</td>
                                 <td>{{ $tt->noidung }}</td>
+                                {{-- <td class="text-center">{{ getDayVn($tt->ngayhoso) }}</td> --}}
                                 @include('includes.td.td_trangthai_hoso')
-                                @if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN')
-                                <td>{{ $tt->tendangnhap_xl }}</td>
-                                @endif
-                                {{-- <td>{{ $a_donvi[$tt->madonvi_nhan_hoso] ?? '' }}</td> --}}
-                                <td>{{ $a_donvi[$tt->madonvi_hoso] ?? '' }}</td>
+                                <td>{{ $a_donvi[$tt->madonvi_nhan_hoso] ?? '' }}</td>
 
                                 <td style="text-align: center">
                                     @include('NghiepVu._DungChung.TD_XemThongTinTDKT')
-                                    @include('NghiepVu._DungChung.TiepNhan.TD_TrangThai_CC')
+
+                                    @if (chkPhanQuyen('xdhosodenghikhenthuongcongtrang', 'thaydoi'))
+                                        @if ($inputs['trangthai'] == 'CC')
+                                            @include('NghiepVu._DungChung.XetDuyet.TD_TrangThai_CC')
+                                        @else
+                                            @include('NghiepVu._DungChung.XetDuyet.TD_TrangThai_CXKT')
+                                        @endif
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -87,8 +88,7 @@
     <!--end::Card-->
     @include('includes.modal.modal_unapprove_hs')
     @include('includes.modal.modal_accept_hs')
-    @include('includes.modal.modal_trinhhs')
-    @include('includes.modal.modal_chuyenchuyenvien')
+    @include('includes.modal.modal_nhanvatrinhkt_hs')
     @include('NghiepVu._DungChung.InDuLieu')
     @include('includes.modal.modal_attackfile')
     @include('includes.modal.modal-lydo')

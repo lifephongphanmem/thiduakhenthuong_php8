@@ -99,9 +99,14 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label class="control-label">Danh hiệu thi đua/Hình thức khen thưởng</label>
-                            {!! Form::select('madanhhieukhenthuong', $a_dhkt_canhan, null, [
+                            {{-- {!! Form::select('madanhhieukhenthuong', $a_dhkt_canhan, null, [
                                 'class' => 'form-control select2_modal',
-                            ]) !!}
+                            ]) !!} --}}
+                            <select name="madanhhieukhenthuong" class="form-control select2basic" style="width:100%">
+                            @foreach ($a_dhkt_canhan as $k=>$ct)
+                                <option value="{{$k}}">{{$ct}}</option>
+                            @endforeach
+                        </select>
                         </div>
                         {{-- <div class="col-md-6">
                             <label class="control-label">Danh hiệu thi đua</label>

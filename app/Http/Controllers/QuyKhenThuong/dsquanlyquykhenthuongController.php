@@ -66,7 +66,7 @@ class dsquanlyquykhenthuongController extends Controller
         $trangthai->thongtin = "Thêm mới quỹ thi đua, khen thưởng";
         $trangthai->phanloai = 'dsquanlyquykhenthuong';
         $trangthai->mahoso = $inputs['maso'];
-        $trangthai->thoigian = getdate();
+        $trangthai->thoigian = date('Y-m-d');
         $trangthai->save();
 
         return redirect(static::$url . 'Sua?maso=' . $inputs['maso']);
@@ -286,5 +286,22 @@ class dsquanlyquykhenthuongController extends Controller
 
 
         return response()->json($result);
+    }
+
+    public function Xoa(Request $request)
+    {
+        if (!chkPhanQuyen('dshosokhenthuongchuyende', 'thaydoi')) {
+            return view('errors.noperm')->with('machucnang', 'dshosokhenthuongchuyende')->with('tenphanquyen', 'thaydoi');
+        }
+        $id=$request->id;
+        $model=dsquanlyquykhenthuong::findOrFail($id);
+        if(isset($model)){
+            $m_chitiet=dsquanlyquykhenthuong_chitiet::where('maso',$model->maso)->delete();
+            $model->delete();
+        }
+
+        return redirect(static::$url . 'ThongTin');
+
+
     }
 }

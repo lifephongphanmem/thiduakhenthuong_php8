@@ -650,7 +650,7 @@
                 <!-- Chưa xây dựng -->
                 @if (chkPhanQuyen('nhatkyhethong', 'phanquyen'))
                     <li class="menu-item" aria-haspopup="true">
-                        <a href="{{ url('/NhatKyHeThong') }}" class="menu-link">
+                        <a href="{{ url('/NhatKyHeThong/ThongTin') }}" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>

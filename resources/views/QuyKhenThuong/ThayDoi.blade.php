@@ -366,7 +366,7 @@
 
         function LuuThu() {
             var formData = new FormData($('#frm_ThemThu')[0]);
-
+            console.log(formData);
             $.ajax({
                 url: "{{ $inputs['url'] }}" + "ThemThu",
                 method: "POST",

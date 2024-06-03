@@ -1009,11 +1009,14 @@ class baocaotonghopController extends Controller
         $model_chikt = $model_chitiet->where('phanloai', 'CHI')->where('phannhom', 'KHENTHUONG');
         $model_chikhac = $model_chitiet->where('phanloai', 'CHI')->where('phannhom', 'KHAC');
         foreach ($model as $ct) {
+            $ct->tongthu = 0;
             foreach ($model_thu as $thu) {
                 $id = $thu->id;
                 $ct->$id = $thu->sotien;
+                $ct->tongthu += $thu->sotien;
             }
             $ct->tongchi = 0;
+
             foreach ($model_chikt as $thu) {
                 $id = $thu->id;
                 $ct->$id = $thu->sotien;
