@@ -710,7 +710,7 @@ class qdhosodenghikhenthuongkhangchienController extends Controller
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         //gán trạng thái hồ sơ để theo dõi
         $madonvi = $model->madonvi_kt;
-        $inputs['trangthai'] = 'BTLPD';
+        $inputs['trangthai'] = 'BTLXD';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         setTraLaiPD($model, $inputs);
 

@@ -14,6 +14,7 @@ use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
 use App\Models\HeThong\trangthaihoso;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothamgiaphongtraotd;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua_khenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua_tieuchuan;
@@ -57,6 +58,13 @@ class dsphongtraothiduaController extends Controller
         if ($inputs['phuongthuctochuc'] != 'ALL')
             $model = $model->where('phuongthuctochuc', $inputs['phuongthuctochuc']);
         $model = $model->orderby('ngayqd')->get();
+        $m_hoso=dshosothamgiaphongtraotd::wherein('maphongtraotd',array_column($model->toarray(),'maphongtraotd'))->get();
+        foreach($model as $ct)
+        {
+            // dd($m_hoso->where('maphongtraotd',$ct->maphongtraotd));
+            $sohoso=count($m_hoso->where('maphongtraotd',$ct->maphongtraotd)->wherein('trangthai', ['CD', 'DD', 'CNXKT', 'DXKT', 'CXKT', 'DKT']));
+            $ct->sohoso=$sohoso;
+        }
         $donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi'])->first();
         $m_phongtrao_captren = dsphongtraothidua::where('phamviapdung', getCapDoDiaBanCapTren($donvi->capdo))->get();
         // dd( $model);
@@ -201,6 +209,7 @@ class dsphongtraothiduaController extends Controller
         $inputs = $request->all();
         $model = dsphongtraothidua::findorfail($inputs['id']);
         dsphongtraothidua_tieuchuan::where('maphongtraotd', $model->maphongtraotd)->delete();
+        dshosothamgiaphongtraotd::where('maphongtraotd', $model->maphongtraotd)->delete();
         $model->delete();
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }

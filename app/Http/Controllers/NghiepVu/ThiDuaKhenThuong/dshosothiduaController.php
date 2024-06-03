@@ -170,7 +170,12 @@ class dshosothiduaController extends Controller
                     break;
                 }
         }
+        // dd($model_xa);
+        $a_maphongtraotd=array_column($model->toarray(),'maphongtraotd');
         foreach ($model_xa as $ct) {
+            if(in_array($ct->maphongtraotd,$a_maphongtraotd)){
+                continue;
+            }
             $model->add($ct);
         }
 

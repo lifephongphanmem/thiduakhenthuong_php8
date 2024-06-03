@@ -64,7 +64,7 @@ class xdhosodenghikhenthuongchuyendeController extends Controller
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
 
         //Xác định xem có dùng chức năng tiếp nhận ko
-        $a_trangthai_xd = ['DD', 'CXKT', 'DKT'];
+        $a_trangthai_xd = ['DD', 'CXKT', 'DKT','BTLXD'];
         if (chkGiaoDien('tnhosodenghikhenthuongchuyende') != '1') {
             $a_trangthai_xd[] = 'CD';
         }
@@ -148,7 +148,7 @@ class xdhosodenghikhenthuongchuyendeController extends Controller
         // $model->trangthai_kt = null;
         // $model->thoigian_kt = null;
         // $model->save();
-        $inputs['trangthai'] = 'BTLXD';
+        $inputs['trangthai'] = 'BTLTN';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         setTraLai_TL($inputs['mahoso'],'trinhdenghi');
         if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {

@@ -63,7 +63,7 @@ class xdhosodenghikhenthuongkhangchienController extends Controller
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
 
         //Xác định xem có dùng chức năng tiếp nhận ko
-        $a_trangthai_xd = ['DD', 'CXKT', 'DKT','BTLPD'];        
+        $a_trangthai_xd = ['DD', 'CXKT', 'DKT','BTLXD'];        
         if(chkGiaoDien('tnhosodenghikhenthuongkhangchien') != '1'){
             $a_trangthai_xd[] = 'CD';
         }

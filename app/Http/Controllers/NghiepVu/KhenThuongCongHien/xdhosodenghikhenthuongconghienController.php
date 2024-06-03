@@ -133,7 +133,7 @@ class xdhosodenghikhenthuongconghienController extends Controller
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         //gán trạng thái hồ sơ để theo dõi
-        $inputs['trangthai'] = 'BTLXD';
+        $inputs['trangthai'] = 'BTLTN';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         setTraLai_TL($inputs['mahoso'],'trinhdenghi');
         if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {

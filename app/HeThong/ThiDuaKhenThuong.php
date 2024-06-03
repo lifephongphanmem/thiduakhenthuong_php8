@@ -2,6 +2,7 @@
 
 use App\Models\DanhMuc\dmcoquandonvi;
 use App\Models\DanhMuc\dmhinhthuckhenthuong;
+use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
 use App\Models\DanhMuc\dstaikhoan;
 use App\Models\DanhMuc\dstaikhoan_phamvi;
@@ -1178,6 +1179,7 @@ function setTraLai($model, $inputs)
 
     $model->trangthai_xd = $model->trangthai;
     $model->thoigian_xd = $model->thoigian;
+    $model->lydo_xd = $inputs['lydo'];
     if ($inputs['trangthai'] == 'BTLXD') {
         $model->trangthai_xl = 'KDK';
         $model->lydo_xd = $inputs['lydo'];
@@ -1185,7 +1187,10 @@ function setTraLai($model, $inputs)
         $model->lydo = $inputs['lydo'];
         $model->trangthai_xl = null;
         $model->tendangnhap_xl = null;
-        dshosothiduakhenthuong_xuly::where('mahosotdkt', $model->mahosotdkt)->delete();
+        // $model->lydo_xd=null;
+        if($inputs['trangthai'] == 'BTL'){
+            dshosothiduakhenthuong_xuly::where('mahosotdkt', $model->mahosotdkt)->delete();
+        }
     }
     $model->save();
     //Xóa trạng thái xử lý hồ sơ
@@ -1789,13 +1794,21 @@ function getDsCoQuan()
     return $a_coquan;
 }
 
-function getDVPhanLoaiHS()
+function getDVPhanLoaiHS($madonvi)
 {
-    if(in_array(session('admin')->capdo,['SSA','T'])){
-        return true;
-    }else{
-        return false;
+    $donvi=dsdonvi::where('madonvi',$madonvi)->first();
+    if(isset($donvi))
+    {
+        $capdo=dsdiaban::where('madiaban',$donvi->madiaban)->first()->capdo;
+        if($capdo == 'T'){
+            return 'KHENTHUONG';
+        }else{
+            return 'KTDONVI';
+        }
     }
+    // if(in_array(session('admin')->capdo,['SSA'])){
+    //     return 'ALL';
+    // }
 }
 
 function getDHTDVaHinhThucKT($phanloai,$doituong=null)

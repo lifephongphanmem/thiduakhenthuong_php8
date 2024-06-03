@@ -116,13 +116,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-horizontal">
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <div class="col-12">
                                 <label class="control-label">Mã số</label>
                                 {!! Form::text('mahinhthucthidua', null, ['class' => 'form-control', 'required' => 'required']) !!}
                             </div>
-                        </div>
-
+                        </div> --}}
+                        {!! Form::text('mahinhthucthidua', null, ['class' => 'form-control', 'hidden' => 'true']) !!}
                         <div class="form-group row">
                             <div class="col-12">
                                 <label class="control-label">Tên hình thức khen thưởng<span class="require">*</span></label>

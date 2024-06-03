@@ -6,7 +6,7 @@
     </button>
 @endif
 
-@if (in_array($tt->trangthai_hoso, ['DD', 'BTLXD', 'DTN','BTLPD']))
+@if (in_array($tt->trangthai_hoso, ['DD', 'BTLXD', 'DTN','BTLXD']))
     
     @if (session('admin')->opt_duthaototrinh)
         <a title="Tạo dự thảo tờ trình kết quả khen thưởng" target="_blank"

@@ -249,7 +249,7 @@
                 </div>
                 
                 <div class="col-lg-4">
-                    <label>Phương thức tổ chức</label>
+                    <label>Hình thức thi đua</label>
                     {!! Form::select('phuongthuctochuc', getPhuongThucToChucPhongTrao(), $inputs['phuongthuctochuc'], ['class' => 'form-control select2basic', 'disabled'=>'disabled']) !!}
                 </div>
             </div>
