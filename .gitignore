@@ -3,6 +3,8 @@
 /public/build
 /public/hot
 /public/storage
+/public/data/tailieudinhkem
+/public/data/tailieuhuongdan
 /storage/*.key
 .env
 .env.backup
@@ -16,3 +18,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/vendor
+

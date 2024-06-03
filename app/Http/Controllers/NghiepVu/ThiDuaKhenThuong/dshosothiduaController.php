@@ -156,19 +156,16 @@ class dshosothiduaController extends Controller
             case 'X': {
                     //đơn vị cấp xã => chỉ các phong trào trong huyện, xã
                     $model_xa = viewdonvi_dsphongtrao::wherein('madiaban', [$donvi->madiaban, $donvi->madiabanQL])->orderby('tungay')->get();
-                    $a_phamvi=getPhamViPhongTrao('H');
                     break;
                 }
             case 'H': {
                     //đơn vị cấp huyện =>chỉ các phong trào trong huyện
                     $model_xa = viewdonvi_dsphongtrao::where('madiaban', $donvi->madiaban)->orderby('tungay')->get();
-                    $a_phamvi=getPhamViPhongTrao('T');
                     break;
                 }
             case 'T': {
                     //Phong trào theo SBN
                     $model_xa = viewdonvi_dsphongtrao::where('madonvi', $inputs['madonvi'])->orderby('tungay')->get();
-                    $a_phamvi=getPhamViPhongTrao('T');
                     break;
                 }
         }
@@ -184,10 +181,6 @@ class dshosothiduaController extends Controller
         $m_hoso = dshosothamgiaphongtraotd::wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
 
         foreach ($model as $key=>$DangKy) {
-            // //Lọc phạm vi áp dụng phong trào để lấy theo đơn vị huyện xã
-            // if($donvi->capdo == 'X' && $DangKy->phamviapdung == 'T'){
-            //         $model->forget($key);
-            // }
             KiemTraPhongTrao($DangKy, $ngayhientai);
             $HoSo = $m_hoso->where('maphongtraotd', $DangKy->maphongtraotd)->wherein('trangthai', ['CD', 'DD', 'CNXKT', 'DXKT', 'CXKT', 'DKT']);
             $DangKy->sohoso = $HoSo == null ? 0 : $HoSo->count();
@@ -211,8 +204,7 @@ class dshosothiduaController extends Controller
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
             ->with('a_donviql', getDonViXetDuyetDiaBan($donvi))
-            // ->with('a_phamvi', getPhamViPhongTrao())
-            ->with('a_phamvi', $a_phamvi)
+            ->with('a_phamvi', getPhamViPhongTrao())
             ->with('a_phanloai', getPhanLoaiPhongTraoThiDua(true))
             ->with('a_trangthaihoso', getTrangThaiTDKT())
             ->with('pageTitle', 'Danh sách hồ sơ thi đua');
@@ -449,6 +441,8 @@ class dshosothiduaController extends Controller
 
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }
+
+
 
     public function LayTieuChuan(Request $request)
     {

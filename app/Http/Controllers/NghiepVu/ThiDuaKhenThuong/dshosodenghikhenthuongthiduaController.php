@@ -517,45 +517,45 @@ class dshosodenghikhenthuongthiduaController extends Controller
         $phamviapdung = dsphongtraothidua::where('maphongtraotd', $model->maphongtraotd)->first()->phamviapdung ?? 'PHAMVI';
         $donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi_nhan'])->first();
         $capdo = $donvi->capdo ?? 'CAPDO';
-        // switch ($phamviapdung) {
-        //     case 'X': {
-        //             if ($phamviapdung != $capdo) {
-        //                 return view('errors.404')
-        //                     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
-        //                     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
-        //             }
-        //             break;
-        //         }
-        //     case 'H': {
-        //             if (!in_array($capdo, ['X', 'H'])) {
-        //                 return view('errors.404')
-        //                     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
-        //                     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
-        //             }
-        //             break;
-        //         }
-        //     case 'SBN': {
-        //             if (!in_array($capdo, ['T'])) {
-        //                 return view('errors.404')
-        //                     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . ' </b>không thể nhận đề nghị xét khen thưởng.')
-        //                     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
-        //             }
-        //             break;
-        //         }
-        //     case 'T': {
-        //             if (!in_array($capdo, ['T'])) {
-        //                 return view('errors.404')
-        //                     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
-        //                     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
-        //             }
-        //             break;
-        //         }
-        //     default: {
-        //             // return view('errors.404')
-        //             //     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị không thể xét khen thưởng.')
-        //             //     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
-        //         }
-        // }
+        switch ($phamviapdung) {
+            case 'X': {
+                    if ($phamviapdung != $capdo) {
+                        return view('errors.404')
+                            ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
+                            ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
+                    }
+                    break;
+                }
+            case 'H': {
+                    if (!in_array($capdo, ['X', 'H'])) {
+                        return view('errors.404')
+                            ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
+                            ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
+                    }
+                    break;
+                }
+            case 'SBN': {
+                    if (!in_array($capdo, ['T'])) {
+                        return view('errors.404')
+                            ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . ' </b>không thể nhận đề nghị xét khen thưởng.')
+                            ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
+                    }
+                    break;
+                }
+            case 'T': {
+                    if (!in_array($capdo, ['T'])) {
+                        return view('errors.404')
+                            ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị: <b>' . ($donvi->tendonvi ?? '') . '</b> không thể nhận đề nghị xét khen thưởng.')
+                            ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
+                    }
+                    break;
+                }
+            default: {
+                    // return view('errors.404')
+                    //     ->with('message', 'Phong trào thi đua không thuộc phạm vi quản lý của đơn vị tiếp nhận<br>nên đơn vị không thể xét khen thưởng.')
+                    //     ->with('url', '/XetDuyetHoSoThiDua/ThongTin?madonvi=' . $model->madonvi);
+                }
+        }
         // dd($phamviapdung);
         // dd(session('chucnang')['dshosodenghikhenthuongthidua']['trangthai']);
         $inputs['trangthai'] = getTrangThaiChuyenHS(session('chucnang')['dshosodenghikhenthuongthidua']['trangthai'] ?? 'CC');

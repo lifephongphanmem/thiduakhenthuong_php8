@@ -433,8 +433,8 @@ class xdhosodenghikhenthuongthiduaController extends Controller
             return view('errors.noperm')->with('machucnang', 'xdhosodenghikhenthuongthidua')->with('tenphanquyen', 'hoanthanh');
         }
         $inputs = $request->all();
-        // $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
-        $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
+        $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
+        // $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
         //gán trạng thái hồ sơ để theo dõi
         $inputs['trangthai'] = 'BTL';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
@@ -449,9 +449,10 @@ class xdhosodenghikhenthuongthiduaController extends Controller
         }
 
         $inputs = $request->all();
-        //dd($inputs);
+        // dd($inputs);
         $thoigian = date('Y-m-d H:i:s');
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
+        // $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
         //gán lại trạng thái hồ sơ để theo dõi
         $model->trangthai = 'DD';
         $model->trangthai_xd = 'DD';
