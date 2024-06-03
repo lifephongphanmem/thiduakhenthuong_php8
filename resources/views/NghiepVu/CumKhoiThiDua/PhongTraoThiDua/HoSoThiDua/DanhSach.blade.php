@@ -94,7 +94,7 @@
                             <tr class="text-center">
                                 <th rowspan="2" width="2%">STT</th>
                                 <th rowspan="2">Đơn vị phát động</th>
-                                <th rowspan="2">Nội dung hồ sơ</th>
+                                <th rowspan="2">Tên phong trào thi đua</th>
                                 <th colspan="3">Thông tin phong trào</th>
                                 <th rowspan="2">Hồ sơ của đơn vị</th>
                                 <th rowspan="2" width="15%">Thao tác</th>

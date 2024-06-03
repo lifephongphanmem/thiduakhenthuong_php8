@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\DanhMuc\dmcoquandonvi;
+use App\Models\DanhMuc\dmhinhthuckhenthuong;
 use App\Models\DanhMuc\dsdonvi;
 use App\Models\DanhMuc\dstaikhoan;
 use App\Models\DanhMuc\dstaikhoan_phamvi;
@@ -1145,7 +1147,7 @@ function setTraLaiXD(&$model, &$inputs)
     //Xét có tồn tại các trường trong db không để cập nhật
     $a_keys = array_keys($model->toarray());
     if (in_array('trangthai_xd', $a_keys))
-        $model->trangthai_xd = $model->trangthai;
+        $model->trangthai_xd = $inputs['trangthai'];
     if (in_array('thoigian_xd', $a_keys))
         $model->thoigian_xd = $model->thoigian;
     if (in_array('trangthai_xl', $a_keys))
@@ -1159,7 +1161,7 @@ function setTraLaiXD(&$model, &$inputs)
     trangthaihoso::create([
         'mahoso' => $inputs['mahoso'],
         'phanloai' => 'dshosothiduakhenthuong',
-        'trangthai' => $model->trangthai,
+        'trangthai' => $inputs['trangthai'],
         'thoigian' => $model->thoigian,
         'madonvi_nhan' => $model->madonvi,
         'madonvi' => $model->madonvi_xd,
@@ -1769,9 +1771,58 @@ function getPhanLoaiTKTiepNhan($madonvi)
 {
     $m_taikhoantiepnhan = dsdonvi::where('madonvi', $madonvi)->first();
     if (isset($m_taikhoantiepnhan->taikhoantiepnhan)) {
-        $taikhoantiepnhan = $m_taikhoantiepnhan->taikhoantiepnha;
+        $taikhoantiepnhan = $m_taikhoantiepnhan->taikhoantiepnhan;
     } else {
         $taikhoantiepnhan = dstaikhoan::where('madonvi', $madonvi)->first()->tendangnhap ?? '';
     }
     return $taikhoantiepnhan;
+}
+
+function getDsCoQuan()
+{
+    $model=dmcoquandonvi::all();
+    $a_coquan=array();
+    if(count($model) > 0)
+    {
+        $a_coquan=array_column($model->toarray(),'tencoquandonvi','macoquandonvi');
+    }
+    return $a_coquan;
+}
+
+function getDVPhanLoaiHS()
+{
+    if(in_array(session('admin')->capdo,['SSA','T'])){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function getDHTDVaHinhThucKT($phanloai,$doituong)
+{
+    $a_ketqua = [];
+    $model=dmhinhthuckhenthuong::all();
+
+    if($phanloai == 'DANHHIEUTD'){
+        $m_danhhieu=$model->where('phanloai',$phanloai);
+        foreach($m_danhhieu as $ct)
+        {
+            $a_doituong=explode(';', $ct->doituongapdung);
+            if(in_array($doituong,$a_doituong)){
+                $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+            }
+        }
+    }else{
+        $m_danhhieu=$model->where('phanloai','<>',$phanloai);
+        foreach($m_danhhieu as $ct)
+        {
+            $a_doituong=explode(';', $ct->doituongapdung);
+            if(in_array($doituong,$a_doituong)){
+                $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+            }
+        }
+    }
+
+    return $a_ketqua;
+
 }

@@ -47,12 +47,15 @@ class dsphongtraothiduaController extends Controller
         $inputs['nam'] = $inputs['nam'] ?? 'ALL';
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         $inputs['phanloai'] = $inputs['phanloai'] ?? 'ALL';
+        $inputs['phuongthuctochuc'] = $inputs['phuongthuctochuc'] ?? 'ALL';
         $inputs['phamviapdung'] = $inputs['phamviapdung'] ?? 'ALL';
         $model = dsphongtraothidua::where('madonvi', $inputs['madonvi']);
         if ($inputs['nam'] != 'ALL')
             $model = $model->whereYear('ngayqd', $inputs['nam']);
         if ($inputs['phanloai'] != 'ALL')
             $model = $model->where('phanloai', $inputs['phanloai']);
+        if ($inputs['phuongthuctochuc'] != 'ALL')
+            $model = $model->where('phuongthuctochuc', $inputs['phuongthuctochuc']);
         $model = $model->orderby('ngayqd')->get();
         $donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi'])->first();
         $m_phongtrao_captren = dsphongtraothidua::where('phamviapdung', getCapDoDiaBanCapTren($donvi->capdo))->get();
@@ -64,7 +67,8 @@ class dsphongtraothiduaController extends Controller
             ->with('m_phongtrao_captren', $m_phongtrao_captren)
             ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('a_phamvi', getPhamViPhongTrao($m_donvi->where('madonvi', $inputs['madonvi'])->first()->capdo ?? 'T'))
-            ->with('a_phanloai', getPhanLoaiPhongTraoThiDua(true))
+            // ->with('a_phanloai', getPhanLoaiPhongTraoThiDua(true))
+            ->with('a_phanloai', getPhuongThucToChucPhongTrao())
             ->with('inputs', $inputs)
             ->with('pageTitle', 'Danh sách phong trào thi đua');
     }
@@ -115,8 +119,8 @@ class dsphongtraothiduaController extends Controller
             if (!isset($m_phongtrao_captren)) {
                 $m_phongtrao_captren = new Collection();
             }
-        }else{
-            $m_phongtrao_captren = new Collection(); 
+        } else {
+            $m_phongtrao_captren = new Collection();
         }
         // dd($inputs);
         // dd($m_phongtrao_captren);
@@ -281,7 +285,7 @@ class dsphongtraothiduaController extends Controller
             $result['message'] .= '</div>';
             $result['message'] .= '</div>';
             $result['status'] = 'success';
-            $result['maphongtraotd']=$inputs['maphongtraotd'];
+            $result['maphongtraotd'] = $inputs['maphongtraotd'];
         }
         return response()->json($result);
     }

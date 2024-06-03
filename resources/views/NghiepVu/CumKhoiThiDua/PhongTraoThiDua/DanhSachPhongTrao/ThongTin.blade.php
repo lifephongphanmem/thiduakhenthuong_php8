@@ -104,7 +104,8 @@
                         <thead>
                             <tr class="text-center">
                                 <th width="2%">STT</th>
-                                <th>Nội dung phong trào</th>
+                                {{-- <th>Nội dung phong trào</th> --}}
+                                <th>Tên phong trào thi đua</th>
                                 <th width="15%">Loại hình khen thưởng</th>
                                 <th>Ngày quyết định</th>
                                 {{-- <th width="15%">Phạm vi phát động</th> --}}

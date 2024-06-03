@@ -54,7 +54,11 @@
             <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
         </td>
     @break
-
+    @case('BTLTN')
+        <td align="center">
+            <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+        </td>
+    @break
     @case('CNXKT')
     @case('CXKT')
 

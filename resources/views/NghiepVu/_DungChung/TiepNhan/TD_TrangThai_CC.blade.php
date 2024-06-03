@@ -1,13 +1,13 @@
 @if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN')
-    @if (in_array($tt->trangthai_hoso, ['CD']) && chkPhanQuyen($inputs['phanquyen'], 'tiepnhan'))
+    @if (in_array($tt->trangthai_hoso, ['CD']) && chkPhanQuyen($inputs['phanquyen'], 'tiepnhan')&&$tt->taikhoantiepnhan)
         <button title="Tiếp nhận hồ sơ" type="button"
             onclick="confirmNhan('{{ $tt->mahosotdkt }}','{{ $inputs['url_xd'] . 'NhanHoSo' }}','{{ $inputs['madonvi'] }}')"
             class="btn btn-sm btn-clean btn-icon" data-target="#nhan-modal-confirm" data-toggle="modal">
             <i class="icon-lg flaticon-interface-5 text-success"></i>
         </button>
     @endif
-    @if (in_array($tt->trangthai_hoso, ['DTN', 'CD', 'BTLXD', 'KDK', 'BTL']) &&
-            chkPhanQuyen($inputs['phanquyen'], 'tiepnhan'))
+    @if (in_array($tt->trangthai_hoso, ['DTN', 'CD', 'BTLXD', 'KDK', 'BTL','BTLTN']) &&
+            chkPhanQuyen($inputs['phanquyen'], 'tiepnhan') && $tt->taikhoantiepnhan) 
         <button title="Huỷ tiếp nhận và trả lại hồ sơ" type="button"
             onclick="confirmTraLai('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}', '{{ $inputs['url_xd'] . 'TraLai' }}')"
             class="btn btn-sm btn-clean btn-icon" data-target="#modal-tralai" data-toggle="modal">
@@ -34,7 +34,7 @@
             <i class="icon-lg la flaticon-list text-success"></i>
         </button>
     @endif
-    @if (in_array($tt->trangthai, ['BTLXD']) && $tt->lydo_xd != null)
+    @if (in_array($tt->trangthai, ['BTLXD','BTL','BTLTN']) && $tt->lydo_xd != null)
         <button title="Lý do hồ sơ bị trả lại" type="button"
             onclick="viewLyDo('{{ $tt->mahosotdkt }}','{{ $inputs['madonvi'] }}', '{{ $inputs['url_hs'] . 'LayLyDo' }}')"
             class="btn btn-sm btn-clean btn-icon" data-target="#tralai-modal" data-toggle="modal">
@@ -53,7 +53,7 @@
         @endif
     @endif --}}
 
-    @if (in_array($tt->trangthai_hoso, ['DCCVXD', 'BTLXD', 'DTN']) &&
+    @if (in_array($tt->trangthai_hoso, ['DCCVXD', 'BTLXD', 'DTN','BTL','BTLTN']) &&
             $tt->thaotac &&
             chkPhanQuyen($inputs['phanquyen'], 'hoanthanh'))
         <button title="Chuyển xét duyệt khen thưởng" type="button"

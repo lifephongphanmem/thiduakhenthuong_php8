@@ -239,6 +239,9 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
                         $hoso->trangthai_chuyenchuyenvien = true;
                     }
                 }
+                if (session('admin')->tendangnhap == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
+                    $hoso->taikhoantiepnhan = true;
+                }
                 //xét phân loại tài khoản để hiển thị lại cho tài khoản phó giám đốc và giám đốc sở
                 if (session('admin')->phanloai == 'LANHDAO') {
                     $inputs['taikhoanlanhdao'] = true;

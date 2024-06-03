@@ -113,6 +113,12 @@ class tracuutaptheController extends Controller
         if ($inputs['maloaihinhkt'] != 'ALL')
             $model_khenthuong = $model_khenthuong->where('maloaihinhkt', $inputs['maloaihinhkt']);
 
+        if ($inputs['mahinhthuckt'] != 'ALL')
+            $model_khenthuong = $model_khenthuong->where('madanhhieukhenthuong', $inputs['mahinhthuckt']);
+
+        if ($inputs['madanhhieuthidua'] != 'ALL')
+            $model_khenthuong = $model_khenthuong->where('madanhhieukhenthuong', $inputs['madanhhieuthidua']);
+
         //Lọc các kết quả khen thưởng trên địa bàn
         $donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi'])->first();
 

@@ -149,6 +149,7 @@ function getPhanLoaiHoSo($phanloai = 'ALL')
             }
         case 'KHENTHUONG': {
                 $a_kq = array(
+                    'KTDONVI' => 'Hồ sơ khen thưởng tại đơn vị',
                     'KHENTHUONG' => 'Hồ sơ đề nghị cấp trên khen thưởng',
                     'KHENCAOTHUTUONG' => 'Hồ sơ đề nghị Thủ tướng chính phủ khen thưởng',
                     'KHENCAOCHUTICHNUOC' => 'Hồ sơ đề nghị Chủ tịch nước khen thưởng',
@@ -1396,6 +1397,10 @@ function getTrangThai_TD_HoSo($trangthai)
 
         'BTLXD' => [
             'trangthai' => 'Trả lại<br>xét duyệt',
+            'class' => 'badge badge-danger'
+        ],
+        'BTLTN' => [
+            'trangthai' => 'Trả lại<br>tiếp nhận',
             'class' => 'badge badge-danger'
         ],
 

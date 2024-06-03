@@ -60,7 +60,7 @@
     <div class="card card-custom" style="min-height: 600px">
         <div class="card-header flex-wrap border-1 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label text-uppercase">Danh sách: danh hiệu thi đua, hình thức khen thưởng </h3>
+                <h3 class="card-label text-uppercase">Danh mục hình thức khen thưởng </h3>
             </div>
             <div class="card-toolbar">
                 <!--begin::Button-->
