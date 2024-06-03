@@ -70,7 +70,8 @@ class dshosokhenthuongcongtrangController extends Controller
         // }
 
         $model = dshosothiduakhenthuong::where('madonvi', $inputs['madonvi'])
-            ->where('phanloai', 'KTDONVI')
+            // ->where('phanloai', 'KTDONVI')
+            ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTDONVI'])
             ->where('maloaihinhkt', $inputs['maloaihinhkt']);
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
             $m_loaihinh = dmloaihinhkhenthuong::all();
@@ -229,12 +230,12 @@ class dshosokhenthuongcongtrangController extends Controller
             return view('errors.noperm')->with('machucnang', 'dshosokhenthuongcongtrang')->with('tenphanquyen', 'thaydoi');
         }
         $inputs = $request->all();
-
         $inputs['mahosotdkt'] = (string)getdate()[0];
-        $inputs['phanloai'] = 'KTDONVI';
+        $inputs['phanloai'] = $inputs['phanloai']??'KTDONVI';
 
         //Kiểm tra trạng thái hồ sơ
         setThongTinHoSoKT($inputs);
+        // dd($inputs);
         dshosothiduakhenthuong::create($inputs);
 
         //Lưu nhật ký
@@ -248,7 +249,7 @@ class dshosokhenthuongcongtrangController extends Controller
 
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&phanloai='.$inputs['phanloai']);
     }
 
     public function LuuHoSo(Request $request)

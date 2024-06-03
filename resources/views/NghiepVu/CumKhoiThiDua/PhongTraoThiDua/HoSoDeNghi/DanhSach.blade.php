@@ -83,7 +83,8 @@
                                 <th>Nội dung hồ sơ</th>
                                 <th>Trạng thái</th>
                                 <th>Đơn vị tiếp nhận</th>
-                                <th>Phạm vị phát động</th>
+                                {{-- <th>Phạm vị phát động</th> --}}
+                                <th>Trạng thái</th>
                                 <th width="25%">Tên phong trào thi đua</th>
                             </tr>
                         </thead>

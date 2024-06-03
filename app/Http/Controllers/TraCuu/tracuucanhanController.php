@@ -171,6 +171,14 @@ class tracuucanhanController extends Controller
             $model_khenthuong = $model_khenthuong->where('maloaihinhkt', $inputs['maloaihinhkt']);
             $model_cumkhoi = $model_cumkhoi->where('maloaihinhkt', $inputs['maloaihinhkt']);
         }
+        if ($inputs['mahinhthuckt'] != 'ALL'){
+            $model_khenthuong = $model_khenthuong->where('madanhhieukhenthuong', $inputs['mahinhthuckt']);
+            $model_cumkhoi = $model_cumkhoi->where('madanhhieukhenthuong', $inputs['mahinhthuckt']);
+        }
+        if ($inputs['madanhhieuthidua'] != 'ALL'){
+            $model_khenthuong = $model_khenthuong->where('madanhhieukhenthuong', $inputs['madanhhieuthidua']);
+            $model_cumkhoi = $model_cumkhoi->where('madanhhieukhenthuong', $inputs['madanhhieuthidua']);
+        }
         //Lọc các kết quả khen thưởng trên địa bàn
         $donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi'])->first();
 

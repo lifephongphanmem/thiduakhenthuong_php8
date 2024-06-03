@@ -115,7 +115,8 @@
                                                                 <th>Nội dung hồ sơ</th>
                                                                 <th width="8%">Ngày tháng</th>
                                                                 <th width="8%">Trạng thái</th>
-                                                                <th width="20%">Đơn vị tiếp nhận</th>
+                                                                {{-- <th width="20%">Đơn vị tiếp nhận</th> --}}
+                                                                <th width="20%">Phân loại hồ sơ</th>
                                                                 <th width="8%">Thao tác</th>
                                                             </tr>
                                                         </thead>
@@ -130,7 +131,8 @@
                                                                     {{ $tt->sototrinh }}<br>{{ getDayVn($tt->ngayhoso) }}
                                                                 </td>
                                                                 @include('includes.td.td_trangthai_hosotonghop')
-                                                                <td>{{ $a_donvi[$tt->madonvi_nhan] ?? '' }}</td>
+                                                                {{-- <td>{{ $a_donvi[$tt->madonvi_nhan] ?? '' }}</td> --}}
+                                                                <td>{{$a_phanloaihs[$tt->phanloai] ?? $tt->phanloai }}</td>
                                                                 <td class="text-center">
                                                                     <input type="checkbox" name="{{ 'hoso[' . $tt->mahosotdkt . ']' }}" />
                                                                 </td>

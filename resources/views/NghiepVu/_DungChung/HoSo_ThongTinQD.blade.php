@@ -4,7 +4,11 @@
         <label>Tên đơn vị quyết định khen thưởng</label>
         {!! Form::select('donvikhenthuong', $a_donvikt, null, ['class' => 'form-control select2basic']) !!}
     </div>
-    <div class="col-6">
+    <div class="col-4">
+        <label>Phân loại hồ sơ</label>
+        {!! Form::select('phanloai', getPhanLoaiHoSo('KHENTHUONG'), $inputs['phanloai'], ['class' => 'form-control']) !!}
+    </div> 
+    <div class="col-2">
         <label>Cấp độ khen thưởng</label>
         {!! Form::select('capkhenthuong', getPhamViKhenThuong('{{$model->capkhenthuong}}'), null, ['class' => 'form-control', 'disabled'=>true]) !!}
         {!! Form::hidden('capkhenthuong', null) !!}

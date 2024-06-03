@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\DanhMuc\dmcoquandonvi;
+use App\Models\DanhMuc\dmhinhthuckhenthuong;
 use App\Models\DanhMuc\dsdonvi;
 use App\Models\DanhMuc\dstaikhoan;
 use App\Models\DanhMuc\dstaikhoan_phamvi;
@@ -1774,4 +1776,53 @@ function getPhanLoaiTKTiepNhan($madonvi)
         $taikhoantiepnhan = dstaikhoan::where('madonvi', $madonvi)->first()->tendangnhap ?? '';
     }
     return $taikhoantiepnhan;
+}
+
+function getDsCoQuan()
+{
+    $model=dmcoquandonvi::all();
+    $a_coquan=array();
+    if(count($model) > 0)
+    {
+        $a_coquan=array_column($model->toarray(),'tencoquandonvi','macoquandonvi');
+    }
+    return $a_coquan;
+}
+
+function getDVPhanLoaiHS()
+{
+    if(in_array(session('admin')->capdo,['SSA','T'])){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function getDHTDVaHinhThucKT($phanloai,$doituong)
+{
+    $a_ketqua = [];
+    $model=dmhinhthuckhenthuong::all();
+
+    if($phanloai == 'DANHHIEUTD'){
+        $m_danhhieu=$model->where('phanloai',$phanloai);
+        foreach($m_danhhieu as $ct)
+        {
+            $a_doituong=explode(';', $ct->doituongapdung);
+            if(in_array($doituong,$a_doituong)){
+                $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+            }
+        }
+    }else{
+        $m_danhhieu=$model->where('phanloai','<>',$phanloai);
+        foreach($m_danhhieu as $ct)
+        {
+            $a_doituong=explode(';', $ct->doituongapdung);
+            if(in_array($doituong,$a_doituong)){
+                $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+            }
+        }
+    }
+
+    return $a_ketqua;
+
 }

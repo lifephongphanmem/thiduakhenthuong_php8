@@ -15,6 +15,7 @@
     <script>
         jQuery(document).ready(function() {
             TableManaged3.init();
+            TableManagedclass.init();
             $('#madonvi').change(function() {
                 window.location.href = '/DangKyDanhHieu/HoSo/ThongTin?madonvi=' + $(
                     '#madonvi').val() + '&nam=' + $('#nam').val();
@@ -36,6 +37,10 @@
             </div>
             <div class="card-toolbar">
                 @if (chkPhanQuyen('dshosodangkythidua', 'thaydoi'))
+                    <button type="button" class="btn btn-success btn-xs mr-2" data-toggle="modal"
+                        data-target="#tonghophoso-modal">
+                        <i class="fa fa-plus"></i>&nbsp;Tổng hợp
+                    </button>
                     <button type="button" class="btn btn-success btn-xs" data-target="#taohoso-modal" data-toggle="modal">
                         <i class="fa fa-plus"></i>&nbsp;Thêm mới</button>
                 @endif
@@ -180,8 +185,125 @@
     </div>
     {!! Form::close() !!}
 
+    <!--Modal tổng hợp hồ sơ-->
+    {!! Form::open(['url' => $inputs['url_hs'] . 'ThemTongHop', 'id' => 'frm_hoso', 'files' => true]) !!}
+    <input type="hidden" name="madonvi" value="{{ $inputs['madonvi'] }}" />
+    {{-- <input type="hidden" name="maloaihinhkt" value="{{ $inputs['maloaihinhkt'] }}" /> --}}
+
+    <div id="tonghophoso-modal" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade kt_select2_modal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header modal-header-primary">
+                    <h4 id="modal-header-primary-label" class="modal-title">Đồng ý tạo hồ sơ đăng ký?</h4>
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-custom">
+                                <div class="card-header card-header-tabs-line">
+                                    <div class="card-toolbar">
+                                        <ul class="nav nav-tabs nav-bold nav-tabs-line">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" data-toggle="tab" href="#kt_thongtinchung">
+                                                    <span class="nav-icon">
+                                                        <i class="fas fa-users"></i>
+                                                    </span>
+                                                    <span class="nav-text">Thông tin chung</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#kt_hoso">
+                                                    <span class="nav-icon">
+                                                        <i class="fas fa-users"></i>
+                                                    </span>
+                                                    <span class="nav-text">Danh sách hồ sơ</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-toolbar"></div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade active show" id="kt_thongtinchung" role="tabpanel"
+                                            aria-labelledby="kt_thongtinchung">
+
+                                            <div class="form-group row">
+
+                                                <div class="col-12">
+                                                    <label>Ngày tạo hồ sơ</label>
+                                                    {!! Form::input('date', 'ngayhoso', date('Y-m-d'), ['class' => 'form-control']) !!}
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-12">
+                                                    <label>Nội dung hồ sơ</label>
+                                                    {!! Form::textarea('noidung', null, ['class' => 'form-control', 'rows' => 3]) !!}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane fade" id="kt_hoso" role="tabpanel"
+                                            aria-labelledby="kt_hoso">
+                                            <div class="form-group row">
+                                                <div class="col-md-12">
+                                                    <table
+                                                        class="table table-striped table-bordered table-hover dulieubang">
+                                                        <thead>
+                                                            <tr class="text-center">
+                                                                <th width="2%">STT</th>
+                                                                {{-- <th>Phân loại hồ sơ</th> --}}
+                                                                <th>Đơn vị đề nghị</th>
+                                                                <th>Nội dung hồ sơ</th>
+                                                                <th width="8%">Ngày tháng</th>
+                                                                <th width="8%">Trạng thái</th>
+                                                                <th width="20%">Đơn vị tiếp nhận</th>
+                                                                {{-- <th width="20%">Phân loại hồ sơ</th> --}}
+                                                                <th width="8%">Thao tác</th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <?php $i = 1; ?>
+                                                        @foreach ($model_hoso as $key => $tt)
+                                                            <tr>
+                                                                <td class="text-center">{{ $i++ }}</td>
+                                                                <td>{{ $a_donvi[$tt->madonvi] ?? '' }}</td>
+                                                                <td>{{ $tt->noidung }}</td>
+                                                                <td class="text-center">
+                                                                    {{ getDayVn($tt->ngayhoso) }}
+                                                                </td>
+                                                                @include('includes.td.td_trangthai_hosotonghop')
+                                                                <td>{{ $a_donvi[$tt->madonvi_nhan] ?? '' }}</td>
+                                                                {{-- <td>{{$a_phanloaihs[$tt->phanloai] ?? $tt->phanloai }}</td> --}}
+                                                                <td class="text-center">
+                                                                    <input type="checkbox"
+                                                                        name="{{ 'hoso[' . $tt->mahosodk . ']' }}" />
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
+                    <button type="submit" onclick="chkThongTinHoSoTH()" class="btn btn-primary">Đồng ý</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {!! Form::close() !!}
 
     @include('includes.modal.modal-lydo')
     @include('includes.modal.modal-delete')
     @include('includes.modal.modal_approve_hs')
+    {{-- @include('NghiepVu._DungChung.HoSo_TongHopHoSo') --}}
 @stop

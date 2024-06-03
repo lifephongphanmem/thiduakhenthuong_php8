@@ -80,9 +80,19 @@
                             {!! Form::text('tenphongban', null, ['class' => 'form-control']) !!}
                         </div>
 
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <label class="form-control-label">Tên đơn vị công tác</label>
                             {!! Form::text('tencoquan', null, ['class' => 'form-control']) !!}
+                        </div> --}}
+                        <div class="col-md-6">
+                            <label class="control-label">Tên đơn vị công tác</label>
+                            <select name="tencoquan" class="form-control select2basic" style="width:100%">
+                                <option value="">-- Chọn đơn vị công tác--</option>
+                                @foreach ( getDsCoQuan() as $k=>$ct )
+                                <option value="{{$k}}">{{$ct}}</option>
+                            @endforeach
+                            </select>
+
                         </div>
                     </div>
 

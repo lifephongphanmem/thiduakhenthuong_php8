@@ -15,6 +15,7 @@ Route::group(['prefix' => 'DangKyDanhHieu'], function () {
         Route::post('CaNhan', [dshosodangkyphongtraothiduaController::class, 'ThemCaNhan']);
         Route::post('TapThe', [dshosodangkyphongtraothiduaController::class, 'ThemTapThe']);
 
+        Route::post('ThemTongHop',[dshosodangkyphongtraothiduaController::class,'ThemTongHop']);
         Route::post('ChuyenHoSo', [dshosodangkyphongtraothiduaController::class, 'ChuyenHoSo']);
         Route::get('LayLyDo', [dshosodangkyphongtraothiduaController::class, 'LayLyDo']);
         Route::post('Xoa', [dshosodangkyphongtraothiduaController::class, 'XoaHoSo']);
