@@ -59,7 +59,7 @@ class xdhosodenghikhenthuongdoingoaiController extends Controller
         $inputs['maloaihinhkt'] = session('chucnang')['xdhosodenghikhenthuongdoingoai']['maloaihinhkt'] ?? 'ALL';
 
         //Xác định xem có dùng chức năng tiếp nhận ko
-        $a_trangthai_xd = ['DD', 'CXKT', 'DKT'];
+        $a_trangthai_xd = ['DD', 'CXKT', 'DKT','BTLXD'];
         if (chkGiaoDien('tnhosodenghikhenthuongdoingoai') != '1') {
             $a_trangthai_xd[] = 'CD';
         }
@@ -136,7 +136,7 @@ class xdhosodenghikhenthuongdoingoaiController extends Controller
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         //gán trạng thái hồ sơ để theo dõi
-        $inputs['trangthai'] = 'BTLXD';
+        $inputs['trangthai'] = 'BTLTN';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         setTraLai_TL($inputs['mahoso'],'trinhdenghi');
         if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {

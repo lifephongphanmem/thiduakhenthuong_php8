@@ -29,7 +29,7 @@
     <div class="card card-custom wave wave-animate-slow wave-info" style="min-height: 600px">
         <div class="card-header flex-wrap border-1 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label text-uppercase">Tiếp nhận hồ sơ trình khen thưởng công trạng và thành tích</h3>
+                <h3 class="card-label text-uppercase">Tiếp nhận hồ sơ trình khen thưởng kháng chiến</h3>
             </div>
             <div class="card-toolbar">
                 {{-- @if (chkPhanQuyen('tnhosodenghikhenthuongcongtrang', 'thaydoi'))

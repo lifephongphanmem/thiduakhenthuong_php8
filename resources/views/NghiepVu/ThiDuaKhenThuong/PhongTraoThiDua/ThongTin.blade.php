@@ -16,9 +16,9 @@
         jQuery(document).ready(function() {
             TableManaged3.init();
             TableManagedclass.init();
-            $('#madonvi, #nam, #phamviapdung').change(function() {
+            $('#madonvi, #nam,#phuongthuctochuc').change(function() {
                 window.location.href = '/PhongTraoThiDua/ThongTin?madonvi=' + $('#madonvi').val() +
-                    '&nam=' + $('#nam').val() + '&phamviapdung=' + $('#phamviapdung').val();
+                    '&nam=' + $('#nam').val() + '&phuongthuctochuc=' + $('#phuongthuctochuc').val();
             });
         });
     </script>
@@ -130,7 +130,7 @@
                                                     class="icon-lg la fa-edit text-success"></i>
                                             </a>
                                             <button title="Xóa hồ sơ" type="button"
-                                                onclick="confirmDelete('{{ $tt->id }}','/PhongTraoThiDua/Xoa')"
+                                                onclick="confirmDelete('{{ $tt->id }}',{{$tt->sohoso}},'/PhongTraoThiDua/Xoa')"
                                                 class="btn btn-sm btn-clean btn-icon" data-target="#delete-modal-confirm"
                                                 data-toggle="modal">
                                                 <i class="icon-lg la fa-trash-alt text-danger"></i>
@@ -325,7 +325,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-12">
-                            <label>Phương thức tổ chức</label>
+                            <label>Hình thức thi đua</label>
                             {!! Form::select('phuongthuctochuc', getPhuongThucToChucPhongTrao(), null, ['class' => 'form-control']) !!}
                         </div>
                     </div>
@@ -339,11 +339,41 @@
     </div>
     </form>
     {{-- {!! Form::close() !!} --}}
-    @include('includes.modal.modal-delete')
+
+    {!! Form::open(['url' => '', 'id' => 'frm_delete']) !!}
+<div id="delete-modal-confirm" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <h4 id="modal-header-primary-label" class="modal-title">Đồng ý xoá?</h4>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                <input type="hidden" name="id" />
+            </div>
+            <div class="modal-body">
+                <p style="color: #0000FF" id='thongbao'></p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
+                <button type="submit" data-dismiss="modal" class="btn btn-primary" onclick="clickdelete()">Đồng
+                    ý</button>
+            </div>
+        </div>
+    </div>
+    {!! Form::close() !!}
+</div>
+<script>
+    function confirmDelete(id,sohoso,url) {
+        $('#frm_delete').attr('action', url);
+        $("#thongbao").append("Có "+sohoso+" hồ sơ tham gia phong trào. Khi xóa phong trào thì các hồ sơ này cũng xóa theo.");
+        $('#frm_delete').find("[name='id']").val(id);
+    }
+
+    function clickdelete() {
+        $('#frm_delete').submit();
+    }
+</script>
+    {{-- @include('includes.modal.modal-delete') --}}
     @include('includes.modal.modal_attackfile')
-    {{-- <script>
-        function chkThongTinHoSo() {
-            $("#frm_hoso").unbind('submit').submit();
-        }
-    </script> --}}
+
 @stop

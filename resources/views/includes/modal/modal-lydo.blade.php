@@ -42,6 +42,7 @@
             dataType: 'JSON',
             success: function (data) {
                 console.log(data)    
+                // if(data.lydo_xd != null && data.trangthai != 'BTL'){
                 if(data.lydo_xd != null && data.trangthai != 'BTL'){
                     $('#frm_lydo').find("[name='lydo']").val(data.lydo_xd);
                 }else{

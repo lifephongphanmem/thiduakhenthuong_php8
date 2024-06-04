@@ -590,7 +590,7 @@ class qdhosodenghikhenthuongthiduaController extends Controller
         $inputs = $request->all();
         //dd($inputs);
         $inputs['thoigian'] = date('Y-m-d H:i:s');
-        $inputs['trangthai'] = 'BTLPD';
+        $inputs['trangthai'] = 'BTLXD';
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         $madonvi = $model->madonvi_kt;
         //setTrangThaiHoSo($inputs['madonvi'], $model, ['thoigian' => $thoigian, 'trangthai' => $trangthai, 'lydo' => $inputs['lydo']]);

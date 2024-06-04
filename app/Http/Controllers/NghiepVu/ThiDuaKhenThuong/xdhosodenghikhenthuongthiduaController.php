@@ -369,7 +369,7 @@ class xdhosodenghikhenthuongthiduaController extends Controller
         $ngayhientai = date('Y-m-d');
         KiemTraPhongTrao($m_phongtrao, $ngayhientai);
                 //Xác định xem có dùng chức năng tiếp nhận ko
-                $a_trangthai_xd = ['DD', 'CXKT', 'DKT','BTLPD']; 
+                $a_trangthai_xd = ['DD', 'CXKT', 'DKT','BTLXD']; 
         $donvi = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
         $model = dshosothiduakhenthuong::where('maphongtraotd', $inputs['maphongtraotd'])
             ->where('madonvi_xd', $inputs['madonvi'])
@@ -439,6 +439,9 @@ class xdhosodenghikhenthuongthiduaController extends Controller
         }
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
+
+        // $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
+
         //gán trạng thái hồ sơ để theo dõi
         $inputs['trangthai'] = 'BTLTN';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
@@ -457,9 +460,10 @@ class xdhosodenghikhenthuongthiduaController extends Controller
         }
 
         $inputs = $request->all();
-        //dd($inputs);
+        // dd($inputs);
         $thoigian = date('Y-m-d H:i:s');
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
+        // $model = dshosothamgiaphongtraotd::where('mahosothamgiapt', $inputs['mahoso'])->first();
         //gán lại trạng thái hồ sơ để theo dõi
         $model->trangthai = 'DD';
         $model->trangthai_xd = 'DD';

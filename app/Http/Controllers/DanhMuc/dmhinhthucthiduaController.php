@@ -40,7 +40,7 @@ class dmhinhthucthiduaController extends Controller
             return view('errors.noperm')->with('machucnang', 'dmhinhthucthidua');
         }
         $inputs = $request->all();
-       
+    //    dd($inputs);
         $model = dmhinhthucthidua::where('mahinhthucthidua', $inputs['mahinhthucthidua'])->first();
         if ($model == null) {
             $inputs['mahinhthucthidua'] = getdate()[0];

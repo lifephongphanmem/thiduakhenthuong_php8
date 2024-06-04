@@ -64,7 +64,7 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
 
         //Xác định xem có dùng chức năng tiếp nhận ko
-        $a_trangthai_xd = ['DD', 'CXKT', 'DKT'];        
+        $a_trangthai_xd = ['DD', 'CXKT', 'DKT','BTLXD'];        
         if(chkGiaoDien('tnhosodenghikhenthuongcongtrang') != '1'){
             $a_trangthai_xd[] = 'CD';
         }
@@ -140,7 +140,7 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         //gán trạng thái hồ sơ để theo dõi
         // $inputs['trangthai'] = 'BTL';
-        $inputs['trangthai'] = 'BTLXD';
+        $inputs['trangthai'] = 'BTLTN';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         setTraLai_TL($inputs['mahoso'],'trinhdenghi');
         // dd($model);

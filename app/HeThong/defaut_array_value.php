@@ -156,6 +156,14 @@ function getPhanLoaiHoSo($phanloai = 'ALL')
                 );
                 break;
             }
+            case 'KHANGCHIEN': {
+                $a_kq = array(
+                    'KTCHONGPHAP' => 'Hồ sơ khen thưởng kháng chiến chống Pháp',
+                    'KTCHONGMY' => 'Hồ sơ khen thưởng kháng chiến chống Mỹ',
+
+                );
+                break;
+            }
         case 'KHENCAO': {
                 $a_kq = array(
                     'KHENCAOTHUTUONG' => 'Hồ sơ đề nghị Thủ tướng chính phủ khen thưởng',

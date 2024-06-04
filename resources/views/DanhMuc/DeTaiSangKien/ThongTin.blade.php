@@ -20,7 +20,7 @@
         function add() {
             $('#frm_modify').find("[name='madetaisangkien']").attr('readonly', true);
             $('#frm_modify').find("[name='madetaisangkien']").val(null);
-            $('#frm_modify').find("[name='tenplphongtrao']").val('');
+            $('#frm_modify').find("[name='tendetaisangkien']").val('');
         }
 
         function edit(id) {
@@ -38,7 +38,7 @@
                     var form = $('#frm_modify');
                     form.find("[name='madetaisangkien']").attr('readonly', false);
                     form.find("[name='madetaisangkien']").val(data.madetaisangkien);                  
-                    form.find("[name='tenplphongtrao']").val(data.tenplphongtrao);                  
+                    form.find("[name='tendetaisangkien']").val(data.tendetaisangkien);                  
                 }
             });
         }
@@ -116,13 +116,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-horizontal">
-                        <div class="form-group row">
+                        {{-- <div class="form-group row">
                             <div class="col-12">
                                 <label class="control-label">Mã số</label>
                                 {!! Form::text('madetaisangkien', null, ['class' => 'form-control', 'required' => 'required']) !!}
                             </div>
-                        </div>
-
+                        </div> --}}
+                        {!! Form::text('madetaisangkien', null, ['class' => 'form-control', 'hidden' => true]) !!}
                         <div class="form-group row">
                             <div class="col-12">
                                 <label class="control-label">Tên đề tài, sáng kiến<span class="require">*</span></label>

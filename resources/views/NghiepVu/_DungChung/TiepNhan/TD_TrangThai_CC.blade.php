@@ -25,7 +25,7 @@
         @endif
     @endif
 
-    @if (in_array($tt->trangthai_hoso, ['DCCVXD', 'BTLXD', 'BTL']) &&
+    @if (in_array($tt->trangthai_hoso, ['DCCVXD', 'BTLXD', 'BTL','BTLTN']) &&
             $tt->thaotac &&
             chkPhanQuyen($inputs['phanquyen'], 'xuly'))
         <button title="Xử lý hồ sơ" type="button"

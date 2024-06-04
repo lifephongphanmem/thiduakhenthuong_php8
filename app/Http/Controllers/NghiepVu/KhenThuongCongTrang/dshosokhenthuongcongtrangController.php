@@ -90,7 +90,8 @@ class dshosokhenthuongcongtrangController extends Controller
             $hoso->soluongkhenthuong = $model_canhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + $model_tapthe->where('mahosotdkt', $hoso->mahosotdkt)->count();
         }
-        //dd($inputs);
+        // dd(session('admin'));
+        // $inputs['khenthuong']=getDVPhanLoaiHS($inputs['madonvi']);
         return view('NghiepVu.KhenThuongCongTrang.HoSoKT.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
@@ -148,6 +149,7 @@ class dshosokhenthuongcongtrangController extends Controller
             $model->donvikhenthuong = $khenthuong->tendonvi;
         }
         $a_donvikt = array_unique(array_merge([$model->donvikhenthuong => $model->donvikhenthuong], getDonViKhenThuong()));
+        // dd($model);
         // dd(session('admin'));
         return view('NghiepVu.KhenThuongCongTrang.HoSoKT.ThayDoi')
             ->with('model', $model)

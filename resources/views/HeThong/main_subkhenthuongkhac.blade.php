@@ -22,6 +22,7 @@
                     <span class="menu-text font-weight-bold">Hiệp y khen thưởng</span>
                 </a>
             </li> --}}
+            <!-- bỏ khen thưởng kháng chiến ở menu này chuyển sang menu quản lý khen thưởng 03062024 
                 @if (chkPhanQuyen('khenthuongkhangchien', 'phanquyen'))
                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">
@@ -112,7 +113,7 @@
                         </div>
                     </li>
                 @endif
-
+            end -->
                 @if (chkPhanQuyen('khencao', 'phanquyen'))
                     <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
                         <a href="javascript:;" class="menu-link menu-toggle">

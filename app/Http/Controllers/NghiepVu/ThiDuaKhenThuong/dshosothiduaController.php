@@ -170,7 +170,12 @@ class dshosothiduaController extends Controller
                     break;
                 }
         }
+        // dd($model_xa);
+        $a_maphongtraotd=array_column($model->toarray(),'maphongtraotd');
         foreach ($model_xa as $ct) {
+            if(in_array($ct->maphongtraotd,$a_maphongtraotd)){
+                continue;
+            }
             $model->add($ct);
         }
 
@@ -183,10 +188,6 @@ class dshosothiduaController extends Controller
         $m_hoso = dshosothamgiaphongtraotd::wherein('maphongtraotd', array_column($model->toarray(), 'maphongtraotd'))->get();
 // dd($model);
         foreach ($model as $key=>$DangKy) {
-            // //Lọc phạm vi áp dụng phong trào để lấy theo đơn vị huyện xã
-            // if($donvi->capdo == 'X' && $DangKy->phamviapdung == 'T'){
-            //         $model->forget($key);
-            // }
             KiemTraPhongTrao($DangKy, $ngayhientai);
             $HoSo = $m_hoso->where('maphongtraotd', $DangKy->maphongtraotd)->wherein('trangthai', ['CD', 'DD', 'CNXKT', 'DXKT', 'CXKT', 'DKT']);
             $DangKy->sohoso = $HoSo == null ? 0 : $HoSo->count();

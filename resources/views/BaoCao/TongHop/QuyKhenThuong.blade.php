@@ -46,15 +46,22 @@
         <thead>
             <tr class="text-center">
                 <th style="width: 3%" rowspan="3">STT</th>
-                <th rowspan="3">Nội dung</th>
-                @foreach ($a_thu as $key => $val)
+                {{-- <th rowspan="3">Nội dung</th> --}}
+                <th rowspan="3">Tên quỹ</th>
+                {{-- @foreach ($a_thu as $key => $val)
                     <th rowspan="3" style="width: 5%">{{ $val }}</th>
-                @endforeach
-                <th colspan="{{ 1 + $col_chikt + $col_chikhac }}">Số đã chi trong năm</th>
+                @endforeach --}}
+                <th colspan="{{ 1 + $col_thu }}">Số đã thu</th>
+                {{-- <th colspan="{{ 1 + $col_chikt + $col_chikhac }}">Số đã chi trong năm</th> --}}
+                <th colspan="{{ 1 + $col_chikt + $col_chikhac }}">Số đã chi</th>
                 <th rowspan="3" style="width: 5%">Ghi chú</th>
 
             </tr>
             <tr class="text-center">
+                <th rowspan="2" style="width: 5%">Tổng cộng</th>
+                @foreach ($a_thu as $key => $val)
+                    <th rowspan="2" style="width: 5%">{{ $val }}</th>
+                @endforeach
                 <th rowspan="2" style="width: 5%">Tổng cộng</th>
                 <th colspan="{{ $col_chikt }}">Chi khen thưởng</th>
                 @foreach ($a_chikhac as $key => $val)
@@ -83,6 +90,7 @@
             <tr>
                 <td class="text-bold text-center">{{ $i++ }}</td>
                 <td class="text-bold">{{ $chitiet->tenquy }}</td>
+                <td class="text-right">{{ dinhdangso($chitiet->tongthu) }}</td>
                 @foreach ($a_thu as $key => $val)
                     <td class="text-right">{{ dinhdangso($chitiet->$key) }}</td>
                 @endforeach
@@ -99,7 +107,7 @@
         @endforeach
         <tr class="font-weight-boldest">
             <td class="text-center" colspan="2">Tổng cộng</td>
-
+            <td class="text-right">{{ dinhdangso($model->sum('tongthu')) }}</td>
             @foreach ($a_thu as $key => $val)
                 <td class="text-right">{{ dinhdangso($model->sum($key)) }}</td>
             @endforeach

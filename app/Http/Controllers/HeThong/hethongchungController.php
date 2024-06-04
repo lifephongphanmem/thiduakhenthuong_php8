@@ -234,6 +234,15 @@ class hethongchungController extends Controller
         Session::put('chucnang', hethongchung_chucnang::all()->keyBy('machucnang')->toArray());
         //gán phân quyền của User
         Session::put('phanquyen', dstaikhoan_phanquyen::where('tendangnhap', $input['tendangnhap'])->get()->keyBy('machucnang')->toArray());
+
+        $trangthai = new trangthaihoso();
+        $trangthai->trangthai = 'DANGNHAP';
+        $trangthai->madonvi = $ttuser->madonvi;
+        $trangthai->thongtin = "Đăng nhập hệ thống";
+        $trangthai->phanloai = 'dstaikhoan';
+        $trangthai->tendangnhap = $ttuser->tendangnhap;
+        $trangthai->thoigian = date('Y-m-d H:i:s');
+        $trangthai->save();
         //dd(session('admin'));
         return redirect('/')
             ->with('pageTitle', 'Tổng quan');
@@ -271,6 +280,14 @@ class hethongchungController extends Controller
     public function DangXuat()
     {
         if (Session::has('admin')) {
+            $trangthai = new trangthaihoso();
+            $trangthai->trangthai = 'DANGXUAT';
+            $trangthai->madonvi = session('admin')->madonvi;
+            $trangthai->thongtin = "Đăng xuất hệ thống";
+            $trangthai->phanloai = 'dstaikhoan';
+            $trangthai->tendangnhap = session('admin')->tendangnhap;
+            $trangthai->thoigian = date('Y-m-d H:i:s');
+            $trangthai->save();
             Session::flush();
             return redirect('/DangNhap');
         } else {

@@ -11,7 +11,7 @@
 
                 <div class="modal-body">
                     <div class="form-group row">
-                        <div class="{{getDVPhanLoaiHS()?'col-8':'col-6'}}">
+                        <div class="col-8">
                             <label>Loại hình khen thưởng</label>
                             {{-- {!! Form::select('maloaihinhkt', $a_loaihinhkt, $inputs['maloaihinhkt'], ['class' => 'form-control select2basic']) !!} --}}
                             <select name="maloaihinhkt" id="" class="form-control select2basic"
@@ -24,7 +24,7 @@
                             </select>
                         </div>
 
-                        <div class="{{getDVPhanLoaiHS()?'col-4':'col-3'}}">
+                        <div class="col-4">
                             <label>Trạng thái hồ sơ</label>
                             {{-- {!! Form::select('trangthai', getTrangThaiChucNangHoSo($inputs['trangthai']), $inputs['trangthai'], [
                                 'class' => 'form-control select2basic',
@@ -38,13 +38,12 @@
 
                             </select>
                         </div>
-                        @if (getDVPhanLoaiHS())
                         <div class="col-8">
                             <label>Phân loại hồ sơ</label>
-                            {!! Form::select('phanloai', getPhanLoaiHoSo('KHENTHUONG'), null, ['class' => 'form-control']) !!}
+                            {!! Form::select('phanloai', getPhanLoaiHoSo(isset($inputs['khangchien'])?'KHANGCHIEN':getDVPhanLoaiHS($inputs['madonvi'])), null, ['class' => 'form-control']) !!}
                         </div> 
-                        @endif
-                        <div class="{{getDVPhanLoaiHS()?'col-4':'col-3'}}">
+
+                        <div class="col-4">
                             <label>Ngày quyết định</label>
                             {!! Form::input('date', 'ngayhoso', date('Y-m-d'), ['class' => 'form-control']) !!}
                         </div>

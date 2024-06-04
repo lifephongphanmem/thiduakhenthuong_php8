@@ -71,11 +71,12 @@
                                                         'class' => 'form-control',
                                                     ]) !!}
                                                 </div>
-
+                                                @if (isset($inputs['khangchien']))
                                                 <div class="col-4">
-                                                    <label>Số tờ trình</label>
-                                                    {!! Form::text('sototrinh', null, ['class' => 'form-control']) !!}
-                                                </div>
+                                                    <label>Phân loại hồ sơ</label>
+                                                    {!! Form::select('phanloai', getPhanLoaiHoSo(isset($inputs['khangchien'])?'KHANGCHIEN':'KHENTHUONG'), null, ['class' => 'form-control']) !!}
+                                                </div>     
+                                                @endif
                                                 <div class="col-4">
                                                     <label>Ngày tạo hồ sơ</label>
                                                     {!! Form::input('date', 'ngayhoso', date('Y-m-d'), ['class' => 'form-control']) !!}
@@ -83,6 +84,10 @@
                                             </div>
 
                                             <div class="form-group row">
+                                                <div class="col-4">
+                                                    <label>Số tờ trình</label>
+                                                    {!! Form::text('sototrinh', null, ['class' => 'form-control']) !!}
+                                                </div>
                                                 <div class="col-4">
                                                     <label>Chức vụ người ký tờ trình</label>
                                                     {!! Form::text('chucvunguoiky', null, ['class' => 'form-control']) !!}

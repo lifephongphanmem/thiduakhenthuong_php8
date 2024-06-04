@@ -67,7 +67,7 @@ class qdhosodenghikhenthuongconghienController extends Controller
 
         $model = dshosothiduakhenthuong::where('madonvi_kt', $inputs['madonvi'])
             ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH','KHENCAOTHUTUONG' ,'KHENCAOCHUTICHNUOC',])
-            ->wherein('trangthai', ['CXKT', 'DXKT', 'DKT']);
+            ->wherein('trangthai', ['CXKT', 'DXKT', 'DKT','BTLXD']);
 
         if ($inputs['maloaihinhkt'] != 'ALL')
             $model = $model->where('maloaihinhkt', $inputs['maloaihinhkt']);
