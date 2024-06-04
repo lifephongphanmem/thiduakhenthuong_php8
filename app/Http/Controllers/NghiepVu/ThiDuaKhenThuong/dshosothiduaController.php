@@ -246,7 +246,7 @@ class dshosothiduaController extends Controller
         $model->trangthai = 'CC';
         //dd($model);
         $model->save();
-        return redirect(static::$url . 'Sua?mahosothamgiapt=' . $model->mahosothamgiapt);
+        return redirect(static::$url . 'Sua?mahosothamgiapt=' . $model->mahosothamgiapt.'&madonvi='.$inputs['madonvi']);
     }
 
     public function ThayDoi(Request $request)

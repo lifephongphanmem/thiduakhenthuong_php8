@@ -15,6 +15,7 @@
     <script>
         jQuery(document).ready(function() {
             TableManaged3.init();
+            TableManagedclass.init();
             $('#madonvi, #nam, #phanloai').change(function() {
                 window.location.href = "{{ $inputs['url_hs'] }}" + "ThongTin?madonvi=" + $(
                     '#madonvi').val() + "&nam=" + $('#nam').val();

@@ -9,7 +9,8 @@
     <input type="hidden" name="mahosotdkt" value="{{ $model->mahosotdkt }}" />
     <input type="hidden" name="maloaihinhkt" value="{{ $model->maloaihinhkt }}" />
     <input type="hidden" name="id" />
-    <div class="modal fade bs-modal-lg kt_select2_modal" id="modal-create-tapthe" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade bs-modal-lg kt_select2_modal" id="modal-create-tapthe" tabindex="-1" role="dialog"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -37,14 +38,21 @@
                         </div> --}}
                         <div class="col-md-12">
                             <label class="control-label">Tên đơn vị / cơ quan</label>
-                            <select name="tencoquan" class="form-control select2basic" style="width:100%">
-                                <option value="">-- Chọn đơn vị công tác--</option>
-                                @foreach ( getDsCoQuan() as $k=>$ct )
-                                <option value="{{$k}}">{{$ct}}</option>
-                            @endforeach
-                            </select>
-
-                        </div>                        
+                            <div class="input-group">
+                                <select name="tencoquan" class="form-control select2basic" id="tencoquan_tapthe" style="width:95%">
+                                    <option value="">-- Chọn đơn vị công tác--</option>
+                                    @foreach (getDsCoQuan($inputs['madonvi']) as $k => $ct)
+                                        <option value="{{ $k }}">{{ $ct }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="input-group-prepend">
+                                    <button type="button" data-target="#modal-themdonvi" data-toggle="modal"
+                                        class="btn btn-light-dark btn-icon">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group row">

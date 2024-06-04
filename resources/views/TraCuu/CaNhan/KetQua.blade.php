@@ -101,7 +101,7 @@
                 </div>
             </div>
 
-            <div class="separator separator-dashed my-5"></div>
+            {{-- <div class="separator separator-dashed my-5"></div>
             <h4 class="text-dark font-weight-bold mb-10">Danh sách đề tài, sáng kiến</h4>
 
             <div class="row" id="dskhenthuongtapthe">
@@ -128,7 +128,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <div class="card-footer">
             <div class="row text-center">
@@ -156,6 +156,10 @@
         <input type="hidden" name="gioitinh" value="{{ $inputs['gioitinh'] }}" />
         <input type="hidden" name="maphanloaicanbo" value="{{ $inputs['maphanloaicanbo'] }}" />
         <input type="hidden" name="maloaihinhkt" value="{{ $inputs['maloaihinhkt'] }}" />
+        <input type="hidden" name="mahinhthuckt" value="{{ $inputs['mahinhthuckt'] }}" />
+        <input type="hidden" name="madanhhieuthidua" value="{{ $inputs['madanhhieuthidua'] }}" />
+        <input type="hidden" name="madonvi" value="{{ $inputs['madonvi'] }}" />
+        <input type="hidden" name="madiaban" value="{{ $inputs['madiaban'] }}" />
 
         <div class="modal-dialog">
             <div class="modal-content">

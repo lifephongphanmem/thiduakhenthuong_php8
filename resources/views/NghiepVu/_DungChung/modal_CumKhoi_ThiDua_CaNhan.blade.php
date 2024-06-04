@@ -63,10 +63,28 @@
                             <label class="form-control-label">Tên phòng ban công tác</label>
                             {!! Form::text('tenphongban', null, ['class' => 'form-control']) !!}
                         </div>
-
+{{-- 
                         <div class="col-md-6">
                             <label class="form-control-label">Tên đơn vị công tác</label>
                             {!! Form::text('tencoquan', null, ['class' => 'form-control']) !!}
+                        </div> --}}
+                        <div class="col-md-6">
+                            <label class="control-label">Tên đơn vị công tác</label>
+                            <div class="input-group">
+                                <select name="tencoquan" class="form-control select2basic" id='tencoquan_canhan'
+                                    style="width:90%">
+                                    <option value="">-- Chọn đơn vị công tác--</option>
+                                    @foreach (getDsCoQuan($inputs['madonvi']) as $k => $ct)
+                                        <option value="{{ $k }}">{{ $ct }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="input-group-prepend">
+                                    <button type="button" data-target="#modal-themdonvi" data-toggle="modal"
+                                        class="btn btn-light-dark btn-icon">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

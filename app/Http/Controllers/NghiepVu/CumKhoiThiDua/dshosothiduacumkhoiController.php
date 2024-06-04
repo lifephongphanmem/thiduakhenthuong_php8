@@ -214,7 +214,7 @@ class dshosothiduacumkhoiController extends Controller
         $model->phanloai = 'THIDUA';
         $model->trangthai = 'CC';
         $model->save();
-        return redirect(static::$url . 'Sua?mahoso=' . $model->mahoso);
+        return redirect(static::$url . 'Sua?mahoso=' . $model->mahoso.'&madonvi='.$inputs['madonvi']);
     }
 
     public function ThayDoi(Request $request)

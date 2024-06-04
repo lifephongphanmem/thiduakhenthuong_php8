@@ -546,32 +546,20 @@ class qdhosodenghikhenthuongthiduacumkhoiController extends Controller
         }
         $inputs = $request->all();
         //dd($inputs);
-        $thoigian = date('Y-m-d H:i:s');
-        $trangthai = 'BTLXD';
+        $inputs['thoigian'] = date('Y-m-d H:i:s');
+        $inputs['trangthai'] = 'BTLXD';
         $model = dshosotdktcumkhoi::where('mahosotdkt', $inputs['mahoso'])->first();
         $madonvi = $model->madonvi_kt;
-        //setTrangThaiHoSo($inputs['madonvi'], $model, ['thoigian' => $thoigian, 'trangthai' => $trangthai, 'lydo' => $inputs['lydo']]);
-        $model->trangthai = $trangthai; //gán trạng thái hồ sơ để theo dõi           
-        //dd($model);
-        $model->trangthai_xd = $model->trangthai;
-        $model->thoigian_xd = $thoigian;
-        $model->lydo_xd = $inputs['lydo'];
+        setTraLaiPD($model, $inputs);
 
-        $model->madonvi_nhan_xd = null;
-
-        $model->madonvi_kt = null;
-        $model->trangthai_kt = null;
-        $model->thoigian_kt = null;
-
-        $model->save();
-        trangthaihoso::create([
-            'mahoso' => $inputs['mahoso'],
-            'phanloai' => 'dshosotdktcumkhoi',
-            'trangthai' => $model->trangthai,
-            'thoigian' => $thoigian,
-            'madonvi' => $inputs['madonvi'],
-            'thongtin' => 'Trả lại hồ sơ trình đề nghị khen thưởng.',
-        ]);
+        // trangthaihoso::create([
+        //     'mahoso' => $inputs['mahoso'],
+        //     'phanloai' => 'dshosotdktcumkhoi',
+        //     'trangthai' => $model->trangthai,
+        //     'thoigian' => $thoigian,
+        //     'madonvi' => $inputs['madonvi'],
+        //     'thongtin' => 'Trả lại hồ sơ trình đề nghị khen thưởng.',
+        // ]);
         return redirect(static::$url . 'ThongTin?madonvi=' . $madonvi);
     }
 

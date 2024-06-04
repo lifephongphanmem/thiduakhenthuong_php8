@@ -87,7 +87,7 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
             $ct->madonviql = $a_truongcumkhoi[$ct->macumkhoi] ?? '';
         }
 
-        //dd($model);
+        // dd($model);
         return view('NghiepVu.CumKhoiThiDua.HoSoKhenThuong.ThongTin')
             ->with('model', $model)
             ->with('m_donvi', $m_donvi)

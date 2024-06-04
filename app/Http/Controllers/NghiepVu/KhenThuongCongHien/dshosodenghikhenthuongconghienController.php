@@ -229,7 +229,7 @@ class dshosodenghikhenthuongconghienController extends Controller
         $trangthai->mahoso = $inputs['mahosotdkt'];
         $trangthai->thoigian = $inputs['ngayhoso'];
         $trangthai->save();
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function ThemTongHop(Request $request)
@@ -310,7 +310,7 @@ class dshosodenghikhenthuongconghienController extends Controller
         $trangthai->thoigian = $inputs['ngayhoso'];
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function LuuHoSo(Request $request)

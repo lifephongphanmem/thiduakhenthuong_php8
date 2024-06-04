@@ -116,6 +116,7 @@ class tracuucanhanController extends Controller
     public function InKetQua(Request $request)
     {
         $inputs = $request->all();
+        // dd($inputs);
         $model_khenthuong = view_tdkt_canhan::where('trangthai', 'DKT');
         $model_cumkhoi=view_tdktcumkhoi_canhan::where('trangthai','DKT');
         $model_detai = view_tdkt_detai::query();

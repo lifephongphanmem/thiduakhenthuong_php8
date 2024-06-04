@@ -60,9 +60,10 @@ class xdhosodenghikhenthuongthiduacumkhoiController extends Controller
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         $inputs['maloaihinhkt'] = session('chucnang')['dshosodenghikhenthuongcongtrang']['maloaihinhkt'] ?? 'ALL';
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
-
+        $a_trangthai_xd = ['DD', 'CXKT', 'DKT','BTLXD'];  
         $model = dshosotdktcumkhoi::where('madonvi_xd', $inputs['madonvi'])
             ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC',])
+            ->wherein('trangthai_xd', $a_trangthai_xd)
             ->where('maloaihinhkt', $inputs['maloaihinhkt']); //->orderby('ngayhoso')->get();
 
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
@@ -130,9 +131,15 @@ class xdhosodenghikhenthuongthiduacumkhoiController extends Controller
         $inputs = $request->all();
         $model = dshosotdktcumkhoi::where('mahosotdkt', $inputs['mahoso'])->first();
         //gán trạng thái hồ sơ để theo dõi
-        $inputs['trangthai'] = 'BTL';
+        $inputs['trangthai'] = 'BTLTN';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
-        setTraLaiXD($model, $inputs);
+        // setTraLai_TL($inputs['mahoso'],'trinhdenghi');
+        // dd($model);
+        if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
+            setTraLai($model, $inputs);
+        }else{
+            setTraLaiXD($model, $inputs);
+        }
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
 
