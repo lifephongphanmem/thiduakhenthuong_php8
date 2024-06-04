@@ -13,7 +13,7 @@
 @endif
 
 @if (in_array($tt->trangthai,['CC','BTL']))
-<a href="{{ url($inputs['url_hs'] . 'Sua?mahosotdkt=' . $tt->mahosotdkt) }}"
+<a href="{{ url($inputs['url_hs'] . 'Sua?mahosotdkt=' . $tt->mahosotdkt.'&madonvi='.$inputs['madonvi']) }}"
     class="btn btn-icon btn-clean btn-lg mb-1 position-relative" title="Thông tin hồ sơ khen thưởng">
     <span class="svg-icon svg-icon-xl">
         <i class="icon-lg la flaticon-list text-success"></i>

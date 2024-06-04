@@ -131,7 +131,7 @@
                                         @if (chkPhanQuyen('dshosothidua', 'thaydoi'))
                                             @if (in_array($tt->trangthai, ['CC', 'BTL']))
                                                 <a title="Sửa hồ sơ đăng ký phong trào"
-                                                    href="{{ url('/HoSoThiDua/Sua?mahosothamgiapt=' . $tt->mahosothamgiapt) }}"
+                                                    href="{{ url('/HoSoThiDua/Sua?mahosothamgiapt=' . $tt->mahosothamgiapt.'&madonvi='.$inputs['madonvi']) }}"
                                                     class="btn btn-sm btn-clean btn-icon">
                                                     <i class="icon-lg la flaticon-edit-1 text-success"></i></a>
                                             @elseif (in_array($tt->trangthai, ['CXD']))

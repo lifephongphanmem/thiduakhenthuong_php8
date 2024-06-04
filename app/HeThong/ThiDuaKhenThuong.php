@@ -1783,9 +1783,14 @@ function getPhanLoaiTKTiepNhan($madonvi)
     return $taikhoantiepnhan;
 }
 
-function getDsCoQuan()
+function getDsCoQuan($madonvi=null)
 {
-    $model=dmcoquandonvi::all();
+    // if(session('admin')->capdo == 'SSA'){
+    //     $model=dmcoquandonvi::all();
+    // }else{
+        $model=dmcoquandonvi::where('macoquandonvi',$madonvi)->get();
+    // }
+
     $a_coquan=array();
     if(count($model) > 0)
     {

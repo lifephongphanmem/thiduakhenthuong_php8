@@ -166,7 +166,7 @@
     @include('NghiepVu._DungChung.modal_HSPT_HoGiaDinh')
     @include('NghiepVu._DungChung.modal_HSPT_TieuChuan')
     @include('NghiepVu._DungChung.modal_TaiLieuDinhKem')
-
+    @include('NghiepVu._DungChung.modal_ThemCQDonVi')
     @include('NghiepVu._DungChung.modal_HSPT_XoaDoiTuong')
     @include('NghiepVu._DungChung.modal_Excel')
     {{-- @include('NghiepVu._DungChung.modal_DoiTuong') --}}

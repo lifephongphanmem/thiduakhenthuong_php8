@@ -15,10 +15,10 @@
     <script>
         jQuery(document).ready(function() {
             TableManaged3.init();
-            $('#madonvi,#nam,#phamviapdung').change(function() {
+            $('#madonvi,#nam,#phamviapdung,#maphongtraotd').change(function() {
                 window.location.href = "{{ $inputs['url_qd'] }}" + 'ThongTin?madonvi=' + $('#madonvi')
                     .val() +
-                    '&nam=' + $('#nam').val();
+                    '&nam=' + $('#nam').val()+'&maphongtraotd='+$('#maphongtraotd').val();
             });
         });
     </script>

@@ -308,7 +308,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
             'tendangnhap' => session('admin')->tendangnhap,
         ]);
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function LuuKT(Request $request)

@@ -228,7 +228,7 @@ class dshosodenghikhenthuongkhangchienController extends Controller
         $trangthai->tendangnhap=session('admin')->tendangnhap;
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function ThemTongHop(Request $request)
@@ -310,7 +310,7 @@ class dshosodenghikhenthuongkhangchienController extends Controller
         $trangthai->tendangnhap=session('admin')->tendangnhap;
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function LuuHoSo(Request $request)

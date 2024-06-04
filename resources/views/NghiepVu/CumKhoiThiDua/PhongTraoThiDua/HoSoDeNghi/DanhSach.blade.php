@@ -173,14 +173,14 @@
                                     @endif
 
 
-                                    {{-- @if ($tt->trangthai == 'BTLXD')
+                                    @if ($tt->trangthai == 'BTL')
                                         <button title="Lý do hồ sơ bị trả lại" type="button"
                                             onclick="viewLyDo('{{ $tt->mahosotdkt }}','{{ $inputs['madonvi'] }}', '/XetDuyetHoSoThiDua/LayLyDo' )"
                                             class="btn btn-sm btn-clean btn-icon" data-target="#tralai-modal"
                                             data-toggle="modal">
                                             <i class="icon-lg la fa-archive text-dark"></i>
                                         </button>
-                                    @endif --}}
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

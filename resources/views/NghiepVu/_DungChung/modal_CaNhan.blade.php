@@ -86,13 +86,21 @@
                         </div> --}}
                         <div class="col-md-6">
                             <label class="control-label">Tên đơn vị công tác</label>
-                            <select name="tencoquan" class="form-control select2basic" style="width:100%">
-                                <option value="">-- Chọn đơn vị công tác--</option>
-                                @foreach ( getDsCoQuan() as $k=>$ct )
-                                <option value="{{$k}}">{{$ct}}</option>
-                            @endforeach
-                            </select>
-
+                            <div class="input-group">
+                                <select name="tencoquan" class="form-control select2basic" id='tencoquan_canhan'
+                                    style="width:90%">
+                                    <option value="">-- Chọn đơn vị công tác--</option>
+                                    @foreach (getDsCoQuan($inputs['madonvi']) as $k => $ct)
+                                        <option value="{{ $k }}">{{ $ct }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="input-group-prepend">
+                                    <button type="button" data-target="#modal-themdonvi" data-toggle="modal"
+                                        class="btn btn-light-dark btn-icon">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -103,10 +111,10 @@
                                 'class' => 'form-control select2_modal',
                             ]) !!} --}}
                             <select name="madanhhieukhenthuong" class="form-control select2basic" style="width:100%">
-                            @foreach ($a_dhkt_canhan as $k=>$ct)
-                                <option value="{{$k}}">{{$ct}}</option>
-                            @endforeach
-                        </select>
+                                @foreach ($a_dhkt_canhan as $k => $ct)
+                                    <option value="{{ $k }}">{{ $ct }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         {{-- <div class="col-md-6">
                             <label class="control-label">Danh hiệu thi đua</label>

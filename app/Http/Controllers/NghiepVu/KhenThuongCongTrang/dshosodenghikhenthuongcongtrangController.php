@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\NghiepVu\_DungChung\dungchung_nghiepvuController;
 use App\Http\Controllers\NghiepVu\_DungChung\dungchung_nhanexcelController;
+use App\Models\DanhMuc\dmcoquandonvi;
 use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dmnhomphanloai_chitiet;
 use App\Models\DanhMuc\dsdiaban;
@@ -149,7 +150,9 @@ class dshosodenghikhenthuongcongtrangController extends Controller
         $a_hogiadinh = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['HOGIADINH'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         $a_canhan = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['CANHAN'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         $inputs['mahinhthuckt'] = $model->mahinhthuckt;
+        // $inputs['madonvi']=session('admin')->madonvi;
         //dd($model);
+        // dd($inputs);
         return view('NghiepVu.KhenThuongCongTrang.HoSoKhenThuong.ThayDoi')
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)
@@ -228,7 +231,7 @@ class dshosodenghikhenthuongcongtrangController extends Controller
         $trangthai->thoigian = $inputs['ngayhoso'];
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function ThemTongHop(Request $request)
@@ -309,7 +312,7 @@ class dshosodenghikhenthuongcongtrangController extends Controller
         $trangthai->thoigian = $inputs['ngayhoso'];
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function LuuHoSo(Request $request)
@@ -394,6 +397,14 @@ class dshosodenghikhenthuongcongtrangController extends Controller
         }
 
         $inputs = $request->all();
+        //Kiểm tra xem dmcoquan có chưa?Chưa có thì add vào bảng dmcoquandonvi
+        // $m_coquan=dmcoquandonvi::where('macoquandonvi',$inputs['tencoquan'])->first();
+        // if(!isset($m_coquan)){
+        //    $tencoquandonvi=$inputs['tencoquan'];
+        //     $macoquandonvi=getdate()[0];
+        //     $inputs['tencoquan']=$macoquandonvi;
+
+        // }
         //$id =  $inputs['id'];       
         $model = dshosothiduakhenthuong_canhan::where('id', $inputs['id'])->first();
         unset($inputs['id']);
@@ -404,6 +415,10 @@ class dshosodenghikhenthuongcongtrangController extends Controller
             $model->update($inputs);
         // return response()->json($inputs['id']);
 
+        // if(!isset($m_coquan)){
+        //     $data=['macoquandonvi'=>$macoquandonvi,'tencoquandonvi'=>$tencoquandonvi];
+        //     dmcoquandonvi::create($data);
+        // }
         $model = dshosothiduakhenthuong_canhan::where('mahosotdkt', $inputs['mahosotdkt'])->get();
 
 

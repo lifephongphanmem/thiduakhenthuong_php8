@@ -44,7 +44,7 @@ class tnhosodenghikhenthuongthiduacumkhoiController extends Controller
         $inputs = $request->all();
         $inputs['url_qd'] = '/CumKhoiThiDua/KhenThuongThiDua/';
         $inputs['url_xd'] = static::$url;
-        $inputs['url_hs'] = '/CumKhoiThiDua/DeNghiThiDua/';
+        $inputs['url_hs'] = '/CumKhoiThiDua/XetDuyetThiDua/';
         $inputs['phanquyen'] = 'tnhosodenghikhenthuongthiduacumkhoi';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosotdktcumkhoi';
@@ -186,7 +186,12 @@ class tnhosodenghikhenthuongthiduacumkhoiController extends Controller
         //gán trạng thái hồ sơ để theo dõi
         $inputs['trangthai'] = 'BTL';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
-        setTraLaiXD($model, $inputs);
+        // setTraLaiXD($model, $inputs);
+        if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
+            setTraLai($model, $inputs);
+        }else{
+            setTraLaiXD($model, $inputs);
+        }
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
 
@@ -285,5 +290,24 @@ class tnhosodenghikhenthuongthiduacumkhoiController extends Controller
 
         setXuLyHoSo($model, $inputs, 'dshosotdktcumkhoi');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
+    }
+
+    public function LayLyDo(Request $request)
+    {
+        $result = array(
+            'status' => 'fail',
+            'message' => 'error',
+        );
+        if (!Session::has('admin')) {
+            $result = array(
+                'status' => 'fail',
+                'message' => 'permission denied',
+            );
+            die(json_encode($result));
+        }
+
+        $inputs = $request->all();
+        $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+        die(json_encode($model));
     }
 }
