@@ -146,9 +146,15 @@ class tnhosodenghikhenthuongconghienController extends Controller
                     if ($canbo_xl->tendangnhap_tn == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
                         $hoso->dieukien_hs = false;
                         $hoso->trangthai = 'DCXL';
+                        $hoso->trangthai_hoso = "KDK";
                         $hoso->trangthai_chuyenchuyenvien = true;
                     } else {
                         $hoso->dieukien_hs = true;
+                    }
+
+                    if(session('admin')->capdo== 'SSA' && $hoso->trangthai_xl == "KDK")
+                    {
+                        $hoso->trangthai_hoso = "KDK";
                     }
                     //lấy thông tin cán bộ tiếp nhận để set trạng thái hồ sơ khi trưởng ban trả về văn thư
                     $thongtin_canbonhan = dstaikhoan::where('tendangnhap', $canbo_xl->tendangnhap_tn)->first();
