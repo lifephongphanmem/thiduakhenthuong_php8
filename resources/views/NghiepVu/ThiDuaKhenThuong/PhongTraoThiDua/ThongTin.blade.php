@@ -130,7 +130,7 @@
                                                     class="icon-lg la fa-edit text-success"></i>
                                             </a>
                                             <button title="Xóa hồ sơ" type="button"
-                                                onclick="confirmDelete('{{ $tt->id }}',{{$tt->sohoso}},'/PhongTraoThiDua/Xoa')"
+                                                onclick="confirmDelete('{{ $tt->id }}',{{$tt->sohoso_thamgia}},{{$tt->sohoso_kt}},'/PhongTraoThiDua/Xoa')"
                                                 class="btn btn-sm btn-clean btn-icon" data-target="#delete-modal-confirm"
                                                 data-toggle="modal">
                                                 <i class="icon-lg la fa-trash-alt text-danger"></i>
@@ -355,7 +355,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
-                <button type="submit" data-dismiss="modal" class="btn btn-primary" onclick="clickdelete()">Đồng
+                <button type="submit" id='submit' data-dismiss="modal" class="btn btn-primary" onclick="clickdelete()">Đồng
                     ý</button>
             </div>
         </div>
@@ -363,9 +363,13 @@
     {!! Form::close() !!}
 </div>
 <script>
-    function confirmDelete(id,sohoso,url) {
+    function confirmDelete(id,sohoso_thamgia,sohoso_kt,url) {
         $('#frm_delete').attr('action', url);
-        $("#thongbao").append("Có "+sohoso+" hồ sơ tham gia phong trào. Khi xóa phong trào thì các hồ sơ này cũng xóa theo.");
+        if(sohoso_thamgia > 0 || sohoso_kt > 0){
+            $('#thongbao').empty();
+            $("#thongbao").append("Có "+sohoso_thamgia+" hồ sơ tham gia phong trào và "+sohoso_kt+" hồ sơ khen thưởng phong trào .Kiểm tra lại cá hồ sơ thuộc phong trào trước khi xóa.");
+            $('#submit').attr('disabled',true);
+        }
         $('#frm_delete').find("[name='id']").val(id);
     }
 

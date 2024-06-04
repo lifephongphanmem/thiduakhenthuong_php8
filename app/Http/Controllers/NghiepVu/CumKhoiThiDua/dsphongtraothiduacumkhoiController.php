@@ -15,6 +15,8 @@ use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
 use App\Models\HeThong\trangthaihoso;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosothamgiathiduacumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dsphongtraothiduacumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dsphongtraothiduacumkhoi_tieuchuan;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua;
@@ -84,9 +86,20 @@ class dsphongtraothiduacumkhoiController extends Controller
             $model = $model->whereYear('ngayqd', $inputs['nam']);
         if ($inputs['phanloai'] != 'ALL')
             $model = $model->where('phanloai', $inputs['phanloai']);
+        $model=$model->orderby('ngayqd')->get();
         // dd($model->get());
+
+        $m_hoso=dshosothamgiathiduacumkhoi::wherein('maphongtraotd',array_column($model->toarray(),'maphongtraotd'))->get();
+        $m_hoso_denghi=dshosotdktcumkhoi::wherein('maphongtraotd',array_column($model->toarray(),'maphongtraotd'))->get();
+        foreach($model as $ct)
+        {
+            // dd($m_hoso->where('maphongtraotd',$ct->maphongtraotd));
+            $sohoso_thamgia=count($m_hoso->where('maphongtraotd',$ct->maphongtraotd)->wherein('trangthai', ['CD', 'DD', 'CNXKT', 'DXKT', 'CXKT', 'DKT']));
+            $ct->sohoso_thamgia=$sohoso_thamgia;
+            $ct->sohoso_kt=count($m_hoso_denghi->where('maphongtraotd',$ct->maphongtraotd));
+        }
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.DanhSachPhongTrao.ThongTin')
-            ->with('model', $model->orderby('ngayqd')->get())
+            ->with('model', $model)
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
             ->with('m_cumkhoi', $m_cumkhoi->unique('macumkhoi'))

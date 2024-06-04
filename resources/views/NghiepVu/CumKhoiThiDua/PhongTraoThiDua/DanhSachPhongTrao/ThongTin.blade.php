@@ -143,7 +143,7 @@
                                             </a>
 
                                             <button title="Xóa hồ sơ" type="button"
-                                                onclick="confirmDelete('{{ $tt->id }}','{{ $inputs['url'] . 'Xoa' }}')"
+                                                onclick="confirmDelete('{{ $tt->id }}',{{$tt->sohoso_thamgia}},{{$tt->sohoso_kt}},'{{ $inputs['url'] . 'Xoa' }}')"
                                                 class="btn btn-sm btn-clean btn-icon" data-target="#delete-modal-confirm"
                                                 data-toggle="modal">
                                                 <i class="icon-lg la fa-trash-alt text-danger icon-2x"></i>
@@ -220,6 +220,44 @@
         }
     </script>
 
-    @include('includes.modal.modal-delete')
+{!! Form::open(['url' => '', 'id' => 'frm_delete']) !!}
+<div id="delete-modal-confirm" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <h4 id="modal-header-primary-label" class="modal-title">Đồng ý xoá?</h4>
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                <input type="hidden" name="id" />
+            </div>
+            <div class="modal-body">
+                <p style="color: #0000FF" id='thongbao'></p>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
+                <button type="submit" id='submit' data-dismiss="modal" class="btn btn-primary" onclick="clickdelete()">Đồng
+                    ý</button>
+            </div>
+        </div>
+    </div>
+    {!! Form::close() !!}
+</div>
+<script>
+    function confirmDelete(id,sohoso_thamgia,sohoso_kt,url) {
+        $('#frm_delete').attr('action', url);
+        if(sohoso_thamgia > 0 || sohoso_kt > 0){
+            $('#thongbao').empty();
+            $("#thongbao").append("Có "+sohoso_thamgia+" hồ sơ tham gia phong trào và "+sohoso_kt+" hồ sơ khen thưởng phong trào .Kiểm tra lại cá hồ sơ thuộc phong trào trước khi xóa.");
+            $('#submit').attr('disabled',true);
+        }
+        $('#frm_delete').find("[name='id']").val(id);
+    }
+
+    function clickdelete() {
+        $('#frm_delete').submit();
+    }
+</script>
+
+    {{-- @include('includes.modal.modal-delete') --}}
     @include('includes.modal.modal_attackfile')
 @stop
