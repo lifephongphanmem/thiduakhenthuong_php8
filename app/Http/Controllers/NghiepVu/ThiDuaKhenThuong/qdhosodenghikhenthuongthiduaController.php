@@ -628,6 +628,8 @@ class qdhosodenghikhenthuongthiduaController extends Controller
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
         $inputs['mahinhthuckt'] = session('chucnang')['dshosodenghikhenthuongcongtrang']['mahinhthuckt'] ?? 'ALL';
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+        $inputs['phanloai']=$model->phanloai;
+        // dd($model);
         $model_canhan = dshosothiduakhenthuong_canhan::where('mahosotdkt', $inputs['mahosotdkt'])->get();
         $model_tapthe = dshosothiduakhenthuong_tapthe::where('mahosotdkt', $inputs['mahosotdkt'])->get();
         $model_hogiadinh = dshosothiduakhenthuong_hogiadinh::where('mahosotdkt', $inputs['mahosotdkt'])->get();
@@ -649,6 +651,7 @@ class qdhosodenghikhenthuongthiduaController extends Controller
         $model->capkhenthuong =  $donvi_kt->capdo;
         $model->donvikhenthuong =  $donvi_kt->tendonvi;
         $a_donvikt = array_unique(array_merge([$model->donvikhenthuong], getDonViKhenThuong()));
+        // dd($inputs);
         return view('NghiepVu.ThiDuaKhenThuong.KhenThuongHoSo.PheDuyetKT')
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)
