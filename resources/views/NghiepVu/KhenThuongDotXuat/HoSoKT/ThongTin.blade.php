@@ -104,7 +104,7 @@
                                         {{-- Trường hợp cũ đầy đủ quy trình --}}
                                         @if (in_array($tt->trangthai, ['CC', 'BTL', 'CXD']) && chkPhanQuyen('dshosokhenthuongdotxuat', 'thaydoi'))
                                             <a title="Thông tin hồ sơ"
-                                                href="{{ url($inputs['url_hs'] . 'Sua?mahosotdkt=' . $tt->mahosotdkt) }}"
+                                                href="{{ url($inputs['url_hs'] . 'Sua?mahosotdkt=' . $tt->mahosotdkt.'&madonvi='.$inputs['madonvi']) }}"
                                                 class="btn btn-sm btn-clean btn-icon">
                                                 <i class="icon-lg la flaticon-edit-1 text-success"></i>
                                             </a>
@@ -133,7 +133,7 @@
                                         {{-- Trường hợp gộp các quy trình vào làm một để chỉ theo dõi hồ sơ --}}
                                         @if (in_array($tt->trangthai, ['CXKT']))
                                             @if (chkPhanQuyen('dshosokhenthuongdotxuat', 'thaydoi'))
-                                                <a href="{{ url($inputs['url_hs'] . 'Sua?mahosotdkt=' . $tt->mahosotdkt) }}"
+                                                <a href="{{ url($inputs['url_hs'] . 'Sua?mahosotdkt=' . $tt->mahosotdkt.'&madonvi='.$inputs['madonvi']) }}"
                                                     class="btn btn-icon btn-clean btn-lg mb-1 position-relative"
                                                     title="Thông tin hồ sơ khen thưởng">
                                                     <span class="svg-icon svg-icon-xl">

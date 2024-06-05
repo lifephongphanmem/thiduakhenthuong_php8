@@ -244,7 +244,7 @@ class dshosokhenthuongdotxuatController extends Controller
         $trangthai->thoigian = $inputs['ngayhoso'];
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&phanloai='.$inputs['phanloai']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&phanloai='.$inputs['phanloai'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function LuuHoSo(Request $request)

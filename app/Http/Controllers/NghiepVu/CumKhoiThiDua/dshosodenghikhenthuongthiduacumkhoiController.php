@@ -261,7 +261,7 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
             //$m_phongtrao->trangthai = 'DXKT';
             //$m_phongtrao->save();
         }
-        return redirect(static::$url . 'XetKT?mahosotdkt=' . $inputs['mahosotdkt']);
+        return redirect(static::$url . 'XetKT?mahosotdkt=' . $inputs['mahosotdkt'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function LuuKT(Request $request)
