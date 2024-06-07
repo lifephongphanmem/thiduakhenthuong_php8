@@ -91,7 +91,7 @@
     @break
     @case('DCXL')
         <td align="center">
-            <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+            <span class="{{ $a_trangthai_xl['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
             {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_xd }}</b> --}}
         </td>
     @break

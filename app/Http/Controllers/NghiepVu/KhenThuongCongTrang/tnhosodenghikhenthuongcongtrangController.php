@@ -215,7 +215,9 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
                     if ($canbo_xl->tendangnhap_tn == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
                         $hoso->dieukien_hs = false;
                         $hoso->trangthai = 'DCXL';
+                        if($hoso->trangthai_xl == 'KDK'){
                         $hoso->trangthai_hoso = "KDK";
+                        }
                         $hoso->trangthai_chuyenchuyenvien = true;
                     } else {
                         $hoso->dieukien_hs = true;
@@ -262,6 +264,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
 
         $inputs['trangthai'] = session('chucnang')['tnhosodenghikhenthuongcongtrang']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
+        // dd($inputs);
         //dd($model->where('trangthai','CXKT')->where('madonvi_kt',''));
         return view('NghiepVu.KhenThuongCongTrang.TiepNhan.ThongTin')
             ->with('model', $model)
