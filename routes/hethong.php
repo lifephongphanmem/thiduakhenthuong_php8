@@ -27,6 +27,7 @@ Route::group(['prefix' => 'DiaBan'], function () {
     Route::post('Sua', [dsdiabanController::class, 'modify']);
     Route::post('Xoa', [dsdiabanController::class, 'delete']);
     Route::get('LayDonVi', [dsdiabanController::class, 'LayDonVi']);
+    Route::post('NhanExcel', [dsdiabanController::class, 'NhanExcel']);
 });
 
 Route::group(['prefix' => 'DonVi'], function () {

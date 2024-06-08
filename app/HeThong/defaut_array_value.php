@@ -10,6 +10,15 @@ use App\Models\DanhMuc\dsdonvi;
  * Time: 3:05 PM
  */
 
+function getPhanLoaiDiaBan()
+{
+    return array(
+        'DVHC' => 'Đơn vị hành chính, sự nghiệp',
+        'DIABAN' => 'Địa bàn hành chính',
+        'DOANHNGHIEP' => 'Doanh nghiệp'
+    );
+}
+
 function getPhanLoaiLocDuLieu()
 {
     return array(
@@ -156,7 +165,7 @@ function getPhanLoaiHoSo($phanloai = 'ALL')
                 );
                 break;
             }
-            case 'KHANGCHIEN': {
+        case 'KHANGCHIEN': {
                 $a_kq = array(
                     'KTCHONGPHAP' => 'Hồ sơ khen thưởng kháng chiến chống Pháp',
                     'KTCHONGMY' => 'Hồ sơ khen thưởng kháng chiến chống Mỹ',
@@ -421,9 +430,9 @@ function getTaoDuThaoToTrinhPheDuyetCumKhoi(&$model, $maduthao = null)
         // $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
         // $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
         //Lấy đơn vị xét duyệt và đơn vị khen thưởng theo dscumkhoi
-        $dscumkhoi=dscumkhoi::where('macumkhoi',$model->macumkhoi)->first();
-        $donvi_xd=isset($dscumkhoi)?dsdonvi::where('madonvi',$dscumkhoi->madonvixd)->first():'';
-        $donvi_kt=isset($dscumkhoi)?dsdonvi::where('madonvi',$dscumkhoi->madonvikt)->first():'';
+        $dscumkhoi = dscumkhoi::where('macumkhoi', $model->macumkhoi)->first();
+        $donvi_xd = isset($dscumkhoi) ? dsdonvi::where('madonvi', $dscumkhoi->madonvixd)->first() : '';
+        $donvi_kt = isset($dscumkhoi) ? dsdonvi::where('madonvi', $dscumkhoi->madonvikt)->first() : '';
 
         $model->thongtintotrinhdenghi = str_replace('[noidung]', $model->noidung, $model->thongtintotrinhdenghi);
         $model->thongtintotrinhdenghi = str_replace('[hinhthuckhenthuong]',  'Bằng khen', $model->thongtintotrinhdenghi);
@@ -645,7 +654,7 @@ function getTaoQuyetDinhKT(&$model, $maduthao = null)
     $donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
     $donvi_xd = dsdonvi::where('madonvi', $model->madonvi_xd)->first();
     $donvi_kt = dsdonvi::where('madonvi', $model->madonvi_kt)->first();
-    
+
     $model->thongtinquyetdinh = str_replace('[nguoikytotrinh]', $model->nguoikytotrinh, $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[chucvunguoiky]', $model->chucvunguoiky, $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[chucvunguoikyqd]', $model->chucvunguoikyqd, $model->thongtinquyetdinh);
@@ -657,7 +666,7 @@ function getTaoQuyetDinhKT(&$model, $maduthao = null)
     $model->thongtinquyetdinh = str_replace('[ngayhoso]',  Date2Str($model->ngayhoso), $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[donvidenghi]',  $donvi->tendvhienthi, $model->thongtinquyetdinh);
     // $model->thongtinquyetdinh = str_replace('[donvikhenthuong]', $donvi_kt->tendvhienthi ?? '', $model->thongtinquyetdinh);
-    $model->thongtinquyetdinh = str_replace('[donvikhenthuong]', $donvi_kt->tendvhienthi ? mb_strtoupper($donvi_kt->tendvhienthi, 'UTF-8'): '', $model->thongtinquyetdinh);
+    $model->thongtinquyetdinh = str_replace('[donvikhenthuong]', $donvi_kt->tendvhienthi ? mb_strtoupper($donvi_kt->tendvhienthi, 'UTF-8') : '', $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[donvixetduyet]',  $donvi_xd->tendvhienthi ?? '', $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[sototrinhdenghi]',  $model->sototrinhdenghi ?? '', $model->thongtinquyetdinh);
     $model->thongtinquyetdinh = str_replace('[ngaythangtotrinhdenghi]',  Date2Str($model->ngaythangtotrinhdenghi), $model->thongtinquyetdinh);
@@ -1485,13 +1494,13 @@ function getPhanLoaiTaiLieuDK($phanloaihoso = 'ALL')
             'TOTRINHKQ' => 'Tờ trình kết quả khen thưởng',
         ];
     }
-        //Tờ trình kết quả khen thưởng & ý kiến đóng góp
-        if ($phanloaihoso == 'TOTRINHKQ&YKIEN') {
-            return [
-                'TOTRINHKQ' => 'Tờ trình kết quả khen thưởng',
-                'YKIEN'=>'Ý kiến đóng góp'
-            ];
-        }
+    //Tờ trình kết quả khen thưởng & ý kiến đóng góp
+    if ($phanloaihoso == 'TOTRINHKQ&YKIEN') {
+        return [
+            'TOTRINHKQ' => 'Tờ trình kết quả khen thưởng',
+            'YKIEN' => 'Ý kiến đóng góp'
+        ];
+    }
     //Quyết định khen thưởng
     if ($phanloaihoso == 'QDKT') {
         return [

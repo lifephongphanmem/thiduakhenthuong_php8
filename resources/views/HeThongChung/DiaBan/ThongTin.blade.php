@@ -422,11 +422,12 @@
                                             ]) !!}
                                         </div>
                                     </div>
+
                                     <div class="form-group row">
                                         <div class="col-md-6">
                                             <label class="control-label">Phân loại phạm vị<span
                                                     class="require">*</span></label>
-                                            {!! Form::select('madiabanQL', setArrayAll($a_cumkhoi, 'Không chọn', 'NULL'), null, [
+                                            {!! Form::select('phanloai', $a_phanloai, null, [
                                                 'class' => 'form-control select2_modal',
                                             ]) !!}
                                         </div>
@@ -434,7 +435,7 @@
                                         <div class="col-md-6">
                                             <label class="control-label">Phạm vị - cấp trên<span
                                                     class="require">*</span></label>
-                                            {!! Form::select('madiabanQL', setArrayAll($a_cumkhoi, 'Không chọn', 'NULL'), null, [
+                                            {!! Form::select('madiabanQL', $a_diabancaptren, null, [
                                                 'class' => 'form-control select2_modal',
                                             ]) !!}
                                         </div>
