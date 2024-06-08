@@ -87,11 +87,12 @@
                     <table class="table table-bordered table-hover" id="sample_3">
                         <thead>
                             <tr class="text-center">
-                                <th colspan="3">STT</th>
+                                <th colspan="3">Phạm vị</th>
                                 <th rowspan="2">Mã số</th>
-                                <th rowspan="2">Tên địa bàn</th>
-                                <th rowspan="2" width="25%">Đơn vị phê<br>duyệt khen thưởng</th>
-                                <th rowspan="2" width="25%">Đơn vị xét<br>duyệt hồ sơ</th>
+                                <th rowspan="2">Tên phạm vị khen thưởng</th>
+                                <th rowspan="2" width="15%">Đơn vị phê<br>duyệt khen thưởng</th>
+                                <th rowspan="2" width="15%">Đơn vị xét<br>duyệt hồ sơ</th>
+                                <th rowspan="2" width="15%">Phân loại</th>
                                 <th rowspan="2" width="10%">Thao tác</th>
                             </tr>
                             <tr>
@@ -118,6 +119,7 @@
                                     <td class="text-primary">{{ $ct_t->tendiaban }}</td>
                                     <td class="text-primary">{{ $a_donvi[$ct_t->madonviQL] ?? '' }}</td>
                                     <td class="text-primary">{{ $a_donvi[$ct_t->madonviKT] ?? '' }}</td>
+                                    <td class="text-primary">{{ $a_phanloai[$ct_t->phanloai] ?? '' }}</td>
                                     <td style="text-align: center">
                                         @if (chkPhanQuyen('dsdonvi', 'thaydoi'))
                                             <button
@@ -159,12 +161,13 @@
                                 @foreach ($model_h as $ct_h)
                                     <tr class="info">
                                         <td></td>
-                                        <td class="text-info text-center">{{ romanNumerals($j++) }}</td>
+                                        <td class="text-info text-center">{{ $j++ }}</td>
                                         <td></td>
                                         <td class="text-info">{{ $ct_h->madiaban }}</td>
                                         <td class="text-info">{{ $ct_h->tendiaban }}</td>
                                         <td class="text-info">{{ $a_donvi[$ct_h->madonviQL] ?? '' }}</b></td>
                                         <td class="text-info">{{ $a_donvi[$ct_h->madonviKT] ?? '' }}</b></td>
+                                        <td class="text-info">{{ $a_phanloai[$ct_h->phanloai] ?? '' }}</td>
                                         <td style="text-align: center">
                                             @if (chkPhanQuyen('dsdonvi', 'thaydoi'))
                                                 <button
@@ -213,6 +216,7 @@
                                             <td style="font-style: italic;">{{ $ct_x->tendiaban }}</td>
                                             <td style="font-style: italic;"> {{ $a_donvi[$ct_x->madonviQL] ?? '' }}</td>
                                             <td style="font-style: italic;"> {{ $a_donvi[$ct_x->madonviKT] ?? '' }}</td>
+                                            <td style="font-style: italic;">{{ $a_phanloai[$ct_x->phanloai] ?? '' }}</td>
                                             <td style="text-align: center">
                                                 @if (chkPhanQuyen('dsdonvi', 'thaydoi'))
                                                     <button
@@ -369,7 +373,7 @@
 
                                         <div class="col-md-3">
                                             <label class="form-control-label">Tài khoản tổng hợp</label>
-                                            {!! Form::text('tendangnhap', 'D', ['class' => 'form-control']) !!}
+                                            {!! Form::text('tentonghop', 'D', ['class' => 'form-control']) !!}
                                         </div>
                                         <div class="col-md-3">
                                             <label class="form-control-label">Mật khẩu</label>
@@ -378,11 +382,11 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <div class="col-md-3">
+                                        {{-- <div class="col-md-3">
                                             <label class="control-label">Sheet nhận dữ liệu<span
                                                     class="require">*</span></label>
                                             {!! Form::text('sheet', '0', ['class' => 'form-control']) !!}
-                                        </div>
+                                        </div> --}}
 
                                         <div class="col-md-3">
                                             <label class="control-label">Nhận từ dòng<span
@@ -406,7 +410,7 @@
                                     <hr>
                                     <h4>Tham số mặc định</h4>
                                     <div class="form-group row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label class="control-label">Nhóm chức năng<span
                                                     class="require">*</span></label>
                                             {!! Form::select('manhomchucnang', $a_nhomchucnang, null, [
@@ -414,7 +418,15 @@
                                             ]) !!}
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <label class="control-label">Nhóm chức năng tổng hợp<span
+                                                    class="require">*</span></label>
+                                            {!! Form::select('manhomchucnangth', $a_nhomchucnang, null, [
+                                                'class' => 'form-control select2_modal',
+                                            ]) !!}
+                                        </div>
+
+                                        <div class="col-md-4">
                                             <label class="control-label">Cụm, khối thi đua<span
                                                     class="require">*</span></label>
                                             {!! Form::select('macumkhoi', setArrayAll($a_cumkhoi, 'Không chọn', 'NULL'), null, [

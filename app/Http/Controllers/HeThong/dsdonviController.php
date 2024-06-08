@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ColectionImport;
+use App\Models\DanhMuc\dstaikhoan_phanquyen;
 use Illuminate\Support\Facades\Hash;
 
 class dsdonviController extends Controller
@@ -157,6 +158,8 @@ class dsdonviController extends Controller
         $model = dsdonvi::findorFail($id);
         //xoá tài khoản
         dstaikhoan::where('madonvi', $model->madonvi)->delete();
+        //xoá phân quyền
+        
         //dd($model);
         $model->delete();
         return redirect('/DonVi/DanhSach?madiaban=' . $model->madiaban);

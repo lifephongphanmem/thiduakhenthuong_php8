@@ -187,6 +187,7 @@ class dstaikhoanController extends Controller
         }
         $id = $request->all()['id'];
         $model = dstaikhoan::findorFail($id);
+        dstaikhoan_phanquyen::where('tendangnhap',$model->tendangnhap)->delete();
         $model->delete();
         return redirect('/TaiKhoan/DanhSach?madonvi=' . $model->madonvi);
     }

@@ -15,6 +15,8 @@ class dsnhomtaikhoan_phanquyen extends Model
         'danhsach', //phân quyền; nếu 2 chức năng còn lại true => mặc định true
         'thaydoi',
         'hoanthanh',
+        'tiepnhan',
+        'xuly',
         'ghichu',
     ];
 }

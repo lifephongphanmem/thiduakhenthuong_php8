@@ -366,7 +366,7 @@
                     <!--begin::Container-->
                     <div class="container d-flex flex-column justify-content-between">
                         <div class="row">
-                            <div class="col-8">
+                            <div class="col-6">
                                 <p>Đơn vị: &nbsp;<b style="color: #25aae2">{{ $hethong->tendonvi }}</b>
                                 </p>
                                 <p>Địa chỉ: &nbsp;<b style="color: #25aae2">{{ $hethong->diachi }}</b></p>
@@ -374,15 +374,13 @@
                                         {{ $hethong->dienthoai }} -
                                         Email: {{ $hethong->emailql }}</b></p>
                             </div>
-                            <div class="col-4 footer-block" style="text-align: left">
+                            <div class="col-6 footer-block" style="text-align: left">
                                 <p>Đơn vị phát triển: &nbsp;<b style="color: #25aae2">Công ty phát triển phần mềm Cuộc
                                         sống</b></p>
                                 <p>Địa chỉ: &nbsp;<b style="color: #25aae2">Khu Tái Định Cư X2A, Phường Yên Sở, Quận
                                         Hoàng Mai, TP Hà Nội</b></p>
                             </div>
                         </div>
-
-
 
                         {{-- <!--begin::Copyright-->
                         <div class="text-dark order-2 order-md-1">
