@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
 use App\Models\DanhMuc\dsnhomtaikhoan;
@@ -41,6 +42,7 @@ class dsdiabanController extends Controller
         }
         $a_donvi = array_column($m_donvi->toarray(), 'tendonvi', 'madonvi');
         $a_nhomchucnang = array_column(dsnhomtaikhoan::all()->toArray(), 'tennhomchucnang', 'manhomchucnang');
+        $a_cumkhoi = array_column(dscumkhoi::all()->toArray(), 'tencumkhoi', 'macumkhoi');
         return view('HeThongChung.DiaBan.ThongTin')
             ->with('model', $model)
             ->with('inputs', $inputs)
@@ -48,7 +50,8 @@ class dsdiabanController extends Controller
             ->with('a_diaban', getDiaBan_All(true))
             ->with('a_donvi', $a_donvi)
             ->with('a_nhomchucnang', $a_nhomchucnang)
-            ->with('pageTitle', 'Danh sách địa bàn');
+            ->with('a_cumkhoi', $a_cumkhoi)
+            ->with('pageTitle', chkGiaoDien('dsdiaban', 'tenchucnang'));
     }
 
     public function modify(Request $request)

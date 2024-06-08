@@ -12,6 +12,7 @@ class dsdiaban extends Model
         'madiaban',
         'tendiaban',
         'capdo',
+        'phanloai',
         'madonviQL',//Đơn vị phê duyệt khen thưởng
         'madonviKT',//Đơn vị xét duyệt hồ sơ
         'madiabanQL',
