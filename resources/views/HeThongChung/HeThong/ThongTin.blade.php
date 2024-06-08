@@ -33,7 +33,7 @@
             <div class="col-md-12">
                 <table id="user" class="table table-bordered table-striped">
                     <tbody>
-                    <tr>
+                    {{-- <tr>
                         <td style="width:15%">
                             <b>Bản quyền thuộc về</b>
                         </td>
@@ -59,10 +59,10 @@
                             <span class="text-muted" style="color: #0000ff">Số: 164/2016/QTG - Cấp ngày 22/04/2016
                             </span>
                         </td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <td style="width:15%">
-                            <b>Cấp cho đơn vị</b>
+                            <b>Thông tin đơn vị</b>
                         </td>
                         <td style="width:35%">
                             <span class="text-muted" style="color: #0000ff">{{isset($model) ? $model->tendonvi : ''}}
@@ -87,7 +87,7 @@
                             </span>
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td style="width:15%">
                             <b>Thông tin hợp đồng</b>
                         </td>
@@ -95,7 +95,7 @@
                             <span class="text-muted"><p style="color: #0000ff">{{isset($model) ? $model->thongtinhd : ''}}</p>
                             </span>
                         </td>
-                    </tr>
+                    </tr> --}}
                     </tbody>
                 </table>
             </div>
