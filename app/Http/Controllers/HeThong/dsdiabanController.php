@@ -271,11 +271,25 @@ class dsdiabanController extends Controller
         }
         //dd($a_tk);
         if ($nhandulieu) {
-            dstaikhoan_phanquyen::insert($a_pq);
-            dstaikhoan::insert($a_tk);
-            dsdiaban::insert($a_diaban);
-            dsdonvi::insert($a_dv);
-            dscumkhoi_chitiet::insert($a_ck);
+            foreach (array_chunk($a_pq, 50) as $data) {
+                dstaikhoan_phanquyen::insert($data);
+            }
+            
+            foreach (array_chunk($a_tk, 50) as $data) {
+                dstaikhoan::insert($data);
+            }
+
+            foreach (array_chunk($a_diaban, 50) as $data) {
+                dsdiaban::insert($data);
+            }
+
+            foreach (array_chunk($a_dv, 50) as $data) {
+                dsdonvi::insert($data);
+            }
+
+            foreach (array_chunk($a_ck, 50) as $data) {
+                dscumkhoi_chitiet::insert($data);
+            }            
         } else {
             return view('errors.403')
                 ->with('message', $thongbao)

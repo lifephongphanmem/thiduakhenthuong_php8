@@ -83,7 +83,7 @@
                 </div>
                 <div class="col-lg-4">
                     <label>Tài khoản tiếp nhận hồ sơ</label>
-                    {!! Form::select('taikhoantiepnhan', $a_taikhoan, null, array('class'=>'form-control select2basic'))!!}
+                    {!! Form::select('taikhoantiepnhan', (isset($a_taikhoan)? $a_taikhoan: []), null, array('class'=>'form-control select2basic'))!!}
                 </div>
                 <div class="col-lg-4">
                     <label>Ngành, lĩnh vực</label>
