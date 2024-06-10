@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ColectionImport;
+use App\Models\DanhMuc\dstaikhoan_phanquyen;
 use Illuminate\Support\Facades\Hash;
 
 class dsdonviController extends Controller
@@ -133,8 +134,8 @@ class dsdonviController extends Controller
         }
         $inputs = $request->all();
         $model = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
-        $m_taikhoan=dstaikhoan::where('madonvi',$inputs['madonvi'])->get();
-        $a_taikhoan=array_column($m_taikhoan->toarray(),'tentaikhoan','tendangnhap');
+        $m_taikhoan = dstaikhoan::where('madonvi', $inputs['madonvi'])->get();
+        $a_taikhoan = array_column($m_taikhoan->toarray(), 'tentaikhoan', 'tendangnhap');
         return view('HeThongChung.DonVi.Sua')
             ->with('model', $model)
             ->with('a_taikhoan', $a_taikhoan)
@@ -157,6 +158,8 @@ class dsdonviController extends Controller
         $model = dsdonvi::findorFail($id);
         //xoá tài khoản
         dstaikhoan::where('madonvi', $model->madonvi)->delete();
+        //xoá phân quyền
+
         //dd($model);
         $model->delete();
         return redirect('/DonVi/DanhSach?madiaban=' . $model->madiaban);
@@ -195,19 +198,19 @@ class dsdonviController extends Controller
         //$a_diaban = array_column($m_donvi->toArray(), 'tendiaban', 'madiaban');
         $inputs['madonvi'] = session('admin')->madonvi;
         $model = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
-        $m_donvi = dsdonvi::where('madiaban',$model->madiaban)->get();
+        $m_donvi = dsdonvi::where('madiaban', $model->madiaban)->get();
         //dd($model);
         return view('HeThongChung.DonVi.ThongTinDonVi')
             ->with('model', $model)
             ->with('m_donvi', $m_donvi)
-            ->with('a_diaban',array_column(dsdiaban::where('madiaban',$model->madiaban)->get()->toArray(), 'tendiaban', 'madiaban'))
+            ->with('a_diaban', array_column(dsdiaban::where('madiaban', $model->madiaban)->get()->toArray(), 'tendiaban', 'madiaban'))
             ->with('pageTitle', 'Chỉnh sửa thông tin đơn vị');
     }
 
     public function LuuThongTinDonVi(Request $request)
     {
 
-        $inputs = $request->all(); 
+        $inputs = $request->all();
         //dd($inputs);
         $model = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
         if (isset($inputs['phoi_bangkhen'])) {
@@ -228,7 +231,7 @@ class dsdonviController extends Controller
             $model->update($inputs);
         }
 
-        
+
 
         return redirect('/');
     }
@@ -285,7 +288,7 @@ class dsdonviController extends Controller
         $a_ck = [];
         $ma = getdate()[0];
         // dd($data);
-        for ($i = ($inputs['tudong']-1); $i <= $inputs['dendong']; $i++) {
+        for ($i = ($inputs['tudong'] - 1); $i <= $inputs['dendong']; $i++) {
             if (!isset($data[$i][ColumnName()[$inputs['tendonvi']]])) {
                 continue;
             }
@@ -300,7 +303,7 @@ class dsdonviController extends Controller
                 'manhomchucnang' => $inputs['manhomchucnang'],
                 'tentaikhoan' => $data[$i][ColumnName()[$inputs['tendonvi']]] ?? '',
                 // 'matkhau' => '2d17247d02f162064940feff49988f8e', 
-                'matkhau' => Hash::make($data[$i][ColumnName()[$inputs['matkhau']]] ?? ''),
+                'matkhau' => md5($data[$i][ColumnName()[$inputs['matkhau']]] ?? ''),
                 'trangthai' => '1',
                 'tendangnhap' => $data[$i][ColumnName()[$inputs['tendangnhap']]] ?? '',
             );
