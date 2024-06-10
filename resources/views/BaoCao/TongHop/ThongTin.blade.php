@@ -380,15 +380,15 @@
             <div class="modal-body">
                 <p style="color: #0000FF">Thống kê các danh hiệu thi đua và hình thức khen thưởng đã được phê duyệt theo hồ
                     sơ khen thưởng và hồ sơ đề nghị khen thưởng.</p>
-                {{-- <div class="form-group row">
+                <div class="form-group row">
                     <div class="col-lg-12">
                         <label>Địa bàn</label>
                         {!! Form::select('madiaban', setArrayAll($a_diaban), null, [
                             'madiaban' => 'madt',
-                            'class' => 'form-control select2_modal', 'disabled',
+                            'class' => 'form-control select2_modal'
                         ]) !!}
                     </div>
-                </div> --}}
+                </div>
 
                 <div class="form-group row">
                     <div class="col-lg-12">

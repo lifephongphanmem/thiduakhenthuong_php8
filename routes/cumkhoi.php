@@ -340,6 +340,8 @@ Route::group(['prefix' => 'CumKhoiThiDua'], function () {
         Route::get('Xem', [dshosodenghikhenthuongthiduacumkhoiController::class, 'XemDanhSach']);
         Route::post('ChuyenHoSo', [dshosodenghikhenthuongthiduacumkhoiController::class, 'ChuyenHoSo']);
         Route::post('NhanHoSo', [dshosodenghikhenthuongthiduacumkhoiController::class, 'NhanHoSo']);
+        Route::post('ThemTongHop',[dshosodenghikhenthuongthiduacumkhoiController::class,'ThemTongHop']);
+        Route::get('LayLyDo', [dshosodenghikhenthuongthiduacumkhoiController::class, 'LayLyDo']);
 
         Route::post('ThemKT', [dshosodenghikhenthuongthiduacumkhoiController::class, 'ThemKT']);
         Route::get('XetKT', [dshosodenghikhenthuongthiduacumkhoiController::class, 'XetKT']);

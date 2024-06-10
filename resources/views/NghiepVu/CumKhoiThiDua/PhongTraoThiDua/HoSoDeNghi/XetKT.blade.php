@@ -56,7 +56,7 @@
 
                 <div class="col-lg-6">
                     <label>Loại hình khen thưởng</label>
-                    {!! Form::select('maloaihinhkt', $a_loaihinhkt, null, ['class' => 'form-control', 'disabled' => 'true']) !!}
+                    {!! Form::select('maloaihinhkt', $a_loaihinhkt, $inputs['maloaihinhkt'], ['class' => 'form-control', 'readonly' => 'true']) !!}
                 </div>
             </div>
             

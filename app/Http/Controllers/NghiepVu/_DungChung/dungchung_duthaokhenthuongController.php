@@ -49,7 +49,7 @@ class dungchung_duthaokhenthuongController extends Controller
                     break;
                 }
         }
-        
+        // dd($model);
         $model->thongtintotrinhhoso = str_replace('<p>[sangtrangmoi]</p>', '<div class=&#34;sangtrangmoi&#34;></div>', $model->thongtintotrinhhoso);
         $model->thongtinquyetdinh = $model->thongtintotrinhhoso;
         return view('NghiepVu._DungChung.DuThao.InDuThao')
