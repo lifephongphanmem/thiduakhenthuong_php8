@@ -215,7 +215,7 @@ class dsdiabanController extends Controller
                     'madonvi' => $madiaban,
                     'manhomchucnang' => $inputs['manhomchucnang'],
                     'tentaikhoan' => $data[$i][ColumnName()[$inputs['tendonvi']]] ?? '',
-                    'matkhau' => Hash::make($matkhau),
+                    'matkhau' => md5($matkhau),
                     'trangthai' => '1',
                     'tendangnhap' => $tk,
                 );
@@ -243,7 +243,7 @@ class dsdiabanController extends Controller
                         'madonvi' => $madiaban,
                         'manhomchucnang' => $inputs['manhomchucnang'],
                         'tentaikhoan' => 'Tổng hợp ' . $data[$i][ColumnName()[$inputs['tendonvi']]] ?? '',
-                        'matkhau' => Hash::make($matkhau),
+                        'matkhau' => md5($matkhau),
                         'trangthai' => '1',
                         'tendangnhap' => $tktonghop,
                     );

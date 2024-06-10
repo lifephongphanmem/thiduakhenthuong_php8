@@ -303,7 +303,7 @@ class dsdonviController extends Controller
                 'manhomchucnang' => $inputs['manhomchucnang'],
                 'tentaikhoan' => $data[$i][ColumnName()[$inputs['tendonvi']]] ?? '',
                 // 'matkhau' => '2d17247d02f162064940feff49988f8e', 
-                'matkhau' => Hash::make($data[$i][ColumnName()[$inputs['matkhau']]] ?? ''),
+                'matkhau' => md5($data[$i][ColumnName()[$inputs['matkhau']]] ?? ''),
                 'trangthai' => '1',
                 'tendangnhap' => $data[$i][ColumnName()[$inputs['tendangnhap']]] ?? '',
             );
