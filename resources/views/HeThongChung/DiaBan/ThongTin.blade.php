@@ -294,6 +294,15 @@
                                 {!! Form::select('madiabanQL', $a_diaban, null, ['id' => 'madiabanQL', 'class' => 'form-control select2_modal']) !!}
                             </div>
                         </div>
+                        
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="control-label">Phân loại phạm vị<span class="require">*</span></label>
+                                {!! Form::select('phanloai', $a_phanloai, null, [
+                                    'class' => 'form-control select2_modal',
+                                ]) !!}
+                            </div>
+                        </div>
 
                         <div id="donviql" class="form-group row">
                             <div class="col6">

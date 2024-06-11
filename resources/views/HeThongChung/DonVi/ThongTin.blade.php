@@ -62,8 +62,8 @@
                     <table class="table table-striped table-bordered table-hover" id="sample_3">
                         <thead>
                             <tr class="text-center">
-                                <th colspan="3">STT</th>
-                                <th rowspan="2">Tên địa bàn</th>
+                                <th colspan="3">Phạm vị</th>
+                                <th rowspan="2">Phạm vị khen thưởng</th>
                                 <th rowspan="2" width="25%">Đơn vị phê<br>duyệt khen thưởng</th>
                                 <th rowspan="2" width="25%">Đơn vị xét<br>duyệt hồ sơ</th>
                                 <th rowspan="2" width="10%">Thao tác</th>
@@ -116,7 +116,7 @@
                                 @foreach ($model_h as $ct_h)
                                     <tr class="info">
                                         <td></td>
-                                        <td style="text-align: center">{{ romanNumerals($j++) }}</td>
+                                        <td style="text-align: center">{{ $j++ }}</td>
                                         <td></td>
                                         <td>{{ $ct_h->tendiaban }}</td>
                                         <td>{{ $a_donvi[$ct_h->madonviQL] ?? '' }}</td>

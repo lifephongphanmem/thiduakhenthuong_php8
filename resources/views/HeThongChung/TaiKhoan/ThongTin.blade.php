@@ -69,7 +69,7 @@
                                 $donvi = $m_donvi->where('madiaban', $tt_diaban->madiaban);
                                 ?>
                                 <tr>
-                                    <td class="text-center">{{ romanNumerals($i++) }}</td>
+                                    <td class="text-center">{{ $i++ }}</td>
                                     <td class="text-primary">{{ $tt_diaban->tendiaban }}</td>
                                     <td></td>
                                 </tr>

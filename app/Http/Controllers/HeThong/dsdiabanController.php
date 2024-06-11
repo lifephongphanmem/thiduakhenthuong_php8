@@ -76,6 +76,7 @@ class dsdiabanController extends Controller
         } else {
             $model->tendiaban = $inputs['tendiaban'];
             $model->capdo = $inputs['capdo'];
+            $model->phanloai = $inputs['phanloai'];
             $model->madonviQL = $inputs['madonviQL'];
             $model->madonviKT = $inputs['madonviKT'];
             $model->madiabanQL = $inputs['madiabanQL'] ?? null;

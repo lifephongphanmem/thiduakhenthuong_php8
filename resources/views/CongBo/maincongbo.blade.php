@@ -366,18 +366,20 @@
                     <!--begin::Container-->
                     <div class="container d-flex flex-column justify-content-between">
                         <div class="row">
-                            <div class="col-7">
-                                <span class="font-weight-boldest text-uppercase" style="color: #25aae2">{{ $hethong->tendonvi }}</span></br>
-                                <span class="font-weight-bold">{{ $hethong->diachi }}</span></br>                               
-                                <span class="font-weight-bold">Thông tin liên hệ: &nbsp;Điện thoại:
-                                        {{ $hethong->dienthoai }} -
-                                        Email: {{ $hethong->emailql }}</span>
+                            <div class="col-6">
+                                <span class="font-weight-boldest text-uppercase"
+                                    style="color: #25aae2">{{ $hethong->tendonvi }}</span></br>
+                                <span class="font-weight-bold">{{ $hethong->diachi }}</span></br>
+                                <span class="font-weight-bold">Điện thoại:{{ $hethong->dienthoai }}</span></br>
+                                <span class="font-weight-bold">Email: {{ $hethong->emailql }}</span>
                             </div>
-                            <div class="col-5 footer-block" style="text-align: left">
-                                <span class="font-weight-boldest text-uppercase" style="color: #25aae2">Đơn vị phát triển</span></br>
-                                <span>Công ty phát triển phần mềm Cuộc sống</span></br>
-                                <span>Địa chỉ: Khu Tái Định Cư X2A, Phường Yên Sở, Quận
-                                        Hoàng Mai, TP Hà Nội</span>
+                            <div class="col-6" style="text-align: left">
+                                <span class="font-weight-boldest text-uppercase" style="color: #25aae2">Đơn vị phát
+                                    triển</span></br>
+                                <span class="text-uppercase">Công ty TNHH phát triển phần mềm Cuộc sống</span></br>
+                                <span>Địa chỉ: Số Nhà 77, Lô N9A Khu Tái Định Cư X2A, Phường Yên Sở, Quận
+                                    Hoàng Mai, TP Hà Nội</span></br>
+                                    <span>Email: phanmemcuocsong@gmail.com - Website: <a href="https://phanmemcuocsong.com/" target="_blank" >www.phanmemcuocsong.com </a>
                             </div>
                         </div>
 
