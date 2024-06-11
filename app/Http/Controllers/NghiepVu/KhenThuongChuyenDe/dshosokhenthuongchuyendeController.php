@@ -110,6 +110,7 @@ class dshosokhenthuongchuyendeController extends Controller
             return view('errors.noperm')->with('machucnang', 'dshosokhenthuongchuyende')->with('tenphanquyen', 'thaydoi');
         }
         $inputs = $request->all();
+        // dd($inputs);
         $inputs['url'] = '/KhenThuongChuyenDe/HoSoKT/';
         $inputs['url_hs'] = '/KhenThuongChuyenDe/HoSoKT/';
         $inputs['url_qd'] = '/KhenThuongChuyenDe/HoSoKT/';
@@ -235,7 +236,7 @@ class dshosokhenthuongchuyendeController extends Controller
         $trangthai->thoigian = $inputs['ngayhoso'];
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&phanloai='.$inputs['phanloai']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&phanloai='.$inputs['phanloai'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function LuuHoSo(Request $request)

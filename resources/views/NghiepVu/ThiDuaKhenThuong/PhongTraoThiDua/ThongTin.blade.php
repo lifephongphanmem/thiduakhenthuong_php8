@@ -355,7 +355,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
-                <button type="submit" id='submit' data-dismiss="modal" class="btn btn-primary" onclick="clickdelete()">Đồng
+                <button type="submit" id='submit' class="btn btn-primary" onclick="clickdelete()">Đồng
                     ý</button>
             </div>
         </div>

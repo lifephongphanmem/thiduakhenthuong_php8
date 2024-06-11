@@ -219,9 +219,16 @@ class tnhosodenghikhenthuongthiduaController extends Controller
                     if ($canbo_xl->tendangnhap_tn == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
                         $hoso->dieukien_hs = false;
                         $hoso->trangthai = 'DCXL';
+                        if($hoso->trangthai_xl == 'KDK'){
+                            $hoso->trangthai_hoso = "KDK";
+                            }
                         $hoso->trangthai_chuyenchuyenvien = true;
                     } else {
                         $hoso->dieukien_hs = true;
+                    }
+                    if(session('admin')->capdo== 'SSA' && $hoso->trangthai_xl == "KDK")
+                    {
+                        $hoso->trangthai_hoso = "KDK";
                     }
 
                     //lấy thông tin cán bộ tiếp nhận để set trạng thái hồ sơ khi trưởng ban trả về văn thư
@@ -466,7 +473,7 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         } else {
             setTraLaiXD($model, $inputs);
         }
-        return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi'] . '&maphongtraotd=' . $model->maphongtraotd);
+        return redirect(static::$url . 'DanhSach?madonvi=' . $inputs['madonvi'] . '&maphongtraotd=' . $model->maphongtraotd);
     }
 
     public function ChuyenHoSo(Request $request)
