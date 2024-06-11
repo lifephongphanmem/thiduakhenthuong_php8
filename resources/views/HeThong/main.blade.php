@@ -218,7 +218,7 @@
 
                                             @include('HeThong.main_subcumkhoithidua')
 
-                                            @include('HeThong.main_subkhenthuongkhac')
+                                            {{-- @include('HeThong.main_subkhenthuongkhac') --}}
 
                                             @include('HeThong.main_subquanlyquy')
 

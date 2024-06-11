@@ -261,6 +261,14 @@
                                                                             trợ</span>
                                                                     </a>
                                                                 </li>
+                                                                <li class="menu-item" aria-haspopup="true">
+                                                                    <a target="_blank"
+                                                                        href="{{ url('/TaiLieuHuongDan/DanhSach') }}"
+                                                                        class="menu-link">
+
+                                                                        <span class="menu-text">Tài liệu hướng dẫn</span>
+                                                                    </a>
+                                                                </li>
                                                             </ul>
                                                         </div>
                                                     </li>

@@ -20,6 +20,7 @@ class dstruongcumkhoiController extends Controller
             if (!Session::has('admin')) {
                 return redirect('/');
             };
+            chkaction();
             return $next($request);
         });
     }

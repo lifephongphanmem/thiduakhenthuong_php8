@@ -32,6 +32,7 @@ class tnhosodenghikhenthuongdoingoaiController extends Controller
             if (!Session::has('admin')) {
                 return redirect('/');
             };
+            chkaction();
             return $next($request);
         });
     }
@@ -143,7 +144,9 @@ class tnhosodenghikhenthuongdoingoaiController extends Controller
                     if ($canbo_xl->tendangnhap_tn == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
                         $hoso->dieukien_hs = false;
                         $hoso->trangthai = 'DCXL';
-                        $hoso->trangthai_hoso = "KDK";
+                        if($hoso->trangthai_xl == 'KDK'){
+                            $hoso->trangthai_hoso = "KDK";
+                            }
                         $hoso->trangthai_chuyenchuyenvien = true;
                     } else {
                         $hoso->dieukien_hs = true;

@@ -17,6 +17,8 @@ use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tailieu;
 use App\Models\VanPhongHoTro\vanphonghotro;
 use App\Models\View\viewdiabandonvi;
 use Illuminate\Support\Facades\Session;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
 
 class hethongchungController extends Controller
 {
@@ -229,6 +231,13 @@ class hethongchungController extends Controller
             ));
         }
         */
+        if($this->chklogin($ttuser->isaction,$ttuser->id)){
+			// Cho đăng nhập thì lập tức tài khoản đang onl logout luôn
+				if (Session::has('admin')) {
+					Session::flush();
+				}
+
+		};
         Session::put('admin', $ttuser);
         //Gán hệ danh mục chức năng        
         Session::put('chucnang', hethongchung_chucnang::all()->keyBy('machucnang')->toArray());
@@ -421,4 +430,26 @@ class hethongchungController extends Controller
             ->with('a_donvi', $a_donvi)
             ->with('pageTitle', 'Thông tin hỗ trợ');
     }
+
+    public function chklogin($thoigian, $id){
+		if (!Session::has('admin')) {
+			return false;
+		};
+        if(session('admin')->tendangnhap == 'SSA')
+        {
+            return false;
+        }
+		$user=dstaikhoan::findOrFail($id);
+		if($user->islogout == 0){
+			return false;
+		}
+		// $thoigianthaotac=$user->isaction();
+		$chenhlechthoigian=Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
+		$time_session=Config::get('session.lifetime');
+		if($chenhlechthoigian < $time_session){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }

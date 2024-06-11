@@ -13,6 +13,7 @@ use App\Models\View\view_dscumkhoi;
 
 use App\Models\View\viewdiabandonvi;
 use Illuminate\Database\Eloquent\Collection;
+use Carbon\Carbon;
 
 // function getQuyetDinhCKE($maso)
 // {
@@ -519,17 +520,16 @@ function getDonViCK($capdo, $chucnang = null, $kieudulieu = 'ARRAY')
     //     default:
     //         return array_column($model->toarray(), 'tendonvi', 'madonvi');
     // }
-
     if ($capdo == 'SSA' || $capdo == 'ADMIN') {
         $m_donvi = App\Models\View\view_dscumkhoi::all();
     } else {
         $m_donvi = App\Models\View\view_dscumkhoi::where('madonvi', session('admin')->madonvi)->get();
     }
-
+// dd($m_donvi);
     if ($chucnang != null) {
         $a_tk = App\Models\DanhMuc\dstaikhoan::wherein('madonvi', array_column($m_donvi->toarray(), 'madonvi'))->get('tendangnhap');
         $a_tk_pq = App\Models\DanhMuc\dstaikhoan_phanquyen::where('machucnang', $chucnang)->where('phanquyen', '1')
-            ->wherein('tendangnhap', $a_tk)->get('tendangnhap');
+            ->wherein('tendangnhap', $a_tk)->get('tendangnhap'); 
         $m_donvi = App\Models\View\viewdiabandonvi::wherein('madonvi', function ($qr) use ($a_tk_pq) {
             $qr->select('madonvi')->from('dstaikhoan')->wherein('tendangnhap', $a_tk_pq)->distinct();
         })->get();
@@ -1785,11 +1785,11 @@ function getPhanLoaiTKTiepNhan($madonvi)
 
 function getDsCoQuan($madonvi=null)
 {
-    // if(session('admin')->capdo == 'SSA'){
-    //     $model=dmcoquandonvi::all();
-    // }else{
+    if($madonvi == null){
+        $model=dmcoquandonvi::all();
+    }else{
         $model=dmcoquandonvi::where('macoquandonvi',$madonvi)->get();
-    // }
+    }
 
     $a_coquan=array();
     if(count($model) > 0)
@@ -1881,3 +1881,33 @@ function getDHTDVaHinhThucKT($phanloai,$doituong=null)
     return $a_ketqua;
 
 }
+
+function getTKTiepNhan($capdo)
+{
+    if(in_array('SSA',$capdo)){
+        $capdo=['T','H'];
+    }
+    $donvi=dsdonvi::join('dsdiaban','dsdiaban.madiaban','=','dsdonvi.madiaban')
+                ->select('dsdonvi.taikhoantiepnhan','dsdonvi.madonvi')
+                ->wherein('dsdiaban.capdo',$capdo)
+                ->wherenotnull('dsdonvi.taikhoantiepnhan')
+                ->get();
+    return $donvi;
+}
+
+function chkTkTiepNhan($madonvi,$capdo)
+{
+    if(in_array($madonvi,array_column(getTKTiepNhan([session('admin')->capdo])->toarray(),'madonvi')))
+    {
+        return true;
+    }else{
+        return false;
+    }
+}
+
+function chkaction()
+{
+    $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+    dstaikhoan::findOrFail(session('admin')->id)->update(['tiemaction'=>$time]);
+}
+
