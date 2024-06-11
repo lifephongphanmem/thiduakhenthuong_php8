@@ -308,6 +308,7 @@ class hethongchungController extends Controller
             $trangthai->tendangnhap = session('admin')->tendangnhap;
             $trangthai->thoigian = date('Y-m-d H:i:s');
             $trangthai->save();
+            dstaikhoan::findOrFail(session('admin')->id)->update(['islogout'=> 0]);
             Session::flush();
             return redirect('/DangNhap');
         } else {
@@ -446,6 +447,7 @@ class hethongchungController extends Controller
 		if (!Session::has('admin')) {
 			return false;
 		};
+
         if(session('admin')->tendangnhap == 'SSA')
         {
             return false;
@@ -457,6 +459,7 @@ class hethongchungController extends Controller
 		// $thoigianthaotac=$user->isaction();
 		$chenhlechthoigian=Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
 		$time_session=Config::get('session.lifetime');
+        dd($time_session);
 		if($chenhlechthoigian < $time_session){
 			return true;
 		}else{

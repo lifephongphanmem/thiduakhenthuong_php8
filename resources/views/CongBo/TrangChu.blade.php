@@ -28,7 +28,7 @@
                 <div class="login-wrapper">
                     <!--begin:Aside Content-->
                     <div>
-                        <a href="#">
+                        {{-- <a href="#">
                             <img src="assets/media/logos/TDKT.png" class="max-h-200px"  />
                         </a>
                         <h1 class="mb-8 mt-15 font-weight-boldest text-uppercase" style="color: red">Phần mềm thi đua khen thưởng</h1>
@@ -36,7 +36,7 @@
                             <a href="https://phanmemcuocsong.com/" target="_blank" style="color: red">
                                 Tiện ích hơn - hiệu quả hơn
                             </a>
-                        </p>
+                        </p> --}}
                     </div>
                     <!--end:Aside Content-->
                 </div>

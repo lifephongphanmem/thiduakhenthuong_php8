@@ -110,7 +110,7 @@ class xdhosodenghikhenthuongchuyendeController extends Controller
             $hoso->lydo_hoso = $hoso->lydo_xd;
             $hoso->madonvi_nhan_hoso = $hoso->madonvi_nhan_xd;
         }
-        //dd($model);
+        // dd($model);
         //dd($inputs);
         $inputs['trangthai'] = session('chucnang')['xdhosodenghikhenthuongchuyende']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';

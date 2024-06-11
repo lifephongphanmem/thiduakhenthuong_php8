@@ -13,7 +13,6 @@
                     <div class="form-group row">
                         <div class="col-8">
                             <label>Loại hình khen thưởng</label>
-                            {{-- {!! Form::select('maloaihinhkt', $a_loaihinhkt, $inputs['maloaihinhkt'], ['class' => 'form-control select2basic']) !!} --}}
                             <select name="maloaihinhkt" id="" class="form-control select2basic"
                                 style="width:100%">
                                 @foreach ($a_loaihinhkt as $key => $val)
@@ -26,9 +25,6 @@
 
                         <div class="col-4">
                             <label>Trạng thái hồ sơ</label>
-                            {{-- {!! Form::select('trangthai', getTrangThaiChucNangHoSo($inputs['trangthai']), $inputs['trangthai'], [
-                                'class' => 'form-control select2basic',
-                            ]) !!} --}}
                             <select name="trangthai" id="" class="form-control select2basic"
                                 style="width:100%">
                                 @foreach (getTrangThaiChucNangHoSo($inputs['trangthai']) as $key => $val)
@@ -49,17 +45,6 @@
                         </div>
 
                     </div>
-                    {{-- <div class="form-group row">
-                        <div class="col-8">
-                            <label>Phân loại hồ sơ</label>
-                            {!! Form::select('phanloai', getPhanLoaiHoSo('KHENTHUONG'), null, ['class' => 'form-control']) !!}
-                        </div>
-
-                        <div class="col-4">
-                            <label>Ngày quyết định</label>
-                            {!! Form::input('date', 'ngayhoso', date('Y-m-d'), ['class' => 'form-control']) !!}
-                        </div>
-                    </div> --}}
 
                     @if ($inputs['taototrinh'])
                         <div class="form-group row">

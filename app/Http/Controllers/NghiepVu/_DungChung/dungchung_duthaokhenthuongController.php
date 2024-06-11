@@ -219,7 +219,6 @@ class dungchung_duthaokhenthuongController extends Controller
     {
         $inputs = $request->all();
 
-
         $a_duthao = array_column(duthaoquyetdinh::where('phanloai', 'TOTRINHPHEDUYET')->get()->toArray(), 'noidung', 'maduthao');
         if (count($a_duthao) == 0) {
             return view('errors.nodata')
