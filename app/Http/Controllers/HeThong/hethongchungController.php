@@ -242,7 +242,7 @@ class hethongchungController extends Controller
         $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
 		//đẩy session id vào user để check đăng nhập giới hạn 1 tài khoản
 		$data_update=[
-			'isaction'=>$time,
+			'timeaction'=>$time,
 			'islogin'=>session()->getId(),
 			'islogout'=>1
 		];
