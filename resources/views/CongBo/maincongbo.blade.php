@@ -354,7 +354,7 @@
 
                 <!--begin::Content-->
                 <div class="content d-flex flex-column flex-column-fluid" id="kt_content"
-                    style="background-image: url('/assets/media/bg/bg-10.jpg')">
+                    style="background-image: url('/assets/media/bg/TDKTBG2.png');background-repeat: no-repeat;background-size: 100% 100%;opacity: 0.75;">
 
                     <!--begin::Entry-->
                     <div class="d-flex flex-column-fluid">
