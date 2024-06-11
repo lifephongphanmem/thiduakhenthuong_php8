@@ -66,7 +66,7 @@
                 <!--begin::Button-->
                 @if (chkPhanQuyen('tailieuhuongdan', 'thaydoi'))
                     <button type="button" class="btn btn-success btn-xs" data-target="#taohoso-modal" data-toggle="modal">
-                        <i class="fa fa-plus"></i>&nbsp;Thêm mới</button>
+                        <i class="fa fa-plus" onclick="add($inputs['stt'])"></i>&nbsp;Thêm mới</button>
                 @endif
                 <!--end::Button-->
             </div>
@@ -77,26 +77,27 @@
                     <table class="table table-bordered table-hover" id="sample_3">
                         <thead>
                             <tr class="text-center">
-                                <th rowspan="2" width="5%">STT</th>
-                                <th rowspan="2">Tên tài liệu</th>
-                                <th rowspan="2">Diễn giải</th>
-                                <th colspan="2">File dữ liệu</th>
-                                @if (chkPhanQuyen('tailieuhuongdan', 'thaydoi'))
-                                    <th width="20%" rowspan="2">Thao tác</th>
-                                @endif
+                                <th  width="5%">STT</th>
+                                <th>Tên tài liệu</th>
+                                <th>Diễn giải</th>
+                                {{-- <th colspan="2">File dữ liệu</th> --}}
+                                {{-- @if (chkPhanQuyen('tailieuhuongdan', 'thaydoi')) --}}
+                                <th width="20%" >Thao tác</th>
+                                {{-- @endif --}}
                             </tr>
-                            <tr class="text-center">
+                            {{-- <tr class="text-center">
                                 <th>File văn bản</th>
                                 <th>Video</th>
-                            </tr>
+                            </tr> --}}
                         </thead>
                         <?php $i = 1; ?>
                         @foreach ($model as $key => $tt)
                             <tr>
-                                <td style="text-align: center">{{ $i++ }}</td>
+                                {{-- <td style="text-align: center">{{ $i++ }}</td> --}}
+                                <td style="text-align: center" name="stt">{{ $tt->stt }}</td>
                                 <td class="active" name="tentailieu">{{ $tt->tentailieu }}</td>
-                                <td name="noidung">{{$tt->noidung}}</td>
-                                <td class="active">
+                                <td name="noidung">{{ $tt->noidung }}</td>
+                                {{-- <td class="active">
                                     <a target = "_blank"
                                         href = "{{ url('/data/tailieuhuongdan/' . $tt->file) }}">{{ $tt->file }}</a>
                                 </td>
@@ -106,10 +107,11 @@
                                             <source src="{{ url($tt->link1) }}">
                                         </video>
                                     @endif
-                                </td>
+                                </td> --}}
                                 {{-- <td class="active">{{ $tt->noidung }}</td> --}}
-                                @if (chkPhanQuyen('tailieuhuongdan', 'thaydoi'))
+
                                 <td class=" text-center">
+                                    @if (chkPhanQuyen('tailieuhuongdan', 'thaydoi'))
                                         <button title="Sửa thông tin"
                                             onclick="edit(this,'{{ $tt->id }}', '{{ $tt->noidung }}','{{ $tt->link1 }}', '{{ $tt->link2 }}')"
                                             data-target="#edit" data-toggle="modal" class="btn btn-sm btn-clean btn-icon">
@@ -122,8 +124,13 @@
                                             data-toggle="modal">
                                             <i class="icon-lg la fa-trash text-danger"></i>
                                         </button>
+                                    @endif
+                                    <a  title="Tải file đính kèm"
+                                        href="{{'/data/tailieuhuongdan/' . $tt->file}}"
+                                        class="btn btn-clean btn-icon btn-sm"><i
+                                            class="fa flaticon-download text-info"></i></a>
                                 </td>
-                                @endif
+
                             </tr>
                         @endforeach
                     </table>
@@ -136,7 +143,7 @@
     <!--Modal Tạo hồ sơ-->
     {!! Form::open(['url' => $inputs['url'] . 'Them', 'id' => 'frm_hoso', 'files' => true]) !!}
     <div id="taohoso-modal" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade kt_select2_modal">
-        <div class="modal-dialog modal-xs">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header modal-header-primary">
                     <h4 id="modal-header-primary-label" class="modal-title">Thông tin tài liệu hướng dẫn</h4>
@@ -146,9 +153,13 @@
                 <div class="modal-body">
 
                     <div class="form-group row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-6">
                             <label>Tên tài liệu</label>
                             {!! Form::text('tentailieu', null, ['class' => 'form-control']) !!}
+                        </div>
+                        <div class="col-lg-6">
+                            <label>Số thứ tự</label>
+                            {!! Form::number('stt', $inputs['stt']+1, ['id'=>'stt_add','class' => 'form-control']) !!}
                         </div>
                         <div class="col-lg-12">
                             <label>Diễn giải</label>
@@ -187,21 +198,27 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group row">
-                            <div class="col-md-12 mb-5">
+                            <div class="col-lg-6 mb-5">
                                 <label class="control-label">Tên tài liệu<span class="require">*</span></label>
                                 <input type="text" name="tentailieu" id="tentailieu" class="form-control" required>
                             </div>
-                            <div class="col-md-12 mb-5">
-                                <label>Diễn giải</label>
-                                {!! Form::textarea('noidung', null, ['id'=>'noidung','class' => 'form-control', 'rows' => 3]) !!}
+                            <div class="col-lg-6">
+                                <label>Số thứ tự</label>
+                                {!! Form::number('stt', null, ['id' => 'stt','class' => 'form-control']) !!}
                             </div>
-                               <div class="col-md-12 mb-5">
-                                    <label>File tài liệu</label>
-                                    {{-- {!! Form::file('noidung', null, ['class' => 'form-control','accept'=>'.pdf,.doc,.docx,.xls,.xlsx']) !!} --}}
-                                    <input type="file" name='file' accept=".pdf,.doc,.docx,.xls,.xlsx">
-                                </div>
+                            <div class="col-lg-12 mb-5">
+                                <label>Diễn giải</label>
+                                {!! Form::textarea('noidung', null, ['id' => 'noidung', 'class' => 'form-control', 'rows' => 3]) !!}
+                            </div>
+                            <div class="col-lg-12 mb-5">
+                                <label>File tài liệu</label>
+                                <input type="file" name='file' accept=".pdf,.doc,.docx,.xls,.xlsx">
+                            </div>
+                            <div class="col-lg-12">
+                                <span class="text-danger">* Chỉ sử dụng cho các file: pdf, wolrd, excel</span>
+                            </div>
 
-                            <div class="col-md-12 mb-5">
+                            {{-- <div class="col-md-12 mb-5">
                                 <label class="control-label">Video</label>
                                 <div class="col-md-12">
                                     <video id="videoPreview" src="" controls
@@ -218,7 +235,7 @@
                                         role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"
                                         style="width: 75%; height: 100%">75%</div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                             {{-- <div class="col-md-12">
                                 <label class="control-label">Ảnh nền của video</label>
@@ -240,6 +257,10 @@
     </div>
     @include('includes.modal.modal-delete')
     <script>
+        function add(stt){
+            console.log(1);
+            $('#stt_add').val(stt++)
+        }
         function clickedit() {
             $('#frm_edit').submit();
         }
@@ -253,85 +274,85 @@
 
             $('#tentailieu').val($(tr).find('td[name=tentailieu]').text());
             $('#noidung').val($(tr).find('td[name=noidung]').text());
-            // $('#stt').val($(tr).find('td[name=stt]').text());
-            if (link1 != '') {
-                $('#video-link').val(link1);
-                $('#videoPreview').attr('src', baseURL + link1);
-                $('#browseFile').html('Thay Đổi')
-                $('#videoPreview').show();
-            }
+            $('#stt').val($(tr).find('td[name=stt]').text());
+            // if (link1 != '') {
+            //     $('#video-link').val(link1);
+            //     $('#videoPreview').attr('src', baseURL + link1);
+            //     $('#browseFile').html('Thay Đổi')
+            //     $('#videoPreview').show();
+            // }
 
-            var resumable = new Resumable({
-                target: "{{ '/TaiLieuHuongDan/uploadvideo/' }}" + id,
-                query: {
-                    _token: '{{ csrf_token() }}',
-                }, // CSRF token
-                fileType: ['mp4'],
-                chunkSize: 10 * 1024 *
-                    1024, // default is 1*1024*1024, this should be less than your maximum limit in php.ini
-                headers: {
-                    'Accept': 'application/json'
-                },
-                testChunks: false,
-                throttleProgressCallbacks: 1,
-            });
+            // var resumable = new Resumable({
+            //     target: "{{ '/TaiLieuHuongDan/uploadvideo/' }}" + id,
+            //     query: {
+            //         _token: '{{ csrf_token() }}',
+            //     }, // CSRF token
+            //     fileType: ['mp4'],
+            //     chunkSize: 10 * 1024 *
+            //         1024, // default is 1*1024*1024, this should be less than your maximum limit in php.ini
+            //     headers: {
+            //         'Accept': 'application/json'
+            //     },
+            //     testChunks: false,
+            //     throttleProgressCallbacks: 1,
+            // });
 
-            resumable.assignBrowse(browseFile[0]);
+            // resumable.assignBrowse(browseFile[0]);
 
-            resumable.on('fileAdded', function(file) { // trigger when file picked
-                showProgress();
-                resumable.upload() // to actually start uploading.
-                $('#submit-edit').attr('disabled', '');
-                $('#cancel-edit').attr('disabled', '');
-                $('#edit').attr('data-bs-backdrop', 'static');
-                $('.close').removeAttr('data-dismiss');
-            });
+            // resumable.on('fileAdded', function(file) { // trigger when file picked
+            //     showProgress();
+            //     resumable.upload() // to actually start uploading.
+            //     $('#submit-edit').attr('disabled', '');
+            //     $('#cancel-edit').attr('disabled', '');
+            //     $('#edit').attr('data-bs-backdrop', 'static');
+            //     $('.close').removeAttr('data-dismiss');
+            // });
 
-            resumable.on('fileProgress', function(file) { // trigger when file progress update
-                updateProgress(Math.floor(file.progress() * 100));
-            });
+            // resumable.on('fileProgress', function(file) { // trigger when file progress update
+            //     updateProgress(Math.floor(file.progress() * 100));
+            // });
 
-            resumable.on('fileSuccess', function(file, response) { // trigger when file upload complete
-                response = JSON.parse(response);
-                $('#videoPreview').attr('src', response.path + '/' + response.name);
-                $('#videoPreview').show();
-                $('#browseFile').html('Thay Đổi');
-                $('#submit-edit').removeAttr('disabled');
-                $('.progress').hide();
-                $('#cancel-edit').removeAttr('disabled', '');
-                $('#edit').removeAttr('data-bs-backdrop');
-                $('.close').attr('data-dismiss', 'modal');
-                changed = true;
-                resumable.removeFile(file);
-            });
+            // resumable.on('fileSuccess', function(file, response) { // trigger when file upload complete
+            //     response = JSON.parse(response);
+            //     $('#videoPreview').attr('src', response.path + '/' + response.name);
+            //     $('#videoPreview').show();
+            //     $('#browseFile').html('Thay Đổi');
+            //     $('#submit-edit').removeAttr('disabled');
+            //     $('.progress').hide();
+            //     $('#cancel-edit').removeAttr('disabled', '');
+            //     $('#edit').removeAttr('data-bs-backdrop');
+            //     $('.close').attr('data-dismiss', 'modal');
+            //     changed = true;
+            //     resumable.removeFile(file);
+            // });
 
-            resumable.on('fileError', function(file, response) { // trigger when there is any error
-                alert('Tệp tải lên KHÔNG thành công. Lỗi không xác định');
-                console.log(response);
-                $('#submit-edit').removeAttr('disabled');
-                $('#cancel-edit').removeAttr('disabled', '');
-                $('#edit').removeAttr('data-bs-backdrop');
-                $('.close').attr('data-dismiss', 'modal');
-                $('.progress').hide();
-            });
+            // resumable.on('fileError', function(file, response) { // trigger when there is any error
+            //     alert('Tệp tải lên KHÔNG thành công. Lỗi không xác định');
+            //     console.log(response);
+            //     $('#submit-edit').removeAttr('disabled');
+            //     $('#cancel-edit').removeAttr('disabled', '');
+            //     $('#edit').removeAttr('data-bs-backdrop');
+            //     $('.close').attr('data-dismiss', 'modal');
+            //     $('.progress').hide();
+            // });
 
             $('#frm_edit').attr('action', url);
 
-            $('#delFile').on('click', function() {
-                var url = '/TaiLieuHuongDan/XoaVideo/' + id;
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                $.ajax({
-                    url: url,
-                    type: "POST",
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                    },
-                    dataType: 'JSON',
-                    success: function(data) {
-                        window.location.reload();
-                    }
-                });
-            })
+            // $('#delFile').on('click', function() {
+            //     var url = '/TaiLieuHuongDan/XoaVideo/' + id;
+            //     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            //     $.ajax({
+            //         url: url,
+            //         type: "POST",
+            //         data: {
+            //             _token: '{{ csrf_token() }}',
+            //         },
+            //         dataType: 'JSON',
+            //         success: function(data) {
+            //             window.location.reload();
+            //         }
+            //     });
+            // })
         }
     </script>
 @stop

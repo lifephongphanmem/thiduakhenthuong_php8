@@ -17,6 +17,7 @@ class tailieuhuongdan extends Model
         'noidung',
         'link1',
         'link2',
-        'file'
+        'file',
+        'stt'
     ];
 }
