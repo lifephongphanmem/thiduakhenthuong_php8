@@ -1908,6 +1908,6 @@ function chkTkTiepNhan($madonvi,$capdo)
 function chkaction()
 {
     $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
-    dstaikhoan::findOrFail(session('admin')->id)->update(['tiemaction'=>$time]);
+    dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction'=>$time]);
 }
 
