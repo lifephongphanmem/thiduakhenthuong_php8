@@ -246,7 +246,7 @@ class hethongchungController extends Controller
 			'islogin'=>session()->getId(),
 			'islogout'=>1
 		];
-		$userupdate = dstaikhoan::where('cccd', session('admin')->cccd)->first();
+		$userupdate = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
 
 		// dd($user);
 		$userupdate->update($data_update);
