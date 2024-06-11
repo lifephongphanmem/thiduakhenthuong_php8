@@ -23,6 +23,7 @@ class congboController extends Controller
      */
     public function TrangChu(Request $request)
     {
+        //tesst
         $inputs = $request->all();
         $inputs['url'] = '/QuanLyVanBan/VanBanPhapLy';
         // dd($inputs);

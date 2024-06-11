@@ -95,5 +95,7 @@
         </div>
     </div>
     <!--end::Card-->
+
+
     @include('includes.modal.modal-delete')
 @stop

@@ -358,7 +358,6 @@ function getTaoDuThaoToTrinhPheDuyetCumKhoi(&$model, $maduthao = null)
 
     //Load dự thảo theo mẫu
     if ($model->thongtintotrinhdenghi == '') {
-
         $thongtintotrinhdenghi = App\Models\DanhMuc\duthaoquyetdinh::where('maduthao', $maduthao)->first()->codehtml ?? '';
 
         // Lấy danh sách khen thưởng theo cá nhân và tập thể
@@ -371,8 +370,7 @@ function getTaoDuThaoToTrinhPheDuyetCumKhoi(&$model, $maduthao = null)
 
         $m_hogiadinh = App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_hogiadinh::where('mahosotdkt', $model->mahosotdkt)
             ->where('ketqua', '1')->orderby('stt')->get();
-
-
+        $a_coquan=getDsCoQuan();
         //Xử lý các trường hợp
         //Cá nhân
         if ($m_canhan->count() > 0) {
@@ -382,7 +380,7 @@ function getTaoDuThaoToTrinhPheDuyetCumKhoi(&$model, $maduthao = null)
                 $s_canhan .= '<p style=&#34;margin-left:40px;&#34;>' .
                     ($i++) . '. ' . $canhan->tendoituong .
                     ($canhan->chucvu == '' ? '' : (', ' . $canhan->chucvu)) .
-                    ($canhan->tencoquan == '' ? '' : (' ' . $canhan->tencoquan)) .
+                    ($canhan->tencoquan == '' ? '' : (' ' . $a_coquan[$canhan->tencoquan]??$canhan->tencoquan)) .
                     '</p>';
             }
             $thongtintotrinhdenghi = str_replace('[khenthuongcanhan]',  $s_canhan, $thongtintotrinhdenghi);

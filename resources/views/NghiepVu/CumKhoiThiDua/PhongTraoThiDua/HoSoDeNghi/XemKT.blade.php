@@ -94,7 +94,7 @@
                     <td class="text-center">{{ $i++ }}</td>
                     <td>{{ $tt->tendoituong }}</td>
                     <td>{{ $a_phanloaidt[$tt->maphanloaicanbo] ?? '' }}</td>
-                    <td>{{ $tt->chucvu . ',' . $tt->tenphongban . ',' . $tt->tencoquan }}</td>
+                    <td>{{ $tt->chucvu . ',' . $tt->tenphongban . ',' . $a_coquan[$tt->tencoquan]??$tt->tencoquan }}</td>
                     <td>{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td>
                     {{-- <td>{{ $a_hinhthuckt[$tt->mahinhthuckt] ?? '' }}</td> --}}
                     {{-- <td>{{ $a_danhhieutd[$tt->madanhhieutd] ?? '' }}</td> --}}

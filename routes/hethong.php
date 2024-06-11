@@ -81,6 +81,7 @@ Route::group(['prefix' => 'VanPhongHoTro'], function () {
 
 Route::prefix('TaiLieuHuongDan')->group(function(){
     Route::get('ThongTin',[tailieuhuongdanController::class,'index']);
+    Route::get('DanhSach',[tailieuhuongdanController::class,'show']);
     Route::post('Them',[tailieuhuongdanController::class,'store']);
     Route::post('Xoa',[tailieuhuongdanController::class,'delete']);
     Route::post('update/{id}',[tailieuhuongdanController::class,'update']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\HeThong;
 
 use App\Http\Controllers\Controller;
+use App\Models\HeThong\hethongchung;
 use App\Models\HeThong\tailieuhuongdan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -22,13 +23,17 @@ class tailieuhuongdanController extends Controller
             if (!Session::has('admin')) {
                 return redirect('/');
             };
+            chkaction();
             return $next($request);
-        });
+        })->except([
+            'show',
+        ]);
     }
 
     public function index()
     {
-        $model = tailieuhuongdan::all();
+        $model = tailieuhuongdan::orDerBy('stt')->get();
+        $inputs['stt']=$model->max('stt');
         $inputs['url'] = '/TaiLieuHuongDan/';
         return view('TaiLieuHuongDan.ThongTin')
             ->with('model', $model)
@@ -226,8 +231,8 @@ class tailieuhuongdanController extends Controller
 
             $model->update([
                 'tentailieu' => $request['tentailieu'],
-                'noidung'=>$request['noidung']
-                // 'stt' => $request['stt']
+                'noidung'=>$request['noidung'],
+                'stt' => $request['stt']
             ]);
         }
 
@@ -248,5 +253,18 @@ class tailieuhuongdanController extends Controller
         return response()->json([
             'status'=>true
         ]);
+    }
+
+    public function show()
+    {
+        $hethong = hethongchung::first();
+        $model = tailieuhuongdan::orDerBy('stt')->get();
+        $inputs['stt']=$model->max('stt');
+        $inputs['url'] = '/TaiLieuHuongDan/';
+        return view('TaiLieuHuongDan.DanhSach')
+            ->with('model', $model)
+            ->with('hethong', $hethong)
+            ->with('inputs', $inputs)
+            ->with('pageTitle', 'Thông tin hỗ trợ');
     }
 }
