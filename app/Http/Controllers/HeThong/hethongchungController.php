@@ -231,7 +231,7 @@ class hethongchungController extends Controller
             ));
         }
         */
-        if($this->chklogin($ttuser->isaction,$ttuser->id)){
+        if($this->chklogin($ttuser->timeaction,$ttuser->id)){
 			// Cho đăng nhập thì lập tức tài khoản đang onl logout luôn
 				if (Session::has('admin')) {
 					Session::flush();
