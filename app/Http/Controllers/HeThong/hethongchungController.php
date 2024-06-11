@@ -239,6 +239,17 @@ class hethongchungController extends Controller
 
 		};
         Session::put('admin', $ttuser);
+        $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+		//đẩy session id vào user để check đăng nhập giới hạn 1 tài khoản
+		$data_update=[
+			'isaction'=>$time,
+			'islogin'=>session()->getId(),
+			'islogout'=>1
+		];
+		$userupdate = User::where('cccd', session('admin')->cccd)->first();
+
+		// dd($user);
+		$userupdate->update($data_update);
         //Gán hệ danh mục chức năng        
         Session::put('chucnang', hethongchung_chucnang::all()->keyBy('machucnang')->toArray());
         //gán phân quyền của User
