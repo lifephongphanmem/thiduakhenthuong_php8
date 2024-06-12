@@ -125,7 +125,7 @@
                                             <i class="icon-lg la fa-trash text-danger"></i>
                                         </button>
                                     @endif
-                                    <a  title="Tải file đính kèm"
+                                    <a target="_blank" title="Tải file đính kèm"
                                         href="{{'/data/tailieuhuongdan/' . $tt->file}}"
                                         class="btn btn-clean btn-icon btn-sm"><i
                                             class="fa flaticon-download text-info"></i></a>

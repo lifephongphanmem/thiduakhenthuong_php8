@@ -243,7 +243,7 @@ class hethongchungController extends Controller
 		//đẩy session id vào user để check đăng nhập giới hạn 1 tài khoản
 		$data_update=[
 			'timeaction'=>$time,
-			'islogin'=>session()->getId(),
+			'sessionID'=>session()->getId(),
 			'islogout'=>1
 		];
 		$userupdate = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
