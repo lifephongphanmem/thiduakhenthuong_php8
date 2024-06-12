@@ -455,19 +455,19 @@ class hethongchungController extends Controller
         }
 		$user=dstaikhoan::findOrFail($id);
         if($sessionID != $user->sessionID){
-            return false;
+            return true;
         }
 		if($user->islogout == 0){
-			return false;
+			return true;
 		}
-		$thoigianthaotac=$user->isaction();
+		// $thoigianthaotac=$user->isaction();
 		$chenhlechthoigian=Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
 		$time_session=Config::get('session.lifetime');
         // dd($time_session);
 		if($chenhlechthoigian < $time_session){
-			return true;
-		}else{
 			return false;
+		}else{
+			return true;
 		}
 	}
 }
