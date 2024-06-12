@@ -17,7 +17,8 @@
             TableManaged3.init();
         });
 
-        function getChucNang(machucnang, tenchucnang, phanquyen, danhsach, thaydoi, hoanthanh, nhomchucnang) {
+        function getChucNang(machucnang, tenchucnang, phanquyen, danhsach, thaydoi, hoanthanh, nhomchucnang, xuly,
+        tiepnhan) {
             var form = $('#frm_modify');
             form.find("[name='machucnang']").val(machucnang);
             form.find("[name='tenchucnang']").val(tenchucnang);
@@ -27,6 +28,8 @@
             form.find("[name='danhsach']").prop('disabled', false);
             form.find("[name='thaydoi']").prop('disabled', false);
             form.find("[name='hoanthanh']").prop('disabled', false);
+            form.find("[name='xuly']").prop('disabled', false);
+            form.find("[name='tiepnhan']").prop('disabled', false);
             //checked="checked"
             if (!nhomchucnang) {
                 form.find("[name='nhomchucnang']").attr('disabled', true).parent().addClass('checkbox-disabled').addClass(
@@ -34,12 +37,16 @@
                 form.find("[name='danhsach']").prop('checked', danhsach);
                 form.find("[name='thaydoi']").prop('checked', thaydoi);
                 form.find("[name='hoanthanh']").prop('checked', hoanthanh);
+                form.find("[name='xuly']").prop('checked', xuly);
+                form.find("[name='tiepnhan']").prop('checked', tiepnhan);
             } else {
                 form.find("[name='nhomchucnang']").attr('disabled', false).parent().removeClass('checkbox-disabled')
                     .removeClass('text-danger');
                 form.find("[name='danhsach']").prop('checked', 0);
                 form.find("[name='thaydoi']").prop('checked', 0);
                 form.find("[name='hoanthanh']").prop('checked', 0);
+                form.find("[name='xuly']").prop('checked', 0);
+                form.find("[name='tiepnhan']").prop('checked', 0);
             }
         }
 
@@ -52,6 +59,10 @@
             form.find("[name='thaydoi']").prop('checked', giatri);
             form.find("[name='hoanthanh']").prop('disabled', !giatri);
             form.find("[name='hoanthanh']").prop('checked', giatri);
+            form.find("[name='xuly']").prop('disabled', !giatri);
+            form.find("[name='xuly']").prop('checked', giatri);
+            form.find("[name='tiepnhan']").prop('disabled', !giatri);
+            form.find("[name='tiepnhan']").prop('checked', giatri);
         }
     </script>
 @stop
@@ -75,13 +86,15 @@
                                 <th rowspan="2" width="10%">STT</th>
                                 <th rowspan="2">Mã số</th>
                                 <th rowspan="2">Tên chức năng</th>
-                                <th colspan="3">Phân quyền</th>
+                                <th colspan="5">Phân quyền</th>
                                 <th rowspan="2" width="10%">Thao tác</th>
                             </tr>
                             <tr class="text-center">
-                                <th width="10%">Xem hồ sơ</th>
-                                <th width="10%">Thay đổi</th>
-                                <th width="10%">Gửi/Duyệt</br>hồ sơ</th>
+                                <th>Xem</th>
+                                <th>Sửa</th>
+                                <th>Tiếp</br>nhận</th>
+                                <th>Xử</br>lý</th>
+                                <th>Gửi</br>Duyệt</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -101,6 +114,8 @@
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
                                         <td class="text-center"></td>
+                                        <td class="text-center"></td>
+                                        <td class="text-center"></td>
                                     @else
                                         <td class="text-center">
                                             <button class="btn btn-sm btn-clean btn-icon">
@@ -117,6 +132,19 @@
                                         <td class="text-center">
                                             <button class="btn btn-sm btn-clean btn-icon">
                                                 <i
+                                                    class="icon-lg la {{ $c1->tiepnhan ? 'fa-check text-primary' : 'fa-times-circle text-danger' }} text-primary icon-2x"></i>
+                                            </button>
+                                        </td>
+
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-clean btn-icon">
+                                                <i
+                                                    class="icon-lg la {{ $c1->xuly ? 'fa-check text-primary' : 'fa-times-circle text-danger' }} text-primary icon-2x"></i>
+                                            </button>
+                                        </td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-clean btn-icon">
+                                                <i
                                                     class="icon-lg la {{ $c1->hoanthanh ? 'fa-check text-primary' : 'fa-times-circle text-danger' }} text-primary icon-2x"></i>
                                             </button>
                                         </td>
@@ -126,7 +154,7 @@
                                         @if (chkPhanQuyen('dsnhomtaikhoan', 'thaydoi'))
                                             <button
                                                 onclick="getChucNang('{{ $c1->machucnang }}','{{ $c1->tenchucnang }}',{{ $c1->phanquyen }},
-                                                {{ $c1->danhsach }}, {{ $c1->thaydoi }}, {{ $c1->hoanthanh }}, {{ $c1->nhomchucnang }})"
+                                                {{ $c1->danhsach }}, {{ $c1->thaydoi }}, {{ $c1->hoanthanh }}, {{ $c1->nhomchucnang }}, {{ $c1->xuly }}, {{ $c1->tiepnhan }})"
                                                 class="btn btn-sm btn-clean btn-icon" data-target="#modify-modal"
                                                 title="Thay đổi thông tin" data-toggle="modal">
                                                 <i class="icon-lg la fa-edit text-primary icon-2x"></i></button>
@@ -153,6 +181,8 @@
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
                                             <td class="text-center"></td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center"></td>
                                         @else
                                             <td class="text-center">
                                                 <button class="btn btn-sm btn-clean btn-icon">
@@ -169,6 +199,19 @@
                                             <td class="text-center">
                                                 <button class="btn btn-sm btn-clean btn-icon">
                                                     <i
+                                                        class="icon-lg la {{ $c2->tiepnhan ? 'fa-check text-primary' : 'fa-times-circle text-danger' }}  icon-2x"></i>
+                                                </button>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-clean btn-icon">
+                                                    <i
+                                                        class="icon-lg la {{ $c2->xuly ? 'fa-check text-primary' : 'fa-times-circle text-danger' }}  icon-2x"></i>
+                                                </button>
+                                            </td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-clean btn-icon">
+                                                    <i
                                                         class="icon-lg la {{ $c2->hoanthanh ? 'fa-check text-primary' : 'fa-times-circle text-danger' }}  icon-2x"></i>
                                                 </button>
                                             </td>
@@ -177,7 +220,7 @@
                                             @if (chkPhanQuyen('dsnhomtaikhoan', 'thaydoi') && $c1->phanquyen)
                                                 <button
                                                     onclick="getChucNang('{{ $c2->machucnang }}','{{ $c2->tenchucnang }}',{{ $c2->phanquyen }},
-                                                    {{ $c2->danhsach }}, {{ $c2->thaydoi }}, {{ $c2->hoanthanh }}, {{ $c2->nhomchucnang }})"
+                                                    {{ $c2->danhsach }}, {{ $c2->thaydoi }}, {{ $c2->hoanthanh }}, {{ $c2->nhomchucnang }}, {{ $c2->xuly }}, {{ $c2->tiepnhan }})"
                                                     class="btn btn-sm btn-clean btn-icon" data-target="#modify-modal"
                                                     title="Thay đổi thông tin" data-toggle="modal">
                                                     <i class="icon-lg la fa-edit text-warning icon-2x"></i>
@@ -204,6 +247,8 @@
                                                 <td class="text-center"></td>
                                                 <td class="text-center"></td>
                                                 <td class="text-center"></td>
+                                                <td class="text-center"></td>
+                                                <td class="text-center"></td>
                                             @else
                                                 <td class="text-center">
                                                     <button class="btn btn-sm btn-clean btn-icon">
@@ -220,6 +265,18 @@
                                                 <td class="text-center">
                                                     <button class="btn btn-sm btn-clean btn-icon">
                                                         <i
+                                                            class="icon-lg la {{ $c3->tiepnhan ? 'fa-check text-primary' : 'fa-times-circle text-danger' }}  icon-2x"></i>
+                                                    </button>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-sm btn-clean btn-icon">
+                                                        <i
+                                                            class="icon-lg la {{ $c3->xuly ? 'fa-check text-primary' : 'fa-times-circle text-danger' }}  icon-2x"></i>
+                                                    </button>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-sm btn-clean btn-icon">
+                                                        <i
                                                             class="icon-lg la {{ $c3->hoanthanh ? 'fa-check text-primary' : 'fa-times-circle text-danger' }}  icon-2x"></i>
                                                     </button>
                                                 </td>
@@ -228,7 +285,7 @@
                                                 @if (chkPhanQuyen('dsnhomtaikhoan', 'thaydoi') && $c1->phanquyen && $c2->phanquyen)
                                                     <button
                                                         onclick="getChucNang('{{ $c3->machucnang }}','{{ $c3->tenchucnang }}',{{ $c3->phanquyen }},
-                                                    {{ $c3->danhsach }}, {{ $c3->thaydoi }}, {{ $c3->hoanthanh }}, {{ $c3->nhomchucnang }})"
+                                                    {{ $c3->danhsach }}, {{ $c3->thaydoi }}, {{ $c3->hoanthanh }}, {{ $c3->nhomchucnang }}, {{ $c3->xuly }},{{ $c3->tiepnhan }})"
                                                         class="btn btn-sm btn-clean btn-icon" data-target="#modify-modal"
                                                         title="Thay đổi thông tin" data-toggle="modal">
                                                         <i class="icon-lg la fa-edit text-primary icon-2x"></i>
@@ -255,6 +312,8 @@
                                                     <td class="text-center"></td>
                                                     <td class="text-center"></td>
                                                     <td class="text-center"></td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center"></td>
                                                 @else
                                                     <td class="text-center">
                                                         <button class="btn btn-sm btn-clean btn-icon">
@@ -271,6 +330,18 @@
                                                     <td class="text-center">
                                                         <button class="btn btn-sm btn-clean btn-icon">
                                                             <i
+                                                                class="icon-lg la {{ $c4->tiepnhan ? 'fa-check text-primary' : 'fa-times-circle text-danger' }}  icon-2x"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-sm btn-clean btn-icon">
+                                                            <i
+                                                                class="icon-lg la {{ $c4->xuly ? 'fa-check text-primary' : 'fa-times-circle text-danger' }}  icon-2x"></i>
+                                                        </button>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-sm btn-clean btn-icon">
+                                                            <i
                                                                 class="icon-lg la {{ $c4->hoanthanh ? 'fa-check text-primary' : 'fa-times-circle text-danger' }}  icon-2x"></i>
                                                         </button>
                                                     </td>
@@ -279,7 +350,7 @@
                                                     @if (chkPhanQuyen('dsnhomtaikhoan', 'thaydoi') && $c1->phanquyen && $c2->phanquyen && $c3->phanquyen)
                                                         <button
                                                             onclick="getChucNang('{{ $c4->machucnang }}','{{ $c4->tenchucnang }}',{{ $c4->phanquyen }},
-                                                   {{ $c4->danhsach }}, {{ $c4->thaydoi }}, {{ $c4->hoanthanh }}, {{ $c4->nhomchucnang }})"
+                                                   {{ $c4->danhsach }}, {{ $c4->thaydoi }}, {{ $c4->hoanthanh }}, {{ $c4->nhomchucnang }}, {{ $c4->xuly }}, {{ $c4->tiepnhan }})"
                                                             class="btn btn-sm btn-clean btn-icon"
                                                             data-target="#modify-modal" title="Thay đổi thông tin"
                                                             data-toggle="modal">
@@ -345,6 +416,13 @@
                                     <label class="checkbox checkbox-outline checkbox-success">
                                         <input type="checkbox" name="thaydoi" />
                                         <span></span>Thay đổi</label>
+                                        <label class="checkbox checkbox-outline checkbox-success">
+                                            <input type="checkbox" name="tiepnhan" />
+                                            <span></span>Tiếp nhận</label>
+    
+                                        <label class="checkbox checkbox-outline checkbox-success">
+                                            <input type="checkbox" name="xuly" />
+                                            <span></span>Xử lý</label>
                                     <label class="checkbox checkbox-outline checkbox-success">
                                         <input type="checkbox" name="hoanthanh" />
                                         <span></span>Hoàn thành</label>

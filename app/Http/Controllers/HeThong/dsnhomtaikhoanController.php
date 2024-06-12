@@ -111,6 +111,8 @@ class dsnhomtaikhoanController extends Controller
             $chucnang->danhsach = $phanquyen->danhsach ?? 0;
             $chucnang->thaydoi = $phanquyen->thaydoi ?? 0;
             $chucnang->hoanthanh = $phanquyen->hoanthanh ?? 0;
+            $chucnang->xuly = $phanquyen->xuly ?? 0;
+            $chucnang->tiepnhan = $phanquyen->tiepnhan ?? 0;
             $chucnang->nhomchucnang = $m_chucnang->where('machucnang_goc', $chucnang->machucnang)->count() > 0 ? 1 : 0;
         }
         //dd($m_chucnang);
@@ -132,7 +134,9 @@ class dsnhomtaikhoanController extends Controller
         $inputs['danhsach'] = isset($inputs['danhsach']) ? 1 : 0;
         $inputs['thaydoi'] = isset($inputs['thaydoi']) ? 1 : 0;
         $inputs['hoanthanh'] = isset($inputs['hoanthanh']) ? 1 : 0;
-        $inputs['danhsach'] = ($inputs['hoanthanh'] == 1 || $inputs['thaydoi'] == 1) ? 1 : $inputs['danhsach'];
+        $inputs['xuly'] = isset($inputs['xuly']) ? 1 : 0;
+        $inputs['tiepnhan'] = isset($inputs['tiepnhan']) ? 1 : 0;
+        $inputs['danhsach'] = ($inputs['hoanthanh'] == 1 || $inputs['thaydoi'] == 1|| $inputs['tiepnhan'] == 1 || $inputs['xuly'] == 1) ? 1 : $inputs['danhsach'];
         //dd($inputs);
         $m_chucnang = hethongchung_chucnang::where('sudung', '1')->get();
         $ketqua = new Collection();
@@ -150,6 +154,8 @@ class dsnhomtaikhoanController extends Controller
                 'danhsach' => $inputs['danhsach'],
                 'thaydoi' => $inputs['thaydoi'],
                 'hoanthanh' => $inputs['hoanthanh'],
+                'tiepnhan' => $inputs['tiepnhan'],
+                'xuly' => $inputs['xuly'],
             ];
             if ($chk == null) {
                 dsnhomtaikhoan_phanquyen::create($a_kq);

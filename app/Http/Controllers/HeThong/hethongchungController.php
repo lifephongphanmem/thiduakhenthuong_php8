@@ -231,7 +231,7 @@ class hethongchungController extends Controller
             ));
         }
         */
-        if($this->chklogin($ttuser->timeaction,$ttuser->id)){
+        if($this->chklogin($ttuser->timeaction,$ttuser->id,session()->getId())){
 			// Cho đăng nhập thì lập tức tài khoản đang onl logout luôn
 				if (Session::has('admin')) {
 					Session::flush();
@@ -308,7 +308,7 @@ class hethongchungController extends Controller
             $trangthai->tendangnhap = session('admin')->tendangnhap;
             $trangthai->thoigian = date('Y-m-d H:i:s');
             $trangthai->save();
-            dstaikhoan::findOrFail(session('admin')->id)->update(['islogout'=> 0]);
+            dstaikhoan::findOrFail(session('admin')->id)->update(['islogout'=> 0,'sessionID'=>null]);
             Session::flush();
             return redirect('/DangNhap');
         } else {
@@ -443,7 +443,7 @@ class hethongchungController extends Controller
             ->with('pageTitle', 'Thông tin hỗ trợ');
     }
 
-    public function chklogin($thoigian, $id){
+    public function chklogin($thoigian, $id,$sessionID){
 		if (!Session::has('admin')) {
 			return false;
 		};
@@ -453,17 +453,20 @@ class hethongchungController extends Controller
             return false;
         }
 		$user=dstaikhoan::findOrFail($id);
+        if($sessionID == $user->sessionID){
+            return true;
+        }
 		if($user->islogout == 0){
 			return false;
 		}
 		// $thoigianthaotac=$user->isaction();
-		$chenhlechthoigian=Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
-		$time_session=Config::get('session.lifetime');
-        dd($time_session);
-		if($chenhlechthoigian < $time_session){
-			return true;
-		}else{
-			return false;
-		}
+		// $chenhlechthoigian=Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
+		// $time_session=Config::get('session.lifetime');
+        // // dd($time_session);
+		// if($chenhlechthoigian < $time_session){
+		// 	return true;
+		// }else{
+		// 	return false;
+		// }
 	}
 }
