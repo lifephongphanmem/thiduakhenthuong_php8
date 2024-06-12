@@ -33,6 +33,7 @@ class dstaikhoan extends Model
         'ngaycongtac', //Thời gian làm công tác để tính thâm niên
         'gioitinh', //0: Nam; 1: Nữ
         'timeaction',
-        'islogout'
+        'islogout',
+        'sessionID'
     ];
 }

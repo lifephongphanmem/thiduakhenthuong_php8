@@ -262,6 +262,7 @@ function getDonViKhenThuong($donvi = null)
 //Hàm lấy danh sách đơn vị quản lý địa bàn cùng cấp và cấp trên
 function getDonViQuanLyDiaBan($donvi, $kieudulieu = 'ARRAY')
 {
+    // dd($donvi);
     $m_diaban = \App\Models\DanhMuc\dsdiaban::where('madiaban', $donvi->madiaban)->first();
     $a_donvi = [$m_diaban->madonviQL, $donvi->madonvi];
     $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
@@ -1907,7 +1908,18 @@ function chkTkTiepNhan($madonvi,$capdo)
 
 function chkaction()
 {
-    $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
-    dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction'=>$time]);
+    // $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+    // dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction'=>$time]);
+    $model=dstaikhoan::where('tendangnhap',session('admin')->tendangnhap)->first();
+    if($model->tendangnhap == 'SSA')
+    {
+        return true;
+    }
+
+    if(session()->getId() != $model->sessionId)
+    {
+        Session::flush();
+        return redirect('/');
+    }
 }
 
