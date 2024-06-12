@@ -220,8 +220,8 @@
                                                 class="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
                                                 <!--begin::Header Nav-->
                                                 <ul class="menu-nav">
-                                                    <li class="menu-item" aria-haspopup="true">
-                                                        <a href="/CongBo/VanBan" class="menu-link">
+                                                    <li class="menu-item " aria-haspopup="true">
+                                                        <a href="/CongBo/VanBan" class="menu-link ">
                                                             <span class="menu-text">Văn bản QLNN</span>
                                                         </a>
                                                     </li>
@@ -354,7 +354,7 @@
 
                 <!--begin::Content-->
                 <div class="content d-flex flex-column flex-column-fluid" id="kt_content"
-                    style="background-image: url('/assets/media/bg/TDKTBG2.png');background-repeat: no-repeat;background-size: 100% 100%;opacity: 0.75;">
+                    style="background-image: url('/assets/media/bg/TDKT3.png');background-repeat: no-repeat;background-size: 100% 100%;">
 
                     <!--begin::Entry-->
                     <div class="d-flex flex-column-fluid">
