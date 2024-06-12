@@ -1916,7 +1916,9 @@ function chkaction()
     }elseif(session()->getId() !== $model->sessionID)
     {
         // Session::flush();
-        return redirect('/');
+        return false;
+    }else{
+        return true;
     }
     $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
     dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction'=>$time]);
