@@ -1915,7 +1915,7 @@ function chkaction()
         return true;
     }elseif(session()->getId() !== $model->sessionID)
     {
-        Session::flush();
+        // Session::flush();
         return redirect('/');
     }
     $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
