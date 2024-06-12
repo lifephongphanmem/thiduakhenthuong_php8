@@ -1913,7 +1913,7 @@ function chkaction()
     if($model->tendangnhap == 'SSA')
     {
         return true;
-    }elseif(session()->getId() != $model->sessionId)
+    }elseif(session()->getId() !== $model->sessionID)
     {
         Session::flush();
         return redirect('/');
