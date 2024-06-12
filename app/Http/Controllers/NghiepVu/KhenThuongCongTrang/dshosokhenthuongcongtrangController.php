@@ -40,8 +40,7 @@ class dshosokhenthuongcongtrangController extends Controller
                 return redirect('/');
             };
             if(!chkaction()){
-                dd(chkaction());
-                // Session::flush();
+                Session::flush();
                 return redirect('/');
             };
             return $next($request);
