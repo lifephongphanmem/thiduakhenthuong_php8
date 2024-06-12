@@ -1908,18 +1908,17 @@ function chkTkTiepNhan($madonvi,$capdo)
 
 function chkaction()
 {
-    // $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
-    // dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction'=>$time]);
+
     $model=dstaikhoan::where('tendangnhap',session('admin')->tendangnhap)->first();
     if($model->tendangnhap == 'SSA')
     {
         return true;
-    }
-
-    if(session()->getId() != $model->sessionId)
+    }elseif(session()->getId() != $model->sessionId)
     {
         Session::flush();
         return redirect('/');
     }
+    $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+    dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction'=>$time]);
 }
 

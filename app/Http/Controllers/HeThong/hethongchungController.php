@@ -238,6 +238,7 @@ class hethongchungController extends Controller
 				}
 
 		};
+
         Session::put('admin', $ttuser);
         $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
 		//đẩy session id vào user để check đăng nhập giới hạn 1 tài khoản
@@ -453,20 +454,20 @@ class hethongchungController extends Controller
             return false;
         }
 		$user=dstaikhoan::findOrFail($id);
-        if($sessionID == $user->sessionID){
-            return true;
+        if($sessionID != $user->sessionID){
+            return false;
         }
 		if($user->islogout == 0){
 			return false;
 		}
-		// $thoigianthaotac=$user->isaction();
-		// $chenhlechthoigian=Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
-		// $time_session=Config::get('session.lifetime');
-        // // dd($time_session);
-		// if($chenhlechthoigian < $time_session){
-		// 	return true;
-		// }else{
-		// 	return false;
-		// }
+		$thoigianthaotac=$user->isaction();
+		$chenhlechthoigian=Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
+		$time_session=Config::get('session.lifetime');
+        // dd($time_session);
+		if($chenhlechthoigian < $time_session){
+			return true;
+		}else{
+			return false;
+		}
 	}
 }
