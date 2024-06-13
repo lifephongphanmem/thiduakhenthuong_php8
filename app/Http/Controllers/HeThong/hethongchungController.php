@@ -25,6 +25,10 @@ class hethongchungController extends Controller
     public function index()
     {
         if (Session::has('admin')) {
+            if(!chkaction()){
+                Session::flush();
+                return redirect('/');
+            };
             if (in_array(
                 dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first()->matkhau,
                 ['e10adc3949ba59abbe56e057f20f883e', '2d17247d02f162064940feff49988f8e']

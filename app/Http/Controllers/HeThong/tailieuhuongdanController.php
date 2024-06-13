@@ -23,7 +23,10 @@ class tailieuhuongdanController extends Controller
             if (!Session::has('admin')) {
                 return redirect('/');
             };
-            chkaction();
+            if(!chkaction()){
+                Session::flush();
+                return redirect('/');
+            };
             return $next($request);
         })->except([
             'show',
