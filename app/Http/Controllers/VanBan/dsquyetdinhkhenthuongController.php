@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\DanhMuc\dmloaihinhkhenthuong;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
 use App\Models\VanBan\dsquyetdinhkhenthuong;
 use App\Models\VanBan\dsvanbanphaply;
 use Illuminate\Support\Facades\Session;
@@ -21,7 +23,10 @@ class dsquyetdinhkhenthuongController extends Controller
             if (!Session::has('admin')) {
                 return redirect('/');
             };
-            chkaction();
+            if(!chkaction()){
+                Session::flush();
+                return redirect('/');
+            };
             return $next($request);
         });
     }
@@ -34,7 +39,33 @@ class dsquyetdinhkhenthuongController extends Controller
         $inputs = $request->all();
         $inputs['url'] = static::$url;
         $model = dsquyetdinhkhenthuong::all();
+        foreach($model as $hoso){
+            $hoso->thaotac=true;
+        }
         //dd($model);
+        $inputs['capkhenthuong'] = $inputs['capkhenthuong'] ?? 'ALL';
+        //dd($model);
+        //Hô sơ khen thưởng
+        $dshosothiduakhenthuong = dshosothiduakhenthuong::where('trangthai', 'DKT')->get();
+        foreach ($dshosothiduakhenthuong as $hoso) {
+            $hoso->tieude = $hoso->noidung;
+            $hoso->maquyetdinh = $hoso->mahosotdkt;
+            $hoso->phanloaikhenthuong = 'dshosothiduakhenthuong';
+            $hoso->thaotac=false;
+            $model->add($hoso);
+        }
+        $dshosotdktcumkhoi = dshosotdktcumkhoi::where('trangthai', 'DKT')->get();
+        foreach ($dshosotdktcumkhoi as $hoso) {
+            $hoso->tieude = $hoso->noidung;
+            $hoso->phanloaikhenthuong = 'dshosotdktcumkhoi';
+            $hoso->maquyetdinh = $hoso->mahosotdkt;
+            $hoso->thaotac=false;
+            $model->add($hoso);
+        }
+        $inputs['capkhenthuong'] = $inputs['capkhenthuong'] ?? 'ALL';
+        if ($inputs['capkhenthuong'] != 'ALL') {
+            $model = $model->where('capkhenthuong', $inputs['capkhenthuong']);
+        }
         return view('VanBan.KhenThuong.ThongTin')
             ->with('model', $model)
             ->with('inputs', $inputs)

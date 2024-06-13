@@ -76,7 +76,7 @@
                                             data-toggle="modal">
                                             <i class="icon-lg la flaticon-download text-dark"></i></button>
 
-                                        @if (chkPhanQuyen('quyetdinhkhenthuong', 'thaydoi'))
+                                        @if (chkPhanQuyen('quyetdinhkhenthuong', 'thaydoi')&&$tt->thaotac)
                                             <a href="{{ url($inputs['url'] . 'Sua?maquyetdinh=' . $tt->maquyetdinh) }}"
                                                 class="btn btn-sm btn-clean btn-icon">
                                                 <i class="icon-lg la flaticon-edit-1 text-success"></i>
