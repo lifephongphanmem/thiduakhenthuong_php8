@@ -38,7 +38,7 @@ class qdhosodenghikhenthuongconghienController extends Controller
             };
             if(!chkaction()){
                 Session::flush();
-                return redirect('/');
+                return response()->view('errors.error_login');
             };
             return $next($request);
         });

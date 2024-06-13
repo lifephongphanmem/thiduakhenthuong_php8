@@ -27,7 +27,7 @@ class hethongchungController extends Controller
         if (Session::has('admin')) {
             if(!chkaction()){
                 Session::flush();
-                return redirect('/');
+                return response()->view('errors.error_login');
             };
             if (in_array(
                 dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first()->matkhau,
