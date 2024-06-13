@@ -41,8 +41,8 @@ License: You must have a valid license purchased only from themeforest(the above
 			<div class="d-flex flex-row-fluid flex-column bgi-size-cover bgi-position-center bgi-no-repeat p-10 p-sm-30" style="background-image: url(assets/media/error/bg1.jpg);">
 				<!--begin::Content-->
 				<h3 class="font-weight-boldest text-dark-75 mt-15" style="font-size: 5rem">Thông báo!</h3>
-				<p class="font-size-h3 text-danger font-weight-normal">{!! isset($message) ? $message : 'Phần mềm không thể thực hiện thao tác !!!'!!} </p>
-                <p><a href='{{ isset($url) ? url($url) : url('/') }}'>Bấm vào đây</a> để đăng nhập lại.</p>
+				<p class="font-size-h3 text-danger font-weight-normal">Tài khoản đã đăng nhập ở một thiết bị khác </p>
+                <p><a href='{{ url('/') }}'>Bấm vào đây</a> để đăng nhập lại.</p>
 				<!--end::Content-->
 			</div>
 			<!--end::Error-->

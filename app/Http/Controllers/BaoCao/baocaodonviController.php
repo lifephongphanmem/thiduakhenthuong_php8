@@ -33,7 +33,8 @@ class baocaodonviController extends Controller
             };
             if(!chkaction()){
                 Session::flush();
-                return view('errors.error_login')->with('url','/DangNhap')->with('message','Tài khoản đã đăng nhập ở một thiết bị khác');
+                // return view('errors.error_login')->with('url','/DangNhap')->with('message','Tài khoản đã đăng nhập ở một thiết bị khác');
+                return view('errors.error_login');
             };
             return $next($request);
         });
