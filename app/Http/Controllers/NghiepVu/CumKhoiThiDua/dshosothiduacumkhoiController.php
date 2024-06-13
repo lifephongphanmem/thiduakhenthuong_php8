@@ -258,7 +258,7 @@ class dshosothiduacumkhoiController extends Controller
         $a_tapthe = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['TAPTHE'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         $a_canhan = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['CANHAN'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         $model_tailieu = dshosothamgiathiduacumkhoi_tailieu::where('mahoso', $model->mahoso)->get();
-
+        // dd($model);
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.HoSoThiDua.ThayDoi')
             ->with('model', $model)
             ->with('model_tailieu', $model_tailieu)
@@ -882,8 +882,9 @@ class dshosothiduacumkhoiController extends Controller
 
     public function NhanExcel(Request $request)
     {
+        $inputs=$request->all();
         $dungchung = new dungchung_nhanexcelController();
-        $dungchung->NhanExcelThamGia($request);
-        return redirect(static::$url . 'Sua?mahoso=' . $request->all()['mahoso']);
+        $dungchung->NhanExcelThamGiaCumKhoi($request);
+        return redirect(static::$url . 'Sua?mahoso=' . $inputs['mahoso'].'&madonvi='.$inputs['madonvi']);
     }
 }

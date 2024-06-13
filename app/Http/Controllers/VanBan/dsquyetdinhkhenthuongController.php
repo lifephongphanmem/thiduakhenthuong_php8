@@ -25,7 +25,7 @@ class dsquyetdinhkhenthuongController extends Controller
             };
             if(!chkaction()){
                 Session::flush();
-                return redirect('/');
+                return view('errors.error_login')->with('url','/DangNhap')->with('message','Tài khoản đã đăng nhập ở một thiết bị khác');
             };
             return $next($request);
         });
@@ -69,6 +69,7 @@ class dsquyetdinhkhenthuongController extends Controller
         return view('VanBan.KhenThuong.ThongTin')
             ->with('model', $model)
             ->with('inputs', $inputs)
+            ->with('a_donvi',array_column(getDonVi('SSA')->toarray(),'tendonvi','madonvi'))
             ->with('a_phamvi', getPhamViApDung())
             ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('pageTitle', 'Danh sách quyết định khen thưởng');

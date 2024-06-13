@@ -39,7 +39,10 @@ class baocaocumkhoiController extends Controller
             if (!Session::has('admin')) {
                 return redirect('/');
             };
-            chkaction();
+            if(!chkaction()){
+                Session::flush();
+                return view('errors.error_login')->with('url','/DangNhap')->with('message','Tài khoản đã đăng nhập ở một thiết bị khác');
+            };
             return $next($request);
         });
     }

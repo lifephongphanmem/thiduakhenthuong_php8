@@ -79,12 +79,13 @@ class congboController extends Controller
         if ($inputs['capkhenthuong'] != 'ALL') {
             $model = $model->where('capkhenthuong', $inputs['capkhenthuong']);
         }
-        //dd($model);
+        // dd($model);
         $hethong = hethongchung::first();
         return view('CongBo.QuyetDinh')
             ->with('model', $model->sortby('ngayqd'))
             ->with('hethong', $hethong)
             ->with('inputs', $inputs)
+            ->with('a_donvi',array_column(getDonVi('SSA')->toarray(),'tendonvi','madonvi'))
             ->with('a_phamvi', getPhamViApDung())
             ->with('pageTitle', 'Danh sách quyết định khen thưởng');
     }

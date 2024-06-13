@@ -161,6 +161,7 @@
 
     @include('NghiepVu._DungChung.modal_CumKhoi_ThiDua_CaNhan')
     @include('NghiepVu._DungChung.modal_CumKhoi_ThiDua_TapThe')
+    @include('NghiepVu._DungChung.modal_ExcelCumKhoi')
     @include('NghiepVu._DungChung.modal_HSPT_TieuChuan')
     @include('NghiepVu._DungChung.modal_ThemCQDonVi')
     @include('NghiepVu._DungChung.modal_HSPT_XoaDoiTuong')

@@ -1,4 +1,4 @@
-    {{-- Nhận file Excel --}}
+{{-- Nhận file Excel --}}
     {!! Form::open([
         'url' => $inputs['url'] . 'NhanExcel',
         'method' => 'POST',
@@ -103,19 +103,6 @@
                             ]) !!}
                         </div>
 
-                        <div class="col-md-3">
-                            <label class="control-label">Phân loại hộ gia đình<span class="require">*</span></label>
-                            {!! Form::select('maphanloaidoituong_hgd', $a_hogiadinh, null, [
-                                'class' => 'form-control',
-                            ]) !!}
-                        </div>
-
-                        <div class="col-md-3">
-                            <label class="control-label">Hình thức khen thưởng hộ GĐ </label>
-                            {!! Form::select('madanhhieukhenthuong_hgd', $a_dhkt_hogiadinh, null, [
-                                'class' => 'form-control',
-                            ]) !!}
-                        </div>
 
                         <div class="col-md-3">
                             <label class="control-label">Phân loại cá nhân<span class="require">*</span></label>

@@ -6,7 +6,7 @@
     </div>
     <div class="col-4">
         <label>Phân loại hồ sơ</label>
-        {!! Form::select('phanloai', getPhanLoaiHoSo(isset($inputs['khangchien'])?'KHANGCHIEN':'KHENTHUONG'), $inputs['phanloai'], ['class' => 'form-control']) !!}
+        {!! Form::select('phanloai', getPhanLoaiHoSo(isset($inputs['khangchien'])?'KHANGCHIEN':getDVPhanLoaiHS($inputs['madonvi'])), $inputs['phanloai'], ['class' => 'form-control']) !!}
     </div> 
     <div class="col-2">
         <label>Cấp độ khen thưởng</label>

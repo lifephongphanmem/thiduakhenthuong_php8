@@ -18,7 +18,7 @@
 
                         <div class="col-4">
                             <label>Phân loại hồ sơ</label>
-                            {!! Form::select('phanloai', getPhanLoaiHoSo(isset($inputs['khangchien'])?'KHANGCHIEN':'KHENTHUONG'), null, ['class' => 'form-control']) !!}
+                            {!! Form::select('phanloai', getPhanLoaiHoSo(isset($inputs['khangchien'])?'KHANGCHIEN':getDVPhanLoaiHsDeNghi($inputs['madonvi'])), null, ['class' => 'form-control']) !!}
                         </div>
 
                         <div class="col-4">

@@ -116,7 +116,7 @@ class dshosodenghikhenthuongdotxuatController extends Controller
             ->with('a_diaban', $a_diaban)
             ->with('a_donviql', getDonViXetDuyetDiaBan($donvi))
             ->with('a_donvinganh', getDonViQuanLyNganh($donvi))
-            ->with('a_phanloaihs', getPhanLoaiHoSo('KHENTHUONG'))
+            ->with('a_phanloaihs',  getPhanLoaiHoSo(isset($inputs['khangchien'])?'KHANGCHIEN':getDVPhanLoaiHsDeNghi($inputs['madonvi'])))
             ->with('a_loaihinhkt', array_column($m_loaihinh->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('inputs', $inputs)
             ->with('pageTitle', 'Danh sách hồ sơ khen thưởng đột xuất');
@@ -594,9 +594,11 @@ class dshosodenghikhenthuongdotxuatController extends Controller
 
     public function NhanExcel(Request $request)
     {
+        $inputs=$request->all();
         $dungchung = new dungchung_nhanexcelController();
         $dungchung->NhanExcelKhenThuong($request);
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $request->all()['mahoso']);
+        //dd($request);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahoso'].'&phanloai='.$inputs['phanloai'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function ThemHoGiaDinh(Request $request)

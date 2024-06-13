@@ -159,6 +159,21 @@ function getPhanLoaiHoSo($phanloai = 'ALL')
         case 'KHENTHUONG': {
                 $a_kq = array(
                     'KTDONVI' => 'Hồ sơ khen thưởng tại đơn vị',
+                    // 'KHENTHUONG' => 'Hồ sơ đề nghị cấp trên khen thưởng',
+                    'KHENCAOTHUTUONG' => 'Hồ sơ khen thưởng của Thủ tướng chính phủ',
+                    'KHENCAOCHUTICHNUOC' => 'Hồ sơ khen thưởng của Chủ tịch nước ',
+                );
+                break;
+            }
+            case 'DENGHIKHENTHUONG': {
+                $a_kq = array(
+                    'KHENCAOTHUTUONG' => 'Hồ sơ đề nghị Thủ tướng chính phủ khen thưởng',
+                    'KHENCAOCHUTICHNUOC' => 'Hồ sơ đề nghị Chủ tịch nước khen thưởng',
+                );
+                break;
+            }
+            case 'DENGHIKHENTHUONGDV': {
+                $a_kq = array(
                     'KHENTHUONG' => 'Hồ sơ đề nghị cấp trên khen thưởng',
                     'KHENCAOTHUTUONG' => 'Hồ sơ đề nghị Thủ tướng chính phủ khen thưởng',
                     'KHENCAOCHUTICHNUOC' => 'Hồ sơ đề nghị Chủ tịch nước khen thưởng',
@@ -175,8 +190,8 @@ function getPhanLoaiHoSo($phanloai = 'ALL')
             }
         case 'KHENCAO': {
                 $a_kq = array(
-                    'KHENCAOTHUTUONG' => 'Hồ sơ đề nghị Thủ tướng chính phủ khen thưởng',
-                    'KHENCAOCHUTICHNUOC' => 'Hồ sơ đề nghị Chủ tịch nước khen thưởng',
+                    'KHENCAOTHUTUONG' => 'Hồ sơ khen thưởng của Thủ tướng chính phủ',
+                    'KHENCAOCHUTICHNUOC' => 'Hồ sơ khen thưởng của Chủ tịch nước',
                 );
                 break;
             }
