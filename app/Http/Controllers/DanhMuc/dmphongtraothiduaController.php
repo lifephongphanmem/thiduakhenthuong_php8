@@ -15,6 +15,10 @@ class dmphongtraothiduaController extends Controller
             if (!Session::has('admin')) {
                 return redirect('/');
             };
+            if(!chkaction()){
+                Session::flush();
+                return response()->view('errors.error_login');
+            };
             return $next($request);
         });
     }

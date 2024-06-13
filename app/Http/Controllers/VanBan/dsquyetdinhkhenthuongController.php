@@ -25,7 +25,7 @@ class dsquyetdinhkhenthuongController extends Controller
             };
             if(!chkaction()){
                 Session::flush();
-                return view('errors.error_login')->with('url','/DangNhap')->with('message','Tài khoản đã đăng nhập ở một thiết bị khác');
+                return response()->view('errors.error_login');
             };
             return $next($request);
         });
