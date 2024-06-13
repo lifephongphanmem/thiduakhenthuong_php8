@@ -51,7 +51,7 @@
                                     <button type="button" onclick="setTapThe()" data-target="#modal-create-tapthe"
                                         data-toggle="modal" class="btn btn-light-dark btn-icon btn-sm">
                                         <i class="fa fa-plus"></i></button>
-                                    <button onclick="setNhanExcel('{{ $model->mahosothamgiapt }}')"
+                                    <button onclick="setNhanExcel('{{ $model->mahosothamgiapt }}','{{ $model->madonvi }}','{{ $model->phanloai }}')"
                                         title="Nhận từ file Excel" data-target="#modal-nhanexcel" data-toggle="modal"
                                         type="button" class="btn btn-info btn-icon btn-sm"><i
                                             class="fas fa-file-import"></i>
@@ -126,7 +126,7 @@
                                         data-target="#modal-create-hogiadinh" data-toggle="modal"
                                         class="btn btn-light-dark btn-icon btn-sm">
                                         <i class="fa fa-plus"></i></button>
-                                    <button onclick="setNhanExcel('{{ $model->mahosothamgiapt }}')"
+                                    <button onclick="setNhanExcel('{{ $model->mahosothamgiapt }}','{{ $model->madonvi }}','{{ $model->phanloai }}')"
                                         title="Nhận từ file Excel" data-target="#modal-nhanexcel" data-toggle="modal"
                                         type="button" class="btn btn-info btn-icon btn-sm"><i
                                             class="fas fa-file-import"></i>
@@ -202,7 +202,7 @@
                                         onclick="setCaNhan()">
                                         <i class="fa fa-plus"></i></button>
 
-                                        <button onclick="setNhanExcel('{{ $model->mahosothamgiapt }}')"
+                                        <button onclick="setNhanExcel('{{ $model->mahosothamgiapt }}','{{ $model->madonvi }}','{{ $model->phanloai }}')"
                                             title="Nhận từ file Excel" data-target="#modal-nhanexcel" data-toggle="modal"
                                             type="button" class="btn btn-info btn-icon btn-sm"><i
                                                 class="fas fa-file-import"></i>

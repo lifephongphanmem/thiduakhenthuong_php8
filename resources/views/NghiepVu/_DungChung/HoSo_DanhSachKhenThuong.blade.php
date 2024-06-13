@@ -51,7 +51,7 @@
                                     <button type="button" onclick="setTapThe()" data-target="#modal-create-tapthe"
                                         data-toggle="modal" class="btn btn-light-dark btn-icon btn-sm">
                                         <i class="fa fa-plus"></i></button>
-                                    <button onclick="setNhanExcel('{{ $model->mahosotdkt }}')"
+                                    <button onclick="setNhanExcel('{{ $model->mahosotdkt }}','{{$model->madonvi}}','{{$model->phanloai}}')"
                                         title="Nhận từ file Excel" data-target="#modal-nhanexcel" data-toggle="modal"
                                         type="button" class="btn btn-info btn-icon btn-sm"><i
                                             class="fas fa-file-import"></i></button>
@@ -125,7 +125,7 @@
                                         data-target="#modal-create-hogiadinh" data-toggle="modal"
                                         class="btn btn-light-dark btn-icon btn-sm">
                                         <i class="fa fa-plus"></i></button>
-                                    <button title="Nhận từ file Excel" data-target="#modal-nhanexcel"
+                                    <button onclick="setNhanExcel('{{ $model->mahosotdkt }}','{{$model->madonvi}}','{{$model->phanloai}}')" title="Nhận từ file Excel" data-target="#modal-nhanexcel"
                                         data-toggle="modal" type="button" class="btn btn-info btn-icon btn-sm"><i
                                             class="fas fa-file-import"></i></button>
                                     <a target="_blank" title="Tải file mẫu" href="/data/download/MauTDKT.xlsx"
@@ -199,7 +199,7 @@
                                         onclick="setCaNhan()">
                                         <i class="fa fa-plus"></i></button>
 
-                                    <button title="Nhận từ file Excel" data-target="#modal-nhanexcel"
+                                    <button onclick="setNhanExcel('{{ $model->mahosotdkt }}','{{$model->madonvi}}','{{$model->phanloai}}')" title="Nhận từ file Excel" data-target="#modal-nhanexcel"
                                         data-toggle="modal" type="button" class="btn btn-info btn-icon btn-sm"><i
                                             class="fas fa-file-import"></i></button>
 
@@ -233,7 +233,7 @@
                                                 <td class="text-center">{{ $i++ }}</td>
                                                 <td>{{ $tt->tendoituong }}</td>
                                                 {{-- <td class="text-center">{{ getDayVn($tt->ngaysinh) }}</td> --}}
-                                                <td>{{ $tt->gioitinh }}</td>
+                                                <td>{{ $tt->gioitinh == 'NU'?'Nữ':'Nam' }}</td>
                                                 <td>{{ $a_canhan[$tt->maphanloaicanbo] ?? '' }}</td>
                                                 <td class="text-center">
                                                     {{ $tt->chucvu . ',' . $tt->tenphongban . ',' . $tt->tencoquan }}

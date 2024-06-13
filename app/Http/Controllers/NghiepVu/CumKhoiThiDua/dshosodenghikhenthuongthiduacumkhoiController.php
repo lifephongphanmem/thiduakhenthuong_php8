@@ -370,6 +370,7 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
         $inputs['phanloaihoso'] = 'dshosotdktcumkhoi';
 
         $model =  dshosotdktcumkhoi::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+        $model->mahoso=$model->mahosotdkt;
         $model_tapthe =  dshosotdktcumkhoi_tapthe::where('mahosotdkt', $model->mahosotdkt)->get();
         $model_canhan =  dshosotdktcumkhoi_canhan::where('mahosotdkt', $model->mahosotdkt)->get();
 
@@ -386,6 +387,7 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
         $a_hogiadinh = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['HOGIADINH'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         $a_canhan = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['CANHAN'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         //dd($inputs);
+        // dd($model);
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.HoSoDeNghi.XetKT')
             ->with('model', $model)
             ->with('model_tapthe', $model_tapthe)
@@ -912,9 +914,10 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
 
     public function NhanExcel(Request $request)
     {
+        $inputs=$request->all();
         $dungchung = new dungchung_nhanexcelController();
-        $dungchung->NhanExcelKhenThuong($request);
-        return redirect(static::$url . 'XetKT?mahosotdkt=' . $request->all()['mahoso']);
+        $dungchung->NhanExcelCumKhoi($request);
+        return redirect(static::$url . 'XetKT?mahosotdkt=' . $inputs['mahoso'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function InHoSo(Request $request)

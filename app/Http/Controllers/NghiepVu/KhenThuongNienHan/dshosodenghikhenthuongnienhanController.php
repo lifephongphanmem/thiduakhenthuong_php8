@@ -751,8 +751,9 @@ class dshosodenghikhenthuongnienhanController extends Controller
 
     public function NhanExcel(Request $request)
     {
+        $inputs=$request->all();
         $dungchung = new dungchung_nhanexcelController();
         $dungchung->NhanExcelKhenThuong($request);
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $request->all()['mahoso']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahoso'].'&phanloai='.$inputs['phanloai'].'&madonvi='.$inputs['madonvi']);
     }
 }

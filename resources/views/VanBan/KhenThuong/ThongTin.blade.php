@@ -15,6 +15,9 @@
     <script>
         jQuery(document).ready(function() {
             TableManaged3.init();
+            $('#capkhenthuong').change(function() {
+                window.location.href = "/QuanLyVanBan/KhenThuong/ThongTin?capkhenthuong=" + $('#capkhenthuong').val();
+            });
         });
     </script>
 @stop
@@ -64,7 +67,7 @@
                             @foreach ($model as $key => $tt)
                                 <tr>
                                     <td style="text-align: center">{{ $key + 1 }}</td>
-                                    <td class="active">{{ $tt->donvikhenthuong }}</td>
+                                    <td class="active">{{ $a_donvi[$tt->madonvi_kt]??$tt->donvikhenthuong }}</td>
                                     <td class="text-center">{{ $tt->soqd }}<br>{{ getDayVn($tt->ngayqd) }}</td>
                                     <td>{{ $tt->tieude }}</td>
                                     <td>{{ $a_loaihinhkt[$tt->maloaihinhkt] ?? $tt->maloaihinhkt }}</td>

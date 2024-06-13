@@ -897,9 +897,14 @@ class dshosodenghikhenthuongthiduaController extends Controller
 
     public function NhanExcel(Request $request)
     {
+        // $dungchung = new dungchung_nhanexcelController();
+        // $dungchung->NhanExcelKhenThuong($request);
+        // return redirect(static::$url . 'XetKT?mahosotdkt=' . $request->all()['mahoso']);
+        $inputs=$request->all();
+        // dd($inputs);
         $dungchung = new dungchung_nhanexcelController();
         $dungchung->NhanExcelKhenThuong($request);
-        return redirect(static::$url . 'XetKT?mahosotdkt=' . $request->all()['mahoso']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahoso'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function XoaHoSo(Request $request)

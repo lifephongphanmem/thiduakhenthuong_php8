@@ -248,7 +248,7 @@ class dshosokhenthuongnnienhanController extends Controller
 
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&phanloai='.$inputs['phanloai']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&phanloai='.$inputs['phanloai'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function LuuHoSo(Request $request)
@@ -1044,9 +1044,9 @@ class dshosokhenthuongnnienhanController extends Controller
     public function NhanExcel(Request $request)
     {
 
+        $inputs=$request->all();
         $dungchung = new dungchung_nhanexcelController();
         $dungchung->NhanExcelKhenThuong($request);
-        //dd($request);
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $request->all()['mahoso']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahoso'].'&phanloai='.$inputs['phanloai'].'&madonvi='.$inputs['madonvi']);
     }
 }

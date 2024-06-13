@@ -1816,6 +1816,19 @@ function getDVPhanLoaiHS($madonvi)
     //     return 'ALL';
     // }
 }
+function getDVPhanLoaiHsDeNghi($madonvi)
+{
+    $donvi=dsdonvi::where('madonvi',$madonvi)->first();
+    if(isset($donvi))
+    {
+        $capdo=dsdiaban::where('madiaban',$donvi->madiaban)->first()->capdo;
+        if($capdo == 'T'){
+            return 'DENGHIKHENTHUONG';
+        }else{
+            return 'DENGHIKHENTHUONGDV';
+        }
+    }
+}
 
 function getDHTDVaHinhThucKT($phanloai,$doituong=null)
 {
