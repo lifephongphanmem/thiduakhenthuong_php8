@@ -150,6 +150,7 @@ class dshosokhenthuongkhangchienController extends Controller
         $a_donvikt = array_unique(array_merge([$model->donvikhenthuong => $model->donvikhenthuong], getDonViKhenThuong()));
         $inputs['khangchien']=true;
         // dd(session('admin'));
+        // dd($model);
         return view('NghiepVu.KhenThuongKhangChien.HoSoKT.ThayDoi')
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)
@@ -847,7 +848,7 @@ class dshosokhenthuongkhangchienController extends Controller
         $model->capkhenthuong =  $donvi_kt->capdo;
         $model->donvikhenthuong =  $donvi_kt->tendonvi;
         $a_donvikt = array_unique(array_merge([$model->donvikhenthuong], getDonViKhenThuong()));
-
+        $inputs['khangchien']=true;
         return view('NghiepVu.KhenThuongKhangChien.HoSoKT.PheDuyetKT')
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)

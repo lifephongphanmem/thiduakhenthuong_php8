@@ -1937,3 +1937,39 @@ function chkaction()
     dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction'=>$time]);
 }
 
+function getPhamViKT($capkhenthuong)
+{
+    switch ($capkhenthuong){
+        case 'T':{
+            $phamvi= array(
+                'TW' => 'Cấp Nhà nước',
+                'T' => 'Cấp Tỉnh',
+            );
+            break;
+        }
+        case 'H':{
+            $phamvi= array(
+                'SBN' => 'Cấp Sở, ban, ngành',
+                'H' => 'Cấp Huyện',
+            );
+            break;
+        }
+        case 'SBN':{
+            $phamvi= array(
+                'SBN' => 'Cấp Sở, ban, ngành',
+                'H' => 'Cấp Huyện',
+            );
+            break;
+        }
+        case 'X':{
+            $phamvi=array(
+                'X' => 'Cấp Xã',
+            );
+            break;
+        }
+    }
+
+    return $phamvi;
+
+}
+

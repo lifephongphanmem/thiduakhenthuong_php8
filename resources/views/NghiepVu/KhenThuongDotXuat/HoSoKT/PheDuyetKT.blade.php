@@ -47,8 +47,8 @@
         {{ Form::hidden('mahosotdkt', null, ['id' => 'mahosotdkt']) }}
         <div class="card-body">
             @include('NghiepVu._DungChung.HoSo_ThongTinQD')
-
-            <div class="row">
+            @include('NghiepVu._DungChung.HoSo_PheDuyetKhenThuong')
+            {{-- <div class="row">
                 <div class="col-md-12">
                     <div class="card card-custom">
                         <div class="card-header card-header-tabs-line">
@@ -222,7 +222,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
         <div class="card-footer">

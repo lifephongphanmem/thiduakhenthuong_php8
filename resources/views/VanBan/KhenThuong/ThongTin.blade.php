@@ -42,7 +42,7 @@
             <div class="form-group row">
                 <div class="col-lg-6">
                     <label>Cấp độ khen thưởng</label>
-                    {!! Form::select('capkhenthuong', setArrayAll($a_phamvi), null, [
+                    {!! Form::select('capkhenthuong', setArrayAll($a_phamvi), $inputs['capkhenthuong'], [
                         'id' => 'capkhenthuong',
                         'class' => 'form-control select2basic',
                     ]) !!}
