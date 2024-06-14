@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\DanhMuc\dmloaihinhkhenthuong;
+use App\Models\DanhMuc\dsdonvi;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tailieu;
 use App\Models\VanBan\dsquyetdinhkhenthuong;
 use App\Models\VanBan\dsvanbanphaply;
 use Illuminate\Support\Facades\Session;
@@ -70,7 +72,7 @@ class dsquyetdinhkhenthuongController extends Controller
             ->with('model', $model)
             ->with('inputs', $inputs)
             ->with('a_donvi',array_column(getDonVi('SSA')->toarray(),'tendonvi','madonvi'))
-            ->with('a_phamvi', getPhamViApDung())
+            ->with('a_phamvi', getPhamViKhenThuong())
             ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('pageTitle', 'Danh sách quyết định khen thưởng');
     }
@@ -179,6 +181,43 @@ class dsquyetdinhkhenthuongController extends Controller
             $result['message'] .= '<label class="control-label" > File đính kèm 5 </label >';
             $result['message'] .= '<a target = "_blank" class="ml-10" href = "' . url('/data/quyetdinh/' . $model->ipf5) . '">' . $model->ipf5 . '</a >';
             $result['message'] .= '</div ></div >';
+        }
+        //Hồ sơ lấy từ quy trình phê duyệt
+        $model_hs = dshosothiduakhenthuong_tailieu::where('mahosotdkt', $inputs['mahs'])->get();
+        if ($model_hs->count() > 0) {
+            $a_pltailieu = getPhanLoaiTaiLieuDK();
+            $a_donvi = array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi');
+            $result['message'] .= '<div class="col-md-12">';
+            $result['message'] .= '<table class="table table-bordered table-hover dulieubang">';
+            $result['message'] .= '<thead>';
+            $result['message'] .= '<tr class="text-center">';
+            $result['message'] .= '<th width="2%">STT</th>';
+            $result['message'] .= '<th width="20%">Đơn vị tải lên</th>';
+            $result['message'] .= '<th width="20%">Phân loại tài liệu</th>';
+            $result['message'] .= '<th>Nội dung tóm tắt</th>';
+            $result['message'] .= '<th width="15%">Thao tác</th>';
+            $result['message'] .= '</tr>';
+            $result['message'] .= '</thead>';
+            $result['message'] .= '<tbody>';
+            $i = 1;
+            foreach ($model_hs as $key=>$tt) {
+                $result['message'] .= '<tr class="odd gradeX">';
+                $result['message'] .= '<td class="text-center">' . $i++ . '</td>';
+                $result['message'] .= '<td>' . ($a_donvi[$tt->madonvi] ?? $tt->madonvi) . '</td>';
+                $result['message'] .= '<td>' . ($a_pltailieu[$tt->phanloai] ?? '') . '</td>';
+                $result['message'] .= '<td>' . $tt->noidung . '</td>';
+                $result['message'] .= '<td class="text-center">';
+
+                if ($tt->tentailieu != '')
+                    $result['message'] .= '<a target="_blank" title="Tải file đính kèm"
+                            href="/data/tailieudinhkem/' . $tt->tentailieu . '" class="btn btn-clean btn-icon btn-sm"><i class="fa flaticon-download text-info"></i></a>';
+                $result['message'] .= '</td>';
+                $result['message'] .= '</tr>';
+            }
+            $result['message'] .= '</tbody>';
+            $result['message'] .= '</table>';
+            $result['message'] .= '</div>';
+
         }
         $result['message'] .= '</div>';
         $result['status'] = 'success';

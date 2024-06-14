@@ -236,7 +236,7 @@
                                                 <td>{{ $tt->gioitinh == 'NU'?'Nữ':'Nam' }}</td>
                                                 <td>{{ $a_canhan[$tt->maphanloaicanbo] ?? '' }}</td>
                                                 <td class="text-center">
-                                                    {{ $tt->chucvu . ',' . $tt->tenphongban . ',' . $tt->tencoquan }}
+                                                    {{ $tt->chucvu . ',' . $tt->tenphongban . ',' . (array_key_exists($tt->tencoquan,getDsCoQuan($model->madonvi))?getDsCoQuan($model->madonvi)[$tt->tencoquan]:$tt->tencoquan) }}
                                                 </td>
                                                 <td class="text-center">
                                                     {{ $a_dhkt_canhan[$tt->madanhhieukhenthuong] ?? '' }}

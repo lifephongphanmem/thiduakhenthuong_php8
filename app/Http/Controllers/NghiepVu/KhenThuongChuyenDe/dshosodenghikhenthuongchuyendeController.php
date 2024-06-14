@@ -69,7 +69,7 @@ class dshosodenghikhenthuongchuyendeController extends Controller
 
 
         $model = dshosothiduakhenthuong::where('madonvi', $inputs['madonvi'])
-            ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH','KHENCAOTHUTUONG' ,'KHENCAOCHUTICHNUOC',])
+            ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH','KHENCAOTHUTUONG' ,'KHENCAOCHUTICHNUOC'])
             ->where('maloaihinhkt', $inputs['maloaihinhkt']);
 
         //->orderby('ngayhoso')->get();

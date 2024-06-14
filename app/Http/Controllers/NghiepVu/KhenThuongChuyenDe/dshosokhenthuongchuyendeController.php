@@ -73,7 +73,8 @@ class dshosokhenthuongchuyendeController extends Controller
 
         $model = dshosothiduakhenthuong::where('madonvi', $inputs['madonvi'])
             // ->where('phanloai', 'KTDONVI')
-            ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTDONVI'])
+            // ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTDONVI'])
+            ->wherein('phanloai', ['KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTDONVI'])
             ->where('maloaihinhkt', $inputs['maloaihinhkt']);
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
             $m_loaihinh = dmloaihinhkhenthuong::all();
@@ -92,7 +93,7 @@ class dshosokhenthuongchuyendeController extends Controller
             $hoso->soluongkhenthuong = $model_canhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + $model_tapthe->where('mahosotdkt', $hoso->mahosotdkt)->count();
         }
-        //dd($model);
+        // dd($model);
         return view('NghiepVu.KhenThuongChuyenDe.HoSoKT.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
@@ -141,6 +142,7 @@ class dshosokhenthuongchuyendeController extends Controller
 
         $inputs['mahinhthuckt'] = $model->mahinhthuckt;
         $a_donvikt = array_unique(array_merge([$model->donvikhenthuong], getDonViKhenThuong()));
+        // dd($inputs);
         // dd($model);
         return view('NghiepVu.KhenThuongChuyenDe.HoSoKT.ThayDoi')
             ->with('model', $model)
@@ -991,7 +993,8 @@ class dshosokhenthuongchuyendeController extends Controller
         $model->donvikhenthuong =  $donvi_kt->tendonvi;
         $model->hotennguoikyqd =  $donvi_kt->lanhdao;
         $a_donvikt = array_unique(array_merge([$model->donvikhenthuong], getDonViKhenThuong()));
-
+        // dd($model);
+        // dd(getPhamViKT($model->capkhenthuong));
         return view('NghiepVu.KhenThuongChuyenDe.HoSoKT.PheDuyetKT')
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)
@@ -1037,7 +1040,7 @@ class dshosokhenthuongchuyendeController extends Controller
             $filedk->move(public_path() . '/data/quyetdinh/', $inputs['quyetdinh']);
             $model->quyetdinh = $inputs['quyetdinh'];
         }
-        //dd($model);
+        // dd($model);
         getTaoQuyetDinhKT($model);
         $model->save();
         trangthaihoso::create([

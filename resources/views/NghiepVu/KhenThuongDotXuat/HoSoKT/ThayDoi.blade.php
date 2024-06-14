@@ -135,8 +135,8 @@
             </div> --}}
 
             @if ($model->trangthai == 'DKT')
-                {{-- @include('NghiepVu._DungChung.HoSo_ThongTinQD') --}}
-                @include('NghiepVu._DungChung.HoSo_KhenThuong_ThongTinQD')
+                @include('NghiepVu._DungChung.HoSo_ThongTinQD')
+                {{-- @include('NghiepVu._DungChung.HoSo_KhenThuong_ThongTinQD') --}}
             @endif
 
             @include('NghiepVu._DungChung.HoSo_DanhSachKhenThuong')
@@ -165,6 +165,7 @@
     @include('NghiepVu._DungChung.modal_Excel')
     @include('NghiepVu._DungChung.modal_ThemPLDoiTuong')
     @include('NghiepVu._DungChung.modal_ThemDanhMuc')
+    @include('NghiepVu._DungChung.modal_ThemCQDonVi')
     {{-- @include('NghiepVu._DungChung.modal_DoiTuong') --}}
 
 @stop

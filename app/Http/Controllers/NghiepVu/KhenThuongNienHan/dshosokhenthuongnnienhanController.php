@@ -71,7 +71,8 @@ class dshosokhenthuongnnienhanController extends Controller
 
         $model = dshosothiduakhenthuong::where('madonvi', $inputs['madonvi'])
             // ->where('phanloai', 'KTDONVI')
-            ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTDONVI'])
+            // ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTDONVI'])
+            ->wherein('phanloai', ['KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTDONVI'])
             ->where('maloaihinhkt', $inputs['maloaihinhkt']);
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
             $m_loaihinh = dmloaihinhkhenthuong::all();

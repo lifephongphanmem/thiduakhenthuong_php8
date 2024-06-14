@@ -132,7 +132,7 @@
                                     @else
                                         {{-- Trường hợp gộp các quy trình vào làm một để chỉ theo dõi hồ sơ --}}
                                         @if (in_array($tt->trangthai, ['CXKT']) && chkPhanQuyen('dshosokhenthuongconghien', 'hoanthanh'))
-                                            <a href="{{ url($inputs['url_hs'] . 'Sua?mahosotdkt=' . $tt->mahosotdkt) }}"
+                                            <a href="{{ url($inputs['url_hs'] . 'Sua?mahosotdkt=' . $tt->mahosotdkt.'&madonvi='.$inputs['madonvi'].'&phanloai='.$tt->phanloai) }}"
                                                 class="btn btn-icon btn-clean btn-lg mb-1 position-relative"
                                                 title="Thông tin hồ sơ khen thưởng">
                                                 <span class="svg-icon svg-icon-xl">
@@ -154,11 +154,11 @@
                                                 <i class="icon-lg la flaticon-edit-1 text-success"></i>
                                             </a>
 
-                                            <a title="Phê duyệt hồ sơ khen thưởng"
+                                            {{-- <a title="Phê duyệt hồ sơ khen thưởng"
                                                 href="{{ url($inputs['url_hs'] . 'PheDuyet?mahosotdkt=' . $tt->mahosotdkt) }}"
                                                 class="btn btn-sm btn-clean btn-icon {{ $tt->soluongkhenthuong == 0 ? 'disabled' : '' }}">
                                                 <i class="icon-lg la flaticon-interface-10 text-success"></i>
-                                            </a>
+                                            </a> --}}
 
                                             <button type="button"
                                                 onclick="confirmDelete('{{ $tt->id }}','{{ $inputs['url_hs'] . 'Xoa' }}')"
@@ -166,6 +166,13 @@
                                                 data-toggle="modal">
                                                 <i class="icon-lg la fa-trash text-danger"></i>
                                             </button>
+                                            {{-- @if (chkPhanQuyen('dshosokhenthuongconghien', 'hoanthanh')) --}}
+                                            <a title="Phê duyệt hồ sơ khen thưởng"
+                                                href="{{ url($inputs['url_hs'] . 'PheDuyet?mahosotdkt=' . $tt->mahosotdkt.'&madonvi='.$inputs['madonvi'].'&phanloai='.$tt->phanloai) }}"
+                                                class="btn btn-sm btn-clean btn-icon {{ $tt->soluongkhenthuong == 0 ? 'disabled' : '' }}">
+                                                <i class="icon-lg la flaticon-interface-10 text-success"></i>
+                                            </a>
+                                        {{-- @endif --}}
                                         @endif
 
                                         @if ($tt->trangthai == 'DKT')

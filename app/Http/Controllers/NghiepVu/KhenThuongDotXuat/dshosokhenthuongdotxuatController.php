@@ -76,7 +76,8 @@ class dshosokhenthuongdotxuatController extends Controller
 
         $model = dshosothiduakhenthuong::where('madonvi', $inputs['madonvi'])
             // ->where('phanloai', 'KTDONVI')
-            ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTDONVI'])
+            // ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTDONVI'])
+            ->wherein('phanloai', ['KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC','KTDONVI'])
             ->where('maloaihinhkt', $inputs['maloaihinhkt']);
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
             $m_loaihinh = dmloaihinhkhenthuong::all();
@@ -95,7 +96,7 @@ class dshosokhenthuongdotxuatController extends Controller
             $hoso->soluongkhenthuong = $model_canhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + $model_tapthe->where('mahosotdkt', $hoso->mahosotdkt)->count();
         }
-        //dd($model);
+        // dd($model);
         return view('NghiepVu.KhenThuongDotXuat.HoSoKT.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
@@ -785,14 +786,18 @@ class dshosokhenthuongdotxuatController extends Controller
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
         $model_canhan = dshosothiduakhenthuong_canhan::where('mahosotdkt', $inputs['mahosotdkt'])->get();
         $model_tapthe = dshosothiduakhenthuong_tapthe::where('mahosotdkt', $inputs['mahosotdkt'])->get();
+        $model_hogiadinh = dshosothiduakhenthuong_hogiadinh::where('mahosotdkt', $inputs['mahosotdkt'])->get();
         $model_detai = dshosothiduakhenthuong_detai::where('mahosotdkt', $inputs['mahosotdkt'])->get();
         $model_tailieu = dshosothiduakhenthuong_tailieu::where('mahosotdkt', $inputs['mahosotdkt'])->get();
         $donvi = viewdiabandonvi::where('madonvi', $model->madonvi)->first();
         $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo);
         $a_dhkt_tapthe = getDanhHieuKhenThuong($donvi->capdo, 'TAPTHE');
+        $a_dhkt_hogiadinh = getDanhHieuKhenThuong($donvi->capdo, 'HOGIADINH');
+
         $model->tendonvi = $donvi->tendonvi;
         $a_tapthe = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['TAPTHE', 'HOGIADINH'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         $a_canhan = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['CANHAN'])->get()->toarray(), 'tenphanloai', 'maphanloai');
+        $a_hogiadinh = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['HOGIADINH'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         //Gán thông tin đơn vị khen thưởng
         $donvi_kt = viewdiabandonvi::where('madonvi', $model->madonvi_kt)->first();
 
@@ -804,6 +809,7 @@ class dshosokhenthuongdotxuatController extends Controller
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)
             ->with('model_tapthe', $model_tapthe)
+            ->with('model_hogiadinh', $model_hogiadinh)
             ->with('model_detai', $model_detai)
             ->with('model_tailieu', $model_tailieu)
             ->with('a_pltailieu', getPhanLoaiTaiLieuDK())
@@ -811,10 +817,12 @@ class dshosokhenthuongdotxuatController extends Controller
             ->with('a_donvikt', $a_donvikt)
             ->with('a_dhkt_canhan', $a_dhkt_canhan)
             ->with('a_dhkt_tapthe', $a_dhkt_tapthe)
+            ->with('a_dhkt_hogiadinh', $a_dhkt_hogiadinh)
             ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('a_donvi_kt', [$donvi_kt->madonvi => $donvi_kt->tendonvi])
             ->with('a_tapthe', $a_tapthe)
             ->with('a_canhan', $a_canhan)
+            ->with('a_hogiadinh', $a_hogiadinh)
             ->with('inputs', $inputs)
             ->with('pageTitle', 'Thông tin hồ sơ đề nghị khen thưởng');
     }
@@ -861,6 +869,7 @@ class dshosokhenthuongdotxuatController extends Controller
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         $inputs['trangthai'] = 'CXKT';
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+        // dd($model);
         //Xoá tài liệu đính kèm quyết định khen thưởng
         $model_tailieu = dshosothiduakhenthuong_tailieu::where('mahosotdkt', $inputs['mahosotdkt'])->where('phanloai', 'QDKT')->first();
         if ($model_tailieu != null) {
