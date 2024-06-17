@@ -93,7 +93,7 @@ class congboController extends Controller
             ->with('hethong', $hethong)
             ->with('inputs', $inputs)
             ->with('a_donvi',array_column(getDonVi('SSA')->toarray(),'tendonvi','madonvi'))
-            ->with('a_phamvi', getPhamViApDung())
+            ->with('a_phamvi', getPhamViKhenThuong())
             ->with('pageTitle', 'Danh sách quyết định khen thưởng');
     }
 
