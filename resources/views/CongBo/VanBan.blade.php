@@ -66,7 +66,7 @@
                                     </td>
                                     <td>
                                         <button type="button" title="Tải tệp"
-                                            onclick="get_attack('{{ $tt->mavanban }}', '{{ $tt->phanloaikhenthuong }}')"
+                                            onclick="get_attack('{{ $tt->mavanban }}','{{ '/CongBo/TaiLieuVanBan' }}')"
                                             class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"
                                             data-toggle="modal"><i class="icon-lg la flaticon-download text-dark"></i>
                                         </button>
@@ -101,18 +101,18 @@
         {!! Form::close() !!}
     </div>
     <script>
-        function get_attack(maqd, bang) {
+        function get_attack(mahs, url) {
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
-                url: '/CongBo/TaiLieuQuyetDinh',
+                url: url,
                 type: 'GET',
                 data: {
                     _token: CSRF_TOKEN,
-                    maqd: maqd,
-                    phanloai: bang,
+                    mahs: mahs
                 },
                 dataType: 'JSON',
                 success: function(data) {
+                    console.log(data)
                     if (data.status == 'success') {
                         $('#dinh_kem').replaceWith(data.message);
                     }
