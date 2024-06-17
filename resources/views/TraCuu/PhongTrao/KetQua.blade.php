@@ -50,7 +50,8 @@
                         @foreach ($model as $key => $tt)
                             <tr>
                                 <td style="text-align: center">{{ $key + 1 }}</td>
-                                <td class="active">{{ $tt->noidung }}</td>
+                                {{-- <td class="active">{{ $tt->noidung }}</td> --}}
+                                <td class="active"><a href="/PhongTraoThiDua/Xem?maphongtraotd={{$tt->maphongtraotd}}" target="_blank">{{ $tt->noidung }}</a></td>
                                 <td>{{$a_loaihinhkt[$tt->maloaihinhkt] ?? '' }}</td>
                                 <td class="text-center">{{ getDayVn($tt->ngayqd) }}</td>
                                 <td>{{$a_phamvi[$tt->phamviapdung] ?? ''}}</td>

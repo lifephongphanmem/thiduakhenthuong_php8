@@ -69,7 +69,7 @@
                                     <td class="text-center">Số: {{ $tt->soqd }} </br> ngày {{ getDayVn($tt->ngayqd) }}
                                     </td>
                                     <td class="text-center">{{ $phamvi[$tt->capkhenthuong] ?? $tt->capkhenthuong }}</td>
-                                    <td>{{ $tt->tentapthe }}</td>
+                                    <td><a href="/TraCuu/TapThe/ThongTinHoSo?mahosotdkt={{$tt->mahosotdkt}}" target="_blank">{{ $tt->tentapthe }}</a></td>
                                     <td>{{ $a_tapthe[$tt->maphanloaitapthe] ?? '' }}</td>
                                     <td>{{ $a_linhvuc[$tt->linhvuchoatdong] ?? $tt->linhvuchoatdong }}</td>
                                     <td>{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td>
