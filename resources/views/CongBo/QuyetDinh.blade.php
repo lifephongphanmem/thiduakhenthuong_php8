@@ -54,7 +54,7 @@
                                 <th style="text-align: center">Đơn vị ban hành</th>
                                 <th style="text-align: center" width="5%">Số hiệu <br>văn bản</th>
                                 <th style="text-align: center">Nội dung</th>
-                                <th style="text-align: center">Cấp độ<br>khen thưởng</th>
+                                {{-- <th style="text-align: center">Cấp độ<br>khen thưởng</th> --}}
                                 <th style="text-align: center" width="5%">Thao tác</th>
                             </tr>
                         </thead>
@@ -67,8 +67,8 @@
                                     <td class="success text-center">
                                         {{ $tt->soqd }}<br>{{ getDayVn($tt->ngayqd) }}</td>
                                     <td>{{ $tt->tieude }}</td>
-                                    <td style="text-align: center">
-                                        {{ $a_phamvi[$tt->capkhenthuong] ?? '' }}</td>
+                                    {{-- <td style="text-align: center">
+                                        {{ $a_phamvi[$tt->capkhenthuong] ?? '' }}</td> --}}
                                     <td>
 
                                         <button type="button" title="Tải tệp"

@@ -159,11 +159,11 @@ class dsvanbanphaplyController extends Controller
                 $result['message'] .= '<td class="text-center">' . $i++ . '</td>';
                 $result['message'] .= '<td>' . $tt->noidung . '</td>';
                 $result['message'] .= '<td class="text-center">';
-                $result['message'] .= '<button title="Sửa thông tin" type="button" onclick="getTaiLieu(&#39;' . $tt->id . '&#39;)"  class="btn btn-sm btn-clean btn-icon"
-                    data-target="#modal-tailieu" data-toggle="modal"><i class="icon-lg la fa-edit text-primary"></i></button>';
+                // $result['message'] .= '<button title="Sửa thông tin" type="button" onclick="getTaiLieu(&#39;' . $tt->id . '&#39;)"  class="btn btn-sm btn-clean btn-icon"
+                //     data-target="#modal-tailieu" data-toggle="modal"><i class="icon-lg la fa-edit text-primary"></i></button>';
 
-                $result['message'] .= '<button title="Xóa" type="button" onclick="delTaiLieu(&#39;' . $tt->id . '&#39;)" class="btn btn-sm btn-clean btn-icon" data-target="#modal-delete-tailieu" data-toggle="modal">
-                    <i class="icon-lg la fa-trash text-danger"></i></button>';
+                // $result['message'] .= '<button title="Xóa" type="button" onclick="delTaiLieu(&#39;' . $tt->id . '&#39;)" class="btn btn-sm btn-clean btn-icon" data-target="#modal-delete-tailieu" data-toggle="modal">
+                //     <i class="icon-lg la fa-trash text-danger"></i></button>';
 
                 if ($tt->tentailieu != '')
                     $result['message'] .= '<a target="_blank" title="Tải file đính kèm"
