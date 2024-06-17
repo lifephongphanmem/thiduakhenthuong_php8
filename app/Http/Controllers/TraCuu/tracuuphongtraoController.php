@@ -63,6 +63,7 @@ class tracuuphongtraoController extends Controller
             $model = $model->where('phamviapdung', $inputs['phamviapdung']);
         if ($inputs['phanloai'] != 'ALL')
             $model = $model->where('phanloai', $inputs['phanloai']);
+        // dd($model->get());
         return view('TraCuu.PhongTrao.KetQua')
             ->with('model', $model->get())
             ->with('a_phamvi', setArrayAll(getPhamViPhongTrao()))
@@ -70,4 +71,5 @@ class tracuuphongtraoController extends Controller
             ->with('a_phanloai', getPhanLoaiPhongTraoThiDua(true))
             ->with('pageTitle', 'Kết quả tìm kiếm phong trào thi đua');
     }
+
 }

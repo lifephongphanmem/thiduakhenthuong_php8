@@ -13,6 +13,13 @@ use App\Models\DanhMuc\dmhinhthuckhenthuong;
 use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dmnhomphanloai_chitiet;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_canhan;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_tapthe;
+use App\Models\NghiepVu\CumKhoiThiDua\dsphongtraothiduacumkhoi;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tapthe;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua;
 use App\Models\View\view_cumkhoi_canhan;
 use App\Models\View\view_cumkhoi_tapthe;
 use App\Models\View\view_tdkt_canhan;
@@ -144,5 +151,38 @@ class tracuutaptheController extends Controller
 
         //Lấy kết quả khen thưởng
         $model_khenthuong = $model_khenthuong->get();
+    }
+    public function ThongTinHoSo(Request $request)
+    {
+        $inputs = $request->all();
+        // dd($inputs);
+        $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahosotdkt'])->first();
+        if(!isset($model)){
+            $model=dshosotdktcumkhoi::where('mahosotdkt',$inputs['mahosotdkt'])->first();
+            // dd($model);
+            $model->tenphongtraotd = dsphongtraothiduacumkhoi::where('maphongtraotd', $model->maphongtraotd)->first()->noidung ?? '';
+            $model_tapthe = dshosotdktcumkhoi_tapthe::where('mahosotdkt', $model->mahosotdkt)->get();
+        }else{
+            $model->tenphongtraotd = dsphongtraothidua::where('maphongtraotd', $model->maphongtraotd)->first()->noidung ?? '';
+            $model_tapthe = dshosothiduakhenthuong_tapthe::where('mahosotdkt', $model->mahosotdkt)->get();
+        }
+
+        $a_phanloaidt = array_column(dmnhomphanloai_chitiet::all()->toarray(), 'tenphanloai', 'maphanloai');
+        $m_donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
+        $a_dhkt = getDanhHieuKhenThuong('ALL');
+        // dd($model_tapthe);
+        return view('TraCuu.TapThe.Xem')
+        ->with('model', $model)
+        ->with('model_tapthe', $model_tapthe)
+        // ->with('model_tapthe', $model_tapthe)
+        // ->with('model_detai', $model_detai)
+        // ->with('model_hogiadinh', $model_hogiadinh)
+        ->with('m_donvi', $m_donvi)
+        ->with('a_phanloaidt', $a_phanloaidt)
+        ->with('a_dhkt', $a_dhkt)
+        ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
+        // ->with('a_hinhthuckt', array_column(dmhinhthuckhenthuong::all()->toArray(), 'tenhinhthuckt', 'mahinhthuckt'))
+        ->with('inputs', $inputs)
+        ->with('pageTitle', 'Thông tin hồ sơ khen thưởng');
     }
 }

@@ -21,6 +21,7 @@ Route::group(['prefix' => 'TraCuu'], function () {
         Route::get('ThongTin', [tracuutaptheController::class, 'ThongTin']);
         Route::post('ThongTin', [tracuutaptheController::class, 'KetQua']);
         Route::post('InKetQua', [tracuutaptheController::class, 'InKetQua']);
+        Route::get('/ThongTinHoSo',[tracuutaptheController::class,'ThongTinHoSo']);
     });
     Route::group(['prefix' => 'PhongTrao'], function () {
         Route::get('ThongTin', [tracuuphongtraoController::class, 'ThongTin']);
