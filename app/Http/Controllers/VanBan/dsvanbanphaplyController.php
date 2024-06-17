@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\VanBan\dsvanbanphaply;
+use App\Models\VanBan\vanbanphaply_tailieu;
 use Illuminate\Support\Facades\Session;
 
 class dsvanbanphaplyController extends Controller
@@ -20,7 +21,7 @@ class dsvanbanphaplyController extends Controller
             if (!Session::has('admin')) {
                 return redirect('/');
             };
-            if(!chkaction()){
+            if (!chkaction()) {
                 Session::flush();
                 return response()->view('errors.error_login');
             };
@@ -74,7 +75,18 @@ class dsvanbanphaplyController extends Controller
             return view('errors.noperm')->with('machucnang', 'vanbanphaply')->with('tenphanquyen', 'thaydoi');
         }
         $inputs = $request->all();
-        dsvanbanphaply::findorfail($inputs['id'])->delete();
+        $model=dsvanbanphaply::findorfail($inputs['id']);
+        if(isset($model)){
+            $m_tailieu=vanbanphaply_tailieu::where('mavanban',$model->mavanban)->get();
+            foreach($m_tailieu as $ct)
+            {
+                if (file_exists('/data/tailieudinhkem/' . $ct->tentailieu)) {
+                    File::Delete('/data/tailieudinhkem/' . $ct->tentailieu);
+                }
+            }
+
+            $model->delete();
+        }
         return redirect(static::$url . 'ThongTin');
     }
 
@@ -83,11 +95,17 @@ class dsvanbanphaplyController extends Controller
         if (!chkPhanQuyen('vanbanphaply', 'thaydoi')) {
             return view('errors.noperm')->with('machucnang', 'vanbanphaply')->with('tenphanquyen', 'thaydoi');
         }
+        $inputs['phanloaihoso'] = 'vanbanphaply';
         $model = new dsvanbanphaply();
         $model->mavanban = getdate()[0];
-
+        $model_tailieu = vanbanphaply_tailieu::where('mavanban', $model->mavanban)->orderby('stt')->get();
+        $model->save();
+        $stt = $model_tailieu->max('stt');
         return view('VanBan.TaiLieu.ThayDoi')
             ->with('model', $model)
+            ->with('stt', $stt)
+            ->with('model_tailieu', $model_tailieu)
+            ->with('inputs', $inputs)
             ->with('pageTitle', 'Thông tin văn bản pháp lý');
     }
 
@@ -98,10 +116,15 @@ class dsvanbanphaplyController extends Controller
             return view('errors.noperm')->with('machucnang', 'vanbanphaply')->with('tenphanquyen', 'thaydoi');
         }
         $inputs = $request->all();
+        $inputs['phanloaihoso'] = 'vanbanphaply';
         $model = dsvanbanphaply::where('mavanban', $inputs['mavanban'])->first();
-
+        $model_tailieu = vanbanphaply_tailieu::where('mavanban', $model->mavanban)->orderby('stt')->get();
+        $stt = $model_tailieu->max('stt');
         return view('VanBan.TaiLieu.ThayDoi')
             ->with('model', $model)
+            ->with('stt', $stt)
+            ->with('inputs', $inputs)
+            ->with('model_tailieu', $model_tailieu)
             ->with('pageTitle', 'Thông tin văn bản pháp lý');
     }
 
@@ -115,37 +138,43 @@ class dsvanbanphaplyController extends Controller
         $inputs = $request->all();
 
         $model = dsvanbanphaply::where('mavanban', $inputs['mahs'])->first();
+        $model_tailieu = vanbanphaply_tailieu::where('mavanban', $model->mavanban)->orderby('stt')->get();
         //dd($model);
         $result['message'] = '<div class="modal-body" id = "dinh_kem" >';
-        if (isset($model->ipf1)) {
-            $result['message'] .= '<div class="form-group row" ><div class="col-md-12" >';
-            $result['message'] .= '<label class="control-label" > File đính kèm 1: </label >';
-            $result['message'] .= '<a target = "_blank" class="ml-10" href = "' . url('/data/vanban/' . $model->ipf1) . '">' . $model->ipf1 . '</a >';
-            $result['message'] .= '</div ></div >';
-        }
-        if (isset($model->ipf2)) {
-            $result['message'] .= '<div class="form-group row" ><div class="col-md-12" >';
-            $result['message'] .= '<label class="control-label" > File đính kèm 2 </label >';
-            $result['message'] .= '<p ><a target = "_blank" href = "' . url('/data/vanban/' . $model->ipf2) . '">' . $model->ipf2 . '</a >';
-            $result['message'] .= '</div ></div >';
-        }
-        if (isset($model->ipf3)) {
-            $result['message'] .= '<div class="form-group row" ><div class="col-md-12" >';
-            $result['message'] .= '<label class="control-label" > File đính kèm 3 </label >';
-            $result['message'] .= '<a target = "_blank" class="ml-10" href = "' . url('/data/vanban/' . $model->ipf3) . '">' . $model->ipf3 . '</a >';
-            $result['message'] .= '</div ></div >';
-        }
-        if (isset($model->ipf4)) {
-            $result['message'] .= '<div class="form-group row" ><div class="col-md-12" >';
-            $result['message'] .= '<label class="control-label" > File đính kèm 4 </label >';
-            $result['message'] .= '<a target = "_blank" class="ml-10" href = "' . url('/data/vanban/' . $model->ipf4) . '">' . $model->ipf4 . '</a >';
-            $result['message'] .= '</div ></div >';
-        }
-        if (isset($model->ipf5)) {
-            $result['message'] .= '<div class="form-group row" ><div class="col-md-12" >';
-            $result['message'] .= '<label class="control-label" > File đính kèm 5 </label >';
-            $result['message'] .= '<a target = "_blank" class="ml-10" href = "' . url('/data/vanban/' . $model->ipf5) . '">' . $model->ipf5 . '</a >';
-            $result['message'] .= '</div ></div >';
+        if (count($model_tailieu) > 0) {
+            $result['message'] .= '<div class="row" id="dstailieu">';
+            $result['message'] .= '<div class="col-md-12">';
+            $result['message'] .= '<table class="table table-bordered table-hover dulieubang"';
+            $result['message'] .= '<thead>';
+            $result['message'] .= '<tr class="text-center">';
+            $result['message'] .= '<th width="2%">STT</th>';
+            $result['message'] .= '<th>Nội dung</th>';
+            $result['message'] .= '<th width="15%">Thao tác</th>';
+            $result['message'] .= '</tr>';
+            $result['message'] .= '</thead>';
+            $result['message'] .= '<tbody>';
+            $i = 1;
+            foreach ($model_tailieu as $tt) {
+                $result['message'] .= '<tr class="odd gradeX">';
+                $result['message'] .= '<td class="text-center">' . $i++ . '</td>';
+                $result['message'] .= '<td>' . $tt->noidung . '</td>';
+                $result['message'] .= '<td class="text-center">';
+                $result['message'] .= '<button title="Sửa thông tin" type="button" onclick="getTaiLieu(&#39;' . $tt->id . '&#39;)"  class="btn btn-sm btn-clean btn-icon"
+                    data-target="#modal-tailieu" data-toggle="modal"><i class="icon-lg la fa-edit text-primary"></i></button>';
+
+                $result['message'] .= '<button title="Xóa" type="button" onclick="delTaiLieu(&#39;' . $tt->id . '&#39;)" class="btn btn-sm btn-clean btn-icon" data-target="#modal-delete-tailieu" data-toggle="modal">
+                    <i class="icon-lg la fa-trash text-danger"></i></button>';
+
+                if ($tt->tentailieu != '')
+                    $result['message'] .= '<a target="_blank" title="Tải file đính kèm"
+                            href="/data/tailieudinhkem/' . $tt->tentailieu . '" class="btn btn-clean btn-icon btn-sm"><i class="fa flaticon-download text-info"></i></a>';
+                $result['message'] .= '</td>';
+                $result['message'] .= '</tr>';
+            }
+            $result['message'] .= '</tbody>';
+            $result['message'] .= '</table>';
+            $result['message'] .= '</div>';
+            $result['message'] .= '</div>';
         }
         $result['message'] .= '</div>';
         $result['status'] = 'success';
