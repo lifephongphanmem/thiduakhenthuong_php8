@@ -77,15 +77,17 @@ class dsphongtraothiduacumkhoiController extends Controller
         $inputs['phanloaihoso'] = 'dshosotdktcumkhoi';
         $model = dsphongtraothiduacumkhoi::where('madonvi', $inputs['madonvi']);
         $truongcumkhoi=view_dstruongcumkhoi::where('macumkhoi',$inputs['macumkhoi'])->orderBy('ngayden','desc')->first();
-        if(isset($truongcumkhoi)){
-            if($truongcumkhoi->madonvi == $inputs['madonvi']){
-                $inputs['thaotacthem']=true;
-            }else{
-                $inputs['thaotacthem']=false;
-            }
-        }else{
-            $inputs['thaotacthem']=false;
-        }
+        //15062024 Tạm bỏ để các đơn vị đều có thể tạo được phong trào cụm khối cho đợt tập huấn. Mặc định để thaotacthem =true
+        // if(isset($truongcumkhoi)){
+        //     if($truongcumkhoi->madonvi == $inputs['madonvi']){
+        //         $inputs['thaotacthem']=true;
+        //     }else{
+        //         $inputs['thaotacthem']=false;
+        //     }
+        // }else{
+        //     $inputs['thaotacthem']=false;
+        // }
+        $inputs['thaotacthem']=true;
         if ($inputs['nam'] != 'ALL')
             $model = $model->whereYear('ngayqd', $inputs['nam']);
         if ($inputs['phanloai'] != 'ALL')
