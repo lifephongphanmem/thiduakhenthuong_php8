@@ -149,7 +149,7 @@
                                             </a>
 
                                             <a title="Phê duyệt hồ sơ khen thưởng"
-                                                href="{{ url($inputs['url_hs'] . 'PheDuyet?mahosotdkt=' . $tt->mahosotdkt) }}"
+                                                href="{{ url($inputs['url_hs'] . 'PheDuyet?mahosotdkt=' . $tt->mahosotdkt.'&madonvi='.$inputs['madonvi'].'&phanloai='.$tt->phanloai) }}"
                                                 class="btn btn-sm btn-clean btn-icon {{ $tt->soluongkhenthuong == 0 ? 'disabled' : '' }}">
                                                 <i class="icon-lg la flaticon-interface-10 text-success"></i>
                                             </a>
@@ -185,7 +185,7 @@
 
     <!--Modal Tao hồ sơ đề nghị-->
     {!! Form::open(['url' => $inputs['url_hs'] . 'ThemKT', 'id' => 'frm_hoso', 'files' => true]) !!}
-    <input type="hidden" name="madonvi" value="{{ $inputs['madonvi'] }}" />
+    <input type="text" name="madonvi" value="{{ $inputs['madonvi'] }}" />
     <div id="taohoso-modal" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade kt_select2_modal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
