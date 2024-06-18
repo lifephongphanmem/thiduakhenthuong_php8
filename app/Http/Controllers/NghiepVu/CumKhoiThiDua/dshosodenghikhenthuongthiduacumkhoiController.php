@@ -207,7 +207,7 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
         $inputs['trangthai'] = $inputs['trangthai'] == 'ALL' ? 'CC' : $inputs['trangthai'];
 
         $a_donviql = getDonViXetDuyetDiaBan_Tam($donvi);
-        //dd($a_donviql);  
+        // dd($a_donviql);  
         // dd($model);  
 
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.HoSoDeNghi.DanhSach')
