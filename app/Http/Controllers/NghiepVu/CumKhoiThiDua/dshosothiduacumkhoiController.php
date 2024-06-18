@@ -176,8 +176,9 @@ class dshosothiduacumkhoiController extends Controller
         }
 
         $donvidiaban=array_column(dsdonvi::where('madonvi',$inputs['madonvi'])->get()->toarray(),'tendonvi','madonvi');
-        $a_donviql=count($a_donviql)> 0?$a_donviql: $donvidiaban;
-        // dd($a_donviql);
+        $donvi_taophongtrao=array_column($model->toarray(),'tendonvi','madonvi');
+        $a_donviql=count($a_donviql)> 0?$a_donviql: $donvi_taophongtrao;
+        // dd($donvi_taophongtrao);
         if ($m_cumkhoi->count() == 0) {
             return view('errors.404')->with('message', 'Cụm, khối thi đua chưa có trưởng cụm, khối. Bạn hãy liên hệ đơn vị quản lý để thêm trưởng cụm khối')
                 ->with('url', '/CumKhoiThiDua/ThamGiaThiDua/ThongTin?madonvi=' . $inputs['madonvi']);
