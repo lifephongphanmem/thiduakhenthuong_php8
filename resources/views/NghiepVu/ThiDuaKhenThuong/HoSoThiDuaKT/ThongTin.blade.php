@@ -185,7 +185,7 @@
 
     <!--Modal Tao hồ sơ đề nghị-->
     {!! Form::open(['url' => $inputs['url_hs'] . 'ThemKT', 'id' => 'frm_hoso', 'files' => true]) !!}
-    <input type="text" name="madonvi" value="{{ $inputs['madonvi'] }}" />
+    <input type="hidden" name="madonvi" value="{{ $inputs['madonvi'] }}" />
     <div id="taohoso-modal" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade kt_select2_modal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
