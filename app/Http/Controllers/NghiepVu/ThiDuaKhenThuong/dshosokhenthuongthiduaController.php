@@ -100,14 +100,15 @@ class dshosokhenthuongthiduaController extends Controller
         $m_hoso = dshosothiduakhenthuong::wherein('trangthai', ['CD', 'DD', 'CXKT', 'DKT', 'DXKT'])
             ->where('madonvi_nhan', $inputs['madonvi'])->get();
 
-        $m_khenthuong = dshosothiduakhenthuong::where('madonvi', $inputs['madonvi'])->where('phanloai', 'KTDONVI')->get();
+        $m_khenthuong = dshosothiduakhenthuong::where('madonvi', $inputs['madonvi'])->where('phanloai', 'KTDONVI')->wherein('maphongtraotd',array_column($model->toarray(),'maphongtraotd'))->get();
 
         //$m_trangthai_phongtrao = trangthaihoso::where('phanloai', 'dsphongtraothidua')->orderby('thoigian', 'desc')->get();
         //dd($ngayhientai);
-        $m_khenthuong_canhan = dshosothiduakhenthuong_canhan::wherein('mahosotdkt', array_column($model->toarray(), 'mahosotdkt'))
+        $m_khenthuong_canhan = dshosothiduakhenthuong_canhan::wherein('mahosotdkt', array_column($m_khenthuong->toarray(), 'mahosotdkt'))
             ->where('ketqua', '1')->get();
-        $m_khenthuong_tapthe = dshosothiduakhenthuong_tapthe::wherein('mahosotdkt', array_column($model->toarray(), 'mahosotdkt'))
+        $m_khenthuong_tapthe = dshosothiduakhenthuong_tapthe::wherein('mahosotdkt', array_column($m_khenthuong->toarray(), 'mahosotdkt'))
             ->where('ketqua', '1')->get();
+            // dd($m_khenthuong_tapthe);
         foreach ($model as $ct) {
             KiemTraPhongTrao($ct, $ngayhientai);
             $hoso = $m_hoso->where('maphongtraotd', $ct->maphongtraotd);
@@ -176,6 +177,7 @@ class dshosokhenthuongthiduaController extends Controller
             $model->donvikhenthuong = $khenthuong->tendonvi;
         }
         $a_donvikt = array_unique(array_merge([$model->donvikhenthuong => $model->donvikhenthuong], getDonViKhenThuong()));
+
         return view('NghiepVu.ThiDuaKhenThuong.HoSoThiDuaKT.ThayDoi')
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)
@@ -271,7 +273,7 @@ class dshosokhenthuongthiduaController extends Controller
         $trangthai->thoigian = $inputs['ngayhoso'];
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&phanloai='.$inputs['phanloai'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function LuuHoSo(Request $request)
