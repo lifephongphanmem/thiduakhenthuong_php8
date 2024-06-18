@@ -82,7 +82,7 @@ class dshosothiduacumkhoiController extends Controller
         $tungay=$firstDayOfYear->toDateString();
         $denngay=$lastDayOfYear->toDateString();
         $dsphantruongcumkhoi=dstruongcumkhoi::where('ngaytu','>=',$tungay)->where('ngayden','<=',$denngay)->first();
-        $a_truongcumkhoi = array_column(dstruongcumkhoi_chitiet::where('madanhsach', $dsphantruongcumkhoi->madanhsach)->get()->toarray(), 'madonvi', 'macumkhoi');
+        // $a_truongcumkhoi = array_column(dstruongcumkhoi_chitiet::where('madanhsach', $dsphantruongcumkhoi->madanhsach)->get()->toarray(), 'madonvi', 'macumkhoi');
         // dd($m_phongtrao);
         // dd($m_hoso);
         foreach ($model as $ct) {
@@ -99,7 +99,7 @@ class dshosothiduacumkhoiController extends Controller
             ->with('model', $model)
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
-            ->with('a_truongcumkhoi', $a_truongcumkhoi)
+            // ->with('a_truongcumkhoi', $a_truongcumkhoi)
             ->with('a_donvi', array_column($m_donvi->toArray(), 'tendonvi', 'madonvi'))
             ->with('a_capdo', getPhamViApDung())
             ->with('inputs', $inputs)

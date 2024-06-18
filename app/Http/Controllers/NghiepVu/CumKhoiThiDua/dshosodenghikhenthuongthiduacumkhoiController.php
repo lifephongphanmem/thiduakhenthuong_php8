@@ -91,7 +91,7 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
         $tungay = $firstDayOfYear->toDateString();
         $denngay = $lastDayOfYear->toDateString();
         $dsphantruongcumkhoi = dstruongcumkhoi::where('ngaytu', '>=', $tungay)->where('ngayden', '<=', $denngay)->first();
-        $a_truongcumkhoi = array_column(dstruongcumkhoi_chitiet::where('madanhsach', $dsphantruongcumkhoi->madanhsach)->get()->toarray(), 'madonvi', 'macumkhoi');
+        // $a_truongcumkhoi = array_column(dstruongcumkhoi_chitiet::where('madanhsach', $dsphantruongcumkhoi->madanhsach)->get()->toarray(), 'madonvi', 'macumkhoi');
         foreach ($model as $ct) {
             // $ct->sohoso = $m_hoso->where('macumkhoi', $ct->macumkhoi)->count();
             $model_cumkhoi = view_dsphongtrao_cumkhoi::where('macumkhoi', $ct->macumkhoi)->orderby('tungay')->get();
@@ -135,7 +135,7 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
             ->with('m_donvi', $m_donvi)
             // ->with('a_phongtraotd', array_column($model_phongtrao->toarray(), 'noidung', 'maphongtraotd'))
             ->with('m_diaban', $m_diaban)
-            ->with('a_truongcumkhoi', $a_truongcumkhoi)
+            // ->with('a_truongcumkhoi', $a_truongcumkhoi)
             ->with('a_donvi', array_column($m_donvi->toArray(), 'tendonvi', 'madonvi'))
             ->with('a_capdo', getPhamViApDung())
             ->with('a_phanloaihs', getPhanLoaiHoSo('KHENTHUONG'))
