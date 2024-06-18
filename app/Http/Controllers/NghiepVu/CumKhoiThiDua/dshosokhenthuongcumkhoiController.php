@@ -118,6 +118,7 @@ class dshosokhenthuongcumkhoiController extends Controller
         $truongcumkhoi = $truongcumkhoi->madonvi ?? $m_cumkhoi->where('macumkhoi', $inputs['macumkhoi'])->first()->madonviql;
         $inputs['truongcumkhoi'] = $truongcumkhoi == $inputs['madonvi'] ? true : false;
         //dd($inputs);
+
         return view('NghiepVu.CumKhoiThiDua.HoSoKT.ThongTin')
             ->with('inputs', $inputs)
             ->with('model', $model)
