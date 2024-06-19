@@ -56,8 +56,8 @@ class dshosothiduacumkhoiController extends Controller
 
     public function ThongTin(Request $request)
     {
-        if (!chkPhanQuyen('dshosodenghikhenthuongcumkhoi', 'danhsach')) {
-            return view('errors.noperm')->with('machucnang', 'dshosodenghikhenthuongcumkhoi')->with('tenphanquyen', 'danhsach');
+        if (!chkPhanQuyen('dshosothiduacumkhoi', 'danhsach')) {
+            return view('errors.noperm')->with('machucnang', 'dshosothiduacumkhoi')->with('tenphanquyen', 'danhsach');
         }
         $inputs = $request->all();
         $inputs['url_hs'] = static::$url;
@@ -67,7 +67,7 @@ class dshosothiduacumkhoiController extends Controller
         $inputs['phanloaikhenthuong'] = 'CUMKHOI';
         $inputs['phanloaihoso'] = 'dshosothamgiathiduacumkhoi';
         //$m_donvi = getDonViCK(session('admin')->capdo, null, 'MODEL');
-        $m_donvi = getDonViCK(session('admin')->capdo, 'dshosodenghikhenthuongcumkhoi');
+        $m_donvi = getDonViCK(session('admin')->capdo, 'dshosothiduacumkhoi');
         //dd($m_donvi);
         $m_diaban = dsdiaban::wherein('madiaban', array_column($m_donvi->toarray(), 'madiaban'))->get();
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
