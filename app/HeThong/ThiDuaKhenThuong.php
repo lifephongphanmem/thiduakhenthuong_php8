@@ -1525,6 +1525,19 @@ function getToaDoMacDinh($inputs)
     return $model;
 }
 
+//Lấy phôi bằng khen, giấy khen của đon vị
+function getPhoiBk($m_donvi)
+{
+    $m_donvi_inphoi=dsdonvi::where('madonvi', session('admin')->madonvi_inphoi)->first();
+    if($m_donvi->phoi_bangkhen == ''){
+        $m_donvi->phoi_bangkhen=$m_donvi_inphoi->phoi_bangkhen;
+    }
+
+    if($m_donvi->phoi_giaykhen == ''){
+        $m_donvi->phoi_giaykhen=$m_donvi_inphoi->phoi_giaykhen;
+    }
+}
+
 //Lấy cấp độ cao nhất
 function getCapDoLonNhat($capdo)
 {

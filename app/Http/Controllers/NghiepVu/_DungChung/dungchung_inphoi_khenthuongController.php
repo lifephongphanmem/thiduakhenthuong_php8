@@ -127,6 +127,7 @@ class dungchung_inphoi_khenthuongController extends Controller
         }
 
         $m_donvi = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
+        getPhoiBk($m_donvi);
         $m_toado = getToaDoMacDinh($inputs);
         foreach ($model as $doituong) {
             //dd($doituong);
@@ -181,6 +182,7 @@ class dungchung_inphoi_khenthuongController extends Controller
             $doituong->quyetdinh = $doituong->quyetdinh != '' ? $doituong->quyetdinh : ('Số: ' . $m_hoso->soqd . ', ' . Date2Str($m_hoso->ngayqd) . '</br>Số bằng: 01');
             $doituong->toado_quyetdinh = $doituong->toado_quyetdinh != '' ? $doituong->toado_quyetdinh : ($m_toado->toado_quyetdinh ?? '');
         }
+        // dd($m_donvi);
         //dd($model);
         return view('BaoCao.DonVi.InBangKhenTapThe')
             ->with('model', $model)
@@ -237,6 +239,7 @@ class dungchung_inphoi_khenthuongController extends Controller
         }
 
         $m_donvi = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
+        getPhoiBk($m_donvi);
         $m_toado = getToaDoMacDinh($inputs);
         // dd($m_toado);
         foreach ($model as $doituong) {
