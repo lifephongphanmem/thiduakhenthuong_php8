@@ -87,7 +87,7 @@ class hethongchungController extends Controller
                     // $ttuser->status = 'Vô hiệu';
                     $ttuser->trangthai = 0;
                     $ttuser->save();
-                    return view('errors.lockuser')
+                    return view('errors.403')
                         ->with('message', 'Tài khoản đang bị khóa. Bạn hãy liên hệ với người quản trị để mở khóa tài khoản.')
                         ->with('url', '/DangNhap');
                 }
