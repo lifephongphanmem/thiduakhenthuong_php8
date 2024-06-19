@@ -77,7 +77,7 @@
             <div class="form-group row">
                 <div class="col-12">
                     <label style="font-weight: bold">Cụm, khối thi đua</label>
-                    <select class="form-control select2basic" id="macumkhoi">
+                    <select class="form-control select2basic" id="macumkhoi" disabled>
                         @foreach ($m_cumkhoi as $cumkhoi)
                             <option {{ $cumkhoi->macumkhoi == $inputs['macumkhoi'] ? 'selected' : '' }}
                                 value="{{ $cumkhoi->macumkhoi }}">{{ $cumkhoi->tencumkhoi }}</option>
