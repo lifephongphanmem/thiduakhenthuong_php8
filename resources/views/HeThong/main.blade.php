@@ -333,7 +333,16 @@
                 </div>
             @endif
 
-
+            <div class="row gutter-b">
+                <!--begin::Item-->
+                {{-- <div class="col-12">
+                    <a href="{{ url('/YKienGopY/ThongTin') }}"
+                        class="btn btn-block btn-light btn-hover-primary text-dark-50 text-center py-5 px-5">
+                        <span class="d-block font-weight-bold font-size-h6 mt-2">Ý kiến góp ý</span>
+                    </a>
+                </div> --}}
+                <!--end::Item-->
+            </div>
             {{-- <div class="row">
                 <!--begin::Item-->
                 <div class="col-12">

@@ -84,7 +84,8 @@ class hethongchungController extends Controller
             if (md5($input['matkhau']) != $ttuser->matkhau) {
                 $ttuser->solandn = $ttuser->solandn + 1;
                 if ($ttuser->solandn >= $solandn) {
-                    $ttuser->status = 'Vô hiệu';
+                    // $ttuser->status = 'Vô hiệu';
+                    $ttuser->trangthai = 0;
                     $ttuser->save();
                     return view('errors.lockuser')
                         ->with('message', 'Tài khoản đang bị khóa. Bạn hãy liên hệ với người quản trị để mở khóa tài khoản.')
