@@ -453,6 +453,7 @@ class dungchung_inphoi_khenthuongController extends Controller
 
         // $m_donvi = dsdonvi::where('madonvi', $m_hoso->madonvi)->first();
         $m_donvi = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
+        getPhoiBk($m_donvi);
         $m_toado = getToaDoMacDinh($inputs);
         //dd($m_toado);
         foreach ($model as $doituong) {
@@ -562,6 +563,7 @@ class dungchung_inphoi_khenthuongController extends Controller
 
         // $m_donvi = dsdonvi::where('madonvi', $m_hoso->madonvi)->first();
         $m_donvi = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
+        getPhoiBk($m_donvi);
         $m_toado = getToaDoMacDinh($inputs);
         foreach ($model as $doituong) {
             //$doituong->noidungkhenthuong = catchuoi(($doituong->noidungkhenthuong != '' ? $doituong->noidungkhenthuong : 'Nội dung khen thưởng'), $m_donvi->sochu);
