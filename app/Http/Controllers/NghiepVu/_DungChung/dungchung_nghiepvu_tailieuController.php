@@ -16,6 +16,8 @@ use App\Models\NghiepVu\KhenCao\dshosodenghikhencao_tailieu;
 use App\Models\NghiepVu\KhenCao\dshosokhencao_tailieu;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tailieu;
 use App\Models\VanBan\vanbanphaply_tailieu;
+use App\Models\YKienGopY\ykiengopy;
+use App\Models\YKienGopY\ykiengopy_tailieu;
 use Illuminate\Support\Facades\File;
 
 class dungchung_nghiepvu_tailieuController extends Controller
@@ -143,6 +145,21 @@ class dungchung_nghiepvu_tailieuController extends Controller
                     $danhsach = vanbanphaply_tailieu::where('mavanban', $inputs['mavanban'])->get();
                     break;
                 }
+                case 'ykiengopy': {
+                    $model = ykiengopy_tailieu::where('id', $inputs['id'])->first();
+                    $inputs['magopy']=$inputs['mahosotdkt'];
+                    unset($inputs['id']);
+                    if ($model == null) {
+                        ykiengopy_tailieu::create($inputs);
+                    } else {
+                        if (file_exists('/data/tailieudinhkem/' . $model->tentailieu)) {
+                            File::Delete('/data/tailieudinhkem/' . $model->tentailieu);
+                        }
+                        $model->update($inputs);
+                    }
+                    $danhsach = ykiengopy_tailieu::where('magopy', $inputs['magopy'])->get();
+                    break;
+                }
         }
 
         $result = array(
@@ -150,7 +167,7 @@ class dungchung_nghiepvu_tailieuController extends Controller
             'message' => 'error',
         );
         // return response()->json($inputs);
-        if($inputs['phanloaihoso'] == 'vanbanphaply'){
+        if(in_array($inputs['phanloaihoso'],['vanbanphaply','ykiengopy'])){
             $this->htmlTaiLieuVBPL($result, $danhsach);
         }else{
             $this->htmlTaiLieu($result, $danhsach, $inputs['madonvi']);
@@ -319,6 +336,12 @@ class dungchung_nghiepvu_tailieuController extends Controller
                     $danhsach = vanbanphaply_tailieu::where('mavanban', $model->mavanban)->get();
                     break;
                 }
+                case 'ykiengopy': {
+                    $model = ykiengopy_tailieu::where('id', $inputs['id'])->first();
+                    $model->delete();
+                    $danhsach = ykiengopy_tailieu::where('magopy', $model->magopy)->get();
+                    break;
+                }
         }
         //Check xoá file
         if (file_exists('/data/tailieudinhkem/' . $model->tentailieu)) {
@@ -330,12 +353,12 @@ class dungchung_nghiepvu_tailieuController extends Controller
         );
         //return response()->json($inputs);
 
-        if($inputs['phanloaihoso'] == 'vanbanphaply'){
+        if(in_array($inputs['phanloaihoso'],['vanbanphaply','ykiengopy'])){
             $this->htmlTaiLieuVBPL($result, $danhsach);
         }else{
             $this->htmlTaiLieu($result, $danhsach, $inputs['madonvi']);
         }
-        return response()->json($result);
+        return response()->json($danhsach);
     }
 
     function htmlTaiLieu(&$result, $model, $madonvi_cs)
