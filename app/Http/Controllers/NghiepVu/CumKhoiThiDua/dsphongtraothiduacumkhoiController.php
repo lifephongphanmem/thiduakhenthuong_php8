@@ -73,7 +73,7 @@ class dsphongtraothiduacumkhoiController extends Controller
         $m_cumkhoi = view_dscumkhoi::all();
 
         // dd($m_cumkhoi);
-        $inputs['macumkhoi'] = $inputs['macumkhoi'] ?? $m_cumkhoi->first()->macumkhoi;
+        $inputs['macumkhoi'] = $inputs['macumkhoi'] ?? $m_cumkhoi->where('madonvi',$inputs['madonvi'])->first()->macumkhoi;
         $inputs['phanloaihoso'] = 'dshosotdktcumkhoi';
         $model = dsphongtraothiduacumkhoi::where('madonvi', $inputs['madonvi']);
         $truongcumkhoi=view_dstruongcumkhoi::where('macumkhoi',$inputs['macumkhoi'])->orderBy('ngayden','desc')->first();
@@ -104,6 +104,7 @@ class dsphongtraothiduacumkhoiController extends Controller
             $ct->sohoso_thamgia=$sohoso_thamgia;
             $ct->sohoso_kt=count($m_hoso_denghi->where('maphongtraotd',$ct->maphongtraotd));
         }
+        // dd($m_cumkhoi->unique('macumkhoi')->where('macumkhoi','1718006363'));
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.DanhSachPhongTrao.ThongTin')
             ->with('model', $model)
             ->with('m_donvi', $m_donvi)
