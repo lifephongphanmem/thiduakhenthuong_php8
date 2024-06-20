@@ -157,7 +157,12 @@ class dungchung_nghiepvu_tailieuController extends Controller
                         }
                         $model->update($inputs);
                     }
-                    $danhsach = ykiengopy_tailieu::where('magopy', $inputs['magopy'])->get();
+                    if($inputs['phanloai'] == 'GOPY'){
+                        $danhsach = ykiengopy_tailieu::where('magopy', $inputs['magopy'])->where('phanloai','GOPY')->get();
+                    }else{
+                        $danhsach = ykiengopy_tailieu::where('magopy', $inputs['magopy'])->where('phanloai','PHANHOI')->get();
+                    }
+                   
                     break;
                 }
         }

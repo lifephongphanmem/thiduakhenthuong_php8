@@ -10,6 +10,7 @@ use App\Models\YKienGopY\ykiengopy_tailieu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 
 class ykiengopyController extends Controller
 {

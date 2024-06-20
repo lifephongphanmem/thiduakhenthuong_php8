@@ -34,10 +34,10 @@
                 <h3 class="card-label text-uppercase">Ý kiến đóng góp</h3>
             </div>
             <div class="card-toolbar">
-                {{-- @if (chkPhanQuyen('dshosodenghikhenthuongchuyende', 'thaydoi')) --}}
-                <a href="{{ '/YKienGopY/Them?madonvi=' . $inputs['madonvi'] }}" class="btn btn-success btn-xs">
-                    <i class="fa fa-plus"></i>&nbsp;Thêm mới</a>
-                {{-- @endif --}}
+                @if (!in_array(session('admin')->sadmin, ['SSA', 'ADMIN']))
+                    <a href="{{ '/YKienGopY/Them?madonvi=' . $inputs['madonvi'] }}" class="btn btn-success btn-xs">
+                        <i class="fa fa-plus"></i>&nbsp;Thêm mới</a>
+                @endif
             </div>
         </div>
         <div class="card-body">
@@ -64,14 +64,14 @@
                         <thead>
                             <tr class="text-center">
                                 <th width="2%">STT</th>
-                                <th width="20%">Đơn vị góp ý</th>
+                                <th width="20%">Đơn vị góp ý kiến</th>
                                 <th>Tiêu đề </th>
-                                <th width="10%">Nội dung góp ý</th>
+                                <th width="10%">Nội dung</br> góp ý</th>
                                 <th width="10%">Thời gian</th>
                                 <th width="8%">Trạng thái</th>
-                                <th>Đơn vị tiếp nhận</th>
-                                <th>Thời gian tiếp nhận</th>
-                                <th>Thời gian phản hồi</th>
+                                <th>Đơn vị</br> tiếp nhận</th>
+                                <th>Thời gian</br> tiếp nhận</th>
+                                <th>Thời gian</br> phản hồi</th>
                                 <th width="15%">Thao tác</th>
                             </tr>
                         </thead>
@@ -79,15 +79,17 @@
                         @foreach ($model as $key => $tt)
                             <tr>
                                 <td class="text-center">{{ $i++ }}</td>
-                                <td>{{ $a_donvi[$tt->madonvi] ?? '' }}</td>
+                                <td>{{ $a_donvi[$tt->madonvi]??'' }}</td>
                                 <td>{{ $tt->tieude }}</td>
                                 <td>{{ $tt->noidung }}</td>
                                 <td>{{ Carbon::parse($tt->thoigiangopy)->format('H:i:s d:m:Y') }}</td>
                                 @include('includes.td.td_trangthai_hoso')
                                 {{-- <td>{{ $a_donvi[$tt->madonvi_nhan] ?? '' }}</td> --}}
-                                <td>{{ $tt->madonviphanhoi }}</td>
-                                <td>{{$tt->thoigiantiepnhan == ''?'': Carbon::parse($tt->thoigiantiepnhan)->format('H:i:s d:m:Y') }}</td>
-                                <td>{{$tt->thoigianphanhoi == ''?'': Carbon::parse($tt->thoigianphanhoi)->format('H:i:s d:m:Y') }}</td>
+                                <td>{{ $tt->madonviphanhoi == 'SSA' ? 'Đơn vị phát triển phần mềm' : 'Quản trị' }}</td>
+                                <td>{{ $tt->thoigiantiepnhan == '' ? '' : Carbon::parse($tt->thoigiantiepnhan)->format('H:i:s d:m:Y') }}
+                                </td>
+                                <td>{{ $tt->thoigianphanhoi == '' ? '' : Carbon::parse($tt->thoigianphanhoi)->format('H:i:s d:m:Y') }}
+                                </td>
                                 <td style="text-align: center">
                                     <button title="Tài liệu đính kèm" type="button"
                                         onclick="get_attack('{{ $tt->magopy }}', '{{ $inputs['url_tailieudinhkem'] }}')"
@@ -95,19 +97,19 @@
                                         data-toggle="modal">
                                         <i class="icon-lg la la-file-download text-dark icon-2x"></i>
                                     </button>
-                                    @if ($tt->trangthai == 0)
+                                    @if ($tt->trangthai == 0 && !in_array(session('admin')->sadmin, ['SSA', 'ADMIN']))
                                         <a href="{{ url($inputs['url'] . 'Sua?magopy=' . $tt->magopy) }}"
                                             class="btn btn-sm btn-clean btn-icon" title="Sửa thông tin">
                                             <i class="icon-lg la flaticon-edit-1 text-success"></i>
                                         </a>
-                                        @if (in_array(session('admin')->sadmin, ['SSA', 'ADMIN']))
-                                            <button title="Tiếp nhận hồ sơ" type="button"
-                                                onclick="confirmNhan('{{ $tt->magopy }}','{{ $inputs['url'] . 'NhanYKien' }}')"
-                                                class="btn btn-sm btn-clean btn-icon" data-target="#nhan-modal-confirm"
-                                                data-toggle="modal">
-                                                <i class="icon-lg flaticon-interface-5 text-success"></i>
-                                            </button>
-                                        @endif
+                                    @endif
+                                    @if ($tt->trangthai == 0 && in_array(session('admin')->sadmin, ['SSA', 'ADMIN']))
+                                        <button title="Tiếp nhận hồ sơ" type="button"
+                                            onclick="confirmNhan('{{ $tt->magopy }}','{{ $inputs['url'] . 'NhanYKien' }}')"
+                                            class="btn btn-sm btn-clean btn-icon" data-target="#nhan-modal-confirm"
+                                            data-toggle="modal">
+                                            <i class="icon-lg flaticon-interface-5 text-success"></i>
+                                        </button>
                                     @endif
                                     @if ($tt->trangthai == 1 && in_array(session('admin')->sadmin, ['SSA', 'ADMIN']))
                                         <a href="{{ $inputs['url'] . 'PhanHoi?magopy=' . $tt->magopy }}"
@@ -122,13 +124,13 @@
                                             data-toggle="modal">
                                             <i class="icon-lg la fa-archive text-dark"></i></button>
                                     @endif
-                                    @if ($tt->trangthai == 0)
-                                    <button type="button"
-                                        onclick="confirmDelete('{{ $tt->id }}','{{ $inputs['url'] . 'Xoa' }}')"
-                                        class="btn btn-sm btn-clean btn-icon" data-target="#delete-modal-confirm"
-                                        data-toggle="modal" title="Xóa văn bản">
-                                        <i class="icon-lg la flaticon-delete text-danger"></i>
-                                    </button>
+                                    @if ($tt->trangthai == 0 && !in_array(session('admin')->sadmin, ['SSA', 'ADMIN']))
+                                        <button type="button"
+                                            onclick="confirmDelete('{{ $tt->id }}','{{ $inputs['url'] . 'Xoa' }}')"
+                                            class="btn btn-sm btn-clean btn-icon" data-target="#delete-modal-confirm"
+                                            data-toggle="modal" title="Xóa văn bản">
+                                            <i class="icon-lg la flaticon-delete text-danger"></i>
+                                        </button>
                                     @endif
                                 </td>
 
