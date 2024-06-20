@@ -12,6 +12,14 @@
     <script src="/assets/js/pages/dataTables.bootstrap.js"></script>
     <script src="/assets/js/pages/table-lifesc.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
+    <script>
+        jQuery(document).ready(function() {
+            TableManaged3.init();
+            TableManaged4.init();
+            TableManaged5.init();
+            TableManagedclass.init();
+        });
+    </script>
 @stop
 
 @section('content')

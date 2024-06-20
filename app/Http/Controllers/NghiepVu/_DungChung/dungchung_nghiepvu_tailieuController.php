@@ -367,7 +367,7 @@ class dungchung_nghiepvu_tailieuController extends Controller
         }else{
             $this->htmlTaiLieu($result, $danhsach, $inputs['madonvi']);
         }
-        return response()->json($danhsach);
+        return response()->json($result);
     }
 
     function htmlTaiLieu(&$result, $model, $madonvi_cs)
