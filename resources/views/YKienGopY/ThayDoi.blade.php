@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-lg-12">
                     <label class="control-label">Nội dung</label>
-                    {!! Form::textarea('noidung', null, ['id' => 'dvbanhanh', 'class' => 'form-control','rows' => '3']) !!}
+                    {!! Form::textarea('noidungphanhoi', null, ['id' => 'dvbanhanh', 'class' => 'form-control','rows' => '3']) !!}
                 </div>
             </div>
 
@@ -273,9 +273,10 @@
                 },
                 dataType: 'JSON',
                 success: function(data) {
+                    // console.log(data);
                     var form = $('#frm_ThemTaiLieu');
                     form.find("[name='id']").val(data.id);
-                    form.find("[name='phanloai']").val(data.phanloai).trigger('change');
+                    form.find("[name='phanloai']").val(data.phanloai);
                     form.find("[name='noidung']").val(data.noidung);
                 }
             });

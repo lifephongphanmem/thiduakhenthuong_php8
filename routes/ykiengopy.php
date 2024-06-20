@@ -11,4 +11,5 @@ Route::prefix('YKienGopY')->group(function(){
     Route::get('Them',[ykiengopyController::class,'Them']);
     Route::get('Sua',[ykiengopyController::class,'ThayDoi']);
     Route::post('Sua',[ykiengopyController::class,'LuuThayDoi']);
+
 });

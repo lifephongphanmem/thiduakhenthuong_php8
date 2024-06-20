@@ -41,6 +41,7 @@ class ykiengopyController extends Controller
             $model=ykiengopy::where('madonvi',$inputs['madonvi'])->get();
         }
         $inputs['url']=static::$url;
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
         return view('YKienGopY.ThongTin')
                 ->with('model',$model)
                 ->with('m_donvi', $m_donvi)
@@ -124,5 +125,20 @@ class ykiengopyController extends Controller
             $model->delete();
         }
         return redirect(static::$url . 'ThongTin');
+    }
+
+    public function NhanYKien(Request $request)
+    {
+        $inputs = $request->all();
+
+        $thoigian = date('Y-m-d H:i:s');
+        $model = ykiengopy::where('magopy', $inputs['magopy'])->first();
+        //gán lại trạng thái hồ sơ để theo dõi
+        $model->trangthai = 1;//Đã tiếp nhận
+        $model->thoigiantiepnhan = $thoigian;
+        // $model->tendangnhap_xl=session('admin')->tendangnhap;
+        // dd($model);
+        $model->save();
+        return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }
 }

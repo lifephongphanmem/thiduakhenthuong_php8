@@ -64,12 +64,13 @@
                                             class="btn btn-sm btn-clean btn-icon"><i
                                                 class="icon-lg la fa-edit text-success"></i>
                                         </a>
-
+                                    @endif
+                                    @if (chkPhanQuyen('dstruongcumkhoi', 'danhsach'))
                                         <a title="Chi tiết danh sách"
                                             href="{{ url($inputs['url'] . 'DanhSach/?madanhsach=' . $tt->madanhsach) }}"
                                             class="btn btn-sm btn-clean btn-icon">
                                             <i class="icon-lg flaticon-list-2 text-dark"></i>
-                                        </a>                                       
+                                        </a>
 
                                         <button title="Tài liệu đính kèm" type="button"
                                             onclick="get_attack('{{ $tt->macumkhoi }}','{{ $inputs['url'] . 'TaiLieuDinhKem' }}')"
@@ -77,7 +78,8 @@
                                             data-toggle="modal">
                                             <i class="icon-lg flaticon-download text-dark"></i>
                                         </button>
-
+                                    @endif
+                                    @if (chkPhanQuyen('dstruongcumkhoi', 'thaydoi'))
                                         <button title="Xóa danh sách" type="button"
                                             onclick="confirmDelete('{{ $tt->id }}','{{ $inputs['url'] . 'Xoa' }}')"
                                             class="btn btn-sm btn-clean btn-icon" data-target="#delete-modal-confirm"
