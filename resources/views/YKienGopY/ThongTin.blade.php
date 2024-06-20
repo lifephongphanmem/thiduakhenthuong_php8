@@ -85,7 +85,7 @@
                                 <td>{{ Carbon::parse($tt->thoigiangopy)->format('H:i:s d:m:Y') }}</td>
                                 @include('includes.td.td_trangthai_hoso')
                                 {{-- <td>{{ $a_donvi[$tt->madonvi_nhan] ?? '' }}</td> --}}
-                                <td>{{ $tt->madonviphanhoi == 'SSA' ? 'Đơn vị phát triển phần mềm' : 'Quản trị' }}</td>
+                                <td>{{ $tt->madonviphanhoi == ''?'':($tt->madonviphanhoi == 'SSA' ? 'Đơn vị phát triển phần mềm' : 'Quản trị') }}</td>
                                 <td>{{ $tt->thoigiantiepnhan == '' ? '' : Carbon::parse($tt->thoigiantiepnhan)->format('H:i:s d:m:Y') }}
                                 </td>
                                 <td>{{ $tt->thoigianphanhoi == '' ? '' : Carbon::parse($tt->thoigianphanhoi)->format('H:i:s d:m:Y') }}
