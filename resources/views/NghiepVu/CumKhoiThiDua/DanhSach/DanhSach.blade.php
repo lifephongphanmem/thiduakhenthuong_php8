@@ -54,7 +54,9 @@
                                 <th width="5%">STT</th>
                                 <th>Tên đơn vị</th>
                                 <th width="20%">Phân loại</th>
+                                @if (chkPhanQuyen('dscumkhoithidua', 'thaydoi'))
                                 <th style="text-align: center" width="10%">Thao tác</th>
+                                @endif
                             </tr>
                         </thead>
                         @foreach ($model as $key => $tt)
@@ -62,6 +64,7 @@
                                 <td style="text-align: center">{{ $key + 1 }}</td>
                                 <td>{{ $a_donvi[$tt->madonvi] ?? '' }}</td>
                                 <td>{{ $a_phanloai[$tt->phanloai] ?? '' }}</td>
+                                @if (chkPhanQuyen('dscumkhoithidua', 'thaydoi'))
                                 <td class="text-center">
                                     <button title="Danh sách tiêu chuẩn" type="button"
                                         onclick="getThongTin('{{ $tt->madonvi }}', '{{ $tt->phanloai }}')"
@@ -76,6 +79,7 @@
                                         <i class="icon-lg la fa-trash-alt text-danger"></i>
                                     </button>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </table>
