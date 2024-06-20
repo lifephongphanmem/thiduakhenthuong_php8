@@ -65,7 +65,8 @@
                                             class="btn btn-sm btn-clean btn-icon"><i
                                                 class="icon-lg flaticon-edit-1 text-primary"></i>
                                         </a>
-
+                                    @endif
+                                    @if (chkPhanQuyen('dscumkhoithidua', 'danhsach'))
                                         <a href="{{ url($inputs['url'] . 'DanhSach/?macumkhoi=' . $tt->macumkhoi) }}"
                                             class="btn btn-icon btn-clean btn-lg mb-1 position-relative"
                                             title="Danh sách đơn vị">
@@ -75,13 +76,20 @@
                                             <span
                                                 class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{ $tt->sodonvi }}</span>
                                         </a>
-
                                         <button title="Tài liệu đính kèm" type="button"
+                                        onclick="get_attack('{{ $tt->macumkhoi }}','{{ $inputs['url'] . 'TaiLieuDinhKem' }}')"
+                                        class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"
+                                        data-toggle="modal">
+                                        <i class="icon-lg flaticon-download text-dark"></i>
+                                    </button>
+                                    @endif
+                                    @if (chkPhanQuyen('dscumkhoithidua', 'thaydoi'))
+                                        {{-- <button title="Tài liệu đính kèm" type="button"
                                             onclick="get_attack('{{ $tt->macumkhoi }}','{{ $inputs['url'] . 'TaiLieuDinhKem' }}')"
                                             class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"
                                             data-toggle="modal">
                                             <i class="icon-lg flaticon-download text-dark"></i>
-                                        </button>
+                                        </button> --}}
 
                                         <button title="Xóa cụm khối" type="button"
                                             onclick="confirmDelete('{{ $tt->id }}','{{ $inputs['url'] . 'Xoa' }}')"
@@ -100,7 +108,7 @@
     </div>
     <!--end::Card-->
 
-    
+
 
     @include('includes.modal.modal_attackfile')
     @include('includes.modal.modal-delete')

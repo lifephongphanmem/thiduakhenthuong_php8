@@ -278,6 +278,10 @@ class dungchung_nghiepvu_tailieuController extends Controller
                     $model = vanbanphaply_tailieu::where('id', $inputs['id'])->first();
                     break;
                 }
+                case 'ykiengopy': {
+                    $model = ykiengopy_tailieu::where('id', $inputs['id'])->first();
+                    break;
+                }
         }
         return response()->json($model);
     }
