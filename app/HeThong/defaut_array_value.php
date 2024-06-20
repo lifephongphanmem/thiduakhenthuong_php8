@@ -1481,6 +1481,18 @@ function getTrangThai_TD_HoSo($trangthai)
         'DCXL' => [
             'trangthai' => 'Đã chuyển</br>xử lý',
             'class' => 'badge badge-warning'
+        ],
+        '0' => [
+            'trangthai' => 'Đã chuyển</br>ý kiến',
+            'class' => 'badge badge-success'
+        ],
+        '1' => [
+            'trangthai' => 'Đã tiếp nhận</br>ý kiến',
+            'class' => 'badge badge-success'
+        ],
+        '2' => [
+            'trangthai' => 'Đã phản hồi</br>ý kiến',
+            'class' => 'badge badge-success'
         ]
 
     ];

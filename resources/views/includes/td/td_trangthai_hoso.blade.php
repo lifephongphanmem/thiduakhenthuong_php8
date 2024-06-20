@@ -39,7 +39,7 @@
 @endif --}}
 
 <?php $a_trangthai_td = getTrangThai_TD_HoSo($tt->trangthai);
-        $a_trangthai_xl= getTrangThai_TD_HoSo($tt->trangthai_xl);
+$a_trangthai_xl = getTrangThai_TD_HoSo($tt->trangthai_xl);
 ?>
 @switch($tt->trangthai)
     @case('CC')
@@ -54,11 +54,13 @@
             <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
         </td>
     @break
+
     @case('BTLTN')
         <td align="center">
             <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
         </td>
     @break
+
     @case('CNXKT')
     @case('CXKT')
 
@@ -69,13 +71,13 @@
     @case('DDK')
 
     @case('KDK')
-    <td align="center">
-        <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
-        {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_xd }}</b> --}}
-    </td>
-@break
-    @case('DD')
+        <td align="center">
+            <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+            {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_xd }}</b> --}}
+        </td>
+    @break
 
+    @case('DD')
     @case('DTH')
         <td align="center">
             <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
@@ -89,13 +91,36 @@
             {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_xd }}</b> --}}
         </td>
     @break
+
     @case('DCXL')
         <td align="center">
             <span class="{{ $a_trangthai_xl['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
             {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_xd }}</b> --}}
         </td>
     @break
+
     @case('DCCVKT')
+        <td align="center">
+            <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+            {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_kt }}</b> --}}
+        </td>
+    @break
+
+    @case('0')
+        <td align="center">
+            <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+            {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_kt }}</b> --}}
+        </td>
+    @break
+
+    @case('1')
+        <td align="center">
+            <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+            {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_kt }}</b> --}}
+        </td>
+    @break
+
+    @case('2')
         <td align="center">
             <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
             {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_kt }}</b> --}}

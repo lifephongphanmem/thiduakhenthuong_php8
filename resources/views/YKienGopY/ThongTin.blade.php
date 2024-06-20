@@ -1,5 +1,4 @@
 @extends('HeThong.main')
-
 @section('custom-style')
     <link rel="stylesheet" type="text/css" href="{{ url('assets/css/pages/dataTables.bootstrap.css') }}" />
     {{-- <link rel="stylesheet" type="text/css" href="{{ url('assets/css/pages/select2.css') }}" /> --}}
@@ -23,7 +22,9 @@
         });
     </script>
 @stop
-
+@php
+    use Carbon\Carbon;
+@endphp
 @section('content')
     <!--begin::Card-->
     <div class="card card-custom wave wave-animate-slow wave-info" style="min-height: 600px">
@@ -40,7 +41,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="form-group row">
+            {{-- <div class="form-group row">
                 <div class="col-5">
                     <label style="font-weight: bold">Đơn vị</label>
                     <select class="form-control select2basic" id="madonvi">
@@ -55,7 +56,7 @@
                         @endforeach
                     </select>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="form-group row">
                 <div class="col-md-12">
@@ -78,14 +79,15 @@
                         @foreach ($model as $key => $tt)
                             <tr>
                                 <td class="text-center">{{ $i++ }}</td>
-                                <td>{{ $tt->madonvi }}</td>
+                                <td>{{ $a_donvi[$tt->madonvi] ?? '' }}</td>
                                 <td>{{ $tt->tieude }}</td>
                                 <td>{{ $tt->noidung }}</td>
+                                <td>{{ Carbon::parse($tt->thoigiangopy)->format('H:i:s d:m:Y') }}</td>
                                 @include('includes.td.td_trangthai_hoso')
-                                <td>{{ $tt->thoigiangopy }}</td>
-                                <td>{{ $a_donvi[$tt->madonvi_nhan] ?? '' }}</td>
-                                <td>{{ $tt->thoigiantiepnhan }}</td>
-                                <td>{{ $tt->thoigianphanhoi }}</td>
+                                {{-- <td>{{ $a_donvi[$tt->madonvi_nhan] ?? '' }}</td> --}}
+                                <td>{{ $tt->madonviphanhoi }}</td>
+                                <td>{{$tt->thoigiantiepnhan == ''?'': Carbon::parse($tt->thoigiantiepnhan)->format('H:i:s d:m:Y') }}</td>
+                                <td>{{$tt->thoigianphanhoi == ''?'': Carbon::parse($tt->thoigianphanhoi)->format('H:i:s d:m:Y') }}</td>
                                 <td style="text-align: center">
                                     <button title="Tài liệu đính kèm" type="button"
                                         onclick="get_attack('{{ $tt->magopy }}', '{{ $inputs['url_tailieudinhkem'] }}')"
@@ -93,31 +95,41 @@
                                         data-toggle="modal">
                                         <i class="icon-lg la la-file-download text-dark icon-2x"></i>
                                     </button>
-                                    <a href="{{ url($inputs['url'] . 'Sua?magopy=' . $tt->magopy) }}"
-                                        class="btn btn-sm btn-clean btn-icon" title="Sửa thông tin">
-                                        <i class="icon-lg la flaticon-edit-1 text-success"></i>
-                                    </a>
                                     @if ($tt->trangthai == 0)
-                                    <button title="Tiếp nhận hồ sơ" type="button"
-                                    onclick="confirmNhan('{{ $tt->magopy }}','{{ $inputs['url'] . 'NhanYKien' }}')"
-                                    class="btn btn-sm btn-clean btn-icon" data-target="#nhan-modal-confirm"
-                                    data-toggle="modal">
-                                    <i class="icon-lg flaticon-interface-5 text-success"></i>
-                                </button>     
+                                        <a href="{{ url($inputs['url'] . 'Sua?magopy=' . $tt->magopy) }}"
+                                            class="btn btn-sm btn-clean btn-icon" title="Sửa thông tin">
+                                            <i class="icon-lg la flaticon-edit-1 text-success"></i>
+                                        </a>
+                                        @if (in_array(session('admin')->sadmin, ['SSA', 'ADMIN']))
+                                            <button title="Tiếp nhận hồ sơ" type="button"
+                                                onclick="confirmNhan('{{ $tt->magopy }}','{{ $inputs['url'] . 'NhanYKien' }}')"
+                                                class="btn btn-sm btn-clean btn-icon" data-target="#nhan-modal-confirm"
+                                                data-toggle="modal">
+                                                <i class="icon-lg flaticon-interface-5 text-success"></i>
+                                            </button>
+                                        @endif
                                     @endif
-
-                                    <button title="Thông tin phản hồi" type="button"
-                                    onclick="viewLyDo('{{ $tt->magopy }}','{{ $inputs['madonvi'] }}','/HoSoThiDua/LayLyDo')"
-                                    class="btn btn-sm btn-clean btn-icon" data-target="#tralai-modal"
-                                    data-toggle="modal">
-                                    <i class="icon-lg la fa-archive text-dark"></i></button>
-
+                                    @if ($tt->trangthai == 1 && in_array(session('admin')->sadmin, ['SSA', 'ADMIN']))
+                                        <a href="{{ $inputs['url'] . 'PhanHoi?magopy=' . $tt->magopy }}"
+                                            title="Phản hồi ý kiến" type="button" class="btn btn-sm btn-clean btn-icon">
+                                            <i class="icon-lg la la-reply text-success"></i>
+                                        </a>
+                                    @endif
+                                    @if ($tt->trangthai == 2)
+                                        <button title="Thông tin phản hồi" type="button"
+                                            onclick="viewLyDo('{{ $tt->magopy }}','/YKienGopY/LayThongTin')"
+                                            class="btn btn-sm btn-clean btn-icon" data-target="#tralai-modal"
+                                            data-toggle="modal">
+                                            <i class="icon-lg la fa-archive text-dark"></i></button>
+                                    @endif
+                                    @if ($tt->trangthai == 0)
                                     <button type="button"
                                         onclick="confirmDelete('{{ $tt->id }}','{{ $inputs['url'] . 'Xoa' }}')"
                                         class="btn btn-sm btn-clean btn-icon" data-target="#delete-modal-confirm"
                                         data-toggle="modal" title="Xóa văn bản">
                                         <i class="icon-lg la flaticon-delete text-danger"></i>
                                     </button>
+                                    @endif
                                 </td>
 
                             </tr>
@@ -153,6 +165,50 @@
         </div>
         {!! Form::close() !!}
     </div>
+    <div id="tralai-modal" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+        {!! Form::open(['url' => '', 'id' => 'frm_lydo']) !!}
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-primary">
+                    <h4 id="modal-header-primary-label" class="modal-title">Thông tin phản hồi</h4>
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Nội dung</label>
+                                {!! Form::textarea('noidungphanhoi', null, ['id' => 'noidungphanhoi', 'class' => 'form-control', 'rows' => '3']) !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
+                </div>
+            </div>
+        </div>
+        {!! Form::close() !!}
+    </div>
+
+    <div id="dinhkem-modal-confirm" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+        {!! Form::open(['url' => '', 'id' => 'frm_dinhkem']) !!}
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header modal-header-primary">
+                    <h4 id="modal-header-primary-label" class="modal-title">Danh sách tài liệu đính kèm</h4>
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                </div>
+                <div class="modal-body" id="dinh_kem">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Đóng</button>
+                </div>
+            </div>
+        </div>
+        {!! Form::close() !!}
+    </div>
 
     <script>
         function clickNhan() {
@@ -163,6 +219,50 @@
             $('#frm_nhan').attr('action', url);
             $('#frm_nhan').find("[name='magopy']").val(mahs);
             // $('#frm_nhan').find("[name='madonvi_nhan']").val(madonvi);
+        }
+
+        function viewLyDo(mahs, url) {
+            $('#btn_tralai').hide();
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            //alert(id);
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {
+                    _token: CSRF_TOKEN,
+                    magopy: mahs,
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    console.log(data.noidungphanhoi)
+                    // if(data.lydo_xd != null && data.trangthai != 'BTL'){
+
+                    $('#frm_lydo').find("[name='noidungphanhoi']").val(data.noidungphanhoi);
+
+                }
+            })
+        }
+
+        function get_attack(mahs, url) {
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {
+                    _token: CSRF_TOKEN,
+                    mahs: mahs
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    console.log(data);
+                    if (data.status == 'success') {
+                        $('#dinh_kem').replaceWith(data.message);
+                    }
+                },
+                error: function(message) {
+                    toastr.error(message, 'Lỗi!');
+                }
+            });
         }
     </script>
     @include('includes.modal.modal-delete')
