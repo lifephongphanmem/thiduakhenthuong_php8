@@ -89,7 +89,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                                 <input class="form-control border-1 px-5 placeholder-dark-75" title="Tên tài khoản"
                                     type="text" placeholder="Tên tài khoản truy cập" id="tendangnhap"
-                                    name="tendangnhap" value="{{ $inputs['tendangnhap'] ?? ''}}" required
+                                    name="tendangnhap" value="{{ $inputs['tendangnhap'] ?? '' }}" required
                                     autocomplete="off" />
                             </div>
 
@@ -101,6 +101,9 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                                 <input class="form-control border-1 px-5 placeholder-dark-75" title="Mật khẩu đăng nhập"
                                     type="Password" placeholder="Mật khẩu" id="matkhau" name="matkhau" required />
+                                <div class="input-group-prepend">
+                                    <button class="input-group-text form-group" type="button" onclick="HienMK()"> <i class="fa fa-eye"></i></button>
+                                </div>
                             </div>
                             <div class="form-group d-flex flex-wrap justify-content-between align-items-center mt-5">
                                 {{-- <div class="checkbox-inline">
@@ -136,8 +139,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                         placeholder="Email" name="email" autocomplete="off" />
                                 </div>
                                 <div class="form-group py-2 m-0 border-top">
-                                    <input class="form-control h-auto border-0 px-0 placeholder-dark-75"
-                                        type="password" placeholder="Password" name="password" />
+                                    <input class="form-control h-auto border-0 px-0 placeholder-dark-75" type="password"
+                                        placeholder="Password" name="password" />
                                 </div>
                                 <div class="form-group py-2 m-0 border-top">
                                     <input class="form-control h-auto border-0 px-0 placeholder-dark-75"
@@ -187,12 +190,12 @@ License: You must have a valid license purchased only from themeforest(the above
                     </div>
                 </div>
                 <!--end:Content-->
-                
+
             </div>
         </div>
         <!--end::Login-->
 
-		{{-- <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
+        {{-- <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
 			<!--begin::Container-->
 			<div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
 				<!--begin::Copyright-->
@@ -226,13 +229,11 @@ License: You must have a valid license purchased only from themeforest(the above
 					}
 				});
 		
-    		}); --}}
-    </script>
+    		}); 
+    </script>--}}
     <script>
         var HOST_URL = "https://phanmemcuocsong.com/";
-    </script>
-    <!--begin::Global Config(global config for global JS scripts)-->
-    <script>
+    
         var KTAppSettings = {
             "breakpoints": {
                 "sm": 576,
@@ -291,6 +292,14 @@ License: You must have a valid license purchased only from themeforest(the above
             },
             "font-family": "Poppins"
         };
+        function HienMK(){            
+            var type = document.getElementById('matkhau').type;            
+            if(type == 'password'){
+                document.getElementById('matkhau').type = 'text';
+            }else{
+                document.getElementById('matkhau').type = 'password';
+            }
+        }
     </script>
     <!--end::Global Config-->
     <!--begin::Global Theme Bundle(used by all pages)-->
