@@ -17,5 +17,8 @@ class ykiengopy extends Model
         'madonviphanhoi',
         'noidungphanhoi',
         'trangthai',//0:đã gửi ý kiến,1:đã tiếp nhận,2:Đã phản hồi
+        'thoigiangopy',
+        'thoigiantiepnhan',
+        'thoigianphanhoi'
     ];
 }

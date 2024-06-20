@@ -12,4 +12,11 @@ Route::prefix('YKienGopY')->group(function(){
     Route::get('Sua',[ykiengopyController::class,'ThayDoi']);
     Route::post('Sua',[ykiengopyController::class,'LuuThayDoi']);
 
+    Route::post('NhanYKien',[ykiengopyController::class,'NhanYKien']);
+    Route::get('PhanHoi',[ykiengopyController::class,'PhanHoi']);
+    Route::post('PhanHoi',[ykiengopyController::class,'LuuPhanHoi']);
+
+    Route::get('LayThongTin',[ykiengopyController::class,'LayThongTin']);
+
+    Route::get('DinhKemGopY',[ykiengopyController::class,'DinhKemGopY']);
 });

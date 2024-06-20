@@ -20,7 +20,7 @@
     <div class="card card-custom" style="min-height: 600px">
         <div class="card-header">
             <div class="card-title">
-                <h3 class="card-label text-uppercase">Thông tin ý kiến góp ý</h3>
+                <h3 class="card-label text-uppercase">Thông tin phản hồi ý kiến góp ý</h3>
             </div>
             <div class="card-toolbar">
                 <!--begin::Button-->
@@ -30,23 +30,23 @@
 
         {!! Form::model($model, [
             'method' => 'POST',
-            'url' => '/YKienGopY/Sua',
+            'url' => '/YKienGopY/PhanHoi',
             'class' => 'form',
             'id' => 'frm_ThayDoi',
             'files' => true,
             'enctype' => 'multipart/form-data',
         ]) !!}
-        {{ Form::hidden('madonvi', null, ['id' => 'madonvi']) }}
+        {{-- {{ Form::hidden('madonvi', null, ['id' => 'madonvi']) }} --}}
         {{ Form::hidden('magopy', null, ['id' => 'magopy']) }}
         <div class="card-body">
             <div class="form-group row">
-                <div class="col-lg-12">
+                {{-- <div class="col-lg-12">
                     <label class="control-label">Tiêu đề</label>
                     {!! Form::text('tieude', null, ['class' => 'form-control ']) !!}
-                </div>
+                </div> --}}
                 <div class="col-lg-12">
                     <label class="control-label">Nội dung</label>
-                    {!! Form::textarea('noidung', null, ['id' => 'noidung', 'class' => 'form-control','rows' => '3']) !!}
+                    {!! Form::textarea('noidungphanhoi', null, ['id' => 'noidungphanhoi', 'class' => 'form-control','rows' => '3']) !!}
                 </div>
             </div>
 
@@ -190,7 +190,7 @@
     ]) !!}
     <input type="hidden" name="id" />
     <input type="hidden" name="mahosotdkt" value="{{ $model->magopy }}" />
-    <input type="hidden" name="madonvi" value="{{ $model->madonvi }}" />
+    {{-- <input type="hidden" name="madonvi" value="{{ $model->madonvi }}" /> --}}
     <input type="hidden" name="phanloaihoso" value="{{ $inputs['phanloaihoso'] }}" />
     <input type="hidden" name="phanloai" value="{{$inputs['phanloai']}}" />
     <div class="modal fade bs-modal-lg" id="modal-tailieu" tabindex="-1" role="dialog" aria-hidden="true">
