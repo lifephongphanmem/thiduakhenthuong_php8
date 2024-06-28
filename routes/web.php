@@ -40,6 +40,7 @@ Route::group(['prefix' => 'DungChung'], function () {
     Route::get('DinhKemHoSoDeNghiCumKhoi', [dungchung_nghiepvu_tailieuController::class, 'DinhKemHoSoDeNghiCumKhoi']);
     Route::get('DinhKemHoSoThamGiaCumKhoi', [dungchung_nghiepvu_tailieuController::class, 'DinhKemHoSoThamGiaCumKhoi']);
 
+
     Route::group(['prefix' => 'InPhoiKhenThuong'], function () {
         Route::get('DanhSach', [dungchung_inphoi_khenthuongController::class, 'DanhSach']);
         Route::get('getNoiDungKhenThuong', [dungchung_inphoi_khenthuongController::class, 'getNoiDungKhenThuong']);        
@@ -56,6 +57,7 @@ Route::group(['prefix' => 'DungChung'], function () {
     Route::get('GanToaDoMacDinh', [dungchung_nghiepvuController::class, 'GanToaDoMacDinh']);
     Route::post('LuuThayDoiViTri', [dungchung_nghiepvuController::class, 'LuuThayDoiViTri']);
     Route::post('TaiLaiToaDo', [dungchung_nghiepvuController::class, 'TaiLaiToaDo']);
+    Route::post('/ThuHoiHS',[dungchung_nghiepvuController::class,'ThuHoiHS']);
 
     //2023.09.14 Dùng chung cho nghiệp vụ tài liệu đính kèm
     Route::group(['prefix' => 'TaiLieuDinhKem'], function () {
@@ -158,3 +160,4 @@ include('vanphonghotro.php');
 include('nhatky.php');
 include('ykiengopy.php');
 include('thongbao.php');
+include('mail.php');

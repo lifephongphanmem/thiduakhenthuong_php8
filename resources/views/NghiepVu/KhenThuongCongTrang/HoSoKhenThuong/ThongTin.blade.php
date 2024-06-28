@@ -93,7 +93,7 @@
                         @foreach ($model as $key => $tt)
                             <tr>
                                 <td class="text-center">{{ $i++ }}</td>
-                                <td>{{$a_phanloaihs[$tt->phanloai] ?? $tt->phanloai }}</td>
+                                <td>{{ $a_phanloaihs[$tt->phanloai] ?? $tt->phanloai }}</td>
                                 <td>{{ $tt->noidung }}</td>
                                 <td class="text-center">{{ $tt->sototrinh }}<br>{{ getDayVn($tt->ngayhoso) }}
                                 </td>
@@ -117,6 +117,14 @@
                                     </button> --}}
 
                                     @include('NghiepVu._DungChung.TD_XemThongTinTDKT')
+                                    @if ($tt->trangthai == 'CD')
+                                        <button title="Thu hồi hồ sơ" type="button"
+                                            onclick="confirmThuHoi('{{ $tt->mahosotdkt }}','{{ '/DungChung/ThuHoiHS' }}', '{{ $inputs['phanloaihoso'] }}','{{ $inputs['url_return'] . '?madonvi=' . $inputs['madonvi'] }}')"
+                                            class="btn btn-sm btn-clean btn-icon">
+                                            <i class="icon-lg text-dark-50 flaticon-internet"></i>
+                                        </button>
+                                    @endif
+
 
                                     @if (in_array($tt->trangthai, ['CC', 'BTL', 'CXD']) && chkPhanQuyen('dshosodenghikhenthuongcongtrang', 'thaydoi'))
                                         @if (in_array($inputs['trangthai'], ['CC', 'CD']))
@@ -143,6 +151,7 @@
     @include('NghiepVu._DungChung.InDuLieu')
     @include('includes.modal.modal-delete')
     @include('includes.modal.modal_chuyenhs')
+    @include('includes.modal.modal_thuhoi_hs')
     @include('includes.modal.modal_attackfile')
     @include('includes.modal.modal-lydo')
 @stop

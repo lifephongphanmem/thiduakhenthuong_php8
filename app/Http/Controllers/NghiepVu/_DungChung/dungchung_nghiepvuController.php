@@ -893,4 +893,26 @@ class dungchung_nghiepvuController extends Controller
             ->with('pageTitle', 'Lịch sử hồ sơ');
         
     }
+
+    public function ThuHoiHS(Request $request)
+    {
+        $inputs=$request->all();
+        if($inputs['phanloai']=='dshosothiduakhenthuong'){
+            $model=dshosothiduakhenthuong::where('mahosotdkt',$inputs['mahoso'])->first();
+        }else{
+            $model=dshosotdktcumkhoi::where('mahosotdkt',$inputs['mahoso'])->first();
+        }
+
+        if(isset($model)){
+            $data=[
+                'trangthai'=>'CC',
+                'madonvi_xd'=>'',
+                'trangthai_xd'=>'',
+                'thoigian_xd'=>''
+            ];
+            $model->update($data);
+        }
+
+        return redirect($inputs['url_return']);
+    }
 }

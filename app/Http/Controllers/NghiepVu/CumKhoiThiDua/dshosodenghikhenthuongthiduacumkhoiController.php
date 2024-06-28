@@ -209,7 +209,8 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
         $a_donviql = getDonViXetDuyetDiaBan_Tam($donvi);
         // dd($a_donviql);  
         // dd($model);  
-
+        // dd($inputs);
+        $inputs['url_return']=static::$url.'DanhSach?macumkhoi='.$inputs['macumkhoi'].'&madonvi='.$inputs['madonvi'];
         return view('NghiepVu.CumKhoiThiDua.PhongTraoThiDua.HoSoDeNghi.DanhSach')
             ->with('inputs', $inputs)
             ->with('model', $model->sortby('tungay'))

@@ -212,12 +212,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
             // $phamviapdung = dsphongtraothidua::where('maphongtraotd', $hoso->maphongtraotd)->first();
             // $hoso->phamviapdung = $phamviapdung->phamviapdung;
         }
-        // dd($model);
-        //dd($m_phongtrao);
-        //getDonViXetDuyetDiaBan()
-        // dd(getDonViXetDuyetDiaBan($donvi));
-        // dd(getDonViXetDuyetPhongTrao($donvi, $m_phongtrao));
-        // dd(getDonViXDDiaBan($donvi));
+        $inputs['url_return']=static::$url.'DanhSach?madonvi='.$inputs['madonvi'].'&maphongtraotd='.$inputs['maphongtraotd'];
         return view('NghiepVu.ThiDuaKhenThuong.HoSoDeNghiKhenThuongPhongTrao.DanhSach')
             ->with('inputs', $inputs)
             ->with('model', $model)

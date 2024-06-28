@@ -55,6 +55,7 @@ class dshosodenghikhenthuongconghienController extends Controller
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
         $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
+        $inputs['url_return']=static::$url.'ThongTin';
 
         //dd(session('chucnang')['dshosodenghikhenthuongconghien']['maloaihinhkt']);
         $m_donvi = getDonVi(session('admin')->capdo, 'dshosodenghikhenthuongconghien');
