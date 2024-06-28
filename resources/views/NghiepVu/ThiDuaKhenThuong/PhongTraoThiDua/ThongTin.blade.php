@@ -74,10 +74,15 @@
                 </div> --}}
                 <div class="col-md-4">
                     <label style="font-weight: bold">Hình thức thi đua</label>
-                    {!! Form::select('phuongthuctochuc', setArrayAll(getPhuongThucToChucPhongTrao(), 'Tất cả', 'ALL'), $inputs['phuongthuctochuc'], [
-                        'id' => 'phuongthuctochuc',
-                        'class' => 'form-control select2basic',
-                    ]) !!}
+                    {!! Form::select(
+                        'phuongthuctochuc',
+                        setArrayAll(getPhuongThucToChucPhongTrao(), 'Tất cả', 'ALL'),
+                        $inputs['phuongthuctochuc'],
+                        [
+                            'id' => 'phuongthuctochuc',
+                            'class' => 'form-control select2basic',
+                        ],
+                    ) !!}
                 </div>
                 <div class="col-md-2">
                     <label style="font-weight: bold">Năm</label>
@@ -117,6 +122,11 @@
                                         class="btn btn-sm btn-clean btn-icon" target="_blank">
                                         <i class="icon-lg la fa-eye text-dark"></i>
                                     </a>
+                                    <a title="Hồ sơ đã khen thưởng"
+                                        href="{{ url('/PhongTraoThiDua/HoSoKT?maphongtraotd=' . $tt->maphongtraotd . '&madonvi=' . $tt->madonvi) }}"
+                                        class="btn btn-sm btn-clean btn-icon">
+                                        <i class="icon-lg text-dark-50 flaticon-list-3"></i>
+                                    </a>
                                     <button title="Tài liệu đính kèm" type="button"
                                         onclick="get_attack('{{ $tt->maphongtraotd }}', '/PhongTraoThiDua/TaiLieuDinhKem')"
                                         class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"
@@ -125,12 +135,12 @@
                                     @if (chkPhanQuyen('dsphongtraothidua', 'thaydoi'))
                                         @if ($tt->trangthai == 'CC')
                                             <a title="Chỉnh sửa"
-                                                href="{{ url('/PhongTraoThiDua/Sua?maphongtraotd=' . $tt->maphongtraotd.'&phuongthuctochuc='.$tt->phuongthuctochuc) }}"
+                                                href="{{ url('/PhongTraoThiDua/Sua?maphongtraotd=' . $tt->maphongtraotd . '&phuongthuctochuc=' . $tt->phuongthuctochuc) }}"
                                                 class="btn btn-sm btn-clean btn-icon"><i
                                                     class="icon-lg la fa-edit text-success"></i>
                                             </a>
                                             <button title="Xóa hồ sơ" type="button"
-                                                onclick="confirmDelete('{{ $tt->id }}',{{$tt->sohoso_thamgia}},{{$tt->sohoso_kt}},'/PhongTraoThiDua/Xoa')"
+                                                onclick="confirmDelete('{{ $tt->id }}',{{ $tt->sohoso_thamgia }},{{ $tt->sohoso_kt }},'/PhongTraoThiDua/Xoa')"
                                                 class="btn btn-sm btn-clean btn-icon" data-target="#delete-modal-confirm"
                                                 data-toggle="modal">
                                                 <i class="icon-lg la fa-trash-alt text-danger"></i>
@@ -286,7 +296,7 @@
 
                                         <td class=" text-center">
                                             <a title="Tiếp nhận và phát động phong trào"
-                                                href="{{ url('/PhongTraoThiDua/Them?maphongtraotd_coso=' . $tt->maphongtraotd . '&madonvi=' . $inputs['madonvi']).'&phuongthuctochuc='.$tt->phuongthuctochuc }}"
+                                                href="{{ url('/PhongTraoThiDua/Them?maphongtraotd_coso=' . $tt->maphongtraotd . '&madonvi=' . $inputs['madonvi']) . '&phuongthuctochuc=' . $tt->phuongthuctochuc }}"
                                                 class="btn btn-sm btn-clean btn-icon" target="_blank">
                                                 <i class="icon-lg la fa-edit text-dark"></i>
                                             </a>
@@ -312,71 +322,72 @@
         'method' => 'GET',
         'id' => 'frm_hoso'
     ]) !!} --}}
-    <form action="{{'/PhongTraoThiDua/Them'}}" method="GET" id="frm_hoso" >
-    <input type="hidden" name="madonvi" value="{{ $inputs['madonvi'] }}" />
-    <div id="taohoso-modal" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade kt_select2_modal">
-        <div class="modal-dialog modal-xs">
-            <div class="modal-content">
-                <div class="modal-header modal-header-primary">
-                    <h4 id="modal-header-primary-label" class="modal-title">Đồng ý tạo danh sách?</h4>
-                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
-                </div>
+    <form action="{{ '/PhongTraoThiDua/Them' }}" method="GET" id="frm_hoso">
+        <input type="hidden" name="madonvi" value="{{ $inputs['madonvi'] }}" />
+        <div id="taohoso-modal" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade kt_select2_modal">
+            <div class="modal-dialog modal-xs">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-primary">
+                        <h4 id="modal-header-primary-label" class="modal-title">Đồng ý tạo danh sách?</h4>
+                        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                    </div>
 
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <label>Hình thức thi đua</label>
-                            {!! Form::select('phuongthuctochuc', getPhuongThucToChucPhongTrao(), null, ['class' => 'form-control']) !!}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Hình thức thi đua</label>
+                                {!! Form::select('phuongthuctochuc', getPhuongThucToChucPhongTrao(), null, ['class' => 'form-control']) !!}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
-                    <button type="submit" class="btn btn-primary">Đồng ý</button>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
+                        <button type="submit" class="btn btn-primary">Đồng ý</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </form>
     {{-- {!! Form::close() !!} --}}
 
     {!! Form::open(['url' => '', 'id' => 'frm_delete']) !!}
-<div id="delete-modal-confirm" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header modal-header-primary">
-                <h4 id="modal-header-primary-label" class="modal-title">Đồng ý xoá?</h4>
-                <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
-                <input type="hidden" name="id" />
-            </div>
-            <div class="modal-body">
-                <p style="color: #0000FF" id='thongbao'></p>
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
-                <button type="submit" id='submit' class="btn btn-primary" onclick="clickdelete()">Đồng
-                    ý</button>
+    <div id="delete-modal-confirm" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modal-header-primary">
+                    <h4 id="modal-header-primary-label" class="modal-title">Đồng ý xoá?</h4>
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
+                    <input type="hidden" name="id" />
+                </div>
+                <div class="modal-body">
+                    <p style="color: #0000FF" id='thongbao'></p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
+                    <button type="submit" id='submit' class="btn btn-primary" onclick="clickdelete()">Đồng
+                        ý</button>
+                </div>
             </div>
         </div>
+        {!! Form::close() !!}
     </div>
-    {!! Form::close() !!}
-</div>
-<script>
-    function confirmDelete(id,sohoso_thamgia,sohoso_kt,url) {
-        $('#frm_delete').attr('action', url);
-        if(sohoso_thamgia > 0 || sohoso_kt > 0){
-            $('#thongbao').empty();
-            $("#thongbao").append("Có "+sohoso_thamgia+" hồ sơ tham gia phong trào và "+sohoso_kt+" hồ sơ khen thưởng phong trào .Kiểm tra lại cá hồ sơ thuộc phong trào trước khi xóa.");
-            $('#submit').attr('disabled',true);
+    <script>
+        function confirmDelete(id, sohoso_thamgia, sohoso_kt, url) {
+            $('#frm_delete').attr('action', url);
+            if (sohoso_thamgia > 0 || sohoso_kt > 0) {
+                $('#thongbao').empty();
+                $("#thongbao").append("Có " + sohoso_thamgia + " hồ sơ tham gia phong trào và " + sohoso_kt +
+                    " hồ sơ khen thưởng phong trào .Kiểm tra lại cá hồ sơ thuộc phong trào trước khi xóa.");
+                $('#submit').attr('disabled', true);
+            }
+            $('#frm_delete').find("[name='id']").val(id);
         }
-        $('#frm_delete').find("[name='id']").val(id);
-    }
 
-    function clickdelete() {
-        $('#frm_delete').submit();
-    }
-</script>
+        function clickdelete() {
+            $('#frm_delete').submit();
+        }
+    </script>
     {{-- @include('includes.modal.modal-delete') --}}
     @include('includes.modal.modal_attackfile')
 

@@ -17,7 +17,7 @@
             TableManaged3.init();
             $('#madonvi,#nam,#phamviapdung').change(function() {
                 window.location.href = "{{ $inputs['url_hs'] }}" + 'ThongTin?madonvi=' + $('#madonvi')
-                    .val() + '&nam=' + $('#nam').val() +'&macumkhoi='+ $('#macumkhoi').val() ;
+                    .val() + '&nam=' + $('#nam').val() + '&macumkhoi=' + $('#macumkhoi').val();
             });
         });
     </script>
@@ -123,14 +123,20 @@
                                         <span
                                             class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{ $tt->sohoso }}</span>
                                     </a>
-
+                                    @if ($tt->trangthai == 'DTN')
+                                        <button title="Thu hồi hồ sơ" type="button"
+                                            onclick="confirmThuHoi('{{ $tt->mahosotdkt }}','{{ '/DungChung/ThuHoiHS' }}', '{{ $inputs['phanloaihoso'] }}','{{ $inputs['url_return'] . '?madonvi=' . $inputs['madonvi'] }}')"
+                                            class="btn btn-sm btn-clean btn-icon">
+                                            <i class="icon-lg text-dark-50 flaticon-internet"></i>
+                                        </button>
+                                    @endif
                                     @if (
                                         $tt->nhanhoso == 'KETTHUC' &&
                                             chkPhanQuyen('dshosodenghikhenthuongthiduacumkhoi', 'hoanthanh') &&
-                                            in_array($tt->trangthaikt, ['CC', 'DD', 'BTLXD', 'CXD','BTL']))
+                                            in_array($tt->trangthaikt, ['CC', 'DD', 'BTLXD', 'CXD', 'BTL']))
                                         @if ($tt->mahosotdkt == '-1')
                                             <button title="Tạo hồ sơ khen thưởng" type="button"
-                                                onclick="confirmKhenThuong('{{ $tt->maphongtraotd }}', '{{$inputs['macumkhoi']}}')"
+                                                onclick="confirmKhenThuong('{{ $tt->maphongtraotd }}', '{{ $inputs['macumkhoi'] }}')"
                                                 class="btn btn-sm btn-clean btn-icon" data-target="#taohoso-modal"
                                                 data-toggle="modal">
                                                 <i class="icon-lg la flaticon-edit-1 text-success"></i>
@@ -148,7 +154,7 @@
 
                                             @if (session('admin')->opt_duthaototrinh)
                                                 <a title="Tạo dự thảo đề nghị khen thưởng" target="_blank"
-                                                    href="{{ url('/DungChung/DuThao/ToTrinhDeNghiKhenThuong?mahosotdkt=' . $tt->mahosotdkt .'&phanloaihoso='.$inputs['phanloaihoso']) }}"
+                                                    href="{{ url('/DungChung/DuThao/ToTrinhDeNghiKhenThuong?mahosotdkt=' . $tt->mahosotdkt . '&phanloaihoso=' . $inputs['phanloaihoso']) }}"
                                                     class="btn btn-sm btn-clean btn-icon">
                                                     {{-- class="btn btn-sm btn-clean btn-icon {{ $tt->soluongkhenthuong == 0 ? 'disabled' : '' }}"> --}}
                                                     <i class="icon-lg la flaticon-clipboard text-success"></i>
@@ -295,6 +301,7 @@
     @include('includes.modal.modal_unapprove_hs')
     @include('includes.modal.modal_accept_hs')
     @include('includes.modal.modal_nhanvatrinhkt_hs')
+    @include('includes.modal.modal_thuhoi_hs')
     @include('includes.modal.modal_attackfile')
     @include('includes.modal.modal-lydo')
 @stop

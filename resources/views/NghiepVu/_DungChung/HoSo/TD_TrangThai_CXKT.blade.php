@@ -8,7 +8,11 @@
             <span
                 class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{ $tt->soluongkhenthuong }}</span>
         </a>
-
+        <button title="Thu hồi hồ sơ" type="button"
+            onclick="confirmChuyen('{{ $tt->mahosotdkt }}','{{ $inputs['url_hs'] . 'ChuyenHoSo' }}', '{{ $tt->phanloai }}','{{ $tt->madonvi_xd }}')"
+            class="btn btn-sm btn-clean btn-icon">
+            <i class="icon-lg la fa-share text-primary"></i>
+        </button>
         @if (session('admin')->opt_duthaototrinh)
             <a title="Tạo dự thảo tờ trình"
                 href="{{ url($inputs['url_hs'] . 'ToTrinhHoSo?mahosotdkt=' . $tt->mahosotdkt) }}"
@@ -24,7 +28,6 @@
                 <i class="icon-lg la flaticon-edit-1 text-success"></i>
             </a>
         @endif
-
         @if ($tt->trangthai == 'BTL')
             <button title="Trình hồ sơ đăng ký" type="button"
                 onclick="confirmChuyen('{{ $tt->mahosotdkt }}','{{ $inputs['url_hs'] . 'ChuyenHoSo' }}', '{{ $tt->phanloai }}','{{ $tt->madonvi_xd }}')"

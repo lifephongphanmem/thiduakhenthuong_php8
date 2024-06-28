@@ -238,11 +238,15 @@
                                                     data-target="#modal-create-tapthe" data-toggle="modal"
                                                     class="btn btn-light-dark btn-icon btn-sm">
                                                     <i class="fa fa-plus"></i></button>
-                                                {{-- <button title="Nhận từ file Excel" data-target="#modal-nhanexcel"
+                                                    {{-- <button onclick="setNhanExcel('{{ $model->mahosotdkt }}','{{$model->madonvi}}','{{$model->phanloai}}')"
+                                                        title="Nhận từ file Excel" data-target="#modal-nhanexcel" data-toggle="modal"
+                                                        type="button" class="btn btn-info btn-icon btn-sm"><i
+                                                            class="fas fa-file-import"></i></button> --}}
+                                                <button title="Nhận từ file Excel" data-target="#modal-nhanexcel"
                                                     data-toggle="modal" type="button"
                                                     class="btn btn-info btn-icon btn-sm"><i
                                                         class="fas fa-file-import"></i></button>
-                                                <a target="_blank" title="Tải file mẫu" href="/data/download/TapThe.xlsx"
+                                                {{-- <a target="_blank" title="Tải file mẫu" href="/data/download/TapThe.xlsx"
                                                     class="btn btn-primary btn-icon btn-sm"><i
                                                         class="fa flaticon-download"></i></button></a> --}}
                                             </div>
@@ -268,7 +272,8 @@
                                                             <td class="text-center">{{ $i++ }}</td>
                                                             <td>{{ $tt->tentapthe }}</td>
                                                             <td>{{ $a_tapthe[$tt->maphanloaitapthe] ?? '' }}</td>
-                                                            <td class="text-center">{{ $a_dhkt_tapthe[$tt->madanhhieukhenthuong] ?? '' }}</td>
+                                                            {{-- <td class="text-center">{{ $a_dhkt_tapthe[$tt->madanhhieukhenthuong] ?? '' }}</td> --}}
+                                                            <td class="text-center">{{ $tt->madanhhieukhenthuong }}</td>
                                                             <td class="text-center">
                                                                 <button title="Sửa thông tin" type="button"
                                                                     onclick="getTapThe('{{ $tt->id }}')"
@@ -300,13 +305,16 @@
                                                     data-toggle="modal" class="btn btn-light-dark btn-icon btn-sm"
                                                     onclick="setCaNhan()">
                                                     <i class="fa fa-plus"></i></button>
-
-                                                {{-- <button title="Nhận từ file Excel" data-target="#modal-nhanexcel"
+                                                    {{-- <button onclick="setNhanExcel('{{ $model->mahosotdkt }}','{{$model->madonvi}}','{{$model->phanloai}}')"
+                                                        title="Nhận từ file Excel" data-target="#modal-nhanexcel" data-toggle="modal"
+                                                        type="button" class="btn btn-info btn-icon btn-sm"><i
+                                                            class="fas fa-file-import"></i></button> --}}
+                                                <button title="Nhận từ file Excel" data-target="#modal-nhanexcel"
                                                     data-toggle="modal" type="button"
                                                     class="btn btn-info btn-icon btn-sm"><i
                                                         class="fas fa-file-import"></i></button>
 
-                                                <a target="_blank" title="Tải file mẫu" href="/data/download/CANHAN.xlsx"
+                                                {{-- <a target="_blank" title="Tải file mẫu" href="/data/download/CANHAN.xlsx"
                                                     class="btn btn-primary btn-icon btn-sm"><i
                                                         class="fa flaticon-download"></i></button></a> --}}
                                             </div>
@@ -338,10 +346,11 @@
                                                             <td>{{ $tt->gioitinh }}</td>
                                                             <td>{{ $a_canhan[$tt->maphanloaicanbo] ?? '' }}</td>
                                                             <td class="text-center">
-                                                                {{ $tt->chucvu . ',' . $tt->tenphongban . ',' . $tt->tencoquan }}
+                                                                {{ $tt->chucvu . ',' . $tt->tenphongban . ',' . (array_key_exists($tt->tencoquan,getDsCoQuan())?getDsCoQuan()[$tt->tencoquan]:$tt->tencoquan) }}
                                                             </td>
 
-                                                            <td class="text-center">{{ $a_dhkt_canhan[$tt->madanhhieukhenthuong] ?? '' }}</td>
+                                                            {{-- <td class="text-center">{{ $a_dhkt_canhan[$tt->madanhhieukhenthuong] ?? '' }}</td> --}}
+                                                            <td class="text-center">{{ $tt->madanhhieukhenthuong }}</td>
                                                             <td class="text-center">
                                                                 <button title="Sửa thông tin" type="button"
                                                                     onclick="getCaNhan('{{ $tt->id }}')"
@@ -525,8 +534,8 @@
                     <div class="form-group row">
                         <div class="col-md-6">
                             <label class="control-label">Danh hiệu thi đua</label>
-                            {!! Form::select('madanhhieukhenthuong', $a_dhkt_canhan, null, [
-                                'class' => 'form-control',
+                            {!! Form::select('madanhhieukhenthuong[]', $a_dhkt_canhan, null, [
+                                'class' => 'form-control select2basic','style'=>'width:100%','multiple'=>true
                             ]) !!}
                         </div>
                     </div>
@@ -587,8 +596,8 @@
                     <div class="form-group row">
                         <div class="col-md-6">
                             <label class="control-label">Danh hiệu thi đua</label>
-                            {!! Form::select('madanhhieukhenthuong', $a_dhkt_tapthe, null, [
-                                'class' => 'form-control',
+                            {!! Form::select('madanhhieukhenthuong[]', $a_dhkt_tapthe, null, [
+                                'class' => 'form-control select2basic','style'=>'width:100%','multiple'=>true
                             ]) !!}
                         </div>
                     </div>
@@ -644,7 +653,7 @@
                 <input type="hidden" id="phanloaixoa" name="phanloaixoa">
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">Thoát</button>
-                    <button type="submit" class="btn btn-primary"">Đồng ý</button>
+                    <button type="submit" class="btn btn-primary">Đồng ý</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -653,8 +662,8 @@
     </div>
     {!! Form::close() !!}
 
-    {{-- Nhận file Excel --}}
-    <div class="modal fade bs-modal-lg" id="modal-nhanexcel" tabindex="-1" role="dialog" aria-hidden="true">
+     {{-- Nhận file Excel --}}
+     <div class="modal fade bs-modal-lg" id="modal-nhanexcel" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -685,14 +694,14 @@
                                 </ul>
                             </div>
                             <div class="card-toolbar">
-
+    
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="tab-pane fade active show" id="excel_tapthe" role="tabpanel"
                                     aria-labelledby="excel_tapthe">
-
+    
                                     {!! Form::open([
                                         'url' => $inputs['url'] . 'NhanExcelTapThe',
                                         'method' => 'POST',
@@ -702,24 +711,24 @@
                                         'enctype' => 'multipart/form-data',
                                     ]) !!}
                                     <input type="hidden" name="mahosotdkt" value="{{ $model->mahosotdkt }}" />
-
+    
                                     <div class="form-group row">
                                         <div class="col-md-3">
                                             <label class="control-label">Tên đơn vị / tập thể</label>
                                             {!! Form::text('tentapthe', 'B', ['class' => 'form-control']) !!}
                                         </div>
-
+    
                                         <div class="col-md-3">
                                             <label class="form-control-label">Phân loại đơn vị</label>
                                             {!! Form::text('maphanloaitapthe', 'C', ['class' => 'form-control']) !!}
                                         </div>
-
+    
                                         <div class="col-md-3">
                                             <label class="form-control-label">Danh hiệu thi đua</label>
                                             {!! Form::text('madanhhieutd', 'E', ['class' => 'form-control']) !!}
                                         </div>
                                     </div>
-
+    
                                     <div class="form-group row">
                                         <div class="col-md-3">
                                             <label class="control-label">Nhận từ dòng<span
@@ -727,13 +736,13 @@
                                             {!! Form::text('tudong', '4', ['class' => 'form-control']) !!}
                                             {{-- {!! Form::text('tudong', '4', ['class' => 'form-control', 'required', 'data-mask' => 'fdecimal']) !!} --}}
                                         </div>
-
+    
                                         <div class="col-md-3">
                                             <label class="control-label">Nhận đến dòng</label>
                                             {!! Form::text('dendong', '200', ['class' => 'form-control']) !!}
                                         </div>
                                     </div>
-
+    
                                     <div class="form-group row">
                                         <div class="col-lg-12">
                                             <label>File danh sách: </label>
@@ -750,7 +759,7 @@
                                                 'class' => 'form-control',
                                             ]) !!}
                                         </div>
-
+    
                                         <div class="col-md-4">
                                             <label class="control-label">Danh hiệu thi đua</label>
                                             {!! Form::select('madanhhieutd_md', setArrayAll($a_danhhieutd, 'Không đăng ký', 'null'), null, [
@@ -766,9 +775,9 @@
                                         </div>
                                     </div>
                                     {!! Form::close() !!}
-
+    
                                 </div>
-
+    
                                 <div class="tab-pane fade" id="excel_canhan" role="tabpanel"
                                     aria-labelledby="excel_canhan">
                                     {!! Form::open([
@@ -785,25 +794,25 @@
                                             <label class="control-label">Tên đối tượng</label>
                                             {!! Form::text('tendoituong', 'B', ['class' => 'form-control']) !!}
                                         </div>
-
+    
                                         <div class="col-md-3">
                                             <label class="form-control-label">Giới tính</label>
                                             {!! Form::text('gioitinh', 'C', ['class' => 'form-control']) !!}
                                         </div>
-
+    
                                         <div class="col-md-3">
                                             <label class="form-control-label">Ngày sinh</label>
                                             {!! Form::text('ngaysinh', 'D', ['class' => 'form-control']) !!}
                                         </div>
-
+    
                                     </div>
-
+    
                                     <div class="form-group row">
                                         <div class="col-md-3">
                                             <label class="form-control-label">Chức vụ/Chức danh</label>
                                             {!! Form::text('chucvu', 'E', ['class' => 'form-control']) !!}
                                         </div>
-
+    
                                         <div class="col-md-3">
                                             <label class="form-control-label">Tên phòng ban</label>
                                             {!! Form::text('tenphongban', 'F', ['class' => 'form-control']) !!}
@@ -813,23 +822,23 @@
                                             <label class="form-control-label">Tên cơ quan</label>
                                             {!! Form::text('tencoquan', 'G', ['class' => 'form-control']) !!}
                                         </div>
-
+    
                                         <div class="col-md-3">
                                             <label class="form-control-label">Nơi ở / Địa chỉ</label>
                                             {!! Form::text('tencoquan', 'H', ['class' => 'form-control']) !!}
                                         </div>
-
+    
                                         <div class="col-md-3">
                                             <label class="control-label">Phân loại cán bộ</label>
                                             {!! Form::text('maphanloaicanbo', 'I', ['id' => 'lanhdao', 'class' => 'form-control']) !!}
                                         </div>
-
+    
                                         <div class="col-md-3">
                                             <label class="control-label">Danh hiệu thi đua</label>
                                             {!! Form::text('madanhhieutd', 'K', ['id' => 'lanhdao', 'class' => 'form-control']) !!}
                                         </div>
                                     </div>
-
+    
                                     <div class="form-group row">
                                         <div class="col-md-3">
                                             <label class="control-label">Nhận từ dòng<span
@@ -837,20 +846,20 @@
                                             {!! Form::text('tudong', '4', ['class' => 'form-control']) !!}
                                             {{-- {!! Form::text('tudong', '4', ['class' => 'form-control', 'required', 'data-mask' => 'fdecimal']) !!} --}}
                                         </div>
-
+    
                                         <div class="col-md-3">
                                             <label class="control-label">Nhận đến dòng</label>
                                             {!! Form::text('dendong', '200', ['class' => 'form-control']) !!}
                                         </div>
                                     </div>
-
+    
                                     <div class="form-group row">
                                         <div class="col-lg-12">
                                             <label>File danh sách: </label>
                                             {!! Form::file('fexcel', null, ['class' => 'form-control', 'required']) !!}
                                         </div>
                                     </div>
-
+    
                                     <hr>
                                     <h4>Tham số mặc định</h4>
                                     <div class="form-group row">
@@ -861,7 +870,7 @@
                                                 'class' => 'form-control',
                                             ]) !!}
                                         </div>
-
+    
                                         <div class="col-md-4">
                                             <label class="control-label">Danh hiệu thi đua</label>
                                             {!! Form::select('madanhhieutd_md', setArrayAll($a_danhhieutd, 'Không đăng ký', 'null'), null, [
@@ -888,8 +897,8 @@
             </div>
             <!-- /.modal-dialog -->
         </div>
-    </div>
-
+    </div>  
+ 
 
     <script>
         function adddvt() {

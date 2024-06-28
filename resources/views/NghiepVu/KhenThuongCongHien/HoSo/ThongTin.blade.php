@@ -100,7 +100,13 @@
 
                                 <td style="text-align: center">
                                     @include('NghiepVu._DungChung.TD_XemThongTinTDKT')
-
+                                    @if ($tt->trangthai == 'CD')
+                                        <button title="Thu hồi hồ sơ" type="button"
+                                            onclick="confirmThuHoi('{{ $tt->mahosotdkt }}','{{ '/DungChung/ThuHoiHS' }}', '{{ $inputs['phanloaihoso'] }}','{{ $inputs['url_return'] . '?madonvi=' . $inputs['madonvi'] }}')"
+                                            class="btn btn-sm btn-clean btn-icon">
+                                            <i class="icon-lg text-dark-50 flaticon-internet"></i>
+                                        </button>
+                                    @endif
                                     @if (in_array($tt->trangthai, ['CC', 'BTL', 'CXD']) && chkPhanQuyen('dshosodenghikhenthuongconghien', 'thaydoi'))
                                         @if (in_array($inputs['trangthai'], ['CC', 'CD']))
                                             {{-- Trường hợp cũ đầy đủ quy trình --}}
@@ -125,6 +131,7 @@
     @include('NghiepVu._DungChung.InDuLieu')
     @include('includes.modal.modal-delete')
     @include('includes.modal.modal_chuyenhs')
+    @include('includes.modal.modal_thuhoi_hs')
     @include('includes.modal.modal_attackfile')
     @include('includes.modal.modal-lydo')
 @stop

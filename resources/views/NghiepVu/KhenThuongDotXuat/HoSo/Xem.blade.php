@@ -64,7 +64,8 @@
                     <td class="text-center">{{ $i++ }}</td>
                     <td>{{ $tt->tentapthe }}</td>
                     <td>{{ $a_phanloaidt[$tt->maphanloaitapthe] ?? '' }}</td>
-                    <td class="text-center">{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td>
+                    {{-- <td class="text-center">{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td> --}}
+                    <td class="text-center">{{ $tt->madanhhieukhenthuong }}</td>
                 </tr>
             @endforeach
         </table>
@@ -111,8 +112,9 @@
                     <td class="text-center">{{ $i++ }}</td>
                     <td>{{ $tt->tendoituong }}</td>
                     <td>{{ $a_phanloaidt[$tt->maphanloaicanbo] ?? '' }}</td>
-                    <td>{{ $tt->chucvu . ',' . $tt->tenphongban . ',' . $tt->tencoquan }}</td>
-                    <td class="text-center">{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td>
+                    <td>{{ $tt->chucvu . ',' . $tt->tenphongban . ',' . (array_key_exists($tt->tencoquan,getDsCoQuan())?getDsCoQuan()[$tt->tencoquan]:$tt->tencoquan) }}</td>
+                    {{-- <td class="text-center">{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td> --}}
+                    <td class="text-center">{{ $tt->madanhhieukhenthuong }}</td>
                 </tr>
             @endforeach
         </table>

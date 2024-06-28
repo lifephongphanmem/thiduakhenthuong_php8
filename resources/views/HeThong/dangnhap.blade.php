@@ -31,6 +31,10 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="{{ url('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!--end::Global Theme Styles-->
     <!--begin::Layout Themes(used by all pages)-->
     <!--end::Layout Themes-->
@@ -80,7 +84,8 @@ License: You must have a valid license purchased only from themeforest(the above
                                 <h2 class="font-weight-bold">ĐĂNG NHẬP HỆ THỐNG</h2>
                                 <p class="text-muted font-weight-bold">Nhập thông tin tài khoản</p>
                             </div>
-                            {!! Form::open(['url' => '/DangNhap', 'id' => 'form-kt_login_signin_form', 'class' => 'form text-left']) !!}
+                            {{-- {!! Form::open(['url' => '/DangNhap', 'id' => 'form-kt_login_signin_form', 'class' => 'form text-left']) !!} --}}
+                            {!! Form::open(['url' => '/DangNhap', 'id' => 'kt_login_signin_form', 'class' => 'form text-left']) !!}
                             <div class="input-group form-group py-2 m-0">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
@@ -101,22 +106,22 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                                 <input class="form-control border-1 px-5 placeholder-dark-75" title="Mật khẩu đăng nhập"
                                     type="Password" placeholder="Mật khẩu" id="matkhau" name="matkhau" required />
-                                <div class="input-group-prepend">
-                                    <button class="input-group-text form-group" type="button" onclick="HienMK()"> <i class="fa fa-eye"></i></button>
+                                <div class="input-group-prepend password-container">
+                                    <button class="input-group-text form-group" type="button" style="border-bottom-right-radius: 0.42rem;border-top-right-radius: 0.42rem;" onclick="HienMK()"> <i class="fa fa-eye-slash"></i></button>
                                 </div>
                             </div>
                             <div class="form-group d-flex flex-wrap justify-content-between align-items-center mt-5">
-                                {{-- <div class="checkbox-inline">
-                                    <label class="checkbox m-0 text-muted font-weight-bold">
+                                <div class="checkbox-inline">
+                                    {{-- <label class="checkbox m-0 text-muted font-weight-bold">
                                         <input type="checkbox" name="remember" />
-                                        <span></span>Nhớ thông tin tài khoản</label>
-                                </div> --}}
-                                {{-- <a href="javascript:;" class="text-muted text-hover-primary font-weight-bold">Quên mật
-                                    khẩu ?</a> --}}
+                                        <span></span>Nhớ thông tin tài khoản</label> --}}
+                                </div>
+                                <a href="javascript:;" class="text-muted text-hover-primary font-weight-bold" id="kt_login_forgot">Quên mật
+                                    khẩu ?</a>
                             </div>
                             <div class="text-center mt-15">
                                 <button type="submit"
-                                    class="btn btn-primary btn-pill shadow-sm py-4 px-9 font-weight-bold">ĐĂNG
+                                    class="btn btn-primary btn-pill shadow-sm py-4 px-9 font-weight-bold" id="kt_login_signin_submit">ĐĂNG
                                     NHẬP</button>
                             </div>
                             {!! Form::close() !!}
@@ -165,19 +170,19 @@ License: You must have a valid license purchased only from themeforest(the above
                         <!--end:Sign Up Form-->
 
                         <!--begin:Forgot Password Form-->
-                        <div class="login-forgot">
+                        <div class="login-form login-forgot">
                             <div class="text-center mb-10 mb-lg-20">
                                 <h3 class="">Quên mật khẩu đăng nhập ?</h3>
-                                <p class="text-muted font-weight-bold">Nhập địa chỉ email để nhận lại mật khẩu đăng
-                                    nhập</p>
+                                <p class="text-muted font-weight-bold">Nhập email để reset mật khẩu</p>
                             </div>
-                            <form class="form text-left" id="kt_login_forgot_form">
+                            <form class="form text-left" id="kt_login_forgot_form" action="{{'/SendMail'}}" method="POST">
+                                @csrf
                                 <div class="form-group py-2 m-0 border-bottom">
                                     <input class="form-control h-auto border-0 px-0 placeholder-dark-75"
                                         type="text" placeholder="Email" name="email" autocomplete="off" />
                                 </div>
                                 <div class="form-group d-flex flex-wrap flex-center mt-10">
-                                    <button id="kt_login_forgot_submit"
+                                    <button id="kt_login_forgot_submit" type="submit"
                                         class="btn btn-primary btn-pill font-weight-bold px-9 py-4 my-3 mx-2">Hoàn
                                         thành</button>
                                     <button id="kt_login_forgot_cancel"
@@ -293,23 +298,58 @@ License: You must have a valid license purchased only from themeforest(the above
             "font-family": "Poppins"
         };
         function HienMK(){            
-            var type = document.getElementById('matkhau').type;            
-            if(type == 'password'){
-                document.getElementById('matkhau').type = 'text';
-            }else{
-                document.getElementById('matkhau').type = 'password';
-            }
+            // var type = document.getElementById('matkhau').type;            
+            // if(type == 'password'){
+            //     document.getElementById('matkhau').type = 'text';
+            //     var iconElement = document.querySelector('i.fa-eye-slash');
+            //     iconElement.classList.remove('fa-eye-slash');
+            //     iconElement.classList.add('fa-eye');
+            // }else{
+            //     document.getElementById('matkhau').type = 'password';
+            //     var iconElement = document.querySelector('i.fa-eye');
+            //     iconElement.classList.remove('fa-eye');
+            //     iconElement.classList.add('fa-eye-slash');
+            // }
+
+            var passwordField = document.getElementById('matkhau');
+            var iconElement = document.querySelector('.password-container i');
+
+            var isPassword = passwordField.type === 'password';
+            passwordField.type = isPassword ? 'text' : 'password';
+
+            iconElement.classList.toggle('fa-eye', isPassword);
+            iconElement.classList.toggle('fa-eye-slash', !isPassword);
         }
     </script>
+        <script>
+            @if(Session::has('success'))
+                toastr.options = {
+                    "closeButton": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "showDuration": "400",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+                toastr["{{ Session::get('alert-type', 'info') }}"]("{{ Session::get('success') }}");
+            @endif
+        </script>
     <!--end::Global Config-->
     <!--begin::Global Theme Bundle(used by all pages)-->
-    {{-- <script src="{{url('assets/plugins/global/plugins.bundle.js')}}"></script> --}}
-    {{-- <script src="{{url('assets/plugins/custom/prismjs/prismjs.bundle.js')}}"></script> --}}
-    {{-- <script src="{{url('assets/js/scripts.bundle.js')}}"></script> --}}
+    <script src="{{url('assets/plugins/global/plugins.bundle.js')}}"></script>
+    <script src="{{url('assets/plugins/custom/prismjs/prismjs.bundle.js')}}"></script>
+    <script src="{{url('assets/js/scripts.bundle.js')}}"></script>
 
     <!--end::Global Theme Bundle-->
     <!--begin::Page Scripts(used by this page)-->
-    {{-- <script src="{{url('assets/js/pages/custom/login/login-general.js')}}"></script> --}}
+    <script src="{{url('assets/js/pages/custom/login/login-general.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!--end::Page Scripts-->
 </body>
 <!--end::Body-->

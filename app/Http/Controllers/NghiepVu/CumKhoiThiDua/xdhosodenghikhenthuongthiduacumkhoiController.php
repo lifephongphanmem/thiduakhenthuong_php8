@@ -64,11 +64,12 @@ class xdhosodenghikhenthuongthiduacumkhoiController extends Controller
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         $inputs['maloaihinhkt'] = session('chucnang')['dshosodenghikhenthuongcongtrang']['maloaihinhkt'] ?? 'ALL';
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
+        // dd($inputs['maloaihinhkt']);
         $a_trangthai_xd = ['DD', 'CXKT', 'DKT','BTLXD'];  
         $model = dshosotdktcumkhoi::where('madonvi_xd', $inputs['madonvi'])
             ->wherein('phanloai', ['KHENTHUONG', 'KTNGANH', 'KHENCAOTHUTUONG', 'KHENCAOCHUTICHNUOC',])
-            ->wherein('trangthai_xd', $a_trangthai_xd)
-            ->where('maloaihinhkt', $inputs['maloaihinhkt']); //->orderby('ngayhoso')->get();
+            ->wherein('trangthai_xd', $a_trangthai_xd);
+            // ->where('maloaihinhkt', $inputs['maloaihinhkt']); //->orderby('ngayhoso')->get();
 
         if (in_array($inputs['maloaihinhkt'], ['', 'ALL', 'all'])) {
             $m_loaihinh = dmloaihinhkhenthuong::all();
@@ -89,6 +90,7 @@ class xdhosodenghikhenthuongthiduacumkhoiController extends Controller
 
         //Lấy hồ sơ
         $model = $model->orderby('ngayhoso')->get();
+        // dd($model);
         $m_khencanhan = dshosotdktcumkhoi_canhan::wherein('mahosotdkt', array_column($model->toarray(), 'mahosotdkt'))->get();
         $m_khentapthe = dshosotdktcumkhoi_tapthe::wherein('mahosotdkt', array_column($model->toarray(), 'mahosotdkt'))->get();
         $a_donvilocdulieu = getDiaBanCumKhoi(session('admin')->tendangnhap);
@@ -230,7 +232,7 @@ class xdhosodenghikhenthuongthiduacumkhoiController extends Controller
         // $model_detai = dshosotdktcumkhoi_detai::where('mahosotdkt', $inputs['mahosotdkt'])->get();
         $donvi = viewdiabandonvi::where('madonvi', $model->madonvi)->first();
 
-        $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo);
+        $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo,'CANHAN');
         $a_dhkt_tapthe = getDanhHieuKhenThuong($donvi->capdo, 'TAPTHE');
         $model->tendonvi = $donvi->tendonvi;
 
