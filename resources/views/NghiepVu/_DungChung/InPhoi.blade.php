@@ -171,7 +171,8 @@
                                                             <td>{{ $tt->tentapthe }}</td>
                                                             <td>{{ $tt->noidungkhenthuong }}</td>
                                                             <td class="text-center">
-                                                                {{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}
+                                                                {{-- {{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }} --}}
+                                                                {{$tt->madanhhieukhenthuong}}
                                                             </td>
                                                             <td class="text-center">
                                                                 {{-- <button title="Sửa thông tin" type="button"
@@ -256,7 +257,8 @@
                                                             <td>{{ $tt->tendoituong }}</td>
                                                             <td>{{ $tt->noidungkhenthuong }}</td>
                                                             <td class="text-center">
-                                                                {{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}
+                                                                {{-- {{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }} --}}
+                                                                {{$tt->madanhhieukhenthuong}}
                                                             </td>
                                                             <td class="text-center">
                                                                 {{-- <button title="Sửa thông tin" type="button"

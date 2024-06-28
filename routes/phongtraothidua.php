@@ -29,6 +29,8 @@ Route::group(['prefix' => 'PhongTraoThiDua'], function () {
     Route::get('TaiLieuDinhKem', [dsphongtraothiduaController::class, 'TaiLieuDinhKem']);
     Route::get('DinhKemTieuChuan', [dsphongtraothiduaController::class, 'DinhKemTieuChuan']);
 
+    Route::get('HoSoKT',[dsphongtraothiduaController::class,'HoSoKT']);
+
     //Route::get('Sua','system\DSTaiKhoanController@edit']);
 });
 

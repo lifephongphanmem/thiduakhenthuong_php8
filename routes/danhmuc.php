@@ -3,6 +3,7 @@
 use App\Http\Controllers\DanhMuc\dmcoquandonviController;
 use App\Http\Controllers\DanhMuc\dmdanhhieuthiduaController;
 use App\Http\Controllers\DanhMuc\dmdetaisangkienController;
+use App\Http\Controllers\DanhMuc\dmdonvikhenthuongkhacController;
 use App\Http\Controllers\DanhMuc\dmhinhthuckhenthuongController;
 use App\Http\Controllers\DanhMuc\dmhinhthucthiduaController;
 use App\Http\Controllers\DanhMuc\dmloaihinhkhenthuongController;
@@ -89,4 +90,11 @@ Route::group(['prefix' => 'PLPhongTraoThiDua'], function () {
     Route::post('Them', [dmphongtraothiduaController::class, 'store']);
     Route::post('Xoa', [dmphongtraothiduaController::class, 'delete']);
     Route::get('LayChiTiet', [dmphongtraothiduaController::class, 'LayChiTiet']);
+});
+
+Route::prefix('DonViKhenThuongKhac')->group(function(){
+    Route::get('ThongTin',[dmdonvikhenthuongkhacController::class,'ThongTin']);
+    Route::post('Them',[dmdonvikhenthuongkhacController::class,'Them']);
+    Route::post('Xoa',[dmdonvikhenthuongkhacController::class,'Xoa']);
+    Route::get('LayChiTiet',[dmdonvikhenthuongkhacController::class,'LayChiTiet']);
 });

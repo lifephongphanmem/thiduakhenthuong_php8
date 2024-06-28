@@ -9,6 +9,7 @@ use App\Models\DanhMuc\dstaikhoan_phamvi;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tailieu;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_xuly;
+use App\Models\ThongBao\thongbao;
 use App\Models\View\view_dscumkhoi;
 
 use App\Models\View\viewdiabandonvi;
@@ -191,7 +192,7 @@ function getHeThongChung()
     return  \App\Models\HeThong\hethongchung::all()->first() ?? new \App\Models\HeThong\hethongchung();
 }
 
-function getDanhHieuKhenThuong($capdo, $phanloai = 'CANHAN')
+function getDanhHieuKhenThuong($capdo, $phanloai)
 {
     $a_ketqua = [];
     /*
@@ -214,12 +215,19 @@ function getDanhHieuKhenThuong($capdo, $phanloai = 'CANHAN')
     }
     */
     foreach (App\Models\DanhMuc\dmhinhthuckhenthuong::all() as $danhhieu) {
+        $doituong=explode(';',$danhhieu->doituongapdung);
+        if(!in_array($phanloai,$doituong) && $phanloai != 'ALL'){
+            continue;
+        }
+
+        $a_phamvi=explode(';', $danhhieu->phamviapdung);
         if ($capdo == 'ALL')
             $a_ketqua[$danhhieu->mahinhthuckt] = $danhhieu->tenhinhthuckt;
         elseif (in_array($capdo, explode(';', $danhhieu->phamviapdung)))
             $a_ketqua[$danhhieu->mahinhthuckt] = $danhhieu->tenhinhthuckt;
+        elseif(in_array($capdo,['T','H','SBN']) && in_array('B',$a_phamvi))
+        $a_ketqua[$danhhieu->mahinhthuckt] = $danhhieu->tenhinhthuckt;
     }
-
     return $a_ketqua;
 }
 
@@ -1956,12 +1964,14 @@ function getPhamViKT($capkhenthuong)
         case 'T':{
             $phamvi= array(
                 'TW' => 'Cấp Nhà nước',
+                'B' => 'Cấp Bộ',
                 'T' => 'Cấp Tỉnh',
             );
             break;
         }
         case 'H':{
             $phamvi= array(
+                'B' => 'Cấp Bộ',
                 'SBN' => 'Cấp Sở, ban, ngành',
                 'H' => 'Cấp Huyện',
             );
@@ -1969,6 +1979,7 @@ function getPhamViKT($capkhenthuong)
         }
         case 'SBN':{
             $phamvi= array(
+                'B' => 'Cấp Bộ',
                 'SBN' => 'Cấp Sở, ban, ngành',
                 'H' => 'Cấp Huyện',
             );
@@ -1984,5 +1995,62 @@ function getPhamViKT($capkhenthuong)
 
     return $phamvi;
 
+}
+
+function storeThongBao($url,$noidung,$table,$maphongtrao,$phamvi,$madonvi)
+{
+    $mathongbao=getdate()[0];
+    $data=[
+        'mathongbao'=>$mathongbao,
+        'noidung'=>$noidung,
+        'url'=>$url,
+        'table'=>$table,
+        'maphongtrao'=>$maphongtrao,
+        'phamvi'=>$phamvi,
+        'madonvi_thongbao'=>$madonvi,
+        'trangthai'=>'CHUADOC'
+    ];
+
+    thongbao::create($data);
+}
+
+function chkThongBao()
+{
+    switch (session('admin')->capdo){
+        case 'T':{
+            $a_phamvi=['T','TW'];
+            break;
+        }
+        case 'TW':{
+            $a_phamvi=['T','TW'];
+            break;
+        }
+        case 'H':{
+            $a_phamvi=['T','TW','H'];
+            break;
+        }
+        case 'X':{
+            $a_phamvi=['T','TW','H','X'];
+            break;
+        }
+        default:{
+            $a_phamvi=['T','TW','H','X'];
+            break;
+        }
+    }
+    $model=thongbao::wherein('phamvi',$a_phamvi)->get();
+    foreach($model as $ct)
+    {
+        if($ct->trangthai == 'CHUADOC'){
+            return true;
+        }else{
+            $trangthai=explode(';',$ct->trangthai);
+            if(in_array(session('admin')->madonvi,$trangthai)){
+                return false;
+            }else{
+                return true;
+            }
+        }
+    }
 }
 

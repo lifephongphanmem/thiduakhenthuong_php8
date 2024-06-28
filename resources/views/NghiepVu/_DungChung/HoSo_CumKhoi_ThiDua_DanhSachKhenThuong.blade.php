@@ -77,7 +77,8 @@
                                                 <td>{{ $tt->tentapthe }}</td>
                                                 <td>{{ $a_tapthe[$tt->maphanloaitapthe] ?? '' }}</td>
                                                 <td class="text-center">
-                                                    {{ $a_dhkt_tapthe[$tt->madanhhieukhenthuong] ?? '' }}
+                                                    {{-- {{ $a_dhkt_tapthe[$tt->madanhhieukhenthuong] ?? '' }} --}}
+                                                    {{ $tt->madanhhieukhenthuong}}
                                                 </td>
                                                 <td class="text-center">
                                                     {{ $a_loaihinhkt[$model->maloaihinhkt] ?? '' }}
@@ -159,10 +160,11 @@
                                                 <td>{{ $tt->gioitinh }}</td>
                                                 <td>{{ $a_canhan[$tt->maphanloaicanbo] ?? '' }}</td>
                                                 <td class="text-center">
-                                                    {{ $tt->chucvu . ',' . $tt->tenphongban . ',' . $tt->tencoquan }}
+                                                    {{ $tt->chucvu . ',' . $tt->tenphongban . ',' . (array_key_exists($tt->tencoquan,getDsCoQuan())?getDsCoQuan()[$tt->tencoquan]:$tt->tencoquan) }}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ $a_dhkt_canhan[$tt->madanhhieukhenthuong] ?? '' }}
+                                                    {{-- {{ $a_dhkt_canhan[$tt->madanhhieukhenthuong] ?? '' }} --}}
+                                                    {{ $tt->madanhhieukhenthuong}}
                                                 </td>
                                                 <td class="text-center">
                                                     {{ $a_loaihinhkt[$model->maloaihinhkt] ?? '' }}

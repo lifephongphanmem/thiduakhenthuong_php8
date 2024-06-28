@@ -157,3 +157,4 @@ include('quykhenthuong.php');
 include('vanphonghotro.php');
 include('nhatky.php');
 include('ykiengopy.php');
+include('thongbao.php');

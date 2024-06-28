@@ -129,6 +129,11 @@
                                         class="btn btn-sm btn-clean btn-icon" target="_blank">
                                         <i class="icon-lg la fa-eye text-dark icon-2x"></i>
                                     </a>
+                                    <a title="Hồ sơ đã khen thưởng"
+                                    href="{{ url('/CumKhoiThiDua/PhongTraoThiDua/HoSoKT?maphongtraotd=' . $tt->maphongtraotd . '&madonvi=' . $tt->madonvi.'&nam=ALL') }}"
+                                    class="btn btn-sm btn-clean btn-icon">
+                                    <i class="icon-lg text-dark-50 flaticon-list-3"></i>
+                                </a>
                                     <button title="Tài liệu đính kèm" type="button"
                                         onclick="get_attack('{{ $tt->maphongtraotd }}','{{ $inputs['url'] . 'TaiLieuDinhKem' }}')"
                                         class="btn btn-sm btn-clean btn-icon" data-target="#dinhkem-modal-confirm"

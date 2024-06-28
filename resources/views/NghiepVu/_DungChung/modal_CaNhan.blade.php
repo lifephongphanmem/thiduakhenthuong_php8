@@ -110,7 +110,7 @@
                             {{-- {!! Form::select('madanhhieukhenthuong', $a_dhkt_canhan, null, [
                                 'class' => 'form-control select2_modal',
                             ]) !!} --}}
-                            <select name="madanhhieukhenthuong" class="form-control select2basic" style="width:100%">
+                            <select name="madanhhieukhenthuong[]" class="form-control select2basic" style="width:100%" multiple>
                                 @foreach ($a_dhkt_canhan as $k => $ct)
                                     <option value="{{ $k }}">{{ $ct }}</option>
                                 @endforeach

@@ -101,18 +101,18 @@ License: You must have a valid license purchased only from themeforest(the above
                                 </div>
                                 <input class="form-control border-1 px-5 placeholder-dark-75" title="Mật khẩu đăng nhập"
                                     type="Password" placeholder="Mật khẩu" id="matkhau" name="matkhau" required />
-                                <div class="input-group-prepend">
-                                    <button class="input-group-text form-group" type="button" onclick="HienMK()"> <i class="fa fa-eye"></i></button>
+                                <div class="input-group-prepend password-container">
+                                    <button class="input-group-text form-group" type="button" style="border-bottom-right-radius: 0.42rem;border-top-right-radius: 0.42rem;" onclick="HienMK()"> <i class="fa fa-eye-slash"></i></button>
                                 </div>
                             </div>
                             <div class="form-group d-flex flex-wrap justify-content-between align-items-center mt-5">
-                                {{-- <div class="checkbox-inline">
-                                    <label class="checkbox m-0 text-muted font-weight-bold">
+                                <div class="checkbox-inline">
+                                    {{-- <label class="checkbox m-0 text-muted font-weight-bold">
                                         <input type="checkbox" name="remember" />
-                                        <span></span>Nhớ thông tin tài khoản</label>
-                                </div> --}}
-                                {{-- <a href="javascript:;" class="text-muted text-hover-primary font-weight-bold">Quên mật
-                                    khẩu ?</a> --}}
+                                        <span></span>Nhớ thông tin tài khoản</label> --}}
+                                </div>
+                                <a href="javascript:;" class="text-muted text-hover-primary font-weight-bold" id="kt_login_forgot">Quên mật
+                                    khẩu ?</a>
                             </div>
                             <div class="text-center mt-15">
                                 <button type="submit"
@@ -293,19 +293,34 @@ License: You must have a valid license purchased only from themeforest(the above
             "font-family": "Poppins"
         };
         function HienMK(){            
-            var type = document.getElementById('matkhau').type;            
-            if(type == 'password'){
-                document.getElementById('matkhau').type = 'text';
-            }else{
-                document.getElementById('matkhau').type = 'password';
-            }
+            // var type = document.getElementById('matkhau').type;            
+            // if(type == 'password'){
+            //     document.getElementById('matkhau').type = 'text';
+            //     var iconElement = document.querySelector('i.fa-eye-slash');
+            //     iconElement.classList.remove('fa-eye-slash');
+            //     iconElement.classList.add('fa-eye');
+            // }else{
+            //     document.getElementById('matkhau').type = 'password';
+            //     var iconElement = document.querySelector('i.fa-eye');
+            //     iconElement.classList.remove('fa-eye');
+            //     iconElement.classList.add('fa-eye-slash');
+            // }
+
+            var passwordField = document.getElementById('matkhau');
+            var iconElement = document.querySelector('.password-container i');
+
+            var isPassword = passwordField.type === 'password';
+            passwordField.type = isPassword ? 'text' : 'password';
+
+            iconElement.classList.toggle('fa-eye', isPassword);
+            iconElement.classList.toggle('fa-eye-slash', !isPassword);
         }
     </script>
     <!--end::Global Config-->
     <!--begin::Global Theme Bundle(used by all pages)-->
-    {{-- <script src="{{url('assets/plugins/global/plugins.bundle.js')}}"></script> --}}
-    {{-- <script src="{{url('assets/plugins/custom/prismjs/prismjs.bundle.js')}}"></script> --}}
-    {{-- <script src="{{url('assets/js/scripts.bundle.js')}}"></script> --}}
+    {{-- <script src="{{url('assets/plugins/global/plugins.bundle.js')}}"></script>
+    <script src="{{url('assets/plugins/custom/prismjs/prismjs.bundle.js')}}"></script>
+    <script src="{{url('assets/js/scripts.bundle.js')}}"></script> --}}
 
     <!--end::Global Theme Bundle-->
     <!--begin::Page Scripts(used by this page)-->

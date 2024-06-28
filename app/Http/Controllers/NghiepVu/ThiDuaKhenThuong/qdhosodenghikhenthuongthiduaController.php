@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\NghiepVu\_DungChung\dungchung_nghiepvu_tailieuController;
 use App\Http\Controllers\NghiepVu\_DungChung\dungchung_nghiepvuController;
+use App\Models\DanhMuc\dmhinhthuckhenthuong;
 use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dmnhomphanloai_chitiet;
 use App\Models\DanhMuc\dsdiaban;
@@ -96,7 +97,7 @@ class qdhosodenghikhenthuongthiduaController extends Controller
                 $ct->$trangthai = $khenthuong->where('trangthai', $trangthai)->count();
             }
         }
-// dd($a_trangthai);
+        // dd($a_trangthai);
         $inputs['trangthai'] = session('chucnang')['qdhosodenghikhenthuongthidua']['trangthai'] ?? 'CC';
         $inputs['trangthai'] = $inputs['trangthai'] == 'ALL' ? 'CC' : $inputs['trangthai'];
         //dd($model);
@@ -249,6 +250,27 @@ class qdhosodenghikhenthuongthiduaController extends Controller
         $m_donvi = dsdonvi::where('madonvi', $model->madonvi ?? null)->first();
         $a_phanloaidt = array_column(dmnhomphanloai_chitiet::all()->toarray(), 'tenphanloai', 'maphanloai');
 
+        $a_dhkt= array_column(dmhinhthuckhenthuong::all()->toArray(), 'tenhinhthuckt', 'mahinhthuckt');
+        foreach($model_canhan as $ct)
+        {
+            $danhhieu=explode(';',$ct->madanhhieukhenthuong);
+            $ct->madanhhieukhenthuong='';
+            foreach($danhhieu as $item)
+            {
+                $ct->madanhhieukhenthuong .= $a_dhkt[$item] .'; ';
+            }
+        }
+
+        foreach($model_tapthe as $ct)
+        {
+            $danhhieu=explode(';',$ct->madanhhieukhenthuong);
+            $ct->madanhhieukhenthuong='';
+            foreach($danhhieu as $item)
+            {
+                $ct->madanhhieukhenthuong .= $a_dhkt[$item] .'; ';
+            }
+        }
+
         return view('NghiepVu.ThiDuaKhenThuong.KhenThuongHoSo.Xem')
             ->with('model', $model)
             ->with('m_donvi', $m_donvi)
@@ -257,7 +279,7 @@ class qdhosodenghikhenthuongthiduaController extends Controller
             ->with('m_phongtrao', $m_phongtrao)
             ->with('a_donvi', array_column(viewdiabandonvi::all()->toArray(), 'tendonvi', 'madonvi'))
             ->with('a_phanloaidt', $a_phanloaidt)
-            ->with('a_dhkt', getDanhHieuKhenThuong('ALL'))
+            ->with('a_dhkt', getDanhHieuKhenThuong('ALL','ALL'))
             //->with('a_danhhieutd', array_column(dmdanhhieuthidua::all()->toArray(), 'tendanhhieutd', 'madanhhieutd'))
             //->with('a_hinhthuckt', array_column(dmhinhthuckhenthuong::all()->toArray(), 'tenhinhthuckt', 'mahinhthuckt'))
             ->with('inputs', $inputs)
@@ -642,7 +664,7 @@ class qdhosodenghikhenthuongthiduaController extends Controller
         // $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo);
         // $a_dhkt_tapthe = getDanhHieuKhenThuong($donvi->capdo, 'TAPTHE');
         // $a_dhkt_hogiadinh = getDanhHieuKhenThuong($donvi->capdo, 'HOGIADINH');
-        $a_dhkt_canhan = getDanhHieuKhenThuong('ALL');
+        $a_dhkt_canhan = getDanhHieuKhenThuong('ALL','ALL');
         $a_dhkt_tapthe = getDanhHieuKhenThuong('ALL', 'TAPTHE');
         $a_dhkt_hogiadinh = getDanhHieuKhenThuong('ALL', 'HOGIADINH');
 

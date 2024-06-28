@@ -34,7 +34,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
             if (!Session::has('admin')) {
                 return redirect('/');
             };
-            if(!chkaction()){
+            if (!chkaction()) {
                 Session::flush();
                 return response()->view('errors.error_login');
             };
@@ -50,7 +50,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
         $inputs = $request->all();
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
-        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
+        $inputs['url_tailieudinhkem'] = '/DungChung/DinhKemHoSoKhenThuong';
 
         $m_donvi = getDonVi(session('admin')->capdo, 'dshosodenghikhenthuongnienhan');
         $a_diaban = array_column($m_donvi->toArray(), 'tendiaban', 'madiaban');
@@ -81,7 +81,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
             $hoso->soluongkhenthuong = $model_canhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + $model_tapthe->where('mahosotdkt', $hoso->mahosotdkt)->count();
         }
-        
+
 
         //Gán đường dẫn
         if ($inputs['trangthai'] == 'CC') {
@@ -137,9 +137,9 @@ class dshosodenghikhenthuongnienhanController extends Controller
         $model_hogiadinh = dshosothiduakhenthuong_hogiadinh::where('mahosotdkt', $model->mahosotdkt)->get();
         $model_tailieu = dshosothiduakhenthuong_tailieu::where('mahosotdkt', $model->mahosotdkt)->get();
         $donvi = viewdiabandonvi::where('madonvi', $model->madonvi)->first();
-        $a_dhkt_canhan = getDanhHieuKhenThuong('ALL');
-        $a_dhkt_tapthe = getDanhHieuKhenThuong('ALL', 'TAPTHE');
-        $a_dhkt_hogiadinh = getDanhHieuKhenThuong('ALL', 'HOGIADINH');
+        $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo, 'CANHAN');
+        $a_dhkt_tapthe = getDanhHieuKhenThuong($donvi->capdo, 'TAPTHE');
+        $a_dhkt_hogiadinh = getDanhHieuKhenThuong($donvi->capdo, 'HOGIADINH');
 
         $model->tendonvi = $donvi->tendonvi;
         $m_donvi = getDonVi(session('admin')->capdo);
@@ -150,6 +150,27 @@ class dshosodenghikhenthuongnienhanController extends Controller
         $a_canhan = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['CANHAN'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         $inputs['mahinhthuckt'] = $model->mahinhthuckt;
         //dd($model);
+        $a_dhkt = getDanhHieuKhenThuong('ALL','ALL');
+        foreach($model_canhan as $ct)
+        {
+            $danhhieu=explode(';',$ct->madanhhieukhenthuong);
+            $ct->madanhhieukhenthuong='';
+            foreach($danhhieu as $item)
+            {
+                $ct->madanhhieukhenthuong .= $a_dhkt[$item] .'; ';
+            }
+        }
+
+        foreach($model_tapthe as $ct)
+        {
+            $danhhieu=explode(';',$ct->madanhhieukhenthuong);
+            $ct->madanhhieukhenthuong='';
+            foreach($danhhieu as $item)
+            {
+                $ct->madanhhieukhenthuong .= $a_dhkt[$item] .'; ';
+            }
+        }
+
         return view('NghiepVu.KhenThuongNienHan.HoSoKhenThuong.ThayDoi')
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)
@@ -185,7 +206,28 @@ class dshosodenghikhenthuongnienhanController extends Controller
         $model_hogiadinh = dshosothiduakhenthuong_hogiadinh::where('mahosotdkt', $inputs['mahosotdkt'])->get();
         $a_phanloaidt = array_column(dmnhomphanloai_chitiet::all()->toarray(), 'tenphanloai', 'maphanloai');
         $m_donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
-        $a_dhkt = getDanhHieuKhenThuong('ALL');
+
+        $a_dhkt = getDanhHieuKhenThuong('ALL','ALL');
+        foreach($model_canhan as $ct)
+        {
+            $danhhieu=explode(';',$ct->madanhhieukhenthuong);
+            $ct->madanhhieukhenthuong='';
+            foreach($danhhieu as $item)
+            {
+                $ct->madanhhieukhenthuong .= $a_dhkt[$item] .'; ';
+            }
+        }
+
+        foreach($model_tapthe as $ct)
+        {
+            $danhhieu=explode(';',$ct->madanhhieukhenthuong);
+            $ct->madanhhieukhenthuong='';
+            foreach($danhhieu as $item)
+            {
+                $ct->madanhhieukhenthuong .= $a_dhkt[$item] .'; ';
+            }
+        }
+
         return view('NghiepVu.KhenThuongNienHan.HoSoKhenThuong.Xem')
             ->with('model', $model)
             ->with('model_canhan', $model_canhan)
@@ -228,7 +270,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
         $trangthai->thoigian = $inputs['ngayhoso'];
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&madonvi='.$inputs['madonvi']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'] . '&madonvi=' . $inputs['madonvi']);
     }
 
     public function ThemTongHop(Request $request)
@@ -309,7 +351,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
         $trangthai->thoigian = $inputs['ngayhoso'];
         $trangthai->save();
 
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'].'&madonvi='.$inputs['madonvi']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahosotdkt'] . '&madonvi=' . $inputs['madonvi']);
     }
 
     public function LuuHoSo(Request $request)
@@ -394,6 +436,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
         }
 
         $inputs = $request->all();
+        $inputs['madanhhieukhenthuong']=implode(';',$inputs['madanhhieukhenthuong']);
         //$id =  $inputs['id'];       
         $model = dshosothiduakhenthuong_canhan::where('id', $inputs['id'])->first();
         unset($inputs['id']);
@@ -498,6 +541,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
         }
 
         $inputs = $request->all();
+        $inputs['madanhhieukhenthuong']=implode(';',$inputs['madanhhieukhenthuong']);
         //$id =  $inputs['id'];       
         $model = dshosothiduakhenthuong_tapthe::where('id', $inputs['id'])->first();
         unset($inputs['id']);
@@ -605,7 +649,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
             // $a_hinhthuckt = array_column(dmhinhthuckhenthuong::all()->toArray(), 'tenhinhthuckt', 'mahinhthuckt');
             // $a_danhhieutd = array_column(dmdanhhieuthidua::all()->toArray(), 'tendanhhieutd', 'madanhhieutd');
             $a_tapthe = array_column(dmnhomphanloai_chitiet::all()->toarray(), 'tenphanloai', 'maphanloai');
-            $a_dhkt = getDanhHieuKhenThuong('ALL');
+            $a_dhkt = getDanhHieuKhenThuong('ALL', 'ALL');
 
             $result['message'] = '<div class="row" id="dskhenthuongtapthe">';
             $result['message'] .= '<div class="col-md-12">';
@@ -623,13 +667,18 @@ class dshosodenghikhenthuongnienhanController extends Controller
             $result['message'] .= '<tbody>';
             $i = 1;
             foreach ($model as $tt) {
+                $danhhieu = explode(';', $tt->madanhhieukhenthuong);
+                $tt->madanhhieukhenthuong = '';
+                foreach ($danhhieu as $item) {
+                    $tt->madanhhieukhenthuong .= $a_dhkt[$item] . '; ';
+                }
                 $result['message'] .= '<tr class="odd gradeX">';
                 $result['message'] .= '<td class="text-center">' . $i++ . '</td>';
                 $result['message'] .= '<td>' . $tt->tentapthe . '</td>';
                 $result['message'] .= '<td>' . ($a_tapthe[$tt->maphanloaitapthe] ?? '') . '</td>';
                 // $result['message'] .= '<td class="text-center">' . ($a_hinhthuckt[$tt->mahinhthuckt] ?? '') . '</td>';
                 // $result['message'] .= '<td class="text-center">' . ($a_danhhieutd[$tt->madanhhieutd] ?? '') . '</td>';
-                $result['message'] .= '<td class="text-center"> ' . ($a_dhkt[$tt->madanhhieukhenthuong] ?? '') . '</td>';
+                $result['message'] .= '<td class="text-center"> ' . ($tt->madanhhieukhenthuong) . '</td>';
                 $result['message'] .= '<td class="text-center"><button title="Sửa thông tin" type="button" onclick="getTapThe(' . $tt->id . ')"  class="btn btn-sm btn-clean btn-icon"
                                                                     data-target="#modal-create-tapthe" data-toggle="modal"><i class="icon-lg la fa-edit text-primary"></i></button>';
                 $result['message'] .= '<button title="Xóa" type="button" onclick="delKhenThuong(' . $tt->id . ', &#39;' . static::$url . 'XoaTapThe&#39;, &#39;TAPTHE&#39;)" class="btn btn-sm btn-clean btn-icon" data-target="#modal-delete-khenthuong" data-toggle="modal">
@@ -654,7 +703,7 @@ class dshosodenghikhenthuongnienhanController extends Controller
             // $a_hinhthuckt = array_column(dmhinhthuckhenthuong::all()->toArray(), 'tenhinhthuckt', 'mahinhthuckt');
             // $a_danhhieutd = array_column(dmdanhhieuthidua::all()->toArray(), 'tendanhhieutd', 'madanhhieutd');
             $a_tapthe = array_column(dmnhomphanloai_chitiet::all()->toarray(), 'tenphanloai', 'maphanloai');
-            $a_dhkt = getDanhHieuKhenThuong('ALL');
+            $a_dhkt = getDanhHieuKhenThuong('ALL', 'ALL');
 
             $result['message'] = '<div class="row" id="dskhenthuongcanhan">';
             $result['message'] .= '<div class="col-md-12">';
@@ -675,14 +724,20 @@ class dshosodenghikhenthuongnienhanController extends Controller
             $result['message'] .= '<tbody>';
             $i = 1;
             foreach ($model as $tt) {
+                $danhhieu = explode(';', $tt->madanhhieukhenthuong);
+                $tt->madanhhieukhenthuong = '';
+                foreach ($danhhieu as $item) {
+                    $tt->madanhhieukhenthuong .= $a_dhkt[$item] . '; ';
+                }
+
                 $result['message'] .= '<tr class="odd gradeX">';
                 $result['message'] .= '<td class="text-center">' . $i++ . '</td>';
                 $result['message'] .= '<td>' . $tt->tendoituong . '</td>';
                 $result['message'] .= '<td class="text-center">' . getDayVn($tt->ngaysinh) . '</td>';
                 $result['message'] .= '<td>' . $tt->gioitinh . '</td>';
                 $result['message'] .= '<td>' . ($a_tapthe[$tt->maphanloaicanbo] ?? '') . '</td>';
-                $result['message'] .= '<td class="text-center">' . $tt->chucvu . ',' . $tt->tenphongban . ',' . $tt->tencoquan . '</td>';
-                $result['message'] .= '<td class="text-center"> ' . ($a_dhkt[$tt->madanhhieukhenthuong] ?? '') . '</td>';
+                $result['message'] .= '<td class="text-center">' . $tt->chucvu . ',' . $tt->tenphongban . ',' . (array_key_exists($tt->tencoquan,getDsCoQuan())?getDsCoQuan()[$tt->tencoquan]:$tt->tencoquan) . '</td>';
+                $result['message'] .= '<td class="text-center"> ' . ($tt->madanhhieukhenthuong) . '</td>';
                 // $result['message'] .= '<td class="text-center"> ' . ($a_danhhieutd[$tt->madanhhieutd] ?? '') . '</td>';
 
                 $result['message'] .= '<td class="text-center"><button title="Sửa thông tin" type="button" onclick="getCaNhan(' . $tt->id . ')"  class="btn btn-sm btn-clean btn-icon"
@@ -751,9 +806,9 @@ class dshosodenghikhenthuongnienhanController extends Controller
 
     public function NhanExcel(Request $request)
     {
-        $inputs=$request->all();
+        $inputs = $request->all();
         $dungchung = new dungchung_nhanexcelController();
         $dungchung->NhanExcelKhenThuong($request);
-        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahoso'].'&phanloai='.$inputs['phanloai'].'&madonvi='.$inputs['madonvi']);
+        return redirect(static::$url . 'Sua?mahosotdkt=' . $inputs['mahoso'] . '&phanloai=' . $inputs['phanloai'] . '&madonvi=' . $inputs['madonvi']);
     }
 }

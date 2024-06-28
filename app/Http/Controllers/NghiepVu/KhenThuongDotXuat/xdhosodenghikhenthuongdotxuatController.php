@@ -319,7 +319,7 @@ class xdhosodenghikhenthuongdotxuatController extends Controller
             // $a_hinhthuckt = array_column(dmhinhthuckhenthuong::all()->toArray(), 'tenhinhthuckt', 'mahinhthuckt');
             // $a_danhhieutd = array_column(dmdanhhieuthidua::all()->toArray(), 'tendanhhieutd', 'madanhhieutd');
             $a_tapthe = array_column(dmnhomphanloai_chitiet::all()->toarray(), 'tenphanloai', 'maphanloai');
-            $a_dhkt = getDanhHieuKhenThuong('ALL');
+            $a_dhkt = getDanhHieuKhenThuong('ALL','ALL');
 
             $result['message'] = '<div class="row" id="dskhenthuongcanhan">';
             $result['message'] .= '<div class="col-md-12">';
@@ -378,7 +378,7 @@ class xdhosodenghikhenthuongdotxuatController extends Controller
             // $a_hinhthuckt = array_column(dmhinhthuckhenthuong::all()->toArray(), 'tenhinhthuckt', 'mahinhthuckt');
             // $a_danhhieutd = array_column(dmdanhhieuthidua::all()->toArray(), 'tendanhhieutd', 'madanhhieutd');
             $a_tapthe = array_column(dmnhomphanloai_chitiet::all()->toarray(), 'tenphanloai', 'maphanloai');
-            $a_dhkt = getDanhHieuKhenThuong('ALL');
+            $a_dhkt = getDanhHieuKhenThuong('ALL','ALL');
             $result['message'] = '<div class="row" id="dskhenthuongtapthe">';
             $result['message'] .= '<div class="col-md-12">';
             $result['message'] .= '<table id="sample_4" class="table table-striped table-bordered table-hover">';

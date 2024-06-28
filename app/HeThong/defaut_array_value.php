@@ -1093,6 +1093,7 @@ function getPhamViApDung()
     return array(
         //'ADMIN'=>'Đơn vị tổng hợp toàn Tỉnh',
         'TW' => 'Cấp Nhà nước',
+        'B' => 'Cấp Bộ',
         'T' => 'Cấp Tỉnh',
         'H' => 'Cấp Huyện',
         'X' => 'Cấp Xã',

@@ -280,13 +280,13 @@ class xdhosodenghikhenthuongthiduaController extends Controller
         $model_canhan =  dshosothiduakhenthuong_canhan::where('mahosotdkt', $model->mahosotdkt)->get();
         $model_hogiadinh =  dshosothiduakhenthuong_hogiadinh::where('mahosotdkt', $model->mahosotdkt)->get();
         $model_tailieu =  dshosothiduakhenthuong_tailieu::where('mahosotdkt', $model->mahosotdkt)->get();
-        // $donvi = viewdiabandonvi::where('madonvi', $model->madonvi)->first();
+        $donvi = viewdiabandonvi::where('madonvi', $model->madonvi)->first();
         // $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo);
         // $a_dhkt_tapthe = getDanhHieuKhenThuong($donvi->capdo, 'TAPTHE');
         // $a_dhkt_hogiadinh = getDanhHieuKhenThuong($donvi->capdo, 'HOGIADINH');
-        $a_dhkt_canhan = getDanhHieuKhenThuong('ALL');
-        $a_dhkt_tapthe = getDanhHieuKhenThuong('ALL', 'TAPTHE');
-        $a_dhkt_hogiadinh = getDanhHieuKhenThuong('ALL', 'HOGIADINH');
+        $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo,'CANHAN');
+        $a_dhkt_tapthe = getDanhHieuKhenThuong($donvi->capdo, 'TAPTHE');
+        $a_dhkt_hogiadinh = getDanhHieuKhenThuong($donvi->capdo, 'HOGIADINH');
 
         $m_phongtrao = dsphongtraothidua::where('maphongtraotd', $model->maphongtraotd)->first();
         $m_tieuchuan = dsphongtraothidua_tieuchuan::where('maphongtraotd', $model->maphongtraotd)->get();
@@ -346,7 +346,7 @@ class xdhosodenghikhenthuongthiduaController extends Controller
             ->with('model_tapthe', $model_tapthe)
             ->with('m_donvi', $m_donvi)
             ->with('a_phanloaidt', $a_phanloaidt)
-            ->with('a_dhkt', getDanhHieuKhenThuong('ALL'))
+            ->with('a_dhkt', getDanhHieuKhenThuong('ALL','ALL'))
             //->with('a_danhhieu', array_column(dmdanhhieuthidua::all()->toArray(), 'tendanhhieutd', 'madanhhieutd'))
             ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             //->with('a_hinhthuckt', array_column(dmhinhthuckhenthuong::all()->toArray(), 'tenhinhthuckt', 'mahinhthuckt'))

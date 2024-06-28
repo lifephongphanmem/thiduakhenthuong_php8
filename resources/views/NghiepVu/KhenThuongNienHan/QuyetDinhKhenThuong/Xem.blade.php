@@ -87,7 +87,9 @@
                     <td class="text-center">{{ $i++ }}</td>
                     <td>{{ $tt->tentapthe }}</td>
                     <td>{{ $a_phanloaidt[$tt->maphanloaitapthe] ?? '' }}</td>
-                    <td>{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td>
+                    {{-- <td>{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td> --}}
+
+                    <td class="text-center">{{ $tt->madanhhieukhenthuong }}</td>
                     {{-- <td>{{ $a_danhhieutd[$tt->madanhhieutd] ?? '' }}</td> --}}
                     <td class="text-center">{{ $tt->ketqua == '1' ? 'Có' : 'Không' }}</td>
                 </tr>
@@ -95,7 +97,7 @@
         </table>
     @endif
 
-    @if (isset($model_hogiadinh)&&count($model_hogiadinh) > 0)
+    @if (isset($model_hogiadinh) && count($model_hogiadinh) > 0)
         <p style="text-left: center; font-size: 18px;">Thông tin khen thưởng hộ gia đình</p>
         <table id="data_body3" class="money" cellspacing="0" cellpadding="0" border="1"
             style="margin: 5px auto; border-collapse: collapse;font:normal 12px Times, serif;">
@@ -137,8 +139,9 @@
                     <td class="text-center">{{ $i++ }}</td>
                     <td>{{ $tt->tendoituong }}</td>
                     <td>{{ $a_phanloaidt[$tt->maphanloaicanbo] ?? '' }}</td>
-                    <td>{{ $tt->chucvu . ',' . $tt->tenphongban . ',' . $tt->tencoquan }}</td>
-                    <td>{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td>
+                    <td>{{ $tt->chucvu . ',' . $tt->tenphongban . ',' . (array_key_exists($tt->tencoquan,getDsCoQuan())?getDsCoQuan()[$tt->tencoquan]:$tt->tencoquan) }}</td>
+                    {{-- <td>{{ $a_dhkt[$tt->madanhhieukhenthuong] ?? '' }}</td> --}}
+                    <td class="text-center">{{ $tt->madanhhieukhenthuong }}</td>
                     {{-- <td>{{ $a_danhhieutd[$tt->madanhhieutd] ?? '' }}</td> --}}
                     <td class="text-center">{{ $tt->ketqua == '1' ? 'Có' : 'Không' }}</td>
                 </tr>
@@ -146,7 +149,7 @@
         </table>
     @endif
 
-    @if (isset($model_detai)&& count($model_detai) > 0)
+    @if (isset($model_detai) && count($model_detai) > 0)
         <p style="text-left: center; font-size: 18px;">Thông tin đề tài sáng kiến</p>
         <table id="data_body2" class="money" cellspacing="0" cellpadding="0" border="1"
             style="margin: 5px auto; border-collapse: collapse;font:normal 12px Times, serif;">

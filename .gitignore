@@ -21,5 +21,6 @@ yarn-error.log
 /vendor
 /public/data/uploads
 /public/data/tailieudinhkem
+/public/web.config
 
 

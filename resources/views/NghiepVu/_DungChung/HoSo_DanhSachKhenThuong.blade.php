@@ -83,7 +83,8 @@
                                                 <td>{{ $tt->tentapthe }}</td>
                                                 <td>{{ $a_tapthe[$tt->maphanloaitapthe] ?? '' }}</td>
                                                 <td class="text-center">
-                                                    {{ $a_dhkt_tapthe[$tt->madanhhieukhenthuong] ?? '' }}
+                                                    {{-- {{ $a_dhkt_tapthe[$tt->madanhhieukhenthuong] ?? '' }} --}}
+                                                    {{ $tt->madanhhieukhenthuong}}
                                                 </td>
                                                 <td class="text-center">
                                                     {{ $a_loaihinhkt[$model->maloaihinhkt] ?? '' }}
@@ -239,7 +240,8 @@
                                                     {{ $tt->chucvu . ',' . $tt->tenphongban . ',' . (array_key_exists($tt->tencoquan,getDsCoQuan($model->madonvi))?getDsCoQuan($model->madonvi)[$tt->tencoquan]:$tt->tencoquan) }}
                                                 </td>
                                                 <td class="text-center">
-                                                    {{ $a_dhkt_canhan[$tt->madanhhieukhenthuong] ?? '' }}
+                                                    {{-- {{ $a_dhkt_canhan[$tt->madanhhieukhenthuong] ?? '' }} --}}
+                                                    {{ $tt->madanhhieukhenthuong}}
                                                 </td>
                                                 <td class="text-center">
                                                     {{ $a_loaihinhkt[$model->maloaihinhkt] ?? '' }}

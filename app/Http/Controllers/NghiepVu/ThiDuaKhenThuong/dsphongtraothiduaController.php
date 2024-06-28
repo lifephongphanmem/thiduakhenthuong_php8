@@ -16,6 +16,8 @@ use App\Models\DanhMuc\dsdonvi;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothamgiaphongtraotd;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_canhan;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tapthe;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua_khenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua_tieuchuan;
@@ -201,6 +203,8 @@ class dsphongtraothiduaController extends Controller
             $trangthai->mahoso = $inputs['maphongtraotd'];
             $trangthai->thoigian = date('Y-m-d H:i:s');
             $trangthai->save();
+
+            storeThongBao('/PhongTraoThiDua/Xem?maphongtraotd='.$inputs['maphongtraotd'],$inputs['noidung'],'dsphongtraothidua',$inputs['maphongtraotd'],$inputs['phamviapdung'],$inputs['madonvi']);
         } else {
             $model->update($inputs);
         }
@@ -419,5 +423,45 @@ class dsphongtraothiduaController extends Controller
         $result['status'] = 'success';
 
         die(json_encode($result));
+    }
+    public function HoSoKT(Request $request)
+    {
+        $inputs=$request->all();
+        $model=dshosothiduakhenthuong::where('maphongtraotd', $inputs['maphongtraotd'])->get();
+        // dd($model);
+        $inputs = $request->all();
+        $inputs['trangthai'] = session('chucnang')['qdhosodenghikhenthuongthidua']['trangthai'] ?? 'CC';
+        $inputs['trangthai'] = $inputs['trangthai'] != 'ALL' ? $inputs['trangthai'] : 'CC';
+        $inputs['url_hs'] = '/HoSoDeNghiKhenThuongThiDua/';
+        $inputs['url_xd'] = '/XetDuyetHoSoThiDua/';
+        $inputs['url_qd'] = '/KhenThuongHoSoThiDua/';
+        $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
+        $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
+        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
+
+        $m_phongtrao = dsphongtraothidua::where('maphongtraotd', $inputs['maphongtraotd'])->first();
+        $ngayhientai = date('Y-m-d');
+        KiemTraPhongTrao($m_phongtrao, $ngayhientai);
+        // $donvi = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
+        // $model = dshosothiduakhenthuong::where('maphongtraotd', $inputs['maphongtraotd'])
+        //     ->where('madonvi_kt', $inputs['madonvi'])->get();
+
+        foreach ($model as $key => $hoso) {
+            $hoso->soluongkhenthuong = dshosothiduakhenthuong_canhan::where('mahosotdkt', $hoso->mahosotdkt)->count()
+                + dshosothiduakhenthuong_tapthe::where('mahosotdkt', $hoso->mahosotdkt)->count();
+            //Gán lại trạng thái hồ sơ
+            $hoso->madonvi_hoso = $hoso->madonvi_xd;
+            $hoso->trangthai_hoso = $hoso->trangthai_xd;
+            $hoso->thoigian_hoso = $hoso->thoigian_xd;
+            $hoso->lydo_hoso = $hoso->lydo_xd;
+            $hoso->madonvi_nhan_hoso = $hoso->madonvi_nhan_xd;
+        }
+            return view('NghiepVu.ThiDuaKhenThuong.PhongTraoThiDua.DshoSoKT')
+                    ->with('model',$model)
+                    ->with('inputs', $inputs)
+                    ->with('a_phanloaihs', getPhanLoaiHoSo('KHENTHUONG'))
+                    ->with('m_phongtrao', $m_phongtrao)
+                    ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
+                    ->with('pageTitle','Danh sách hồ sơ khen thưởng');
     }
 }
