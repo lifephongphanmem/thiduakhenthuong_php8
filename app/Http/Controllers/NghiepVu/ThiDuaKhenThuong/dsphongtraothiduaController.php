@@ -456,7 +456,7 @@ class dsphongtraothiduaController extends Controller
             $hoso->lydo_hoso = $hoso->lydo_xd;
             $hoso->madonvi_nhan_hoso = $hoso->madonvi_nhan_xd;
         }
-            return view('NghiepVu.ThiDuaKhenThuong.PhongTraoThiDua.DshoSoKT')
+            return view('NghiepVu.ThiDuaKhenThuong.PhongTraoThiDua.DsHoSoKT')
                     ->with('model',$model)
                     ->with('inputs', $inputs)
                     ->with('a_phanloaihs', getPhanLoaiHoSo('KHENTHUONG'))
