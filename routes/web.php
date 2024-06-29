@@ -95,10 +95,12 @@ Route::group(['prefix' => 'DungChung'], function () {
 Route::group(['prefix' => 'HeThongAPI'], function () {
     Route::group(['prefix' => 'KetNoi'], function () {       
         Route::get('QuanLyVanBan', [APIketnoiController::class, 'QuanLyVanBan']);
+        Route::post('TruyenVanBan', [APIketnoiController::class, 'TruyenVanBan']);
         Route::get('QuanLyCanBo', [APIketnoiController::class, 'QuanLyCanBo']);
         Route::get('QuanLyLuuTru', [APIketnoiController::class, 'QuanLyLuuTru']);
         Route::get('QuanLyTDKT', [APIketnoiController::class, 'QuanLyTDKT']);
-        
+        Route::get('LayDSFile', [APIketnoiController::class, 'LayDSFile']);
+        Route::get('LayThongTinFile', [APIketnoiController::class, 'LayThongTinFile']);
     });
     
     Route::group(['prefix' => 'ThongTinChung'], function () {       
