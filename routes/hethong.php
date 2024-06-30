@@ -58,6 +58,8 @@ Route::group(['prefix' => 'TaiKhoan'], function () {
     Route::get('PhamViDuLieu', [dstaikhoanController::class, 'PhamViDuLieu']);
     Route::post('PhamViDuLieu', [dstaikhoanController::class, 'LuuPhamViDuLieu']);
     Route::post('XoaPhamViDuLieu', [dstaikhoanController::class, 'XoaPhamViDuLieu']);
+
+    Route::post('CapNhatEmail',[dstaikhoanController::class,'CapNhatEMail']);
 });
 Route::group(['prefix' => 'HeThongAPI'], function () {
     //Route::get('CaNhan', 'HeThong\HeThongAPIController@CaNhan');
