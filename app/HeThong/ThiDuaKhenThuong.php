@@ -2,6 +2,7 @@
 
 use App\Models\DanhMuc\dmcoquandonvi;
 use App\Models\DanhMuc\dmhinhthuckhenthuong;
+use App\Models\DanhMuc\dscumkhoi_chitiet;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
 use App\Models\DanhMuc\dstaikhoan;
@@ -2038,14 +2039,16 @@ function chkThongBao()
             break;
         }
     }
-    $model=thongbao::wherein('phamvi',$a_phamvi)->get();
+    $m_cumkhoi=dscumkhoi_chitiet::where('madonvi',session('admin')->madonvi)->get();
+    $a_macumkhoi=array_column($m_cumkhoi->toarray(),'macumkhoi');
+    $model=thongbao::wherein('phamvi',$a_phamvi)->orwherein('phamvi',$a_macumkhoi)->get();
     foreach($model as $ct)
     {
         if($ct->trangthai == 'CHUADOC'){
             return true;
         }else{
             $trangthai=explode(';',$ct->trangthai);
-            if(in_array(session('admin')->madonvi,$trangthai)){
+            if(in_array(session('admin')->tendangnhap,$trangthai)){
                 return false;
             }else{
                 return true;
@@ -2053,4 +2056,47 @@ function chkThongBao()
         }
     }
 }
+ function SLThongbao($capdo,$madonvi,$tendangnhap)
+{
+    switch ($capdo){
+        case 'T':{
+            $a_phamvi=['T','TW'];
+            break;
+        }
+        case 'TW':{
+            $a_phamvi=['T','TW'];
+            break;
+        }
+        case 'H':{
+            $a_phamvi=['T','TW','H'];
+            break;
+        }
+        case 'X':{
+            $a_phamvi=['T','TW','H','X'];
+            break;
+        }
+        default:{
+            $a_phamvi=['T','TW','H','X'];
+            break;
+        }
+    }
+    $m_cumkhoi=dscumkhoi_chitiet::where('madonvi',$madonvi)->get();
+    $a_macumkhoi=array_column($m_cumkhoi->toarray(),'macumkhoi');
+    $model=thongbao::wherein('phamvi',$a_phamvi)->orwherein('phamvi',$a_macumkhoi)->get();
+    $sl=0;
+    foreach($model as $ct)
+    {
+        if($ct->trangthai == 'CHUADOC'){
+            $sl += 1;
+        }else{
+            $trangthai=explode(';',$ct->trangthai);
+            if(!in_array($tendangnhap,$trangthai)){
+                $sl += 1;
+            }
+        }
+    }
+    return $sl;
+}
+
+
 

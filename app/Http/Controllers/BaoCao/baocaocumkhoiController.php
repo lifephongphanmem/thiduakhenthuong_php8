@@ -154,7 +154,7 @@ class baocaocumkhoiController extends Controller
         // dd($a_hinhthuckt_tinh);
         //Thông tin đơn vị
         $m_donvi = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
-        $a_dhkt = getDanhHieuKhenThuong('ALL');
+        $a_dhkt = getDanhHieuKhenThuong('ALL','ALL');
         // dd($model);
         return view('BaoCao.CumKhoi.PhongTrao')
             ->with('a_dhkt', $a_dhkt)
@@ -332,7 +332,7 @@ class baocaocumkhoiController extends Controller
         $model_tapthe = dshosotdktcumkhoi_tapthe::where('mahosotdkt', $model->mahosotdkt)->get();
         $a_phanloaidt = array_column(dmnhomphanloai_chitiet::all()->toarray(), 'tenphanloai', 'maphanloai');
         $m_donvi = dsdonvi::where('madonvi', $model->madonvi)->first();
-        $a_dhkt = getDanhHieuKhenThuong('ALL');
+        $a_dhkt = getDanhHieuKhenThuong('ALL','ALL');
         // dd($model);
         return view('NghiepVu.KhenThuongCongTrang.QuyetDinhKhenThuong.Xem')
             ->with('model', $model)

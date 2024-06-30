@@ -15,8 +15,8 @@
     <script>
         jQuery(document).ready(function() {
             TableManaged3.init();
-            $('#loaivb').change(function() {
-                window.location.href = "{{ $inputs['url'] }}" + "ThongTin?loaivb=" + $('#loaivb').val();
+            $('#loaivb, #phannhom').change(function() {
+                window.location.href = "{{ $inputs['url'] }}" + "ThongTin?loaivb=" + $('#loaivb').val()+"&phannhom=" + $('#phannhom').val();
             });
         });
     </script>
@@ -47,6 +47,10 @@
                         'id' => 'loaivb',
                         'class' => 'form-control select2basic',
                     ]) !!}
+                </div>
+                <div class="col-lg-6">
+                    <label class="control-label">Phân nhóm</label>
+                    {!! Form::select('phannhom', setArrayAll(getPhanNhomTL()), $inputs['phannhom'], ['id'=>'phannhom','class' => 'form-control select2basic']) !!}
                 </div>
             </div>
 

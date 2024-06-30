@@ -4,6 +4,7 @@ namespace App\Http\Controllers\HeThong;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\DanhMuc\dscumkhoi_chitiet;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
 use App\Models\DanhMuc\dstaikhoan;
@@ -14,6 +15,7 @@ use App\Models\HeThong\hethongchung_chucnang;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tailieu;
+use App\Models\ThongBao\thongbao;
 use App\Models\VanPhongHoTro\vanphonghotro;
 use App\Models\View\viewdiabandonvi;
 use Illuminate\Support\Facades\Session;
@@ -25,7 +27,7 @@ class hethongchungController extends Controller
     public function index()
     {
         if (Session::has('admin')) {
-            if(!chkaction()){
+            if (!chkaction()) {
                 Session::flush();
                 return response()->view('errors.error_login');
             };
@@ -38,13 +40,13 @@ class hethongchungController extends Controller
             else
                 $model_vp = vanphonghotro::orderBy('stt')->get();
             $a_vp = a_unique(array_column($model_vp->toArray(), 'vanphong'));
-            $col =(int) 12 / (count($a_vp)>0?count($a_vp) : 1);
+            $col = (int) 12 / (count($a_vp) > 0 ? count($a_vp) : 1);
             $col = $col < 4 ? 4 : $col;
             // dd($model_vp);
             return view('HeThong.dashboard')
                 ->with('model_vp', $model_vp)
                 ->with('a_vp', $a_vp)
-                ->with('col',$col)
+                ->with('col', $col)
                 ->with('model', getHeThongChung())
                 ->with('pageTitle', 'Thông tin hỗ trợ');
         } else {
@@ -236,26 +238,26 @@ class hethongchungController extends Controller
             ));
         }
         */
-        if($this->chklogin($ttuser->timeaction,$ttuser->id,session()->getId())){
-			// Cho đăng nhập thì lập tức tài khoản đang onl logout luôn
-				if (Session::has('admin')) {
-					Session::flush();
-				}
+        if ($this->chklogin($ttuser->timeaction, $ttuser->id, session()->getId())) {
+            // Cho đăng nhập thì lập tức tài khoản đang onl logout luôn
+            if (Session::has('admin')) {
+                Session::flush();
+            }
+        };
 
-		};
 
-        Session::put('admin', $ttuser);
-        $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
-		//đẩy session id vào user để check đăng nhập giới hạn 1 tài khoản
-		$data_update=[
-			'timeaction'=>$time,
-			'sessionID'=>session()->getId(),
-			'islogout'=>1
-		];
-		$userupdate = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
+            Session::put('admin', $ttuser);
+        $time = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+        //đẩy session id vào user để check đăng nhập giới hạn 1 tài khoản
+        $data_update = [
+            'timeaction' => $time,
+            'sessionID' => session()->getId(),
+            'islogout' => 1
+        ];
+        $userupdate = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
 
-		// dd($user);
-		$userupdate->update($data_update);
+        // dd($user);
+        $userupdate->update($data_update);
         //Gán hệ danh mục chức năng        
         Session::put('chucnang', hethongchung_chucnang::all()->keyBy('machucnang')->toArray());
         //gán phân quyền của User
@@ -314,7 +316,7 @@ class hethongchungController extends Controller
             $trangthai->tendangnhap = session('admin')->tendangnhap;
             $trangthai->thoigian = date('Y-m-d H:i:s');
             $trangthai->save();
-            dstaikhoan::findOrFail(session('admin')->id)->update(['islogout'=> 0,'sessionID'=>null]);
+            dstaikhoan::findOrFail(session('admin')->id)->update(['islogout' => 0, 'sessionID' => null]);
             Session::flush();
             return redirect('/DangNhap');
         } else {
@@ -418,7 +420,7 @@ class hethongchungController extends Controller
         foreach ($model as $ct) {
             $ct->tendonvi = $a_donvi[$ct->madonvi] ?? $ct->madonvi;
         }
-        
+
         $model_vp = vanphonghotro::orderBy('stt')->get();
         $a_vp = a_unique(array_column($model_vp->toArray(), 'vanphong'));
         $col = (int) 12 / (count($a_vp) > 0 ? count($a_vp) : 1);
@@ -449,30 +451,31 @@ class hethongchungController extends Controller
             ->with('pageTitle', 'Thông tin hỗ trợ');
     }
 
-    public function chklogin($thoigian, $id,$sessionID){
-		if (!Session::has('admin')) {
-			return false;
-		};
+    public function chklogin($thoigian, $id, $sessionID)
+    {
+        if (!Session::has('admin')) {
+            return false;
+        };
 
-        if(session('admin')->tendangnhap == 'SSA')
-        {
+        if (session('admin')->tendangnhap == 'SSA') {
             return false;
         }
-		$user=dstaikhoan::findOrFail($id);
-        if($sessionID != $user->sessionID){
+        $user = dstaikhoan::findOrFail($id);
+        if ($sessionID != $user->sessionID) {
             return true;
         }
-		if($user->islogout == 0){
-			return true;
-		}
-		// $thoigianthaotac=$user->isaction();
-		$chenhlechthoigian=Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
-		$time_session=Config::get('session.lifetime');
+        if ($user->islogout == 0) {
+            return true;
+        }
+        // $thoigianthaotac=$user->isaction();
+        $chenhlechthoigian = Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
+        $time_session = Config::get('session.lifetime');
         // dd($time_session);
-		if($chenhlechthoigian < $time_session){
-			return false;
-		}else{
-			return true;
-		}
-	}
+        if ($chenhlechthoigian < $time_session) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

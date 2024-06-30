@@ -524,7 +524,7 @@ class dsphongtraothiduacumkhoiController extends Controller
         $inputs['maphongtraotd'] = $inputs['maphongtraotd'] ?? ($m_phongtrao->first()->maphongtraotd ?? '');
         $ngayhientai = date('Y-m-d');       
 
-        $model = dshosotdktcumkhoi::wherein('trangthai', ['CXKT', 'DKT'])
+        $model = dshosotdktcumkhoi::wherein('trangthai', ['DKT'])
             ->where('maphongtraotd', $inputs['maphongtraotd'])
             ->get();
         // dd(session('admin'));

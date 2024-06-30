@@ -51,12 +51,13 @@ class thongbaoController extends Controller
                 break;
             }
         }
-            $cumkhoi=dscumkhoi_chitiet::where('madonvi',session('admin')->madonvi)->first();
-            $macumkhoi=$cumkhoi->macumkhoi??'';
-            $model = thongbao::wherein('phamvi',$a_phamvi)->orwhere('phamvi',$macumkhoi)->get();
+            $m_cumkhoi=dscumkhoi_chitiet::where('madonvi',session('admin')->madonvi)->get();
+            // $macumkhoi=$cumkhoi->macumkhoi??'';
+            $a_macumkhoi=array_column($m_cumkhoi->toarray(),'macumkhoi');
+            $model = thongbao::wherein('phamvi',$a_phamvi)->orwherein('phamvi',$a_macumkhoi)->get();
             foreach($model as $ct){
                 if($ct->trangthai != 'CHUADOC'){
-                    if(in_array(session('admin')->madonvi,explode(';',$ct->trangthai))){
+                    if(in_array(session('admin')->tendangnhap,explode(';',$ct->trangthai))){
                         $ct->trangthai='DADOC';
                     }else{
                         $ct->trangthai='CHUADOC';
@@ -80,11 +81,14 @@ class thongbaoController extends Controller
             );
             if(isset($model)){
                 if($model->trangthai == 'CHUADOC'){
-                    $trangthai=session('admin')->madonvi;
+                    $trangthai=session('admin')->tendangnhap;
                 }else{
                     $a_trangthai=explode(';',$model->trangthai);
-                    array_push($a_trangthai,session('admin')->madonvi);
+                    if(!in_array(session('admin')->tendangnhap,$a_trangthai)){
+                        array_push($a_trangthai,session('admin')->tendangnhap);                     
+                    }
                     $trangthai=implode(';',$a_trangthai);
+
                 }
 
                 $model->update(['trangthai'=>$trangthai]);
