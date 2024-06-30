@@ -32,6 +32,11 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="{{ url('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/plugins/custom/prismjs/prismjs.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!--end::Global Theme Styles-->
     <!--begin::Layout Themes(used by all pages)-->
     <!--end::Layout Themes-->
@@ -85,7 +90,7 @@ License: You must have a valid license purchased only from themeforest(the above
                                             <form method="POST" action="{{ '/password/reset' }}">
                                                 @csrf
                         
-                                                {{-- <input type="hidden" name="token" value="{{ $token }}"> --}}
+                                                <input type="hidden" name="token" value="{{ $token }}">
                         
                                                 <div class="form-group row">
                                                     <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
@@ -265,16 +270,36 @@ License: You must have a valid license purchased only from themeforest(the above
             iconElement.classList.toggle('fa-eye-slash', !isPassword);
         }
     </script>
+            <script>
+                @if(Session::has('message'))
+                    toastr.options = {
+                        "closeButton": true,
+                        "progressBar": true,
+                        "positionClass": "toast-top-right",
+                        "showDuration": "400",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                    toastr["{{ Session::get('alert-type', 'info') }}"]("{{ Session::get('message') }}");
+             @endif 
+            </script>
     <!--end::Global Config-->
     <!--begin::Global Theme Bundle(used by all pages)-->
-    {{-- <script src="{{url('assets/plugins/global/plugins.bundle.js')}}"></script>
+    <script src="{{url('assets/plugins/global/plugins.bundle.js')}}"></script>
     <script src="{{url('assets/plugins/custom/prismjs/prismjs.bundle.js')}}"></script>
-    <script src="{{url('assets/js/scripts.bundle.js')}}"></script> --}}
+    <script src="{{url('assets/js/scripts.bundle.js')}}"></script>
 
     <!--end::Global Theme Bundle-->
     <!--begin::Page Scripts(used by this page)-->
     {{-- <script src="{{url('assets/js/pages/custom/login/login-general.js')}}"></script> --}}
     <!--end::Page Scripts-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
 <!--end::Body-->
 

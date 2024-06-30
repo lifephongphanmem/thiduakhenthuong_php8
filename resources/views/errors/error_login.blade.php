@@ -42,7 +42,7 @@ License: You must have a valid license purchased only from themeforest(the above
 				<!--begin::Content-->
 				<h3 class="font-weight-boldest text-dark-75 mt-15" style="font-size: 5rem">Thông báo!</h3>
 				<p class="font-size-h3 text-danger font-weight-normal">Tài khoản đã đăng nhập ở một thiết bị khác </p>
-                <p><a href='{{ url('/') }}'>Bấm vào đây</a> để đăng nhập lại.</p>
+                <p><a href='{{ url('/DangNhap') }}'>Bấm vào đây</a> để đăng nhập lại.</p>
 				<!--end::Content-->
 			</div>
 			<!--end::Error-->

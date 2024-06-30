@@ -37,9 +37,12 @@ class dsvanbanphaplyController extends Controller
         $inputs = $request->all();
         $inputs['url'] = static::$url;
         $inputs['loaivb'] = $inputs['loaivb'] ?? 'ALL';
+        $inputs['phannhom'] = $inputs['phannhom'] ?? 'ALL';
         $model = dsvanbanphaply::query();
         if ($inputs['loaivb'] != 'ALL')
             $model = $model->where('loaivb', $inputs['loaivb']);
+            if ($inputs['phannhom'] != 'ALL')
+            $model = $model->where('phannhom', $inputs['phannhom']);
         $model = $model->orderby('ngayqd')->get();
         return view('VanBan.TaiLieu.ThongTin')
             ->with('model', $model)

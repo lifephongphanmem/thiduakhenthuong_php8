@@ -427,7 +427,7 @@ class dsphongtraothiduaController extends Controller
     public function HoSoKT(Request $request)
     {
         $inputs=$request->all();
-        $model=dshosothiduakhenthuong::where('maphongtraotd', $inputs['maphongtraotd'])->get();
+        $model=dshosothiduakhenthuong::where('maphongtraotd', $inputs['maphongtraotd'])->where('trangthai_kt','DKT')->get();
         // dd($model);
         $inputs = $request->all();
         $inputs['trangthai'] = session('chucnang')['qdhosodenghikhenthuongthidua']['trangthai'] ?? 'CC';

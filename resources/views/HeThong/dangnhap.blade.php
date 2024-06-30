@@ -322,7 +322,7 @@ License: You must have a valid license purchased only from themeforest(the above
         }
     </script>
         <script>
-            @if(Session::has('success'))
+            @if(Session::has('message'))
                 toastr.options = {
                     "closeButton": true,
                     "progressBar": true,
@@ -336,8 +336,8 @@ License: You must have a valid license purchased only from themeforest(the above
                     "showMethod": "fadeIn",
                     "hideMethod": "fadeOut"
                 }
-                toastr["{{ Session::get('alert-type', 'info') }}"]("{{ Session::get('success') }}");
-            @endif
+                toastr["{{ Session::get('alert-type', 'info') }}"]("{{ Session::get('message') }}");
+         @endif 
         </script>
     <!--end::Global Config-->
     <!--begin::Global Theme Bundle(used by all pages)-->
