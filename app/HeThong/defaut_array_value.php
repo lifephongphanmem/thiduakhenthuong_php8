@@ -10,6 +10,15 @@ use App\Models\DanhMuc\dsdonvi;
  * Time: 3:05 PM
  */
 
+function getPhanMemKetNoi()
+{
+    return array(
+        'QLVB' => 'Quản lý văn bản',
+        'HCC' => 'Hành chính công (một cửa)',
+        'QLCB' => 'Quản lý công chức, viên chức',
+    );
+}
+
 function getPhanLoaiDiaBan()
 {
     return array(
@@ -165,14 +174,14 @@ function getPhanLoaiHoSo($phanloai = 'ALL')
                 );
                 break;
             }
-            case 'DENGHIKHENTHUONG': {
+        case 'DENGHIKHENTHUONG': {
                 $a_kq = array(
                     'KHENCAOTHUTUONG' => 'Hồ sơ đề nghị Thủ tướng chính phủ khen thưởng',
                     'KHENCAOCHUTICHNUOC' => 'Hồ sơ đề nghị Chủ tịch nước khen thưởng',
                 );
                 break;
             }
-            case 'DENGHIKHENTHUONGDV': {
+        case 'DENGHIKHENTHUONGDV': {
                 $a_kq = array(
                     'KHENTHUONG' => 'Hồ sơ đề nghị cấp trên khen thưởng',
                     'KHENCAOTHUTUONG' => 'Hồ sơ đề nghị Thủ tướng chính phủ khen thưởng',
@@ -385,7 +394,7 @@ function getTaoDuThaoToTrinhPheDuyetCumKhoi(&$model, $maduthao = null)
 
         $m_hogiadinh = App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_hogiadinh::where('mahosotdkt', $model->mahosotdkt)
             ->where('ketqua', '1')->orderby('stt')->get();
-        $a_coquan=getDsCoQuan();
+        $a_coquan = getDsCoQuan();
         //Xử lý các trường hợp
         //Cá nhân
         if ($m_canhan->count() > 0) {
@@ -395,7 +404,7 @@ function getTaoDuThaoToTrinhPheDuyetCumKhoi(&$model, $maduthao = null)
                 $s_canhan .= '<p style=&#34;margin-left:40px;&#34;>' .
                     ($i++) . '. ' . $canhan->tendoituong .
                     ($canhan->chucvu == '' ? '' : (', ' . $canhan->chucvu)) .
-                    ($canhan->tencoquan == '' ? '' : (' ' . $a_coquan[$canhan->tencoquan]??$canhan->tencoquan)) .
+                    ($canhan->tencoquan == '' ? '' : (' ' . $a_coquan[$canhan->tencoquan] ?? $canhan->tencoquan)) .
                     '</p>';
             }
             $thongtintotrinhdenghi = str_replace('[khenthuongcanhan]',  $s_canhan, $thongtintotrinhdenghi);

@@ -430,4 +430,15 @@ class dstaikhoanController extends Controller
         $model->delete();
         return redirect('/TaiKhoan/PhamViDuLieu?tendangnhap=' . $model->tendangnhap . '&machucnang=' . $model->machucnang);
     }
+
+    public function CapNhatEMail(Request $request)
+    {
+        $model=dstaikhoan::where('tendangnhap',session('admin')->tendangnhap)->first();
+        if(isset($model)){
+            $model->update(['email'=>$request->email]);
+        }
+       return redirect('/')
+            ->with('success','Cập nhật Email thành công')
+            ->with('pageTitle', 'Tổng quan');
+    }
 }

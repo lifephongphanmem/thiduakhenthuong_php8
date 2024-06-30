@@ -42,11 +42,20 @@ class hethongchungController extends Controller
             $a_vp = a_unique(array_column($model_vp->toArray(), 'vanphong'));
             $col = (int) 12 / (count($a_vp) > 0 ? count($a_vp) : 1);
             $col = $col < 4 ? 4 : $col;
+            $email=dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
+            if(session('admin')->capdo == 'SSA'){
+                $thongtin_email=true;
+            }else if(isset($email->email)){
+                $thongtin_email=true;
+            }else{
+                $thongtin_email=false;
+            }
             // dd($model_vp);
             return view('HeThong.dashboard')
                 ->with('model_vp', $model_vp)
                 ->with('a_vp', $a_vp)
-                ->with('col', $col)
+                ->with('col',$col)
+                ->with('thongtin_email',$thongtin_email)
                 ->with('model', getHeThongChung())
                 ->with('pageTitle', 'Thông tin hỗ trợ');
         } else {
