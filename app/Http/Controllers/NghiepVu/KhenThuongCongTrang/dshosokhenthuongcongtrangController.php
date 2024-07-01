@@ -96,6 +96,7 @@ class dshosokhenthuongcongtrangController extends Controller
             $hoso->soluongkhenthuong = $model_canhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + $model_tapthe->where('mahosotdkt', $hoso->mahosotdkt)->count();
         }
+        // dd($model);
         // dd(session('admin'));
         // $inputs['khenthuong']=getDVPhanLoaiHS($inputs['madonvi']);
         return view('NghiepVu.KhenThuongCongTrang.HoSoKT.ThongTin')
@@ -645,7 +646,7 @@ class dshosokhenthuongcongtrangController extends Controller
 
         $danhsach = dshosothiduakhenthuong_tapthe::where('mahosotdkt', $model->mahosotdkt)->get();
         $dungchung = new dungchung_nghiepvuController();
-        $dungchung->htmlTapThe($result, $danhsach, static::$url, true, $inputs['maloaihinhkt']);
+        $dungchung->htmlTapThe($result, $danhsach, static::$url, true, $model->mahosotdkt);
 
         return response()->json($result);
     }

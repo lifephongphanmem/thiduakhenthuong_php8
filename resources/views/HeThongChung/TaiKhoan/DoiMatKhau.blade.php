@@ -25,7 +25,8 @@
     <div class="card card-custom wave wave-animate-slow wave-primary" style="min-height: 600px">
         <div class="card-header flex-wrap border-1 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label text-uppercase">Thông tin thay đổi mật khẩu truy cập</h3>
+                {{-- <h3 class="card-label text-uppercase">Thông tin thay đổi mật khẩu truy cập</h3> --}}
+                <h3 class="card-label text-uppercase">Thông tin thay đổi</h3>
             </div>
             <div class="card-toolbar">
                 <!--begin::Button-->
@@ -51,6 +52,10 @@
                     <label>Tên tài khoản<span class="require">*</span></label>
                     {!! Form::text('tentaikhoan', null, ['class' => 'form-control', 'required', 'readonly' => 'true']) !!}
                 </div>
+                <div class="col-lg-4">
+                    <label>Email<span class="require">*</span></label>
+                    {!! Form::text('email', null, ['class' => 'form-control', 'required','placeholder'=>'Nhập địa chỉ email']) !!}
+                </div>
             </div>
 
             <div class="form-group row">
@@ -59,16 +64,16 @@
                     {!! Form::text('tendangnhap', null, ['class' => 'form-control', 'readonly' => 'true']) !!}
                 </div>
                 <div class="col-lg-4">
-                    <label>Mật khẩu mới<span class="require">*</span></label>
-                    {!! Form::text('matkhaumoi', null, ['id' => 'matkhaumoi', 'class' => 'form-control', 'required']) !!}
+                    <label>Mật khẩu mới</label>
+                    {!! Form::text('matkhaumoi', null, ['id' => 'matkhaumoi', 'class' => 'form-control','placeholder'=>'Không thay đổi thì không cần điền']) !!}
                 </div>
             </div>
         </div>
         <div class="card-footer">
             <div class="row text-center">
                 <div class="col-lg-12">
-                    <a href="{{ url('/TaiKhoan/DanhSach?madonvi=' . $model->madonvi) }}" class="btn btn-danger mr-5"><i
-                            class="fa fa-reply"></i>&nbsp;Quay lại</a>
+                    {{-- <a href="{{ url('/TaiKhoan/DanhSach?madonvi=' . $model->madonvi) }}" class="btn btn-danger mr-5"><i
+                            class="fa fa-reply"></i>&nbsp;Quay lại</a> --}}
                     <button type="submit" class="btn btn-primary" onclick="validateForm()"><i class="fa fa-check"></i>Hoàn
                         thành</button>
                 </div>
@@ -83,7 +88,7 @@
             var chk = true;
             var str = '';
             var password = $("#matkhaumoi").val();
-            // alert(password);
+
             var patte = new RegExp(
             "^(?=.*[A-Za-z@$!%*?&])(?=.*\\d)[A-Za-z@$!%*?&\\d]{6,}"); //6 ký tự, 1 số, 1 chữ cái hoặc 1 ký tự đặc biệt
 
@@ -92,7 +97,9 @@
                     'Mật khẩu mới cần thỏa mãn: độ dài tối thiểu 06 ký tự; ít nhất 01 chữ số; ít nhất 01 chữ cái hoặc ký tự đặc biệt. \n';
                 chk = false;
             }
-
+            if(password == ''){
+                chk = true;
+            }
             if (chk == false) {
                 alert('Thông tin không hợp lệ: \n' + str);
                 $("#frm_DoiMatKhau").submit(function(e) {

@@ -221,13 +221,13 @@ function getDanhHieuKhenThuong($capdo, $phanloai)
             continue;
         }
 
-        $a_phamvi=explode(';', $danhhieu->phamviapdung);
+        // $a_phamvi=explode(';', $danhhieu->phamviapdung);
         if ($capdo == 'ALL')
             $a_ketqua[$danhhieu->mahinhthuckt] = $danhhieu->tenhinhthuckt;
         elseif (in_array($capdo, explode(';', $danhhieu->phamviapdung)))
             $a_ketqua[$danhhieu->mahinhthuckt] = $danhhieu->tenhinhthuckt;
-        elseif(in_array($capdo,['T','H','SBN']) && in_array('B',$a_phamvi))
-        $a_ketqua[$danhhieu->mahinhthuckt] = $danhhieu->tenhinhthuckt;
+        // elseif(in_array($capdo,['T','H','SBN']) && in_array('B',$a_phamvi))
+        // $a_ketqua[$danhhieu->mahinhthuckt] = $danhhieu->tenhinhthuckt;
     }
     return $a_ketqua;
 }
@@ -2096,6 +2096,19 @@ function chkThongBao()
         }
     }
     return $sl;
+}
+
+function hasEmail()
+{
+    if(session('admin')->capdo == 'SSA'){
+        return true;
+    }
+    $model=dstaikhoan::where('tendangnhap',session('admin')->tendangnhap)->first();
+    if(isset($model->email)){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 

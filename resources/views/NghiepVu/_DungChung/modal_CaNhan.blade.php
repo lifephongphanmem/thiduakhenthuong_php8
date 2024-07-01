@@ -104,7 +104,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row" id="danhhieukhenthuong_canhan">
                         <div class="col-md-12">
                             <label class="control-label">Danh hiệu thi đua/Hình thức khen thưởng</label>
                             {{-- {!! Form::select('madanhhieukhenthuong', $a_dhkt_canhan, null, [
@@ -144,6 +144,32 @@
     <script>
         function setCaNhan() {
             $('#frm_ThemCaNhan').find("[name='id']").val('-1');
+            if ($('#capkhenthuong').length) {
+                capkhenthuong = $('#capkhenthuong').val();
+                madonvi=$('#madonvi').val();
+                // if (capkhenthuong == 'B') {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        url: "/DungChung/LayDanhHieu",
+                        type: 'GET',
+                        data: {
+                            _token: CSRF_TOKEN,
+                            capkhenthuong: capkhenthuong,
+                            phanloai: 'CANHAN',
+                            madonvi: madonvi
+                        },
+                        dataType: 'JSON',
+                        success: function(data) {
+                            // console.log(data);
+                            if (data.status == 'success') {
+                                $('#danhhieukhenthuong_canhan').replaceWith(data.message);
+                                $('#capkhenthuong').val(capkhenthuong).trigger('change');
+                                $('#select2_canhan').select2();
+                            }
+                        }
+                    });
+                // }
+            }
         }
 
         function getCaNhan(id) {

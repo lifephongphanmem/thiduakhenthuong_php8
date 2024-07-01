@@ -214,16 +214,16 @@
                                                     </span>
                                                     <span class="menu-text font-weight-bold text-dark">
                                                         &nbsp;{{ session('admin')->tentaikhoan }}</span>
-                                                    {{-- @if (chkThongBao()) --}}
-                                                        <span> <a href="{{ '/ThongBao/ThongTin' }}"
-                                                                class="btn btn-icon pulse pulse-primary ">
-                                                                <i class="flaticon2-bell-4 text-danger"></i>
-                                                                <span class="pulse-ring"></span>
-                                                                <span
-                                                                class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{SLThongbao(session('admin')->capdo,session('admin')->madonvi,session('admin')->tendangnhap)}}</span>
-                                                            </a>
-                                                        </span>
-                                                    {{-- @endif --}}
+                                                    @if (hasEmail())
+                                                    <span> <a href="{{ '/ThongBao/ThongTin' }}"
+                                                            class="btn btn-icon pulse pulse-primary ">
+                                                            <i class="flaticon2-bell-4 text-danger"></i>
+                                                            <span class="pulse-ring"></span>
+                                                            <span
+                                                                class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{ SLThongbao(session('admin')->capdo, session('admin')->madonvi, session('admin')->tendangnhap) }}</span>
+                                                        </a>
+                                                    </span>
+                                                    @endif
 
 
                                                     {{-- <i class="menu-arrow"></i> --}}
@@ -236,28 +236,31 @@
                                                     </a>
                                                 @endif --}}
                                             </li>
-                                            <li class="menu-section">
-                                                <h3 class="menu-text">Thi đua, khen thưởng các cấp - </h3>
-                                                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-                                            </li>
 
-                                            @include('HeThong.main_subphongtraothidua')
+                                            @if (hasEmail())
+                                                <li class="menu-section">
+                                                    <h3 class="menu-text">Thi đua, khen thưởng các cấp - </h3>
+                                                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                                                </li>
 
-                                            @include('HeThong.main_subkhenthuong')
+                                                @include('HeThong.main_subphongtraothidua')
 
-                                            @include('HeThong.main_subcumkhoithidua')
+                                                @include('HeThong.main_subkhenthuong')
 
-                                            {{-- @include('HeThong.main_subkhenthuongkhac') --}}
+                                                @include('HeThong.main_subcumkhoithidua')
 
-                                            @include('HeThong.main_subquanlyquy')
+                                                {{-- @include('HeThong.main_subkhenthuongkhac') --}}
 
-                                            @include('HeThong.main_subqlvanban')
+                                                @include('HeThong.main_subquanlyquy')
 
-                                            @include('HeThong.main_subtracuu')
+                                                @include('HeThong.main_subqlvanban')
 
-                                            @include('HeThong.main_subbaocao')
+                                                @include('HeThong.main_subtracuu')
 
-                                            @include('HeThong.main_subhethong')
+                                                @include('HeThong.main_subbaocao')
+
+                                                @include('HeThong.main_subhethong')
+                                            @endif
                                         </ul>
                                         <!--end::Menu Nav-->
                                     </div>

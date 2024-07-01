@@ -157,7 +157,7 @@
                     <div class="card-body">
                         <div class="marquee-container text-center">
                             <div class=" text-danger">
-                                Việc cập nhật địa chỉ Email sẽ hỗ trợ cho việc lấy lại mật khẩu khi quên mật khẩu. Vui lòng cập nhật địa chỉ Email !!!
+                                Việc cập nhật địa chỉ Email sẽ hỗ trợ cho việc lấy lại mật khẩu khi quên mật khẩu. Vui lòng cập nhật địa chỉ Email để tiếp tục sử dụng phần mềm!!!
                             </div>
                         </div>
                         <div class="form-group row">

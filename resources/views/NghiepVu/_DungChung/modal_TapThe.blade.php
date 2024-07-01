@@ -39,7 +39,8 @@
                         <div class="col-md-12">
                             <label class="control-label">Tên đơn vị / cơ quan</label>
                             <div class="input-group">
-                                <select name="tencoquan" class="form-control select2basic" id="tencoquan_tapthe" style="width:95%">
+                                <select name="tencoquan" class="form-control select2basic" id="tencoquan_tapthe"
+                                    style="width:95%">
                                     <option value="">-- Chọn đơn vị công tác--</option>
                                     @foreach (getDsCoQuan($inputs['madonvi']) as $k => $ct)
                                         <option value="{{ $k }}">{{ $ct }}</option>
@@ -71,11 +72,12 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row" id="danhhieukhenthuong">
                         <div class="col-md-12">
                             <label class="control-label">Danh hiệu thi đua/Hình thức khen thưởng</label>
                             {!! Form::select('madanhhieukhenthuong[]', $a_dhkt_tapthe, null, [
-                                'class' => 'form-control select2_modal','multiple'=>true,
+                                'class' => 'form-control select2_modal',
+                                'multiple' => true,
                             ]) !!}
                         </div>
                         {{-- <div class="col-md-6">
@@ -105,6 +107,32 @@
     <script>
         function setTapThe() {
             $('#frm_ThemTapThe').find("[name='id']").val('-1');
+            if ($('#capkhenthuong').length) {
+                capkhenthuong = $('#capkhenthuong').val();
+                madonvi=$('#madonvi').val();
+
+                // if (capkhenthuong == 'B') {
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                    $.ajax({
+                        url: "/DungChung/LayDanhHieu",
+                        type: 'GET',
+                        data: {
+                            _token: CSRF_TOKEN,
+                            capkhenthuong: capkhenthuong,
+                            phanloai: 'TAPTHE',
+                            madonvi: madonvi
+                        },
+                        dataType: 'JSON',
+                        success: function(data) {
+                            console.log(data);
+                            if (data.status == 'success') {
+                                $('#danhhieukhenthuong').replaceWith(data.message);
+                                $('#capkhenthuong').val(capkhenthuong).trigger('change');
+                            }
+                        }
+                    });
+                // }
+            }
         }
 
         function getTapThe(id) {
@@ -126,6 +154,11 @@
                     form.find("[name='madanhhieukhenthuong']").val(data.madanhhieukhenthuong).trigger('change');
                     form.find("[name='tentapthe']").val(data.tentapthe);
                     form.find("[name='tencoquan']").val(data.tencoquan);
+
+                    if (data.status == 'success') {
+                        $('#dskhenthuongtapthe').replaceWith(data.message);
+                        TableManaged4.init();
+                    }
                 }
             });
         }
@@ -143,7 +176,7 @@
                 contentType: false,
                 data: formData,
                 success: function(data) {
-                    //console.log(data);               
+                    // console.log(data);               
                     if (data.status == 'success') {
                         $('#dskhenthuongtapthe').replaceWith(data.message);
                         TableManaged4.init();
