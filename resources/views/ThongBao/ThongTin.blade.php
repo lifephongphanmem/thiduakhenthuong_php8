@@ -37,25 +37,7 @@
         </div>
         <div class="card-body">
             <div class="form-group row">
-                {{-- <div class="col-9">
-                    <label style="font-weight: bold">Đơn vị</label>
-                    <select class="form-control select2basic" id="madonvi">
-                        @foreach ($a_diaban as $key => $val)
-                            <optgroup label="{{ $val }}">
-                                <?php $donvi = $m_donvi->where('madiaban', $key); ?>
-                                @foreach ($donvi as $ct)
-                                    <option {{ $ct->madonvi == $inputs['madonvi'] ? 'selected' : '' }}
-                                        value="{{ $ct->madonvi }}">{{ $ct->tendonvi }}</option>
-                                @endforeach
-                            </optgroup>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-3">
-                    <label style="font-weight: bold">Năm</label>
-                    {!! Form::select('nam', getNam(), $inputs['nam'], ['class' => 'form-control select2basic', 'id' => 'nam']) !!}
 
-                </div> --}}
             </div>
 
             <div class="form-group row">
@@ -83,7 +65,7 @@
                                 <td class="{{ $tt->class }}">{{ $tt->noidung }}</td>
                                 <td class="text-center {{ $tt->class }}">{{ getPhamViApDung()[$tt->phamvi] ?? $dscumkhoi[$tt->phamvi] }}</td>
                                 <td class="text-center {{ $tt->class }}">
-                                    <a href="{{$tt->url}}" target="_blank"
+                                    <a href="{{$tt->url}}" target="_blank" title="Xem thông tin phong trào"
                                         onclick="doctin('{{ $tt->mathongbao }}')">
                                         <i class="icon-lg la fa-eye {{ $tt->trangthai =='DADOC'? 'text-dark':$tt->class }}"></i></a>
                                 </td>
