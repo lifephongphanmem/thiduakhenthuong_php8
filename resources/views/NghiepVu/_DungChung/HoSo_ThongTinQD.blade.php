@@ -10,7 +10,7 @@
     </div> 
     <div class="col-2">
         <label>Cấp độ khen thưởng</label>
-        {!! Form::select('capkhenthuong', getPhamViKT($model->capkhenthuong), $model->capkhenthuong, ['class' => 'form-control']) !!}
+        {!! Form::select('capkhenthuong', getPhamViKT($model->capkhenthuong), $model->capkhenthuong, ['class' => 'form-control','id'=>'capkhenthuong']) !!}
         {{-- {!! Form::hidden('capkhenthuong', null) !!} --}}
     </div>
 </div>

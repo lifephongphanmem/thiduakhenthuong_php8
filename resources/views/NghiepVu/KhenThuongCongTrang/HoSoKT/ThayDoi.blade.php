@@ -1,8 +1,8 @@
 @extends('HeThong.main')
 
 @section('custom-style')
-    <link rel="stylesheet" type="text/css" href="{{ url('assets/css/pages/dataTables.bootstrap.css') }}" />
-    {{-- <link rel="stylesheet" type="text/css" href="{{ url('assets/css/pages/select2.css') }}" /> --}}
+    <link rel="stylesheet" type="text/css" href="{{ url('/assets/css/pages/dataTables.bootstrap.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/assets/css/pages/select2.css') }}" />
 @stop
 
 @section('custom-script-footer')

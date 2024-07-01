@@ -48,6 +48,7 @@
                     },
                     dataType: 'JSON',
                     success: function(data) {
+                        console.log(data)
                         toastr.success("Bạn đã xóa thông tin đối tượng thành công!", "Thành công!");
                         $('#dskhenthuongtapthe').replaceWith(data.message);
                         jQuery(document).ready(function() {
