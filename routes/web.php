@@ -24,6 +24,7 @@ Route::get('NhatKyHeThong', [hethongchungController::class, 'NhatKyHeThong']);
 Route::get('DanhSachTaiKhoan', [hethongchungController::class, 'DanhSachTaiKhoan']);
 Route::get('DoiMatKhau', [dstaikhoanController::class, 'DoiMatKhau']);
 Route::post('DoiMatKhau', [dstaikhoanController::class, 'LuuMatKhau']);
+Route::get('KiemTraDangNhap', [hethongchungController::class, 'chkSession']);
 
 Route::get('TrangChu',[congboController::class, 'TrangChu']);
 //dùng chung cho nghiệp vụ

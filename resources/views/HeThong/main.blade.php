@@ -215,14 +215,14 @@
                                                     <span class="menu-text font-weight-bold text-dark">
                                                         &nbsp;{{ session('admin')->tentaikhoan }}</span>
                                                     @if (hasEmail())
-                                                    <span> <a href="{{ '/ThongBao/ThongTin' }}"
-                                                            class="btn btn-icon pulse pulse-primary ">
-                                                            <i class="flaticon2-bell-4 text-danger"></i>
-                                                            <span class="pulse-ring"></span>
-                                                            <span
-                                                                class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{ SLThongbao(session('admin')->capdo, session('admin')->madonvi, session('admin')->tendangnhap) }}</span>
-                                                        </a>
-                                                    </span>
+                                                        <span> <a href="{{ '/ThongBao/ThongTin' }}"
+                                                                class="btn btn-icon pulse pulse-primary ">
+                                                                <i class="flaticon2-bell-4 text-danger"></i>
+                                                                <span class="pulse-ring"></span>
+                                                                <span
+                                                                    class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{ SLThongbao(session('admin')->capdo, session('admin')->madonvi, session('admin')->tendangnhap) }}</span>
+                                                            </a>
+                                                        </span>
                                                     @endif
 
 
@@ -489,6 +489,26 @@
     </div>
     <!-- end::User Panel-->
 
+    <div id="modal-thongbao" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-uppercase">Thông báo !!!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body text-danger">
+                    <p>Tài khoản đang được đăng nhập ở một thiết bị khác. Đồng ý cho phép đăng nhập ???</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Bỏ qua</button>
+                    <a href="{{ url('/DangXuat') }}"  class="btn btn-primary">Đồng ý</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop">
@@ -574,6 +594,7 @@
             "font-family": "Poppins"
         };
     </script>
+
     <!--end::Global Config-->
     <!--begin::Global Theme Bundle(used by all pages)-->
     <script src="{{ url('assets/plugins/global/plugins.bundle.js') }}"></script>
@@ -586,7 +607,31 @@
     <!--begin::Page Scripts(used by this page)-->
     <script src="{{ url('assets/js/pages/widgets.js') }}"></script>
     <script src="{{ url('assets/js/pages/main.js') }}"></script>
+
     @yield('custom-script-footer')
+    <script>
+        // jQuery(document).ready(function() {
+            function chkDangNhap() {
+                // alert(33);
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: "/KiemTraDangNhap",
+                    type: 'GET',
+                    data: {
+                        _token: CSRF_TOKEN,
+                    },
+                    dataType: 'JSON',
+                    success: function(data) {
+                        if (data == false) {
+                            $('#modal-thongbao').modal('show');
+                        }
+                    }
+                });
+                setTimeout("chkDangNhap()", "5000", "JavaScript");
+            }
+            chkDangNhap();
+        // });
+    </script>
     <!--end::Page Scripts-->
 </body>
 <!--end::Body-->

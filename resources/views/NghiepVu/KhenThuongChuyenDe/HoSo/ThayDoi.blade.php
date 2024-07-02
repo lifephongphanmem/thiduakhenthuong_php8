@@ -32,6 +32,7 @@
             </div>
             <div class="card-toolbar">
                 <!--begin::Button-->
+
                 <!--end::Button-->
             </div>
         </div>
@@ -157,6 +158,7 @@
         </div>
         {!! Form::close() !!}
     </div>
+
     <!--end::Card-->
     @include('NghiepVu._DungChung.modal_CaNhan')
     @include('NghiepVu._DungChung.modal_TapThe')
