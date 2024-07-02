@@ -76,6 +76,8 @@ class hethongchungController extends Controller
     {
         $input = $request->all();
         $ttuser = dstaikhoan::where('tendangnhap', $input['tendangnhap'])->first();
+        // Session::flush();
+        // dd(1);
         //Tài khoản không tồn tại
         if ($ttuser == null) {
             return view('errors.403')
@@ -268,11 +270,12 @@ class hethongchungController extends Controller
         // dd($user);
         $userupdate->update($data_update);
         //Gán lại vào session('amin) những thông tin vừa cập nhật
-        // Session::push("admin", $data_update);
-        // Session::put("admin", $userupdate);
+        session('admin')->sessionID =session()->getId();
+        session('admin')->timeaction =$time;
+        // // Session::put("admin", $data_update);
 
-        // // Save the session
-        // session()->save();
+        // Save the session
+        session()->save();
         //Gán hệ danh mục chức năng        
         Session::put('chucnang', hethongchung_chucnang::all()->keyBy('machucnang')->toArray());
         //gán phân quyền của User
