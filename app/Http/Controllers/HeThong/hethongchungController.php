@@ -269,10 +269,10 @@ class hethongchungController extends Controller
         $userupdate->update($data_update);
         //Gán lại vào session('amin) những thông tin vừa cập nhật
         // Session::push("admin", $data_update);
-        Session::put("admin", $userupdate);
+        // Session::put("admin", $userupdate);
 
-        // Save the session
-        session()->save();
+        // // Save the session
+        // session()->save();
         //Gán hệ danh mục chức năng        
         Session::put('chucnang', hethongchung_chucnang::all()->keyBy('machucnang')->toArray());
         //gán phân quyền của User

@@ -489,7 +489,7 @@
     </div>
     <!-- end::User Panel-->
 
-    <div id="modal-thongbao" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    {{-- <div id="modal-thongbao" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog  modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -507,7 +507,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 
     <!--begin::Scrolltop-->
@@ -611,25 +611,24 @@
     @yield('custom-script-footer')
     <script>
         // jQuery(document).ready(function() {
-            function chkDangNhap() {
-                // alert(33);
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                $.ajax({
-                    url: "/KiemTraDangNhap",
-                    type: 'GET',
-                    data: {
-                        _token: CSRF_TOKEN,
-                    },
-                    dataType: 'JSON',
-                    success: function(data) {
-                        if (data == false) {
-                            $('#modal-thongbao').modal('show');
-                        }
-                    }
-                });
-                setTimeout("chkDangNhap()", "5000", "JavaScript");
-            }
-            chkDangNhap();
+            // function chkDangNhap() {
+            //     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            //     $.ajax({
+            //         url: "/KiemTraDangNhap",
+            //         type: 'GET',
+            //         data: {
+            //             _token: CSRF_TOKEN,
+            //         },
+            //         dataType: 'JSON',
+            //         success: function(data) {
+            //             if (data == false) {
+            //                 $('#modal-thongbao').modal('show');
+            //             }
+            //         }
+            //     });
+            //     setTimeout("chkDangNhap()", "5000", "JavaScript");
+            // }
+            // chkDangNhap();
         // });
     </script>
     <!--end::Page Scripts-->
