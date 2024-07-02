@@ -267,6 +267,12 @@ class hethongchungController extends Controller
 
         // dd($user);
         $userupdate->update($data_update);
+        //Gán lại vào session('amin) những thông tin vừa cập nhật
+        // Session::push("admin", $data_update);
+        Session::put("admin", $userupdate);
+
+        // Save the session
+        session()->save();
         //Gán hệ danh mục chức năng        
         Session::put('chucnang', hethongchung_chucnang::all()->keyBy('machucnang')->toArray());
         //gán phân quyền của User
@@ -485,6 +491,25 @@ class hethongchungController extends Controller
         } else {
             return true;
         }
+    }
+
+    public function chkSession()
+    {
+        $result=true;
+        if (!Session::has('admin')) {
+            $result= false;
+        };
+        $user=dstaikhoan::where('tendangnhap',session('admin')->tendangnhap)->first();
+        if(isset($user)){
+            if($user->sessionID != session('admin')->sessionID)
+            {
+                return false;
+            }
+        }else{
+            $result= false;
+        }
+
+        return response()->json( $result);
     }
 
 }
