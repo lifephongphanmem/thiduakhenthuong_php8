@@ -488,28 +488,29 @@
         <!--end::Content-->
     </div>
     <!-- end::User Panel-->
-
-    <div id="modal-thongbao" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog  modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-uppercase">Thông báo !!!</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body text-danger">
-                    <p>Tài khoản đang được đăng nhập ở một thiết bị khác. Đồng ý cho phép đăng nhập ???</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Bỏ qua</button>
-                    <a href="{{ url('/DangXuat') }}"  class="btn btn-primary">Đồng ý</a>
+    <form action="{{ '/DongYDangNhap' }}" method="POST">
+        @csrf
+        <div id="modal-thongbao" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-uppercase">Thông báo !!!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body text-danger">
+                        <p>Tài khoản đang được đăng nhập ở một thiết bị khác. Đồng ý cho phép đăng nhập ???</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="boquaDN()">Bỏ
+                            qua</button>
+                        <button type="submit" class="btn btn-primary">Đồng ý</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-
+    </form>
     <!--begin::Scrolltop-->
     <div id="kt_scrolltop" class="scrolltop">
         <span class="svg-icon">
@@ -611,30 +612,50 @@
     @yield('custom-script-footer')
     <script>
         jQuery(document).ready(function() {
-    
-            chkDangNhap();
+            setInterval(chkDangNhap, 20000);
         });
+
         function chkDangNhap() {
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                $.ajax({
-                    url: "/KiemTraDangNhap",
-                    type: 'GET',
-                    data: {
-                        _token: CSRF_TOKEN,
-                    },
-                    dataType: 'JSON',
-                    success: function(data) {
-                        console.log(data);
-                        if (data == false) {
-                            $('#modal-thongbao').modal('show');
-                        }
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: "/KiemTraDangNhap",
+                type: 'GET',
+                data: {
+                    _token: CSRF_TOKEN,
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    console.log(data);
+                    if (data == false) {
+                        $('#modal-thongbao').modal('show');
                     }
-                });
-                // alert('hihi');
-                setTimeout("chkDangNhap()", "15000", "JavaScript");
-                // chkDangNhap();
-            }
-            // chkDangNhap();
+                },
+                error: function(data) {
+                    console.log(12)
+                }
+            });
+        }
+
+        function boquaDN() {
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: "/BoQuaDangNhap",
+                type: 'GET',
+                data: {
+                    _token: CSRF_TOKEN,
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    console.log(data);
+                    // if (data == false) {
+                    //     $('#modal-thongbao').modal('show');
+                    // }
+                },
+                error: function(data) {
+                    console.log(12)
+                }
+            });
+        }
     </script>
     <!--end::Page Scripts-->
 </body>

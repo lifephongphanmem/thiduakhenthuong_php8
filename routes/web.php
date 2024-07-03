@@ -24,7 +24,12 @@ Route::get('NhatKyHeThong', [hethongchungController::class, 'NhatKyHeThong']);
 Route::get('DanhSachTaiKhoan', [hethongchungController::class, 'DanhSachTaiKhoan']);
 Route::get('DoiMatKhau', [dstaikhoanController::class, 'DoiMatKhau']);
 Route::post('DoiMatKhau', [dstaikhoanController::class, 'LuuMatKhau']);
+//code cho chức năng đăng nhập 2 thiết bị
 Route::get('KiemTraDangNhap', [hethongchungController::class, 'chkSession']);
+Route::get('BoQuaDangNhap', [hethongchungController::class, 'BoQuaDangNhap']);
+Route::post('DongYDangNhap', [hethongchungController::class, 'DongYDangNhap']);
+Route::post('DangNhapTB2',[hethongchungController::class,'DangNhaptB2']);
+Route::post('KiemTraDangNhapTB2',[hethongchungController::class,'KiemTraDangNhapTB2']);
 
 Route::get('TrangChu',[congboController::class, 'TrangChu']);
 //dùng chung cho nghiệp vụ
