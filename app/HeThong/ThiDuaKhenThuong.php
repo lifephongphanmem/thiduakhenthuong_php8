@@ -1946,15 +1946,18 @@ function chkaction()
         dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction' => $time]);
         return true;
         // }elseif(session()->getId() !== $model->sessionID)
-    } elseif ($chenhlechthoigian < $time_session && $model->islogout == 1) {
-        //kiểm tra tài khoàn đang đăng nhập ở thiết bị khác
-
-        // Session::flush();
-        return false;
+    };
+    if($model->islogout == 0 && $model->sessionID == null)
+    {
+        return true;
+    }
+    //Kiểm tra trạng thái đăng nhập của tài khoản
+     if ($chenhlechthoigian < $time_session && $model->islogout == 1 && $model->sessionID != null) {
+        return true;
     } else {
         $time = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
         dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction' => $time]);
-        return true;
+        return false;
     }
 }
 
@@ -2057,27 +2060,32 @@ function SLThongbao($capdo, $madonvi, $tendangnhap)
 {
     switch ($capdo) {
         case 'T': {
+            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
                 $a_phamvi = ['T', 'TW'];
                 break;
             }
         case 'TW': {
+            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
                 $a_phamvi = ['T', 'TW'];
                 break;
             }
         case 'H': {
+            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
                 $a_phamvi = ['T', 'TW', 'H'];
                 break;
             }
         case 'X': {
+            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
                 $a_phamvi = ['T', 'TW', 'H', 'X'];
                 break;
             }
         default: {
+            $m_cumkhoi = dscumkhoi_chitiet::all();
                 $a_phamvi = ['T', 'TW', 'H', 'X'];
                 break;
             }
     }
-    $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+
     $a_macumkhoi = array_column($m_cumkhoi->toarray(), 'macumkhoi');
     $model = thongbao::wherein('phamvi', $a_phamvi)->orwherein('phamvi', $a_macumkhoi)->get();
     $sl = 0;

@@ -47,7 +47,9 @@ License: You must have a valid license purchased only from themeforest(the above
             <!--begin::Content-->
             <h3 class="font-weight-boldest text-dark-75 mt-15" style="font-size: 5rem">Thông báo!</h3>
             <p class="font-size-h3 text-danger font-weight-normal">{!! isset($message) ? $message : 'Phần mềm không thể thực hiện thao tác !!!' !!} </p>
-            <p><a href='{{ isset($url) ? url($url) : url('/') }}'>Bấm vào đây</a> Chờ phản hồi !!!</p>
+            <p>Không thoát khỏi trang này trong khi chờ phản hồi !!!</p>
+            <input type="hidden" name="tendangnhap" value="{{$ttuser->tendangnhap}}" id="tendangnhap">
+            <input type="hidden" name="sessionID" value="{{$sessionID}}" id="sessionID">
             <!--end::Content-->
         </div>
         <!--end::Error-->
@@ -55,6 +57,7 @@ License: You must have a valid license purchased only from themeforest(the above
     <form action="{{'/DangNhapTB2'}}" method="POST" >
         @csrf
         <div id="modal-thongbao" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <input type="hidden" name="tendangnhap" value={{$ttuser->tendangnhap}}>
             <div class="modal-dialog  modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -75,6 +78,30 @@ License: You must have a valid license purchased only from themeforest(the above
             </div>
         </div>
     </form>
+
+    {{-- <form action="{{'/showFormTuChoi'}}" method="GET" > --}}
+        @csrf
+        <div id="modal-thongbao-tuchoi" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog  modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-uppercase">Thông báo !!!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body text-danger">
+                        <p>Tài khoản đã bị từ chối đăng nhập hệ thống!!!</p>
+                    </div>
+                    <div class="modal-footer">
+                        {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="boquaDN()">Bỏ
+                            qua</button> --}}
+                        <button type="submit" class="btn btn-primary">Đồng ý</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{-- </form> --}}
     <!--end::Main-->
     <script>
         var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";
@@ -148,21 +175,47 @@ License: You must have a valid license purchased only from themeforest(the above
     <script>
         jQuery(document).ready(function() {
             setInterval(chkDangNhap, 20000);
+            setInterval(chkTuChoi, 20000);
         });
 
         function chkDangNhap() {
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            var tendangnhap=$('#tendangnhap').val();
             $.ajax({
                 url: "/KiemTraDangNhapTB2",
                 type: 'POST',
                 data: {
                     _token: CSRF_TOKEN,
+                    tendangnhap: tendangnhap
                 },
                 dataType: 'JSON',
                 success: function(data) {
                     console.log(data);
                     if (data == true) {
                         $('#modal-thongbao').modal('show');
+                    }
+                },
+                error: function(data) {
+                    console.log(data)
+                }
+            });
+        }
+        function chkTuChoi() {
+            // var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            var tendangnhap=$('#tendangnhap').val();
+            var sessionID=$('#sessionID').val();
+            $.ajax({
+                url: "/showFormTuChoi",
+                type: 'GET',
+                data: {
+                    tendangnhap: tendangnhap,
+                    sessionID: sessionID
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    console.log(data);
+                    if (data == true) {
+                        $('#modal-thongbao-tuchoi').modal('show');
                     }
                 },
                 error: function(data) {
