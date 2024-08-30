@@ -216,8 +216,8 @@ function getDanhHieuKhenThuong($capdo, $phanloai)
     }
     */
     foreach (App\Models\DanhMuc\dmhinhthuckhenthuong::all() as $danhhieu) {
-        $doituong=explode(';',$danhhieu->doituongapdung);
-        if(!in_array($phanloai,$doituong) && $phanloai != 'ALL'){
+        $doituong = explode(';', $danhhieu->doituongapdung);
+        if (!in_array($phanloai, $doituong) && $phanloai != 'ALL') {
             continue;
         }
 
@@ -535,11 +535,11 @@ function getDonViCK($capdo, $chucnang = null, $kieudulieu = 'ARRAY')
     } else {
         $m_donvi = App\Models\View\view_dscumkhoi::where('madonvi', session('admin')->madonvi)->get();
     }
-// dd($m_donvi);
+    // dd($m_donvi);
     if ($chucnang != null) {
         $a_tk = App\Models\DanhMuc\dstaikhoan::wherein('madonvi', array_column($m_donvi->toarray(), 'madonvi'))->get('tendangnhap');
         $a_tk_pq = App\Models\DanhMuc\dstaikhoan_phanquyen::where('machucnang', $chucnang)->where('phanquyen', '1')
-            ->wherein('tendangnhap', $a_tk)->get('tendangnhap'); 
+            ->wherein('tendangnhap', $a_tk)->get('tendangnhap');
         $m_donvi = App\Models\View\viewdiabandonvi::wherein('madonvi', function ($qr) use ($a_tk_pq) {
             $qr->select('madonvi')->from('dstaikhoan')->wherein('tendangnhap', $a_tk_pq)->distinct();
         })->get();
@@ -1198,7 +1198,7 @@ function setTraLai($model, $inputs)
         $model->trangthai_xl = null;
         $model->tendangnhap_xl = null;
         // $model->lydo_xd=null;
-        if($inputs['trangthai'] == 'BTL'){
+        if ($inputs['trangthai'] == 'BTL') {
             dshosothiduakhenthuong_xuly::where('mahosotdkt', $model->mahosotdkt)->delete();
         }
     }
@@ -1537,13 +1537,13 @@ function getToaDoMacDinh($inputs)
 //Lấy phôi bằng khen, giấy khen của đon vị
 function getPhoiBk($m_donvi)
 {
-    $m_donvi_inphoi=dsdonvi::where('madonvi', session('admin')->madonvi_inphoi)->first();
-    if($m_donvi->phoi_bangkhen == ''){
-        $m_donvi->phoi_bangkhen=$m_donvi_inphoi->phoi_bangkhen;
+    $m_donvi_inphoi = dsdonvi::where('madonvi', session('admin')->madonvi_inphoi)->first();
+    if ($m_donvi->phoi_bangkhen == '') {
+        $m_donvi->phoi_bangkhen = $m_donvi_inphoi->phoi_bangkhen;
     }
 
-    if($m_donvi->phoi_giaykhen == ''){
-        $m_donvi->phoi_giaykhen=$m_donvi_inphoi->phoi_giaykhen;
+    if ($m_donvi->phoi_giaykhen == '') {
+        $m_donvi->phoi_giaykhen = $m_donvi_inphoi->phoi_giaykhen;
     }
 }
 
@@ -1806,31 +1806,29 @@ function getPhanLoaiTKTiepNhan($madonvi)
     return $taikhoantiepnhan;
 }
 
-function getDsCoQuan($madonvi=null)
+function getDsCoQuan($madonvi = null)
 {
-    if($madonvi == null){
-        $model=dmcoquandonvi::all();
-    }else{
-        $model=dmcoquandonvi::where('macoquandonvi',$madonvi)->get();
+    if ($madonvi == null) {
+        $model = dmcoquandonvi::all();
+    } else {
+        $model = dmcoquandonvi::where('macoquandonvi', $madonvi)->get();
     }
 
-    $a_coquan=array();
-    if(count($model) > 0)
-    {
-        $a_coquan=array_column($model->toarray(),'tencoquandonvi','macoquandonvi');
+    $a_coquan = array();
+    if (count($model) > 0) {
+        $a_coquan = array_column($model->toarray(), 'tencoquandonvi', 'macoquandonvi');
     }
     return $a_coquan;
 }
 
 function getDVPhanLoaiHS($madonvi)
 {
-    $donvi=dsdonvi::where('madonvi',$madonvi)->first();
-    if(isset($donvi))
-    {
-        $capdo=dsdiaban::where('madiaban',$donvi->madiaban)->first()->capdo;
-        if($capdo == 'T'){
+    $donvi = dsdonvi::where('madonvi', $madonvi)->first();
+    if (isset($donvi)) {
+        $capdo = dsdiaban::where('madiaban', $donvi->madiaban)->first()->capdo;
+        if ($capdo == 'T') {
             return 'KHENTHUONG';
-        }else{
+        } else {
             return 'KTDONVI';
         }
     }
@@ -1840,59 +1838,55 @@ function getDVPhanLoaiHS($madonvi)
 }
 function getDVPhanLoaiHsDeNghi($madonvi)
 {
-    $donvi=dsdonvi::where('madonvi',$madonvi)->first();
-    if(isset($donvi))
-    {
-        $capdo=dsdiaban::where('madiaban',$donvi->madiaban)->first()->capdo;
-        if($capdo == 'T'){
+    $donvi = dsdonvi::where('madonvi', $madonvi)->first();
+    if (isset($donvi)) {
+        $capdo = dsdiaban::where('madiaban', $donvi->madiaban)->first()->capdo;
+        if ($capdo == 'T') {
             return 'DENGHIKHENTHUONG';
-        }else{
+        } else {
             return 'DENGHIKHENTHUONGDV';
         }
     }
 }
 
-function getDHTDVaHinhThucKT($phanloai,$doituong=null)
+function getDHTDVaHinhThucKT($phanloai, $doituong = null)
 {
     $a_ketqua = [];
-    $model=dmhinhthuckhenthuong::all();
+    $model = dmhinhthuckhenthuong::all();
 
-    switch ($phanloai){
-        case 'DANHHIEUTD':{
-            $m_danhhieu=$model->where('phanloai',$phanloai);
-            foreach($m_danhhieu as $ct)
-            {
-                $a_doituong=explode(';', $ct->doituongapdung);
-                if(in_array($doituong,$a_doituong)){
-                    $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+    switch ($phanloai) {
+        case 'DANHHIEUTD': {
+                $m_danhhieu = $model->where('phanloai', $phanloai);
+                foreach ($m_danhhieu as $ct) {
+                    $a_doituong = explode(';', $ct->doituongapdung);
+                    if (in_array($doituong, $a_doituong)) {
+                        $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+                    }
                 }
+                break;
             }
-            break;
-        }
-        case 'KHANGCHIEN':{
-            $phanloai=['HUANCHUONG','HUYCHUONG','KYNIEMCHUONG'];
-            $m_danhhieu=$model->wherein('phanloai',$phanloai);
-            foreach($m_danhhieu as $ct)
-            {
-                // $a_doituong=explode(';', $ct->doituongapdung);
-                // if(in_array($doituong,$a_doituong)){
+        case 'KHANGCHIEN': {
+                $phanloai = ['HUANCHUONG', 'HUYCHUONG', 'KYNIEMCHUONG'];
+                $m_danhhieu = $model->wherein('phanloai', $phanloai);
+                foreach ($m_danhhieu as $ct) {
+                    // $a_doituong=explode(';', $ct->doituongapdung);
+                    // if(in_array($doituong,$a_doituong)){
                     $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
-                // }
+                    // }
+                }
+                break;
             }
-            break;
-        }
 
-        default:{
-            $m_danhhieu=$model->where('phanloai','<>',$phanloai);
-            foreach($m_danhhieu as $ct)
-            {
-                $a_doituong=explode(';', $ct->doituongapdung);
-                if(in_array($doituong,$a_doituong)){
-                    $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+        default: {
+                $m_danhhieu = $model->where('phanloai', '<>', $phanloai);
+                foreach ($m_danhhieu as $ct) {
+                    $a_doituong = explode(';', $ct->doituongapdung);
+                    if (in_array($doituong, $a_doituong)) {
+                        $a_ketqua[$ct->mahinhthuckt] = $ct->tenhinhthuckt;
+                    }
                 }
+                break;
             }
-            break;
-        }
     }
     // if($phanloai == 'DANHHIEUTD'){
     //     $m_danhhieu=$model->where('phanloai',$phanloai);
@@ -1915,28 +1909,26 @@ function getDHTDVaHinhThucKT($phanloai,$doituong=null)
     // }
 
     return $a_ketqua;
-
 }
 
 function getTKTiepNhan($capdo)
 {
-    if(in_array('SSA',$capdo)){
-        $capdo=['T','H'];
+    if (in_array('SSA', $capdo)) {
+        $capdo = ['T', 'H'];
     }
-    $donvi=dsdonvi::join('dsdiaban','dsdiaban.madiaban','=','dsdonvi.madiaban')
-                ->select('dsdonvi.taikhoantiepnhan','dsdonvi.madonvi')
-                ->wherein('dsdiaban.capdo',$capdo)
-                ->wherenotnull('dsdonvi.taikhoantiepnhan')
-                ->get();
+    $donvi = dsdonvi::join('dsdiaban', 'dsdiaban.madiaban', '=', 'dsdonvi.madiaban')
+        ->select('dsdonvi.taikhoantiepnhan', 'dsdonvi.madonvi')
+        ->wherein('dsdiaban.capdo', $capdo)
+        ->wherenotnull('dsdonvi.taikhoantiepnhan')
+        ->get();
     return $donvi;
 }
 
-function chkTkTiepNhan($madonvi,$capdo)
+function chkTkTiepNhan($madonvi, $capdo)
 {
-    if(in_array($madonvi,array_column(getTKTiepNhan([session('admin')->capdo])->toarray(),'madonvi')))
-    {
+    if (in_array($madonvi, array_column(getTKTiepNhan([session('admin')->capdo])->toarray(), 'madonvi'))) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
@@ -1944,72 +1936,81 @@ function chkTkTiepNhan($madonvi,$capdo)
 function chkaction()
 {
 
-    $model=dstaikhoan::where('tendangnhap',session('admin')->tendangnhap)->first();
-    if($model->tendangnhap == 'SSA')
-    {
+    $model = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
+    $thoigian = $model->timeaction;
+    $chenhlechthoigian = Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
+    // dd($chenhlechthoigian);
+    $time_session = Config::get('session.lifetime');
+    if ($model->tendangnhap == 'SSA') {
+        $time = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+        dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction' => $time]);
         return true;
-    }elseif(session()->getId() !== $model->sessionID)
+        // }elseif(session()->getId() !== $model->sessionID)
+    };
+    if($model->islogout == 0 && $model->sessionID == null)
     {
-        // Session::flush();
-        return false;
-    }else{
         return true;
     }
-    $time=Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
-    dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction'=>$time]);
+    //Kiểm tra trạng thái đăng nhập của tài khoản
+     if ($chenhlechthoigian < $time_session && $model->islogout == 1 && $model->sessionID != null) {
+        return true;
+    } else {
+        $time = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+        dstaikhoan::findOrFail(session('admin')->id)->update(['timeaction' => $time]);
+        return false;
+    }
 }
 
 function getPhamViKT($capkhenthuong)
 {
-    switch ($capkhenthuong){
-        case 'T':{
-            $phamvi= array(
-                'TW' => 'Cấp Nhà nước',
-                'B' => 'Cấp Bộ',
-                'T' => 'Cấp Tỉnh',
-            );
-            break;
-        }
-        case 'H':{
-            $phamvi= array(
-                'B' => 'Cấp Bộ',
-                'SBN' => 'Cấp Sở, ban, ngành',
-                'H' => 'Cấp Huyện',
-            );
-            break;
-        }
-        case 'SBN':{
-            $phamvi= array(
-                'B' => 'Cấp Bộ',
-                'SBN' => 'Cấp Sở, ban, ngành',
-                'H' => 'Cấp Huyện',
-            );
-            break;
-        }
-        case 'X':{
-            $phamvi=array(
-                'X' => 'Cấp Xã',
-            );
-            break;
-        }
+    switch ($capkhenthuong) {
+        case 'T': {
+                $phamvi = array(
+                    'TW' => 'Cấp Nhà nước',
+                    'B' => 'Cấp Bộ',
+                    'T' => 'Cấp Tỉnh',
+                );
+                break;
+            }
+        case 'H': {
+                $phamvi = array(
+                    'B' => 'Cấp Bộ',
+                    'SBN' => 'Cấp Sở, ban, ngành',
+                    'H' => 'Cấp Huyện',
+                );
+                break;
+            }
+        case 'SBN': {
+                $phamvi = array(
+                    'B' => 'Cấp Bộ',
+                    'SBN' => 'Cấp Sở, ban, ngành',
+                    'H' => 'Cấp Huyện',
+                );
+                break;
+            }
+        case 'X': {
+                $phamvi = array(
+                    'X' => 'Cấp Xã',
+                );
+                break;
+            }
     }
 
     return $phamvi;
-
 }
 
-function storeThongBao($url,$noidung,$table,$maphongtrao,$phamvi,$madonvi)
+function storeThongBao($url, $noidung, $table, $maphongtrao, $phamvi, $madonvi)
 {
-    $mathongbao=getdate()[0];
-    $data=[
-        'mathongbao'=>$mathongbao,
-        'noidung'=>$noidung,
-        'url'=>$url,
-        'table'=>$table,
-        'maphongtrao'=>$maphongtrao,
-        'phamvi'=>$phamvi,
-        'madonvi_thongbao'=>$madonvi,
-        'trangthai'=>'CHUADOC'
+    $mathongbao = getdate()[0];
+    $data = [
+        'mathongbao' => $mathongbao,
+        'noidung' => $noidung,
+        'url' => $url,
+        'table' => $table,
+        'maphongtrao' => $maphongtrao,
+        'phamvi' => $phamvi,
+        'madonvi_thongbao' => $madonvi,
+        'trangthai' => 'CHUADOC'
     ];
 
     thongbao::create($data);
@@ -2017,80 +2018,83 @@ function storeThongBao($url,$noidung,$table,$maphongtrao,$phamvi,$madonvi)
 
 function chkThongBao()
 {
-    switch (session('admin')->capdo){
-        case 'T':{
-            $a_phamvi=['T','TW'];
-            break;
-        }
-        case 'TW':{
-            $a_phamvi=['T','TW'];
-            break;
-        }
-        case 'H':{
-            $a_phamvi=['T','TW','H'];
-            break;
-        }
-        case 'X':{
-            $a_phamvi=['T','TW','H','X'];
-            break;
-        }
-        default:{
-            $a_phamvi=['T','TW','H','X'];
-            break;
-        }
+    switch (session('admin')->capdo) {
+        case 'T': {
+                $a_phamvi = ['T', 'TW'];
+                break;
+            }
+        case 'TW': {
+                $a_phamvi = ['T', 'TW'];
+                break;
+            }
+        case 'H': {
+                $a_phamvi = ['T', 'TW', 'H'];
+                break;
+            }
+        case 'X': {
+                $a_phamvi = ['T', 'TW', 'H', 'X'];
+                break;
+            }
+        default: {
+                $a_phamvi = ['T', 'TW', 'H', 'X'];
+                break;
+            }
     }
-    $m_cumkhoi=dscumkhoi_chitiet::where('madonvi',session('admin')->madonvi)->get();
-    $a_macumkhoi=array_column($m_cumkhoi->toarray(),'macumkhoi');
-    $model=thongbao::wherein('phamvi',$a_phamvi)->orwherein('phamvi',$a_macumkhoi)->get();
-    foreach($model as $ct)
-    {
-        if($ct->trangthai == 'CHUADOC'){
+    $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', session('admin')->madonvi)->get();
+    $a_macumkhoi = array_column($m_cumkhoi->toarray(), 'macumkhoi');
+    $model = thongbao::wherein('phamvi', $a_phamvi)->orwherein('phamvi', $a_macumkhoi)->get();
+    foreach ($model as $ct) {
+        if ($ct->trangthai == 'CHUADOC') {
             return true;
-        }else{
-            $trangthai=explode(';',$ct->trangthai);
-            if(in_array(session('admin')->tendangnhap,$trangthai)){
+        } else {
+            $trangthai = explode(';', $ct->trangthai);
+            if (in_array(session('admin')->tendangnhap, $trangthai)) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
         }
     }
 }
- function SLThongbao($capdo,$madonvi,$tendangnhap)
+function SLThongbao($capdo, $madonvi, $tendangnhap)
 {
-    switch ($capdo){
-        case 'T':{
-            $a_phamvi=['T','TW'];
-            break;
-        }
-        case 'TW':{
-            $a_phamvi=['T','TW'];
-            break;
-        }
-        case 'H':{
-            $a_phamvi=['T','TW','H'];
-            break;
-        }
-        case 'X':{
-            $a_phamvi=['T','TW','H','X'];
-            break;
-        }
-        default:{
-            $a_phamvi=['T','TW','H','X'];
-            break;
-        }
+    switch ($capdo) {
+        case 'T': {
+            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $a_phamvi = ['T', 'TW'];
+                break;
+            }
+        case 'TW': {
+            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $a_phamvi = ['T', 'TW'];
+                break;
+            }
+        case 'H': {
+            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $a_phamvi = ['T', 'TW', 'H'];
+                break;
+            }
+        case 'X': {
+            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $a_phamvi = ['T', 'TW', 'H', 'X'];
+                break;
+            }
+        default: {
+            $m_cumkhoi = dscumkhoi_chitiet::all();
+                $a_phamvi = ['T', 'TW', 'H', 'X'];
+                break;
+            }
     }
-    $m_cumkhoi=dscumkhoi_chitiet::where('madonvi',$madonvi)->get();
-    $a_macumkhoi=array_column($m_cumkhoi->toarray(),'macumkhoi');
-    $model=thongbao::wherein('phamvi',$a_phamvi)->orwherein('phamvi',$a_macumkhoi)->get();
-    $sl=0;
-    foreach($model as $ct)
-    {
-        if($ct->trangthai == 'CHUADOC'){
+
+    $a_macumkhoi = array_column($m_cumkhoi->toarray(), 'macumkhoi');
+    $model = thongbao::wherein('phamvi', $a_phamvi)->orwherein('phamvi', $a_macumkhoi)->get();
+    $sl = 0;
+    foreach ($model as $ct) {
+        if ($ct->trangthai == 'CHUADOC') {
             $sl += 1;
-        }else{
-            $trangthai=explode(';',$ct->trangthai);
-            if(!in_array($tendangnhap,$trangthai)){
+        } else {
+            $trangthai = explode(';', $ct->trangthai);
+            if (!in_array($tendangnhap, $trangthai)) {
                 $sl += 1;
             }
         }
@@ -2100,16 +2104,13 @@ function chkThongBao()
 
 function hasEmail()
 {
-    if(session('admin')->capdo == 'SSA'){
+    if (session('admin')->capdo == 'SSA') {
         return true;
     }
-    $model=dstaikhoan::where('tendangnhap',session('admin')->tendangnhap)->first();
-    if(isset($model->email)){
+    $model = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
+    if (isset($model->email)) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
-
-
-

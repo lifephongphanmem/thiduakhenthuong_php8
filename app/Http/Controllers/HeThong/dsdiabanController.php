@@ -81,8 +81,8 @@ class dsdiabanController extends Controller
             $model->tendiaban = $inputs['tendiaban'];
             $model->capdo = $inputs['capdo'];
             $model->phanloai = $inputs['phanloai'];
-            $model->madonviQL = $inputs['madonviQL'];
-            $model->madonviKT = $inputs['madonviKT'];
+            $model->madonviQL = $inputs['madonviQL']??null;
+            $model->madonviKT = $inputs['madonviKT']??null;
             $model->madiabanQL = $inputs['madiabanQL'] ?? null;
             $model->save();
         }

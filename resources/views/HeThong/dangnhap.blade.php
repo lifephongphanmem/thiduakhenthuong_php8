@@ -298,19 +298,6 @@ License: You must have a valid license purchased only from themeforest(the above
             "font-family": "Poppins"
         };
         function HienMK(){            
-            // var type = document.getElementById('matkhau').type;            
-            // if(type == 'password'){
-            //     document.getElementById('matkhau').type = 'text';
-            //     var iconElement = document.querySelector('i.fa-eye-slash');
-            //     iconElement.classList.remove('fa-eye-slash');
-            //     iconElement.classList.add('fa-eye');
-            // }else{
-            //     document.getElementById('matkhau').type = 'password';
-            //     var iconElement = document.querySelector('i.fa-eye');
-            //     iconElement.classList.remove('fa-eye');
-            //     iconElement.classList.add('fa-eye-slash');
-            // }
-
             var passwordField = document.getElementById('matkhau');
             var iconElement = document.querySelector('.password-container i');
 

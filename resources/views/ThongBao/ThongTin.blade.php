@@ -15,6 +15,9 @@
     <script>
         jQuery(document).ready(function() {
             TableManaged3.init();
+            $('#table').change(function() {
+                window.location.href = '/ThongBao/ThongTin?table=' + $('#table').val();
+            });
         });
     </script>
 @stop
@@ -37,7 +40,11 @@
         </div>
         <div class="card-body">
             <div class="form-group row">
-
+                
+                <div class="col-md-6">
+                    <label style="font-weight: bold">Phân loại</label>
+                    {!! Form::select('table', setArrayAll($a_table,'Tất cả', 'ALL'), $inputs['table'], ['id' => 'table', 'class' => 'form-control select2basic']) !!}                    
+                </div>
             </div>
 
             <div class="form-group row">

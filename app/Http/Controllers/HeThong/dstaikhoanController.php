@@ -431,7 +431,17 @@ class dstaikhoanController extends Controller
         return redirect('/TaiKhoan/PhamViDuLieu?tendangnhap=' . $model->tendangnhap . '&machucnang=' . $model->machucnang);
     }
 
-    public function CapNhatEMail(Request $request)
+    public function CapNhatEmail()
+    {
+        $model = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
+        $m_donvi = dsdonvi::all();
+        return view('HeThongChung.TaiKhoan.DoiEmail')
+        ->with('model', $model)
+        ->with('a_donvi', array_column($m_donvi->toarray(), 'tendonvi', 'madonvi'))
+        ->with('pageTitle', 'Cập nhật email');
+    }
+
+    public function LuuEMail(Request $request)
     {
         $model=dstaikhoan::where('tendangnhap',session('admin')->tendangnhap)->first();
         if(isset($model)){

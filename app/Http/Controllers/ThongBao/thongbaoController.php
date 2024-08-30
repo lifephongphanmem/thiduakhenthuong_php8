@@ -27,34 +27,45 @@ class thongbaoController extends Controller
         });
     }
 
-    public function ThongTin()
+    public function ThongTin(Request $request)
     {
+        $inputs=$request->all();
+        $inputs['table']=$inputs['table']??'ALL';
         switch (session('admin')->capdo){
             case 'T':{
+                $m_cumkhoi=dscumkhoi_chitiet::where('madonvi',session('admin')->madonvi)->get();
                 $a_phamvi=['T','TW'];
                 break;
             }
             case 'TW':{
+                $m_cumkhoi=dscumkhoi_chitiet::where('madonvi',session('admin')->madonvi)->get();
                 $a_phamvi=['T','TW'];
                 break;
             }
             case 'H':{
+                $m_cumkhoi=dscumkhoi_chitiet::where('madonvi',session('admin')->madonvi)->get();
                 $a_phamvi=['T','TW','H'];
                 break;
             }
             case 'X':{
+                $m_cumkhoi=dscumkhoi_chitiet::where('madonvi',session('admin')->madonvi)->get();
                 $a_phamvi=['T','TW','H','X'];
                 break;
             }
             default:{
+                $m_cumkhoi=dscumkhoi_chitiet::all();
                 $a_phamvi=['T','TW','H','X'];
                 break;
             }
         }
-            $m_cumkhoi=dscumkhoi_chitiet::where('madonvi',session('admin')->madonvi)->get();
+            
+
             // $macumkhoi=$cumkhoi->macumkhoi??'';
             $a_macumkhoi=array_column($m_cumkhoi->toarray(),'macumkhoi');
             $model = thongbao::wherein('phamvi',$a_phamvi)->orwherein('phamvi',$a_macumkhoi)->get();
+            if($inputs['table'] != 'ALL'){
+                $model=$model->where('table',$inputs['table']);
+            }
             foreach($model as $ct){
                 if($ct->trangthai != 'CHUADOC'){
                     if(in_array(session('admin')->tendangnhap,explode(';',$ct->trangthai))){
@@ -67,10 +78,16 @@ class thongbaoController extends Controller
             }
         $a_donvi = array_column(dsdonvi::all()->toarray(), 'tendonvi', 'madonvi');
         $dscumkhoi=array_column(dscumkhoi::all()->toarray(), 'tencumkhoi', 'macumkhoi');
+        $a_table=array(
+            'dsphongtraothidua'=>'Phong trào thi đua',
+            'dsphongtraothiduacumkhoi'=>'Phong trào thi đua cụm khối'
+        );
         return view('ThongBao.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', $a_donvi)
             ->with('dscumkhoi', $dscumkhoi)
+            ->with('a_table', $a_table)
+            ->with('inputs', $inputs)
             ->with('pageTitle', 'Thông tin thông báo');
     }
 
