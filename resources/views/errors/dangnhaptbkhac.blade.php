@@ -48,16 +48,16 @@ License: You must have a valid license purchased only from themeforest(the above
             <h3 class="font-weight-boldest text-dark-75 mt-15" style="font-size: 5rem">Thông báo!</h3>
             <p class="font-size-h3 text-danger font-weight-normal">{!! isset($message) ? $message : 'Phần mềm không thể thực hiện thao tác !!!' !!} </p>
             <p>Không thoát khỏi trang này trong khi chờ phản hồi !!!</p>
-            <input type="hidden" name="tendangnhap" value="{{$ttuser->tendangnhap}}" id="tendangnhap">
-            <input type="hidden" name="sessionID" value="{{$sessionID}}" id="sessionID">
+            <input type="hidden" name="tendangnhap" value="{{ $ttuser->tendangnhap }}" id="tendangnhap">
+            <input type="hidden" name="sessionID" value="{{ $sessionID }}" id="sessionID">
             <!--end::Content-->
         </div>
         <!--end::Error-->
     </div>
-    <form action="{{'/DangNhapTB2'}}" method="POST" >
+    <form action="{{ '/DangNhapTB2' }}" method="POST">
         @csrf
         <div id="modal-thongbao" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-            <input type="hidden" name="tendangnhap" value={{$ttuser->tendangnhap}}>
+            <input type="hidden" name="tendangnhap" value={{ $ttuser->tendangnhap }}>
             <div class="modal-dialog  modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -80,27 +80,27 @@ License: You must have a valid license purchased only from themeforest(the above
     </form>
 
     {{-- <form action="{{'/showFormTuChoi'}}" method="GET" > --}}
-        @csrf
-        <div id="modal-thongbao-tuchoi" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog  modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-uppercase">Thông báo !!!</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <i aria-hidden="true" class="ki ki-close"></i>
-                        </button>
-                    </div>
-                    <div class="modal-body text-danger">
-                        <p>Tài khoản đã bị từ chối đăng nhập hệ thống!!!</p>
-                    </div>
-                    <div class="modal-footer">
-                        {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="boquaDN()">Bỏ
+    @csrf
+    <div id="modal-thongbao-tuchoi" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-uppercase">Thông báo !!!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body text-danger">
+                    <p>Tài khoản đã bị từ chối đăng nhập hệ thống!!!</p>
+                </div>
+                <div class="modal-footer">
+                    {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="boquaDN()">Bỏ
                             qua</button> --}}
-                        <button type="submit" class="btn btn-primary">Đồng ý</button>
-                    </div>
+                    <button type="submit" class="btn btn-primary" id="btnConfirmTuChoi">Đồng ý</button>
                 </div>
             </div>
         </div>
+    </div>
     {{-- </form> --}}
     <!--end::Main-->
     <script>
@@ -172,15 +172,16 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="assets/plugins/global/plugins.bundle.js"></script>
     <script src="assets/plugins/custom/prismjs/prismjs.bundle.js"></script>
     <script src="assets/js/scripts.bundle.js"></script>
+    @vite('resources/js/bootstrap.js')
     <script>
         jQuery(document).ready(function() {
-            setInterval(chkDangNhap, 20000);
-            setInterval(chkTuChoi, 20000);
+            // setInterval(chkDangNhap, 20000);
+            // setInterval(chkTuChoi, 20000);
         });
 
         function chkDangNhap() {
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-            var tendangnhap=$('#tendangnhap').val();
+            var tendangnhap = $('#tendangnhap').val();
             $.ajax({
                 url: "/KiemTraDangNhapTB2",
                 type: 'POST',
@@ -200,10 +201,11 @@ License: You must have a valid license purchased only from themeforest(the above
                 }
             });
         }
+
         function chkTuChoi() {
             // var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-            var tendangnhap=$('#tendangnhap').val();
-            var sessionID=$('#sessionID').val();
+            var tendangnhap = $('#tendangnhap').val();
+            var sessionID = $('#sessionID').val();
             $.ajax({
                 url: "/showFormTuChoi",
                 type: 'GET',
@@ -223,6 +225,42 @@ License: You must have a valid license purchased only from themeforest(the above
                 }
             });
         }
+        //Xử lý không cho đóng modal khi click ở ngoài
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalElement = document.getElementById('modal-thongbao');
+            const modalTuChoi = document.getElementById('modal-thongbao-tuchoi');
+            // const confirmButton = document.getElementById('btnConfirm');
+            const confirmButtonTuChoi = document.getElementById('btnConfirmTuChoi');
+            // const skipButton = document.getElementById('btnSkip');
+
+            const modalInstanceDongY = new bootstrap.Modal(modalElement, {
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            const modalInstanceTuChoi = new bootstrap.Modal(modalTuChoi, {
+                backdrop: 'static',
+                keyboard: false
+            });
+
+            confirmButtonTuChoi.addEventListener('click', function() {
+                // Logic xử lý khi người dùng đồng ý
+                console.log('Người dùng đã đồng ý');
+                window.location.href = '/DangNhap';
+            });
+            setTimeout(() => {
+                window.Echo.channel('thongbao')
+                    .listen('MessageSent', (e) => {
+                        console.log(e);
+                        if (e['mes'] == '2') {
+                            modalInstanceDongY.show();
+                        }
+                        if (e['mes'] == '3') {
+                            modalInstanceTuChoi.show();
+                        }
+                    })
+            }, 200);
+        });
     </script>
     <!--end::Global Theme Bundle-->
 </body>

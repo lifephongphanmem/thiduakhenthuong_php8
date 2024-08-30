@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HeThong;
 
+use App\Events\MessageSent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\DanhMuc\dscumkhoi_chitiet;
@@ -50,6 +51,8 @@ class hethongchungController extends Controller
             } else {
                 $thongtin_email = false;
             }
+            //30082024 tạm dừng để cập nhật cho tuyên quang
+            $thongtin_email=true;
             // dd($model_vp);
             return view('HeThong.dashboard')
                 ->with('model_vp', $model_vp)
@@ -115,18 +118,19 @@ class hethongchungController extends Controller
 
         $sessionID_start = $ttuser->sessionID;
 
-        if ($this->chklogin($ttuser->timeaction, $ttuser->id,  $sessionID_start, $ttuser->tendangnhap,session()->getId())) {
-            //Nếu có tài khoản đang đăng nhập chuyển sang trang thông báo, chờ phản hồi
-            $userupdate = dstaikhoan::where('tendangnhap', $ttuser->tendangnhap)->first();
-            $userupdate->sessionID=session()->getId();
-            $userupdate->save();
-            // dd(json_encode($ttuser->toarray()));
-   
-            return view('errors.dangnhaptbkhac')
-                ->with('ttuser', $ttuser)
-                ->with('sessionID', session()->getId())
-                ->with('message', 'Tài khoản đã được đăng nhập ở thiết bị khác. Chờ phản hồi');
-        };
+        //30082024 Dừng chức năng để chạy cho tuyên quang
+
+        // if ($this->chklogin($ttuser->timeaction, $ttuser->id,  $sessionID_start, $ttuser->tendangnhap,session()->getId())) {
+        //     //Nếu có tài khoản đang đăng nhập chuyển sang trang thông báo, chờ phản hồi
+        //     $userupdate = dstaikhoan::where('tendangnhap', $ttuser->tendangnhap)->first();
+        //     $userupdate->sessionID=session()->getId();
+        //     $userupdate->save();
+        //     broadcast(new MessageSent('1'))->toOthers();
+        //     return view('errors.dangnhaptbkhac')
+        //         ->with('ttuser', $ttuser)
+        //         ->with('sessionID', session()->getId())
+        //         ->with('message', 'Tài khoản đã được đăng nhập ở thiết bị khác. Chờ phản hồi');
+        // };
         //kiểm tra tài khoản
         //1. level = SSA ->
         if ($ttuser->sadmin != "SSA") {
@@ -516,10 +520,10 @@ class hethongchungController extends Controller
         if ($user->islogout == 0 && $sessionID_start == null) {
             return false;
         }
-        if($sessionID != $sessionID_start)
-        {
-            return true;
-        }
+        // if($sessionID != $sessionID_start)
+        // {
+        //     return true;
+        // }
 
         // $thoigianthaotac=$user->isaction();
         $chenhlechthoigian = Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
@@ -567,6 +571,7 @@ class hethongchungController extends Controller
             $model->timeaction=$time;
             $model->save();
             $result = true;
+            broadcast(new MessageSent('3'))->toOthers();
         }
         return response()->json($result);
     }
@@ -751,6 +756,7 @@ class hethongchungController extends Controller
         $model->timeaction = $time;
         $model->islogout = 0;
         $model->save();
+        broadcast(new MessageSent('2'))->toOthers();
         return redirect('/DangNhap')
             ->with('success', 'Đăng xuất thành công');
     }

@@ -152,7 +152,7 @@
                     </div>
                 </div>
 
-                <form action="{{ '/TaiKhoan/LuuEmail' }}" method="POST">
+                <form action="{{ '/TaiKhoan/CapNhatEmail' }}" method="POST">
                     @csrf
                     <div class="card-body">
                         <div class="marquee-container text-center">

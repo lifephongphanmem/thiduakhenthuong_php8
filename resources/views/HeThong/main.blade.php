@@ -215,14 +215,14 @@
                                                     <span class="menu-text font-weight-bold text-dark">
                                                         &nbsp;{{ session('admin')->tentaikhoan }}</span>
                                                     {{-- @if (hasEmail()) --}}
-                                                        <span> <a href="{{ '/ThongBao/ThongTin' }}"
-                                                                class="btn btn-icon pulse pulse-primary ">
-                                                                <i class="flaticon2-bell-4 text-danger"></i>
-                                                                <span class="pulse-ring"></span>
-                                                                <span
-                                                                    class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{ SLThongbao(session('admin')->capdo, session('admin')->madonvi, session('admin')->tendangnhap) }}</span>
-                                                            </a>
-                                                        </span>
+                                                    <span> <a href="{{ '/ThongBao/ThongTin' }}"
+                                                            class="btn btn-icon pulse pulse-primary ">
+                                                            <i class="flaticon2-bell-4 text-danger"></i>
+                                                            <span class="pulse-ring"></span>
+                                                            <span
+                                                                class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{ SLThongbao(session('admin')->capdo, session('admin')->madonvi, session('admin')->tendangnhap) }}</span>
+                                                        </a>
+                                                    </span>
                                                     {{-- @endif --}}
 
 
@@ -450,13 +450,20 @@
                     <div class="navi-link">
                         <div class="symbol symbol-40 bg-light mr-3">
                             <div class="symbol-label">
-                                <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Communication\Mail-error.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24"/>
-                                        <path d="M12.9835977,18 C12.7263047,14.0909841 9.47412135,11 5.5,11 C4.98630124,11 4.48466491,11.0516454 4,11.1500272 L4,7 C4,5.8954305 4.8954305,5 6,5 L20,5 C21.1045695,5 22,5.8954305 22,7 L22,16 C22,17.1045695 21.1045695,18 20,18 L12.9835977,18 Z M19.1444251,6.83964668 L13,10.1481833 L6.85557487,6.83964668 C6.4908718,6.6432681 6.03602525,6.77972206 5.83964668,7.14442513 C5.6432681,7.5091282 5.77972206,7.96397475 6.14442513,8.16035332 L12.6444251,11.6603533 C12.8664074,11.7798822 13.1335926,11.7798822 13.3555749,11.6603533 L19.8555749,8.16035332 C20.2202779,7.96397475 20.3567319,7.5091282 20.1603533,7.14442513 C19.9639747,6.77972206 19.5091282,6.6432681 19.1444251,6.83964668 Z" fill="#000000"/>
-                                        <path d="M6.5,14 C7.05228475,14 7.5,14.4477153 7.5,15 L7.5,17 C7.5,17.5522847 7.05228475,18 6.5,18 C5.94771525,18 5.5,17.5522847 5.5,17 L5.5,15 C5.5,14.4477153 5.94771525,14 6.5,14 Z M6.5,21 C5.94771525,21 5.5,20.5522847 5.5,20 C5.5,19.4477153 5.94771525,19 6.5,19 C7.05228475,19 7.5,19.4477153 7.5,20 C7.5,20.5522847 7.05228475,21 6.5,21 Z" fill="#000000" opacity="0.3"/>
-                                    </g>
-                                </svg><!--end::Svg Icon--></span>
+                                <span
+                                    class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Communication\Mail-error.svg--><svg
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <path
+                                                d="M12.9835977,18 C12.7263047,14.0909841 9.47412135,11 5.5,11 C4.98630124,11 4.48466491,11.0516454 4,11.1500272 L4,7 C4,5.8954305 4.8954305,5 6,5 L20,5 C21.1045695,5 22,5.8954305 22,7 L22,16 C22,17.1045695 21.1045695,18 20,18 L12.9835977,18 Z M19.1444251,6.83964668 L13,10.1481833 L6.85557487,6.83964668 C6.4908718,6.6432681 6.03602525,6.77972206 5.83964668,7.14442513 C5.6432681,7.5091282 5.77972206,7.96397475 6.14442513,8.16035332 L12.6444251,11.6603533 C12.8664074,11.7798822 13.1335926,11.7798822 13.3555749,11.6603533 L19.8555749,8.16035332 C20.2202779,7.96397475 20.3567319,7.5091282 20.1603533,7.14442513 C19.9639747,6.77972206 19.5091282,6.6432681 19.1444251,6.83964668 Z"
+                                                fill="#000000" />
+                                            <path
+                                                d="M6.5,14 C7.05228475,14 7.5,14.4477153 7.5,15 L7.5,17 C7.5,17.5522847 7.05228475,18 6.5,18 C5.94771525,18 5.5,17.5522847 5.5,17 L5.5,15 C5.5,14.4477153 5.94771525,14 6.5,14 Z M6.5,21 C5.94771525,21 5.5,20.5522847 5.5,20 C5.5,19.4477153 5.94771525,19 6.5,19 C7.05228475,19 7.5,19.4477153 7.5,20 C7.5,20.5522847 7.05228475,21 6.5,21 Z"
+                                                fill="#000000" opacity="0.3" />
+                                        </g>
+                                    </svg><!--end::Svg Icon--></span>
                             </div>
                         </div>
                         <div class="navi-text">
@@ -470,13 +477,19 @@
                     <div class="navi-link">
                         <div class="symbol symbol-40 bg-light mr-3">
                             <div class="symbol-label">
-                                <span class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Electric\Shutdown.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24"/>
-                                        <path d="M7.62302337,5.30262097 C8.08508802,5.000107 8.70490146,5.12944838 9.00741543,5.59151303 C9.3099294,6.05357769 9.18058801,6.67339112 8.71852336,6.97590509 C7.03468892,8.07831239 6,9.95030239 6,12 C6,15.3137085 8.6862915,18 12,18 C15.3137085,18 18,15.3137085 18,12 C18,9.99549229 17.0108275,8.15969002 15.3875704,7.04698597 C14.9320347,6.73472706 14.8158858,6.11230651 15.1281448,5.65677076 C15.4404037,5.20123501 16.0628242,5.08508618 16.51836,5.39734508 C18.6800181,6.87911023 20,9.32886071 20,12 C20,16.418278 16.418278,20 12,20 C7.581722,20 4,16.418278 4,12 C4,9.26852332 5.38056879,6.77075716 7.62302337,5.30262097 Z" fill="#000000" fill-rule="nonzero"/>
-                                        <rect fill="#000000" opacity="0.3" x="11" y="3" width="2" height="10" rx="1"/>
-                                    </g>
-                                </svg><!--end::Svg Icon--></span>
+                                <span
+                                    class="svg-icon svg-icon-primary svg-icon-2x"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Electric\Shutdown.svg--><svg
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <path
+                                                d="M7.62302337,5.30262097 C8.08508802,5.000107 8.70490146,5.12944838 9.00741543,5.59151303 C9.3099294,6.05357769 9.18058801,6.67339112 8.71852336,6.97590509 C7.03468892,8.07831239 6,9.95030239 6,12 C6,15.3137085 8.6862915,18 12,18 C15.3137085,18 18,15.3137085 18,12 C18,9.99549229 17.0108275,8.15969002 15.3875704,7.04698597 C14.9320347,6.73472706 14.8158858,6.11230651 15.1281448,5.65677076 C15.4404037,5.20123501 16.0628242,5.08508618 16.51836,5.39734508 C18.6800181,6.87911023 20,9.32886071 20,12 C20,16.418278 16.418278,20 12,20 C7.581722,20 4,16.418278 4,12 C4,9.26852332 5.38056879,6.77075716 7.62302337,5.30262097 Z"
+                                                fill="#000000" fill-rule="nonzero" />
+                                            <rect fill="#000000" opacity="0.3" x="11" y="3" width="2"
+                                                height="10" rx="1" />
+                                        </g>
+                                    </svg><!--end::Svg Icon--></span>
                             </div>
                         </div>
                         <div class="navi-text">
@@ -513,7 +526,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="boquaDN()">Bỏ
                             qua</button>
-                        <button type="submit" class="btn btn-primary">Đồng ý</button>
+                        <button type="submit" class="btn btn-primary" id="btnConfirm">Đồng ý</button>
                     </div>
                 </div>
             </div>
@@ -618,9 +631,10 @@
     <script src="{{ url('assets/js/pages/main.js') }}"></script>
 
     @yield('custom-script-footer')
+    @vite('resources/js/bootstrap.js')
     <script>
         jQuery(document).ready(function() {
-            setInterval(chkDangNhap, 20000);
+            // setInterval(chkDangNhap, 20000);
         });
 
         function chkDangNhap() {
@@ -664,6 +678,34 @@
                 }
             });
         }
+
+        //Xử lý không cho đóng modal khi click ở ngoài
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalElement = document.getElementById('modal-thongbao');
+            const confirmButton = document.getElementById('btnConfirm');
+            // const skipButton = document.getElementById('btnSkip');
+
+            const modalInstance = new bootstrap.Modal(modalElement, {
+                backdrop: 'static',
+                keyboard: false
+            });
+            // Xử lý khi nhấn nút "Đồng ý"
+            confirmButton.addEventListener('click', function() {
+                // Logic xử lý khi người dùng đồng ý
+                console.log('Người dùng đã đồng ý');
+                // Đóng modal sau khi xử lý xong
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                modalInstance.hide();
+            });
+            setTimeout(() => {
+                window.Echo.channel('thongbao')
+                    .listen('MessageSent', (e) => {
+                        if (e['mes'] == '1') {
+                            modalInstance.show();
+                        }
+                    })
+            }, 200);
+        });
     </script>
     <!--end::Page Scripts-->
 </body>
