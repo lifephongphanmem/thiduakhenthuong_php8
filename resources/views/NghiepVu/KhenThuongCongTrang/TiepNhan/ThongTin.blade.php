@@ -68,7 +68,7 @@
                                 <td>{{ $tt->noidung }}</td>
                                 @include('includes.td.td_trangthai_hoso')
                                 @if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN')
-                                <td>{{ $tt->tendangnhap_xl }}</td>
+                                <td>{{ $a_taikhoan[$tt->tendangnhap_xl]??'' }}</td>
                                 @endif
                                 {{-- <td>{{ $a_donvi[$tt->madonvi_nhan_hoso] ?? '' }}</td> --}}
                                 <td>{{ $a_donvi[$tt->madonvi_hoso] ?? '' }}</td>

@@ -668,6 +668,7 @@ class dshosodenghikhenthuongdoingoaiController extends Controller
         }
 
         $inputs = $request->all();
+        $inputs['madanhhieukhenthuong']=implode(';',$inputs['madanhhieukhenthuong']);
         //$id =  $inputs['id'];       
         $model = dshosothiduakhenthuong_tapthe::where('id', $inputs['id'])->first();
         unset($inputs['id']);

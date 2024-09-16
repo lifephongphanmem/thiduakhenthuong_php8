@@ -1333,10 +1333,18 @@ function getTDChiTiet()
 function getThang($all = false)
 {
     $a_tl = array(
-        '01' => '01', '02' => '02', '03' => '03',
-        '04' => '04', '05' => '05', '06' => '06',
-        '07' => '07', '08' => '08', '09' => '09',
-        '10' => '10', '11' => '11', '12' => '12'
+        '01' => '01',
+        '02' => '02',
+        '03' => '03',
+        '04' => '04',
+        '05' => '05',
+        '06' => '06',
+        '07' => '07',
+        '08' => '08',
+        '09' => '09',
+        '10' => '10',
+        '11' => '11',
+        '12' => '12'
     );
     if ($all)
         return array_merge(array('ALL' => '--Tất cả--'), $a_tl);
@@ -1419,90 +1427,111 @@ function getTrangThai_TD_HoSo($trangthai)
 
         'CD' => [
             'trangthai' => 'Chờ duyệt',
-            'class' => 'badge badge-info'
+            // 'class' => 'badge badge-info'
+            'class' => 'badge'
         ],
 
         'DTN' => [
             'trangthai' => 'Đã tiếp<br>nhận',
-            'class' => 'badge badge-info'
+            // 'class' => 'badge badge-info'
+            'class' => 'badge'
         ],
         'CXD' => [
             'trangthai' => 'Không có<br>hồ sơ',
-            'class' => 'badge badge-info'
+            // 'class' => 'badge badge-info'
+            'class' => 'badge'
         ],
         'BTL' => [
             'trangthai' => 'Bị trả<br>lại',
             'class' => 'badge badge-danger'
+            // 'class' => 'badge'
         ],
 
         'BTLXD' => [
             'trangthai' => 'Trả lại<br>xét duyệt',
             'class' => 'badge badge-danger'
+            // 'class' => 'badge'
         ],
         'BTLTN' => [
             'trangthai' => 'Trả lại<br>tiếp nhận',
             'class' => 'badge badge-danger'
+            // 'class' => 'badge'
         ],
 
         'CNXKT' => [
             'trangthai' => 'Chờ nhận<br>để xét<br>khen thưởng',
-            'class' => 'badge badge-info'
+            // 'class' => 'badge badge-info'
+            'class' => 'badge'
         ],
         'CXKT' => [
             'trangthai' => 'Chờ xét<br>khen thưởng',
-            'class' => 'badge badge-warning'
+            // 'class' => 'badge badge-warning'
+            'class' => 'badge'
         ],
 
         'DKT' => [
             'trangthai' => 'Đã khen<br>thưởng',
-            'class' => 'badge badge-success'
+            // 'class' => 'badge badge-success'
+            'class' => 'badge'
         ],
         'DD' => [
             'trangthai' => 'Chờ chuyển<br>khen thưởng',
-            'class' => 'badge badge-success'
+            // 'class' => 'badge badge-success'
+            'class' => 'badge'
         ],
 
         'DXKT' => [
             'trangthai' => 'Đang xét<br>khen thưởng',
-            'class' => 'badge badge-warning'
+            // 'class' => 'badge badge-warning'
+            'class' => 'badge'
         ],
 
         'DDK' => [
             'trangthai' => 'Đủ điều<br>kiện',
-            'class' => 'badge badge-success'
+            'class' => 'badge'
+            // 'class' => 'badge badge-success'
         ],
         'KDK' => [
             'trangthai' => 'Không đủ điều<br>kiện',
-            // 'class' => 'badge badge-warning'
-            'class' => 'badge badge-danger'
+            'class' => 'badge badge-warning'
+            // 'class' => 'badge'
         ],
         'DCCVXD' => [
-            'trangthai' => 'Đã chuyển</br>chuyên viên</br>xét duyệt',
-            'class' => 'badge badge-warning'
+            'trangthai' => 'Đã chuyển</br>cán bộ</br>xét duyệt',
+            // 'trangthai' => 'Đã chuyển</br>chuyên viên</br>xét duyệt',
+            // 'class' => 'badge badge-success'
+            'class' => 'badge'
         ],
         'DCCVKT' => [
             'trangthai' => 'Đã chuyển</br>chuyên viên</br>khen thưởng',
-            'class' => 'badge badge-warning'
+            // 'class' => 'badge badge-warning'
+            'class' => 'badge'
         ],
         'DTH' => [
             'trangthai' => 'Đã chuyển</br>tổng hợp',
-            'class' => 'badge badge-success'
+            // 'class' => 'badge badge-success'
+            'class' => 'badge'
         ],
         'DCXL' => [
-            'trangthai' => 'Đã chuyển</br>xử lý',
-            'class' => 'badge badge-warning'
+            // 'trangthai' => 'Đã chuyển</br>xử lý',
+            'trangthai' => 'Hồ sơ <br>đang</br>xử lý',
+            // 'class' => 'badge badge-warning'
+            'class' => 'badge'
         ],
         '0' => [
             'trangthai' => 'Đã chuyển</br>ý kiến',
-            'class' => 'badge badge-success'
+            // 'class' => 'badge badge-success'
+            'class' => 'badge'
         ],
         '1' => [
             'trangthai' => 'Đã tiếp nhận</br>ý kiến',
-            'class' => 'badge badge-success'
+            // 'class' => 'badge badge-success'
+            'class' => 'badge'
         ],
         '2' => [
             'trangthai' => 'Đã phản hồi</br>ý kiến',
-            'class' => 'badge badge-success'
+            // 'class' => 'badge badge-success'
+            'class' => 'badge'
         ]
 
     ];

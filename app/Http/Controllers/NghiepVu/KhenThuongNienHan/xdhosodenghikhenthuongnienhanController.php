@@ -137,7 +137,12 @@ class xdhosodenghikhenthuongnienhanController extends Controller
         //gán trạng thái hồ sơ để theo dõi
         $inputs['trangthai'] = 'BTLTN';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
-        setTraLaiXD($model, $inputs);
+        setTraLai_TL($inputs['mahoso'],'trinhdenghi');
+        if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
+            setTraLai($model, $inputs);
+        }else{
+            setTraLaiXD($model, $inputs);
+        }
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
 

@@ -52,12 +52,14 @@ $a_trangthai_xl = getTrangThai_TD_HoSo($tt->trangthai_xl);
     @case('BTLXD')
         <td align="center">
             <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+            {{-- <span >{!! $a_trangthai_td['trangthai'] !!}</span> --}}
         </td>
     @break
 
     @case('BTLTN')
         <td align="center">
             <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+            {{-- <span>{!! $a_trangthai_td['trangthai'] !!}</span> --}}
         </td>
     @break
 
@@ -87,6 +89,7 @@ $a_trangthai_xl = getTrangThai_TD_HoSo($tt->trangthai_xl);
 
     @case('DCCVXD')
         <td align="center">
+            {{-- <span>{!! $a_trangthai_td['trangthai'] !!}</span> --}}
             <span class="{{ $a_trangthai_xl['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
             {{-- <br>Chuyên viên:<br><b>{{ $tt->tendangnhap_xd }}</b> --}}
         </td>

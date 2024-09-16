@@ -52,6 +52,9 @@
                                 <th>Nội dung hồ sơ</th>
                                 {{-- <th>Ngày tạo</th> --}}
                                 <th width="8%">Trạng thái</th>
+                                @if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN')
+                                    <th>Cán bộ đang xử lý</th>
+                                @endif
                                 <th>Đơn vị tiếp nhận</th>
                                 <th width="15%">Thao tác</th>
                             </tr>
@@ -66,7 +69,10 @@
                                 <td>{{ $tt->noidung }}</td>
                                 {{-- <td class="text-center">{{ getDayVn($tt->ngayhoso) }}</td> --}}
                                 @include('includes.td.td_trangthai_hoso')
-                                <td>{{ $a_donvi[$tt->madonvi_nhan_hoso] ?? '' }}</td>
+                                @if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN')
+                                    <td>{{ $a_taikhoan[$tt->tendangnhap_xl] ?? '' }}</td>
+                                @endif
+                                <td>{{ $a_donvi[$tt->madonvi_hoso] ?? '' }}</td>
 
                                 <td style="text-align: center">
                                     @include('NghiepVu._DungChung.TD_XemThongTinTDKT')
