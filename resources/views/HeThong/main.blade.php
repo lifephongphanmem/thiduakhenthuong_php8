@@ -631,7 +631,7 @@
     <script src="{{ url('assets/js/pages/main.js') }}"></script>
 
     @yield('custom-script-footer')
-    @vite('resources/js/bootstrap.js')
+    {{-- @vite('resources/js/bootstrap.js') --}}
     <script>
         jQuery(document).ready(function() {
             // setInterval(chkDangNhap, 20000);
@@ -697,14 +697,14 @@
                 const modalInstance = bootstrap.Modal.getInstance(modalElement);
                 modalInstance.hide();
             });
-            setTimeout(() => {
-                window.Echo.channel('thongbao')
-                    .listen('MessageSent', (e) => {
-                        if (e['mes'] == '1') {
-                            modalInstance.show();
-                        }
-                    })
-            }, 200);
+            // setTimeout(() => {
+            //     window.Echo.channel('thongbao')
+            //         .listen('MessageSent', (e) => {
+            //             if (e['mes'] == '1') {
+            //                 modalInstance.show();
+            //             }
+            //         })
+            // }, 200);
         });
     </script>
     <!--end::Page Scripts-->
