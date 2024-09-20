@@ -506,7 +506,7 @@ class hethongchungController extends Controller
         if(isset($user)){
             if($user->sessionID != session('admin')->sessionID)
             {
-                return false;
+                $result= false;
             }
         }else{
             $result= false;

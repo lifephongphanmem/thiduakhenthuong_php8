@@ -502,8 +502,9 @@
                     <p>Tài khoản đang được đăng nhập ở một thiết bị khác. Đồng ý cho phép đăng nhập ???</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Bỏ qua</button>
-                    <a href="{{ url('/DangXuat') }}"  class="btn btn-primary">Đồng ý</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="clearInterval(settime)">Bỏ
+                        qua</button>
+                    <a href="{{ url('/') }}" class="btn btn-primary">Đồng ý</a>
                 </div>
             </div>
         </div>
@@ -610,31 +611,33 @@
 
     @yield('custom-script-footer')
     <script>
-        jQuery(document).ready(function() {
-    
-            chkDangNhap();
-        });
+        // jQuery(document).ready(function() {
+
+        //     // chkDangNhap();
+        //    var settime= setInterval(chkDangNhap, 10000);
+        // });
+        var settime= setInterval(chkDangNhap, 10000);
         function chkDangNhap() {
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                $.ajax({
-                    url: "/KiemTraDangNhap",
-                    type: 'GET',
-                    data: {
-                        _token: CSRF_TOKEN,
-                    },
-                    dataType: 'JSON',
-                    success: function(data) {
-                        console.log(data);
-                        if (data == false) {
-                            $('#modal-thongbao').modal('show');
-                        }
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                url: "/KiemTraDangNhap",
+                type: 'GET',
+                data: {
+                    _token: CSRF_TOKEN,
+                },
+                dataType: 'JSON',
+                success: function(data) {
+                    console.log(data);
+                    if (data == false) {
+                        $('#modal-thongbao').modal('show');
                     }
-                });
-                // alert('hihi');
-                setTimeout("chkDangNhap()", "15000", "JavaScript");
-                // chkDangNhap();
-            }
-            // chkDangNhap();
+                },
+                error: function(data) {
+                    console.log(1234);
+                }
+            });
+        }
+        // chkDangNhap();
     </script>
     <!--end::Page Scripts-->
 </body>
