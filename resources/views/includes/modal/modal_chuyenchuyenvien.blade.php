@@ -24,7 +24,7 @@
                 <div class="form-group row">
                     <div class="col-md-12">
                         <label class="control-label">Cán bộ tiếp nhận hồ sơ</label>
-                        {!! Form::select('tendangnhap_tn', $a_taikhoanchuyenvien, null, ['class' => 'form-control select2_modal']) !!}
+                        {!! Form::select('tendangnhap_tn', $a_taikhoanchuyenvien_tn, null, ['class' => 'form-control select2_modal']) !!}
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
                 <div class="form-group row">
                     <div class="col-md-12">
                         <label class="control-label">Cán bộ tiếp nhận hồ sơ</label>
-                        {!! Form::select('tendangnhap_tn', $a_taikhoanchuyenvien, null, ['class' => 'form-control select2_modal']) !!}
+                        {!! Form::select('tendangnhap_tn', $a_taikhoanchuyenvien_tn, null, ['class' => 'form-control select2_modal']) !!}
                     </div>
                 </div>
                 <!-- Tài khoản quản lý + SSA: có thông tin trạng thái hồ sơ -->

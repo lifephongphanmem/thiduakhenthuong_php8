@@ -57,6 +57,7 @@ class dsphongtraothidua extends Model
         'thongtin_tw', //chưa dùng
         'trangthai_tw',
         'thoigian_tw',
+        'phuongthuctochuc'
         
     ];
 }

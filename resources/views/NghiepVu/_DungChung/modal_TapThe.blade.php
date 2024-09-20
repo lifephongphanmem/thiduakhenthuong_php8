@@ -176,7 +176,7 @@
                 contentType: false,
                 data: formData,
                 success: function(data) {
-                    // console.log(data);               
+                    console.log(data);               
                     if (data.status == 'success') {
                         $('#dskhenthuongtapthe').replaceWith(data.message);
                         TableManaged4.init();

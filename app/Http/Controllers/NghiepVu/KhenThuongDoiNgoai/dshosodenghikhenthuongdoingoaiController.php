@@ -648,7 +648,7 @@ class dshosodenghikhenthuongdoingoaiController extends Controller
 
         $danhsach = dshosothiduakhenthuong_canhan::where('mahosotdkt', $model->mahosotdkt)->get();
         $dungchung = new dungchung_nghiepvuController();
-        $dungchung->htmlCaNhan($result, $danhsach, static::$url, true, $inputs['maloaihinhkt']);
+        $dungchung->htmlCaNhan($result, $danhsach, static::$url, true, $model->mahosotdkt);
 
         return response()->json($result);
     }
@@ -668,6 +668,7 @@ class dshosodenghikhenthuongdoingoaiController extends Controller
         }
 
         $inputs = $request->all();
+        $inputs['madanhhieukhenthuong']=implode(';',$inputs['madanhhieukhenthuong']);
         //$id =  $inputs['id'];       
         $model = dshosothiduakhenthuong_tapthe::where('id', $inputs['id'])->first();
         unset($inputs['id']);
@@ -722,7 +723,7 @@ class dshosodenghikhenthuongdoingoaiController extends Controller
 
         $danhsach = dshosothiduakhenthuong_tapthe::where('mahosotdkt', $model->mahosotdkt)->get();
         $dungchung = new dungchung_nghiepvuController();
-        $dungchung->htmlTapThe($result, $danhsach, static::$url, true, $inputs['maloaihinhkt']);
+        $dungchung->htmlTapThe($result, $danhsach, static::$url, true, $model->mahosotdkt);
 
         return response()->json($result);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\HeThong;
 
+use App\Events\MessageSent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\DanhMuc\dscumkhoi_chitiet;
@@ -42,20 +43,22 @@ class hethongchungController extends Controller
             $a_vp = a_unique(array_column($model_vp->toArray(), 'vanphong'));
             $col = (int) 12 / (count($a_vp) > 0 ? count($a_vp) : 1);
             $col = $col < 4 ? 4 : $col;
-            $email=dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
-            if(session('admin')->capdo == 'SSA'){
-                $thongtin_email=true;
-            }else if(isset($email->email)){
-                $thongtin_email=true;
-            }else{
-                $thongtin_email=false;
+            $email = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
+            if (session('admin')->capdo == 'SSA') {
+                $thongtin_email = true;
+            } else if (isset($email->email)) {
+                $thongtin_email = true;
+            } else {
+                $thongtin_email = false;
             }
+            //30082024 tạm dừng để cập nhật cho tuyên quang
+            // $thongtin_email=true;
             // dd($model_vp);
             return view('HeThong.dashboard')
                 ->with('model_vp', $model_vp)
                 ->with('a_vp', $a_vp)
-                ->with('col',$col)
-                ->with('thongtin_email',$thongtin_email)
+                ->with('col', $col)
+                ->with('thongtin_email', $thongtin_email)
                 ->with('model', getHeThongChung())
                 ->with('pageTitle', 'Thông tin hỗ trợ');
         } else {
@@ -113,6 +116,21 @@ class hethongchungController extends Controller
         $ttuser->solandn = 0;
         $ttuser->save();
 
+        $sessionID_start = $ttuser->sessionID;
+
+        //30082024 Dừng chức năng để chạy cho tuyên quang
+
+        if ($this->chklogin($ttuser->timeaction, $ttuser->id,  $sessionID_start, $ttuser->tendangnhap,session()->getId())) {
+            //Nếu có tài khoản đang đăng nhập chuyển sang trang thông báo, chờ phản hồi
+            $userupdate = dstaikhoan::where('tendangnhap', $ttuser->tendangnhap)->first();
+            $userupdate->sessionID=session()->getId();
+            $userupdate->save();
+            broadcast(new MessageSent('1'))->toOthers();
+            return view('errors.dangnhaptbkhac')
+                ->with('ttuser', $ttuser)
+                ->with('sessionID', session()->getId())
+                ->with('message', 'Tài khoản đã được đăng nhập ở thiết bị khác. Chờ phản hồi');
+        };
         //kiểm tra tài khoản
         //1. level = SSA ->
         if ($ttuser->sadmin != "SSA") {
@@ -249,37 +267,52 @@ class hethongchungController extends Controller
             ));
         }
         */
-        if ($this->chklogin($ttuser->timeaction, $ttuser->id, session()->getId())) {
-            // Cho đăng nhập thì lập tức tài khoản đang onl logout luôn
-            if (Session::has('admin')) {
-                Session::flush();
-            }
-        };
+        // dd(($this->chklogin($ttuser->timeaction, $ttuser->id, session()->getId(),$ttuser->tendangnhap)));
+        // dd(session()->getId());
 
+        // if ($this->chklogin($ttuser->timeaction, $ttuser->id,  $sessionID_start, $ttuser->tendangnhap,session()->getId())) {
+        //     //Nếu có tài khoản đang đăng nhập chuyển sang trang thông báo, chờ phản hồi
+        //     $userupdate = dstaikhoan::where('tendangnhap', $ttuser->tendangnhap)->first();
+        //     $userupdate->sessionID=session()->getId();
+        //     $userupdate->save();
+        //     // dd(json_encode($ttuser->toarray()));
+   
+        //     return view('errors.dangnhaptbkhac')
+        //         ->with('ttuser', $ttuser->toarray())
+        //         ->with('message', 'Tài khoản đã được đăng nhập ở thiết bị khác. Chờ phản hồi');
+        // };
 
-            Session::put('admin', $ttuser);
+        Session::put('admin', $ttuser);
         $time = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
         //đẩy session id vào user để check đăng nhập giới hạn 1 tài khoản
         $data_update = [
             'timeaction' => $time,
             'sessionID' => session()->getId(),
-            'islogout' => 1
+            // 'islogout' => 1
         ];
         $userupdate = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
 
         // dd($user);
         $userupdate->update($data_update);
         //Gán lại vào session('amin) những thông tin vừa cập nhật
-        session('admin')->sessionID =session()->getId();
-        session('admin')->timeaction =$time;
-        // // Session::put("admin", $data_update);
-
-        // Save the session
+        session('admin')->sessionID = session()->getId();
+        session('admin')->timeaction = $time;
         session()->save();
+
         //Gán hệ danh mục chức năng        
         Session::put('chucnang', hethongchung_chucnang::all()->keyBy('machucnang')->toArray());
         //gán phân quyền của User
         Session::put('phanquyen', dstaikhoan_phanquyen::where('tendangnhap', $input['tendangnhap'])->get()->keyBy('machucnang')->toArray());
+
+        // if ($this->chklogin($ttuser->timeaction, $ttuser->id,  $sessionID_start, $ttuser->tendangnhap)) {
+        //     //Nếu có tài khoản đang đăng nhập chuyển sang trang thông báo, chờ phản hồi
+        //     return view('errors.dangnhaptbkhac')
+        //         ->with('ttuser', $ttuser)
+        //         ->with('message', 'Tài khoản đã được đăng nhập ở thiết bị khác. Chờ phản hồi');
+        // };
+
+        $userupdate->islogout = 1;
+        $userupdate->save();
 
         $trangthai = new trangthaihoso();
         $trangthai->trangthai = 'DANGNHAP';
@@ -469,50 +502,300 @@ class hethongchungController extends Controller
             ->with('pageTitle', 'Thông tin hỗ trợ');
     }
 
-    public function chklogin($thoigian, $id, $sessionID)
+    public function chklogin($thoigian, $id, $sessionID_start, $tendangnhap,$sessionID)
     {
-        if (!Session::has('admin')) {
-            return false;
-        };
+        
+        //check xem có tài khoản đang login hay không?
+        // if (!Session::has('admin')) {
+        //     return false;
+        // };
 
-        if (session('admin')->tendangnhap == 'SSA') {
+        if ($tendangnhap == 'SSA') {
             return false;
         }
         $user = dstaikhoan::findOrFail($id);
-        if ($sessionID != $user->sessionID) {
-            return true;
+
+
+        //Trường hợp tài khoản thực hiện đăng xuất
+        if ($user->islogout == 0 && $sessionID_start == null) {
+            return false;
         }
-        if ($user->islogout == 0) {
-            return true;
-        }
+        // if($sessionID != $sessionID_start)
+        // {
+        //     return true;
+        // }
+
         // $thoigianthaotac=$user->isaction();
         $chenhlechthoigian = Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
+        // dd($chenhlechthoigian);
         $time_session = Config::get('session.lifetime');
         // dd($time_session);
-        if ($chenhlechthoigian < $time_session) {
-            return false;
-        } else {
+        //Thời gian thực hiện thao tác nhỏ hơn thời gian tối đa của hệ thống và trạng thái đăng xuất là 1 (đang đăng nhập);
+        //Đạt đủ 2 điều kiện thì đang có tài khoản đăng nhập
+        if ($chenhlechthoigian < $time_session && $user->islogout == 1) {
             return true;
+        } else {
+            return false;
         }
     }
 
     public function chkSession()
     {
-        $result=true;
+        $result = true;
         if (!Session::has('admin')) {
-            $result= false;
+            $result = false;
         };
-        $user=dstaikhoan::where('tendangnhap',session('admin')->tendangnhap)->first();
-        if(isset($user)){
-            if($user->sessionID != session('admin')->sessionID)
-            {
-                $result= false;
-            }
-        }else{
-            $result= false;
-        }
 
-        return response()->json( $result);
+        $user = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
+        if (isset($user)) {
+            if ($user->sessionID != session('admin')->sessionID) {
+                $result = false;
+            }
+        } else {
+            $result = false;
+        }
+        if (session('admin')->tendangnhap == 'SSA') {
+            $result = true;
+        }
+        return response()->json($result);
     }
 
+    public function BoQuaDangNhap()
+    {
+        $result = false;
+        $model = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
+        if (isset($model)) {
+            $time = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+            // $model->update(['sessionID' => session('admin')->sessionID]);
+            $model->sessionID=session('admin')->sessionID;
+            $model->timeaction=$time;
+            $model->save();
+            $result = true;
+            broadcast(new MessageSent('3'))->toOthers();
+        }
+        return response()->json($result);
+    }
+
+    public function DangNhapTB2(Request $request)
+    {
+        // if (Session::has('admin')) {
+            $inputs=$request->all();
+            $a_HeThongChung = getHeThongChung();
+            // dd(collect(explode(',', $inputs['ttuser'])));
+            $ttuser = dstaikhoan::where('tendangnhap', $inputs['tendangnhap'])->first();
+
+
+            if ($ttuser->sadmin != "SSA") {
+                //dd($ttuser);
+                //2. level != SSA -> lấy thông tin đơn vị, hệ thống để thiết lập lại
+    
+                $m_donvi = dsdonvi::where('madonvi', $ttuser->madonvi)->first();
+    
+                //dd($ttuser);
+                $ttuser->madiaban = $m_donvi->madiaban;
+                $ttuser->maqhns = $m_donvi->maqhns;
+                $ttuser->tendv = $m_donvi->tendv;
+                $ttuser->emailql = $m_donvi->emailql;
+                $ttuser->emailqt = $m_donvi->emailqt;
+                $ttuser->songaylv = $m_donvi->songaylv;
+                $ttuser->tendvhienthi = $m_donvi->tendvhienthi;
+                $ttuser->tendvcqhienthi = $m_donvi->tendvcqhienthi;
+                $ttuser->chucvuky = $m_donvi->chucvuky;
+                $ttuser->chucvukythay = $m_donvi->chucvukythay;
+                $ttuser->nguoiky = $m_donvi->nguoiky;
+                $ttuser->diadanh = $m_donvi->diadanh;
+    
+                //Lấy thông tin địa bàn
+                $m_diaban = dsdiaban::where('madiaban', $ttuser->madiaban)->first();
+    
+                $ttuser->tendiaban = $m_diaban->tendiaban;
+                $ttuser->capdo = $m_diaban->capdo;
+                $ttuser->phanquyen = json_decode($ttuser->phanquyen, true);
+            } else {
+                //$ttuser->chucnang = array('SSA');
+                $ttuser->capdo = "SSA";
+                //$ttuser->phanquyen = [];
+    
+                //23.09.22 Nâng cấp hệ thống tài liệu đính kèm
+                // $model_hoso = dshosothiduakhenthuong::all();
+                // $a_tailieu = [];
+                // foreach ($model_hoso as $hoso) {
+                //     if ($hoso->totrinh != '') {
+                //         $a_tailieu[] = [
+                //             'mahosotdkt' => $hoso->mahosotdkt,
+                //             'phanloai' => 'TOTRINH',
+                //             'madonvi' => $hoso->madonvi,
+                //             'tentailieu' => $hoso->totrinh,
+                //             'noidung' => 'Tờ trình đề nghị khen thưởng',
+                //             'ngaythang' => $hoso->thoigian,
+                //         ];
+                //     }
+                //     if ($hoso->baocao != '') {
+                //         $a_tailieu[] = [
+                //             'mahosotdkt' => $hoso->mahosotdkt,
+                //             'phanloai' => 'BAOCAO',
+                //             'madonvi' => $hoso->madonvi,
+                //             'tentailieu' => $hoso->baocao,
+                //             'noidung' => 'Báo cáo thành tích',
+                //             'ngaythang' => $hoso->thoigian,
+                //         ];
+                //     }
+                //     if ($hoso->bienban != '') {
+                //         $a_tailieu[] = [
+                //             'mahosotdkt' => $hoso->mahosotdkt,
+                //             'phanloai' => 'BIENBAN',
+                //             'madonvi' => $hoso->madonvi,
+                //             'tentailieu' => $hoso->bienban,
+                //             'noidung' => 'Biên bản cuộc họp',
+                //             'ngaythang' => $hoso->thoigian,
+                //         ];
+                //     }
+                //     if ($hoso->tailieukhac != '') {
+                //         $a_tailieu[] = [
+                //             'mahosotdkt' => $hoso->mahosotdkt,
+                //             'phanloai' => 'KHAC',
+                //             'madonvi' => $hoso->madonvi,
+                //             'tentailieu' => $hoso->tailieukhac,
+                //             'noidung' => 'Tài liệu khác',
+                //             'ngaythang' => $hoso->thoigian,
+                //         ];
+                //     }
+    
+                //     if ($hoso->totrinhdenghi != '') {
+                //         //Đơn vị xét duyệt
+                //         $a_tailieu[] = [
+                //             'mahosotdkt' => $hoso->mahosotdkt,
+                //             'phanloai' => 'TOTRINHKQ',
+                //             'madonvi' => $hoso->madonvi_xd,
+                //             'tentailieu' => $hoso->totrinhdenghi,
+                //             'noidung' => 'Tờ trình kết quả khen thưởng',
+                //             'ngaythang' => $hoso->thoigian_xd,
+                //         ];
+                //     }
+                //     if ($hoso->quyetdinh != '') {
+                //         //ĐƠn vị phê duyệt
+                //         //Đơn vị xét duyệt
+                //         $a_tailieu[] = [
+                //             'mahosotdkt' => $hoso->mahosotdkt,
+                //             'phanloai' => 'QDKT',
+                //             'madonvi' => $hoso->madonvi_kt,
+                //             'tentailieu' => $hoso->quyetdinh,
+                //             'noidung' => 'Quyết định khen thưởng',
+                //             'ngaythang' => $hoso->thoigian_kt,
+                //         ];
+                //     }
+                // }
+                // foreach (array_chunk($a_tailieu, 200) as $data) {
+                //     //dd($data);
+                //     dshosothiduakhenthuong_tailieu::insert($data);
+                // }
+    
+            }
+    
+            //Lấy setting gán luôn vào phiên đăng nhập
+            $ttuser->thietlap = json_decode($a_HeThongChung->thietlap, true);
+            $ttuser->ipf1 = $a_HeThongChung->ipf1;
+            $ttuser->ipf2 = $a_HeThongChung->ipf2;
+            $ttuser->ipf3 = $a_HeThongChung->ipf3;
+            $ttuser->ipf4 = $a_HeThongChung->ipf4;
+            $ttuser->ipf5 = $a_HeThongChung->ipf5;
+            $ttuser->hskhenthuong_totrinh = $a_HeThongChung->hskhenthuong_totrinh;
+            $ttuser->opt_duthaototrinh = $a_HeThongChung->opt_duthaototrinh;
+            $ttuser->opt_duthaoquyetdinh = $a_HeThongChung->opt_duthaoquyetdinh;
+            $ttuser->madonvi_inphoi = $a_HeThongChung->madonvi_inphoi;
+            $ttuser->opt_trinhhosodenghi = $a_HeThongChung->opt_trinhhosodenghi;
+            $ttuser->opt_trinhhosoketqua = $a_HeThongChung->opt_trinhhosoketqua;
+            $ttuser->opt_pheduyethoso = $a_HeThongChung->opt_pheduyethoso;
+            $ttuser->opt_quytrinhkhenthuong = $a_HeThongChung->opt_quytrinhkhenthuong;
+
+    
+            Session::put('admin', $ttuser);
+            $time = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+            //đẩy session id vào user để check đăng nhập giới hạn 1 tài khoản
+            $data_update = [
+                'timeaction' => $time,
+                'sessionID' => session()->getId(),
+                'islogout' => 1
+            ];
+            $userupdate = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
+    
+            // dd($user);
+            $userupdate->update($data_update);
+            //Gán lại vào session('amin) những thông tin vừa cập nhật
+            session('admin')->sessionID = session()->getId();
+            session('admin')->timeaction = $time;
+            session()->save();
+    
+            //Gán hệ danh mục chức năng        
+            Session::put('chucnang', hethongchung_chucnang::all()->keyBy('machucnang')->toArray());
+            //gán phân quyền của User
+            Session::put('phanquyen', dstaikhoan_phanquyen::where('tendangnhap', $inputs['tendangnhap'])->get()->keyBy('machucnang')->toArray());
+
+            $trangthai = new trangthaihoso();
+            $trangthai->trangthai = 'DANGNHAP';
+            $trangthai->madonvi = session('admin')->madonvi;
+            $trangthai->thongtin = "Đăng nhập hệ thống";
+            $trangthai->phanloai = 'dstaikhoan';
+            $trangthai->tendangnhap = session('admin')->tendangnhap;
+            $trangthai->thoigian = date('Y-m-d H:i:s');
+            $trangthai->save();
+
+            return redirect('/')
+                ->with('pageTitle', 'Tổng quan');
+        // } else {
+        //     dd(2);
+        //     return redirect('/DangNhap')
+        //         ->with('error', 'Lỗi đăng nhập');
+        // }
+    }
+    public function DongYDangNhap()
+    {
+        $model = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
+        Session::flush();
+        $time = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+        $model->timeaction = $time;
+        $model->islogout = 0;
+        $model->save();
+        broadcast(new MessageSent('2'))->toOthers();
+        return redirect('/DangNhap')
+            ->with('success', 'Đăng xuất thành công');
+    }
+    public function KiemTraDangNhapTB2(Request $request)
+    {
+        $inputs=$request->all();
+        $result = true;
+        if (!Session::has('admin')) {
+            $result = false;
+        };
+        // $model = dstaikhoan::where('tendangnhap', session('admin')->tendangnhap)->first();
+        $model = dstaikhoan::where('tendangnhap', $inputs['tendangnhap'])->first();
+        //kiểm tra thời gian hoạt động
+        $thoigian = $model->timeaction;
+        $chenhlechthoigian = Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($thoigian);
+        // dd($chenhlechthoigian);
+        $time_session = Config::get('session.lifetime');
+        // dd($time_session);
+        if ($chenhlechthoigian < $time_session && $model->islogout == 0) {
+            $result = true;
+        } else {
+            $result = false;
+        }
+
+        return response()->json($result);
+    }
+
+    public function showFormTuChoi(Request $request)
+    {
+        $inputs=$request->all();
+        $result=false;
+        $model=dstaikhoan::where('tendangnhap',$inputs['tendangnhap'])->first();
+        // $model=dstaikhoan::where('tendangnhap','tpdoican')->first();
+        $timeaction=$model->timeaction;
+        $chenhlechthoigian = Carbon::now('Asia/Ho_Chi_Minh')->diffInMinutes($timeaction);
+        if($chenhlechthoigian <= 1 && $model->sessionID != $request->sessionID){
+            $result = true;
+        }
+
+        return response()->json($result);
+    }
 }

@@ -17,7 +17,7 @@
             TableManaged3.init();
             $('#phanloai, #madonvi, #nam').change(function() {
                 window.location.href = "{{ $inputs['url'] }}" + 'ThongTin?madonvi=' + $('#madonvi').val() +
-                    '&nam=' + $('#nam').val() + '&phanloai=' + $('#phanloai').val()+ '&macumkhoi=' + $('#macumkhoi').val();
+                    '&nam=' + $('#nam').val() + '&phanloai=' + $('#phanloai').val();
             });
 
         });
@@ -234,13 +234,13 @@
                 <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
                 <input type="hidden" name="id" />
             </div>
-            <div class="modal-body">
+            {{-- <div class="modal-body">
                 <p style="color: #0000FF" id='thongbao'></p>
                 
-            </div>
+            </div> --}}
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
-                <button type="submit" id='submit' data-dismiss="modal" class="btn btn-primary" onclick="clickdelete()">Đồng
+                <button type="submit" id='submit' class="btn btn-primary" onclick="clickdelete()">Đồng
                     ý</button>
             </div>
         </div>

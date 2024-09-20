@@ -186,6 +186,11 @@ class tnhosodenghikhenthuongthiduaController extends Controller
         $a_donvilocdulieu = getDiaBanCumKhoi(session('admin')->tendangnhap);
         // dd($a_donvilocdulieu);
         $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        if(!in_array(session('admin')->sadmin,['SSA'])){
+            $a_taikhoanchuyenvien_tn = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->where('tendangnhap','!=',session('admin')->tendangnhap)->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        }else{
+            $a_taikhoanchuyenvien_tn=$a_taikhoanchuyenvien;
+        }
 
         // dd($a_taikhoanchuyenvien);
         // $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->where('phanloai', '<>', 'QUANLY')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
@@ -281,6 +286,7 @@ class tnhosodenghikhenthuongthiduaController extends Controller
             ->with('a_donviql', getDonViQuanLyDiaBan($donvi))
             ->with('a_phanloaihs', getPhanLoaiHoSo('KHENTHUONG'))
             ->with('a_taikhoanchuyenvien', $a_taikhoanchuyenvien)
+            ->with('a_taikhoanchuyenvien_tn', $a_taikhoanchuyenvien_tn)
             ->with('a_loaihinhkt', array_column($m_loaihinh->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('inputs', $inputs)
             ->with('pageTitle', 'Danh sách hồ sơ khen thưởng');

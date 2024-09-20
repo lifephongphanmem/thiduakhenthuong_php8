@@ -15,6 +15,9 @@
     <script>
         jQuery(document).ready(function() {
             TableManaged3.init();
+            $('#phanloai, #phanloai_chitiet').change(function() {
+                window.location.href = '/ThongBao/ThongTin?phanloai=' + $('#phanloai').val() + '&phanloai_ct='+$('#phanloai_chitiet').val();
+            });
         });
     </script>
 @stop
@@ -38,6 +41,25 @@
         <div class="card-body">
             <div class="form-group row">
 
+                <div class="col-md-6">
+                    <label style="font-weight: bold">Phân loại</label>
+                    {{-- {!! Form::select('phanloai',$phanloai, $inputs['phanloai'], ['id' => 'phanloai', 'class' => 'form-control select2basic']) !!}                     --}}
+                    <select name="phanloai" id="phanloai" class="form-control">
+                        @foreach ($phanloai as $key => $ct)
+                            <option value="{{ $key }}" {{$inputs['phanloai'] == $key?'selected':''}}>{{ $ct }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-6" id='phanloai_ct'>
+                    <label style="font-weight: bold">Phân loại</label>
+                    {{-- {!! Form::select('phanloai',$phanloai, $inputs['phanloai'], ['id' => 'phanloai', 'class' => 'form-control select2basic']) !!}                     --}}
+                    <select name="phanloai_ct" id="phanloai_chitiet" class="form-control">
+                        <option value="ALL">--- Chọn phân loại ---</option>
+                        @foreach ($chucnang as $key => $ct)
+                            <option value="{{ $key }}" {{$inputs['phanloai_ct'] == $key?'selected':''}}>{{ $ct }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
 
             <div class="form-group row">
@@ -47,9 +69,9 @@
                             <tr class="text-center">
                                 <th width="5%">STT</th>
                                 <th>Phân loại</th>
-                                <th>Đơn vị phát động</th>
+                                <th>Đơn vị</th>
                                 <th>Nội dung</th>
-                                <th>Phạm vi</th>
+                                {{-- <th>Phạm vi</th> --}}
                                 <th>Thông Tin</th>
                                 {{-- <th width="20%">Thao tác</th> --}}
                             </tr>
@@ -57,17 +79,17 @@
                         <?php $i = 1; ?>
                         @foreach ($model as $key => $tt)
                             <tr>
-                                <td style="text-align: center" class="{{ $tt->class }}">{{ $i++ }}</td>
-                                <td style="text-align: center" class="{{ $tt->class }}">
-                                    {{ $tt->table == 'dsphongtraothidua' ? 'Phong trào thi đua' : 'Phong trào thi đua cụm khổi' }}
+                                <td style="text-align: center" >{{ $i++ }}</td>
+                                <td style="text-align: center" >
+                                    {{ ChucNang()[$tt->chucnang] }}
                                 </td>
-                                <td class="active {{ $tt->class }}">{{ $a_donvi[$tt->madonvi_thongbao] ?? '' }}</td>
-                                <td class="{{ $tt->class }}">{{ $tt->noidung }}</td>
-                                <td class="text-center {{ $tt->class }}">{{ getPhamViApDung()[$tt->phamvi] ?? $dscumkhoi[$tt->phamvi] }}</td>
-                                <td class="text-center {{ $tt->class }}">
+                                <td class="active ">{{ $a_donvi[$tt->madonvi_thongbao] ?? '' }}</td>
+                                <td >{{ $tt->noidung }}</td>
+                                {{-- <td class="text-center ">{{ getPhamViApDung()[$tt->phamvi] ?? $dscumkhoi[$tt->phamvi] }}</td> --}}
+                                <td class="text-center">
                                     <a href="{{$tt->url}}" target="_blank" title="Xem thông tin phong trào"
                                         onclick="doctin('{{ $tt->mathongbao }}')">
-                                        <i class="icon-lg la fa-eye {{ $tt->trangthai =='DADOC'? 'text-dark':$tt->class }}"></i></a>
+                                        <i class="icon-lg la fa-eye"></i></a>
                                 </td>
 
                             </tr>
@@ -94,6 +116,37 @@
                     location.reload();
                 }
             });
+        }
+
+        // function getphanloai() {
+        //     phanloai = $('#phanloai').val();
+        //     // console.log(phanloai);
+        //     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        //     $.ajax({
+        //         url: "/ThongBao/getPhanLoai",
+        //         type: 'GET',
+        //         data: {
+        //             _token: CSRF_TOKEN,
+        //             phanloai: phanloai,
+        //         },
+        //         dataType: 'JSON',
+        //         success: function(data) {
+        //             // window.location.href = '/ThongBao/ThongTin?phanloai=' + $('#phanloai').val();
+        //             $('#phanloai_ct').replaceWith(data.message);
+        //             $('#phanloai_chitiet').change(function() {
+        //                 window.location.href = '/ThongBao/ThongTin?phanloai=' + $('#phanloai').val() +
+        //                     '&phanloai_ct=' + $('#phanloai_chitiet').val();
+        //             });
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.log(xhr.responseText);
+        //             console.log(error);
+        //         }
+        //     })
+        // }
+
+        function getphanloai_ct() {
+
         }
     </script>
 @stop

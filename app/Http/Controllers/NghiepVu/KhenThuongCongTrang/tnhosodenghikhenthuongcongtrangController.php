@@ -28,7 +28,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
             if (!Session::has('admin')) {
                 return redirect('/');
             };
-            if(!chkaction()){
+            if (!chkaction()) {
                 Session::flush();
                 return response()->view('errors.error_login');
             };
@@ -142,7 +142,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $inputs['phanloaikhenthuong'] = 'KHENTHUONG';
         $inputs['trangthaihoso'] = $inputs['trangthaihoso'] ?? 'ALL';
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
-        $inputs['url_tailieudinhkem']='/DungChung/DinhKemHoSoKhenThuong';
+        $inputs['url_tailieudinhkem'] = '/DungChung/DinhKemHoSoKhenThuong';
 
         $m_donvi = getDonVi(session('admin')->capdo, 'tnhosodenghikhenthuongcongtrang');
         // $m_donvi = getDonVi(session('admin')->capdo);
@@ -177,18 +177,26 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
             $model = $model->where('trangthai_xd', $inputs['trangthaihoso']);
 
         //Lấy hồ sơ
-        $model = $model->orderby('ngayhoso')->get();
+        // $model = $model->orderby('ngayhoso')->get();
+        $model = $model->orderby('id', 'desc')->get();
         // dd($model);
         $m_khencanhan = dshosothiduakhenthuong_canhan::where('ketqua', '1')->wherein('mahosotdkt', array_column($model->toarray(), 'mahosotdkt'))->get();
         $m_khentapthe = dshosothiduakhenthuong_tapthe::where('ketqua', '1')->wherein('mahosotdkt', array_column($model->toarray(), 'mahosotdkt'))->get();
 
         $a_donvilocdulieu = getDiaBanCumKhoi(session('admin')->tendangnhap);
         $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        if (!in_array(session('admin')->sadmin, ['SSA'])) {
+            $a_taikhoanchuyenvien_tn = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->where('tendangnhap', '!=', session('admin')->tendangnhap)->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        } else {
+            $a_taikhoanchuyenvien_tn = $a_taikhoanchuyenvien;
+        }
+
 
         // $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->where('phanloai', '<>', 'QUANLY')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
-        $a_hosoxuly = getHoSoXuLy(array_column($model->toarray(), 'mahosotdkt'), session('admin')->tendangnhap, 'dshosothiduakhenthuong');
-        $a_trangthai_taikhoan = ['DCCVXD', 'DCCVKT', 'DTN', 'DDK', 'KDD', 'BTL','BTLXD'];
+        // $a_hosoxuly = getHoSoXuLy(array_column($model->toarray(), 'mahosotdkt'), session('admin')->tendangnhap, 'dshosothiduakhenthuong');
+        $a_trangthai_taikhoan = ['DCCVXD', 'DCCVKT', 'DTN', 'DDK', 'KDD', 'BTL', 'BTLXD'];
         foreach ($model as $key => $hoso) {
+
             $hoso->soluongkhenthuong = $m_khencanhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
                 + $m_khentapthe->where('mahosotdkt', $hoso->mahosotdkt)->count();
             //$hoso->soluongkhenthuong = 1;
@@ -207,28 +215,42 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
                     $hoso->thaotac = false;
                 //lấy thông tin cán bộ xử lý cuối cùng
                 $m_canbo_xl = dshosothiduakhenthuong_xuly::where('mahosotdkt', $hoso->mahosotdkt)->orderby('created_at', 'desc')->get();
+
                 $hoso->trangthai_chuyenchuyenvien = true;
                 if (count($m_canbo_xl) > 0) {
-                    $canbo_xl = $m_canbo_xl->first();
-                    if($canbo_xl->tendangnhap_xl == session('admin')->tendangnhap){
-                        $hoso->thaotac=false;
+                    //lấy danh sách tài khoản trong xử lý hồ sơ để hiển thị hồ sơ
+                    $a_taikhoan_xl = array_column($m_canbo_xl->toarray(), 'tendangnhap_tn');
+                    // dd($a_taikhoan_xl);
+                    if (!in_array(session('admin')->tendangnhap, $a_taikhoan_xl) && getPhanLoaiTKTiepNhan(session('admin')->madonvi) != session('admin')->tendangnhap) {
+                        $model->forget($key);
                     }
-                    $thongtincanbo = dstaikhoan::where('tendangnhap', $canbo_xl->tendangnhap_tn)->first();
-                    // dd($thongtincanbo);
-                    // if ($thongtincanbo->phanloai == "VANTHU") {
+                    $canbo_xl = $m_canbo_xl->first();
+                    // dd($canbo_xl);
+                    if ($canbo_xl->tendangnhap_tn != session('admin')->tendangnhap) {
+                        $hoso->thaotac = false;
+                    }
+                    if ($hoso->trangthai_xd == 'BTLTN') {
+                        $hoso->tendangnhap_xl = $canbo_xl->tendangnhap_tn;
+                    }
+                    if ($canbo_xl->tendangnhap_tn == session('admin')->tendangnhap && $hoso->trangthai_xd == 'BTLTN') {
+                        $hoso->thaotac = true;
+                        // $hoso->tendangnhap_xl=session('admin')->tendangnhap;
+                        $hoso->trangthai_xl = 'KDK';
+                    }
+                    // dd($hoso);
                     if ($canbo_xl->tendangnhap_tn == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
                         $hoso->dieukien_hs = false;
-                        $hoso->trangthai = 'DCXL';
-                        if($hoso->trangthai_xl == 'KDK'){
-                        $hoso->trangthai_hoso = "KDK";
+                        // $hoso->trangthai = 'DCXL';
+                        $hoso->trangthai = 'DCCVXD';
+                        if ($hoso->trangthai_xl == 'KDK') {
+                            $hoso->trangthai_hoso = "KDK";
                         }
                         $hoso->trangthai_chuyenchuyenvien = true;
                     } else {
                         $hoso->dieukien_hs = true;
                     }
 
-                    if(session('admin')->capdo== 'SSA' && $hoso->trangthai_xl == "KDK")
-                    {
+                    if (session('admin')->capdo == 'SSA' && $hoso->trangthai_xl == "KDK") {
                         $hoso->trangthai_hoso = "KDK";
                     }
 
@@ -238,17 +260,17 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
                         $hoso->trangthai_hoso = "KDK";
                         // $hoso->trangthai="KDK";
                     }
-                    // if (session('admin')->phanloai == 'VANTHU') {
-                        if ($canbo_xl->tendangnhap_tn == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
+                    if ($canbo_xl->tendangnhap_tn == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
                         $a_trangthai_hoso = array_column(trangthaihoso::where('mahoso', $hoso->mahosotdkt)->get()->toArray(), 'trangthai');
                         if (in_array('BTL', $a_trangthai_hoso)) {
                             $hoso->trangthai_chuyenchuyenvien = true;
                         }
                     }
                 } else {
-                    // if (session('admin')->phanloai == 'VANTHU') {
-                        if (session('admin')->tendangnhap == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
+                    if (session('admin')->tendangnhap == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
                         $hoso->trangthai_chuyenchuyenvien = true;
+                    } else {
+                        $model->forget($key);
                     }
                 }
                 if (session('admin')->tendangnhap == getPhanLoaiTKTiepNhan(session('admin')->madonvi)) {
@@ -263,6 +285,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
                 if (!in_array($hoso->madonvi, $a_donvilocdulieu))
                     $model->forget($key);
             }
+            // dd($hoso);
         }
         // dd($model);
 
@@ -273,12 +296,14 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         return view('NghiepVu.KhenThuongCongTrang.TiepNhan.ThongTin')
             ->with('model', $model)
             ->with('a_donvi', array_column(dsdonvi::all()->toArray(), 'tendonvi', 'madonvi'))
+            ->with('a_taikhoan', array_column(dstaikhoan::all()->toArray(), 'tentaikhoan', 'tendangnhap'))
             ->with('a_capdo', getPhamViApDung())
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
             ->with('a_donviql', getDonViQuanLyDiaBan($donvi))
             ->with('a_phanloaihs', getPhanLoaiHoSo('KHENTHUONG'))
             ->with('a_taikhoanchuyenvien', $a_taikhoanchuyenvien)
+            ->with('a_taikhoanchuyenvien_tn', $a_taikhoanchuyenvien_tn)
             ->with('a_loaihinhkt', array_column($m_loaihinh->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('inputs', $inputs)
             ->with('pageTitle', 'Danh sách hồ sơ khen thưởng');
@@ -296,7 +321,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN') {
             setTraLai($model, $inputs);
-        }else{
+        } else {
             setTraLaiXD($model, $inputs);
         }
 
@@ -309,6 +334,7 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
             return view('errors.noperm')->with('machucnang', 'tnhosodenghikhenthuongcongtrang')->with('tenphanquyen', 'hoanthanh');
         }
         $inputs = $request->all();
+        // dd($inputs);
         $thoigian = date('Y-m-d H:i:s');
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         //gán lại trạng thái hồ sơ để theo dõi
@@ -317,6 +343,11 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $model->thoigian_xd = $thoigian;
         $model->save();
 
+        $url = '/KhenThuongCongTrang/TiepNhan/ThongTin';       
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ xét duyệt ';
+        $chucnang = 'congtrang';
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $inputs['madonvi'],'quanly',null);
         trangthaihoso::create([
             'mahoso' => $inputs['mahoso'],
             'phanloai' => 'dshosothiduakhenthuong',
@@ -372,7 +403,11 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
         //    dd($inputs);
         //gán thông tin vào bảng xử lý hồ sơ
-
+        $url = '/KhenThuongCongTrang/TiepNhan/ThongTin';
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ cho ' . $a_taikhoan[$inputs['tendangnhap_tn']];
+        $chucnang = 'congtrang';
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, session('admin')->madonvi,'quanly',$inputs['tendangnhap_tn']);
         setChuyenChuyenVienXD($model, $inputs, 'dshosothiduakhenthuong');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
@@ -384,9 +419,16 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         }
         $inputs = $request->all();
         $model = dshosothiduakhenthuong::where('mahosotdkt', $inputs['mahoso'])->first();
+        // $model->trangthai='DCXL';
+        $model->trangthai = 'DCCVXD';
+        $model->save();
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         // dd($inputs);
-
+        $url = '/KhenThuongCongTrang/TiepNhan/ThongTin';
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ cho ' . $a_taikhoan[$inputs['tendangnhap_tn']];
+        $chucnang = 'congtrang';
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, session('admin')->madonvi,'quanly',$inputs['tendangnhap_tn']);
         setXuLyHoSo($model, $inputs, 'dshosothiduakhenthuong');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }

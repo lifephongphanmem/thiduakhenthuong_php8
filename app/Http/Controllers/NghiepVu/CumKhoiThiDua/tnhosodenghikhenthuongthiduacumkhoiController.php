@@ -93,6 +93,11 @@ class tnhosodenghikhenthuongthiduacumkhoiController extends Controller
         $m_khentapthe = dshosotdktcumkhoi_tapthe::wherein('mahosotdkt', array_column($model->toarray(), 'mahosotdkt'))->get();
         $a_donvilocdulieu = getDiaBanCumKhoi(session('admin')->tendangnhap);
         $a_taikhoanchuyenvien = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        if(!in_array(session('admin')->sadmin,['SSA'])){
+            $a_taikhoanchuyenvien_tn = array_column(dstaikhoan::where('madonvi', $inputs['madonvi'])->where('tendangnhap','!=',session('admin')->tendangnhap)->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        }else{
+            $a_taikhoanchuyenvien_tn=$a_taikhoanchuyenvien;
+        }
         $a_trangthai_taikhoan = ['DCCVXD', 'DCCVKT', 'DTN', 'DDK', 'KDD', 'BTL','BTLXD'];
         foreach ($model as $key => $hoso) {
             $hoso->soluongkhenthuong = $m_khencanhan->where('mahosotdkt', $hoso->mahosotdkt)->count()
@@ -173,6 +178,7 @@ class tnhosodenghikhenthuongthiduacumkhoiController extends Controller
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
             ->with('a_taikhoanchuyenvien', $a_taikhoanchuyenvien)
+            ->with('a_taikhoanchuyenvien_tn', $a_taikhoanchuyenvien_tn)
             ->with('a_donviql', getDonViQuanLyDiaBan($donvi))
             ->with('a_phanloaihs', getPhanLoaiHoSo('KHENTHUONG'))
             ->with('a_loaihinhkt', array_column($m_loaihinh->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
