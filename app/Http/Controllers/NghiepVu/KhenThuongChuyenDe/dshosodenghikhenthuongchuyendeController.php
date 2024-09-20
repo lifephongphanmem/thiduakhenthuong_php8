@@ -546,6 +546,9 @@ class dshosodenghikhenthuongchuyendeController extends Controller
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         $inputs['lydo'] = ''; //Xóa lý do trả lại
         setChuyenDV($model, $inputs);
+        //Thêm dữ liệu vào bảng thông báo
+        $url=  '/KhenThuongChuyenDe/TiepNhan/ThongTin';
+        storeThongBao($url,$model->noidung,'dshosodenghikhenthuongchuyende',$inputs['mahoso'],null,session('admin')->madonvi,$inputs['madonvi_nhan']);
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }
 

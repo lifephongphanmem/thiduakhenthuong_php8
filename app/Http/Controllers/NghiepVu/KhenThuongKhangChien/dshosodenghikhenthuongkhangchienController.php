@@ -498,7 +498,7 @@ class dshosodenghikhenthuongkhangchienController extends Controller
 
         $danhsach = dshosothiduakhenthuong_canhan::where('mahosotdkt', $model->mahosotdkt)->get();
         $dungchung = new dungchung_nghiepvuController();
-        $dungchung->htmlTapThe($result, $danhsach, static::$url, true, $inputs['maloaihinhkt']);
+        $dungchung->htmlCaNhan($result, $danhsach, static::$url, true, $model->mahosotdkt);
         return response()->json($result);
     }
 

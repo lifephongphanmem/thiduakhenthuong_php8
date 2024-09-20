@@ -7,4 +7,5 @@ Route::prefix('ThongBao')->group(function(){
     Route::get('ThongTin',[thongbaoController::class,'ThongTin']);
     Route::post('LuuThongTin',[thongbaoController::class,'LuuThongTin']);
     Route::get('DocTin',[thongbaoController::class,'DocTin']);
+    Route::get('getPhanLoai',[thongbaoController::class,'getphanloai']);
 });
