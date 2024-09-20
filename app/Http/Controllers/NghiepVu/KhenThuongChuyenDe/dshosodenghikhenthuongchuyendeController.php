@@ -546,6 +546,9 @@ class dshosodenghikhenthuongchuyendeController extends Controller
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         $inputs['lydo'] = ''; //Xóa lý do trả lại
         setChuyenDV($model, $inputs);
+        //Thêm dữ liệu vào bảng thông báo
+        $url=  '/KhenThuongChuyenDe/TiepNhan/ThongTin';
+        storeThongBao($url,$model->noidung,'dshosodenghikhenthuongchuyende',$inputs['mahoso'],null,session('admin')->madonvi,$inputs['madonvi_nhan']);
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }
 
@@ -638,7 +641,7 @@ class dshosodenghikhenthuongchuyendeController extends Controller
 
         $danhsach = dshosothiduakhenthuong_canhan::where('mahosotdkt', $model->mahosotdkt)->get();
         $dungchung = new dungchung_nghiepvuController();
-        $dungchung->htmlCaNhan($result, $danhsach, static::$url, true, $inputs['maloaihinhkt']);
+        $dungchung->htmlCaNhan($result, $danhsach, static::$url, true, $model->mahosotdkt);
 
         return response()->json($result);
     }
@@ -711,10 +714,10 @@ class dshosodenghikhenthuongchuyendeController extends Controller
         $inputs = $request->all();
         $model = dshosothiduakhenthuong_tapthe::findorfail($inputs['id']);
         $model->delete();
-
         $danhsach = dshosothiduakhenthuong_tapthe::where('mahosotdkt', $model->mahosotdkt)->get();
         $dungchung = new dungchung_nghiepvuController();
-        $dungchung->htmlTapThe($result, $danhsach, static::$url, true, $inputs['maloaihinhkt']);
+        $dungchung->htmlTapThe($result, $danhsach, static::$url, true, $model->mahosotdkt);
+
 
         return response()->json($result);
     }    

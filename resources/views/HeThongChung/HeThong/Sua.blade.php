@@ -119,6 +119,10 @@
                             <input type="checkbox" name="opt_duthaoquyetdinh"
                                 {{ $model->opt_duthaoquyetdinh == 1 ? 'checked' : '' }} />
                             <span></span>Dự thảo quyết định khen thưởng</label>
+                            <label class="checkbox checkbox-outline checkbox-success">
+                                <input type="checkbox" name="dangnhap2thietbi"
+                                    {{ $model->dangnhap2thietbi == 1 ? 'checked' : '' }} />
+                                <span></span>Xác nhận đăng nhập 2 thiết bị</label>
                     </div>
                 </div>
             </div>

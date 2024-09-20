@@ -215,14 +215,14 @@
                                                     <span class="menu-text font-weight-bold text-dark">
                                                         &nbsp;{{ session('admin')->tentaikhoan }}</span>
                                                     {{-- @if (hasEmail()) --}}
-                                                    <span> <a href="{{ '/ThongBao/ThongTin' }}"
+                                                    {{-- <span> <a href="{{ '/ThongBao/ThongTin' }}"
                                                             class="btn btn-icon pulse pulse-primary ">
                                                             <i class="flaticon2-bell-4 text-danger"></i>
                                                             <span class="pulse-ring"></span>
                                                             <span
                                                                 class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{ SLThongbao(session('admin')->capdo, session('admin')->madonvi, session('admin')->tendangnhap) }}</span>
                                                         </a>
-                                                    </span>
+                                                    </span> --}}
                                                     {{-- @endif --}}
 
 
@@ -516,9 +516,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title text-uppercase">Thông báo !!!</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
-                        </button>
+                        </button> --}}
                     </div>
                     <div class="modal-body text-danger">
                         <p>Tài khoản đang được đăng nhập ở một thiết bị khác. Đồng ý cho phép đăng nhập ???</p>
@@ -633,10 +633,10 @@
     @yield('custom-script-footer')
     {{-- @vite('resources/js/bootstrap.js') --}}
     <script>
+
         jQuery(document).ready(function() {
             // setInterval(chkDangNhap, 20000);
         });
-
         function chkDangNhap() {
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
             $.ajax({

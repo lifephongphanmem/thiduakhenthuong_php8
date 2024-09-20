@@ -63,7 +63,7 @@
                 dataType: 'JSON',
                 success: function(data) {
                     if (data.status == 'success') {
-                        toastr.success("Bổ xung thông tin thành công!");
+                        toastr.success("Bổ sung thông tin thành công!");
                         $('#dstieuchuan').replaceWith(data.message);
                         jQuery(document).ready(function() {
                             TableManaged4.init();
@@ -90,7 +90,7 @@
                 success: function(data) {
                     console.log(data);
                     //if (data.status == 'success') {
-                    toastr.success("Bổ xung thông tin thành công!");
+                    toastr.success("Bổ sung thông tin thành công!");
                     $('#dstieuchuan').replaceWith(data.message);
                     jQuery(document).ready(function() {
                         TableManaged4.init();
@@ -181,6 +181,7 @@
         ]) !!}
         {{ Form::hidden('madonvi', null) }}
         {{ Form::hidden('maphongtraotd', null) }}
+        {{ Form::hidden('phuongthuctochuc', $inputs['phuongthuctochuc']) }}
         <div class="card-body">
             <div class="form-group row">
                 <div class="col-lg-12">
@@ -337,7 +338,7 @@
                                             <i class="icon-lg la la-file-download text-dark"></i>
                                         </button>
 
-                                        <button title="Xóa" type="button" onclick="getId('{{ $tt->id }}')"
+                                        <button title="Xóa" type="button" onclick="getId('{{ $tt->id }}','{{$inputs['phuongthuctochuc']}}','{{$inputs['madonvi']}}')"
                                             class="btn btn-sm btn-clean btn-icon" data-target="#delete-modal"
                                             data-toggle="modal">
                                             <i class="icon-lg la fa-trash-alt text-danger"></i>
@@ -365,6 +366,8 @@
     {!! Form::open(['url' => '', 'files' => true, 'id' => 'frmThemTieuChuan', 'class' => 'horizontal-form']) !!}
     {{ Form::hidden('matieuchuandhtd', null) }}
     {{ Form::hidden('maphongtraotd', $model->maphongtraotd) }}
+    {{ Form::hidden('phuongthuctochuc', $inputs['phuongthuctochuc']) }}
+    {{ Form::hidden('madonvi', $inputs['madonvi']) }}
     <div class="modal fade bs-modal-lg" id="modal-tieuchuan" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -426,6 +429,8 @@
                     <h4 id="modal-header-primary-label" class="modal-title">Đồng ý xoá?</h4>
                     <button type="button" data-dismiss="modal" aria-hidden="true" class="close">&times;</button>
                     <input type="hidden" name="id" />
+                    <input type="hidden" name="phuongthuctochuc" />
+                    <input type="hidden" name="madonvi" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-default">Hủy thao tác</button>
@@ -437,8 +442,12 @@
         {!! Form::close() !!}
     </div>
     <script>
-        function getId(id) {
+        function getId(id) {         
+            phuongthuctochuc=$('#frm_ThayDoi').find("[name='phuongthuctochuc']").val();
+            madonvi=$('#frm_ThayDoi').find("[name='madonvi']").val();
             $('#frm_delete').find("[name='id']").val(id);
+            $('#frm_delete').find("[name='phuongthuctochuc']").val(phuongthuctochuc);
+            $('#frm_delete').find("[name='madonvi']").val(madonvi);
         }
 
         function clickdelete() {

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('thongbao', function (Blueprint $table) {
-            $table->string('madonvi_thongbao')->nullable();
+        Schema::table('hethongchung', function (Blueprint $table) {
+            $table->boolean('dangnhap2thietbi')->default(0);
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('thongbao', function (Blueprint $table) {
-            $table->dropColumn('madonvi_thongbao');
+        Schema::table('hethongchung', function (Blueprint $table) {
+            $table->dropColumn('dangnhap2thietbi');
         });
     }
 };

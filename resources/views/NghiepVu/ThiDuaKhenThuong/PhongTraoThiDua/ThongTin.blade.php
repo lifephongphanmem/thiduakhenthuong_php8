@@ -322,7 +322,7 @@
         'method' => 'GET',
         'id' => 'frm_hoso'
     ]) !!} --}}
-    <form action="{{ '/PhongTraoThiDua/Them' }}" method="GET" id="frm_hoso">
+    <form action="{{ '/PhongTraoThiDua/Sua' }}" method="GET" id="frm_hoso">
         <input type="hidden" name="madonvi" value="{{ $inputs['madonvi'] }}" />
         <div id="taohoso-modal" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade kt_select2_modal">
             <div class="modal-dialog modal-xs">

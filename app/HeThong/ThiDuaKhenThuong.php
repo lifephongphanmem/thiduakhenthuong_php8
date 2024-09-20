@@ -712,7 +712,6 @@ function chkPhanQuyen($machucnang = null, $tenphanquyen = null)
         return false;
     }
     $capdo = session('admin')->capdo;
-
     if (in_array($capdo, ['SSA', 'ssa',])) {
         return true;
     }
@@ -1608,9 +1607,7 @@ function getDonViToaDoMacDinh($a_donvi)
 }
 
 //Xây dựng hàm để chuyển đổi cơ sở dữ liệu cho Danh sách hồ sơ
-function convertDanhSachHoSo()
-{
-}
+function convertDanhSachHoSo() {}
 
 function chkTruongCumKhoi($nam, $macumkhoi, $madonvi)
 {
@@ -1947,12 +1944,11 @@ function chkaction()
         return true;
         // }elseif(session()->getId() !== $model->sessionID)
     };
-    if($model->islogout == 0 && $model->sessionID == null)
-    {
+    if ($model->islogout == 0 && $model->sessionID == null) {
         return true;
     }
     //Kiểm tra trạng thái đăng nhập của tài khoản
-     if ($chenhlechthoigian < $time_session && $model->islogout == 1 && $model->sessionID != null) {
+    if ($chenhlechthoigian < $time_session && $model->islogout == 1 && $model->sessionID != null) {
         return true;
     } else {
         $time = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
@@ -1999,18 +1995,21 @@ function getPhamViKT($capkhenthuong)
     return $phamvi;
 }
 
-function storeThongBao($url, $noidung, $table, $maphongtrao, $phamvi, $madonvi)
+function storeThongBao($url, $noidung, $chucnang, $mahs_mapt, $phamvi, $madonvi, $madonvi_nhan,$phanloai,$taikhoan_tn)
 {
     $mathongbao = getdate()[0];
     $data = [
         'mathongbao' => $mathongbao,
         'noidung' => $noidung,
         'url' => $url,
-        'table' => $table,
-        'maphongtrao' => $maphongtrao,
+        'chucnang' => $chucnang,
+        'mahs_mapt' => $mahs_mapt,
         'phamvi' => $phamvi,
         'madonvi_thongbao' => $madonvi,
-        'trangthai' => 'CHUADOC'
+        'madonvi_nhan' => $madonvi_nhan,
+        'trangthai' => 'CHUADOC',
+        'phanloai'=>$phanloai,
+        'taikhoan_tn'=>$taikhoan_tn
     ];
 
     thongbao::create($data);
@@ -2060,27 +2059,27 @@ function SLThongbao($capdo, $madonvi, $tendangnhap)
 {
     switch ($capdo) {
         case 'T': {
-            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
                 $a_phamvi = ['T', 'TW'];
                 break;
             }
         case 'TW': {
-            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
                 $a_phamvi = ['T', 'TW'];
                 break;
             }
         case 'H': {
-            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
                 $a_phamvi = ['T', 'TW', 'H'];
                 break;
             }
         case 'X': {
-            $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
                 $a_phamvi = ['T', 'TW', 'H', 'X'];
                 break;
             }
         default: {
-            $m_cumkhoi = dscumkhoi_chitiet::all();
+                $m_cumkhoi = dscumkhoi_chitiet::all();
                 $a_phamvi = ['T', 'TW', 'H', 'X'];
                 break;
             }
@@ -2114,3 +2113,19 @@ function hasEmail()
         return false;
     }
 }
+
+function ChucNang()
+{
+    return [
+        'congtrang' => 'Khen thưởng công trạng',
+        'chuyende' => 'Khen thưởng theo đợt hoặc chuyên đề',
+        'dotxuat' => 'Khen thưởng đột xuất',
+        'conghien' => 'Khen thưởng theo quá trình cống hiến',
+        'doingoai' => 'Khen thưởng đối ngoại',
+        'dsphongtraothidua' => 'Phong trào thi đua',
+        'khenthuongphongtrao' => 'Khen thưởng theo phong trào thi đua',
+        'dsphongtraothiduacumkhoi' => 'Phong trào thi đua cụm khối',
+        'khenthuongcumkhoi' => 'Khen thưởng cụm khối'
+    ];
+}
+

@@ -222,7 +222,7 @@ class dsphongtraothiduaController extends Controller
         dsphongtraothidua_tieuchuan::where('maphongtraotd', $model->maphongtraotd)->delete();
         dshosothamgiaphongtraotd::where('maphongtraotd', $model->maphongtraotd)->delete();
         $model->delete();
-        return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
+        return redirect(static::$url . 'ThongTin?maphongtrao=' . $model->madonvi);
     }
 
     public function ThemTieuChuan(Request $request)
@@ -295,7 +295,7 @@ class dsphongtraothiduaController extends Controller
 
                 $result['message'] .= '<td>' .
                     '<button type="button" data-target="#modal-tieuchuan" data-toggle="modal" class="btn btn-sm btn-clean btn-icon" onclick="getTieuChuan(' . $ct->id . ')" ><i class="icon-lg la fa-edit text-dark"></i></button>' .
-                    '<button type="button" data-target="#delete-modal" data-toggle="modal" class="btn btn-sm btn-clean btn-icon" onclick="getId(' . $ct->id . ')"><i class="icon-lg la fa-trash-alt text-danger"></i></button>'
+                    '<button type="button" data-target="#delete-modal" data-toggle="modal" class="btn btn-sm btn-clean btn-icon" onclick="getId(' . $ct->id .')"><i class="icon-lg la fa-trash-alt text-danger"></i></button>'
                     . '</td>';
 
                 $result['message'] .= '</tr>';
@@ -316,10 +316,10 @@ class dsphongtraothiduaController extends Controller
             return view('errors.noperm')->with('machucnang', 'dsphongtraothidua');
         }
         $inputs = $request->all();
+        // dd($inputs);
         $model = dsphongtraothidua_tieuchuan::findorfail($inputs['id']);
-
         $model->delete();
-        return redirect(static::$url . 'Sua?maphongtraotd=' . $model->maphongtraotd);
+        return redirect(static::$url . 'Sua?maphongtraotd=' . $model->maphongtraotd.'&phuongthuctochuc='.$inputs['phuongthuctochuc'].'&madonvi='.$inputs['madonvi']);
     }
 
     public function LayTieuChuan(Request $request)
