@@ -51,5 +51,6 @@ class hethongchung extends Model
         'keypublic',
         'accesstoken',
         'thoigianhethong',
+        'dangnhap2thietbi'
     ];
 }

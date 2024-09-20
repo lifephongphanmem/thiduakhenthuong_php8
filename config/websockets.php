@@ -24,6 +24,7 @@ return [
     'apps' => [
         [
             'id' => env('PUSHER_APP_ID'),
+            // 'id' => "thiduakhenthuong_kh",
             'name' => env('APP_NAME'),
             'key' => env('PUSHER_APP_KEY'),
             'secret' => env('PUSHER_APP_SECRET'),
