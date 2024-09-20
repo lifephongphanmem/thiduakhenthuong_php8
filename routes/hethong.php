@@ -42,6 +42,7 @@ Route::group(['prefix' => 'DonVi'], function () {
     Route::post('QuanLy', [dsdonviController::class, 'LuuQuanLy']);
 
     Route::post('NhanExcel',[dsdonviController::class, 'NhanExcel']);
+    Route::get('InDanhSach', [dsdonviController::class, 'InDanhSach']);
 });
 
 Route::group(['prefix' => 'TaiKhoan'], function () {
