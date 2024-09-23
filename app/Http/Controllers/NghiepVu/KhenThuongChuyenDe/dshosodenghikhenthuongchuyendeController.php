@@ -150,9 +150,9 @@ class dshosodenghikhenthuongchuyendeController extends Controller
         $donvi = viewdiabandonvi::where('madonvi', $model->madonvi)->first();
 
         //30.03.2023 Hồ sơ đề nghị thì mở hết danh hiệu để chọn do đề nghị là gửi cấp trên 
-        $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo,'CANHAN');
-        $a_dhkt_tapthe = getDanhHieuKhenThuong($donvi->capdo, 'TAPTHE');
-        $a_dhkt_hogiadinh = getDanhHieuKhenThuong($donvi->capdo, 'HOGIADINH');
+        $a_dhkt_canhan = getDanhHieuKhenThuong('ALL','CANHAN');
+        $a_dhkt_tapthe = getDanhHieuKhenThuong('ALL', 'TAPTHE');
+        $a_dhkt_hogiadinh = getDanhHieuKhenThuong('ALL', 'HOGIADINH');
 
         $model->tendonvi = $donvi->tendonvi;
         $inputs['mahinhthuckt'] = $model->mahinhthuckt;
@@ -548,7 +548,7 @@ class dshosodenghikhenthuongchuyendeController extends Controller
         setChuyenDV($model, $inputs);
         //Thêm dữ liệu vào bảng thông báo
         $url=  '/KhenThuongChuyenDe/TiepNhan/ThongTin';
-        storeThongBao($url,$model->noidung,'dshosodenghikhenthuongchuyende',$inputs['mahoso'],null,session('admin')->madonvi,$inputs['madonvi_nhan']);
+        // storeThongBao($url,$model->noidung,'dshosodenghikhenthuongchuyende',$inputs['mahoso'],null,session('admin')->madonvi,$inputs['madonvi_nhan']);
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }
 

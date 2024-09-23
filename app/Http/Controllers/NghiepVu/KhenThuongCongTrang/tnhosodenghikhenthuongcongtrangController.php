@@ -343,11 +343,11 @@ class tnhosodenghikhenthuongcongtrangController extends Controller
         $model->thoigian_xd = $thoigian;
         $model->save();
 
-        $url = '/KhenThuongCongTrang/TiepNhan/ThongTin';       
+        $url = '/KhenThuongCongTrang/XetDuyet/ThongTin';       
         $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
         $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ xét duyệt ';
         $chucnang = 'congtrang';
-        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $inputs['madonvi'],'quanly',null);
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $inputs['madonvi'],'quanly',null,'xdhosodenghikhenthuongcongtrang');
         trangthaihoso::create([
             'mahoso' => $inputs['mahoso'],
             'phanloai' => 'dshosothiduakhenthuong',
