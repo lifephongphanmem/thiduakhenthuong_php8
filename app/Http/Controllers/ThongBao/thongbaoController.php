@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dscumkhoi_chitiet;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstaikhoan;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_xuly;
 use App\Models\ThongBao\thongbao;
@@ -52,7 +53,7 @@ class thongbaoController extends Controller
                 'khenthuongcumkhoi' => 'Khen thưởng cụm khối'
             ]
         );
-        $a_chucnangphanquyen=array('tnhosodenghikhenthuongcongtrang','xdhosodenghikhenthuongcongtrang','qdhosodenghikhenthuongcongtrang');
+        $a_chucnangphanquyen = array('tnhosodenghikhenthuongcongtrang', 'xdhosodenghikhenthuongcongtrang', 'qdhosodenghikhenthuongcongtrang');
         $chucnang = $a_chucnang[$inputs['phanloai']];
         $inputs['phanloai_ct'] = $inputs['phanloai_ct'] ?? 'ALL';
 
@@ -96,31 +97,42 @@ class thongbaoController extends Controller
                     $model = $model->where('madonvi_nhan', session('admin')->madonvi)->get();
 
                     $a_trangthai_tiepnhan = array('CD', 'DTN', 'DCCVXD');
+                    $a_dsphanquyen_tn = array(
+                        'tnhosodenghikhenthuongcongtrang',
+                        'tnhosodenghikhenthuongdoingoai',
+                        'tnhosodenghikhenthuongconghien',
+                        'tnhosodenghikhenthuongchuyende',
+                        'tnhosodenghikhenthuongdotxuat',
+                        'tnhosodenghikhenthuongnienhan',
+                        'tnhosodenghikhenthuongkhangchien'
+                    );
                     foreach ($model as $key => $ct) {
                         $hosokt = dshosothiduakhenthuong::where('mahosotdkt', $ct->mahs_mapt)->first();
-                        //Kiểm tra phân quyền chức năng của tài khoản trước
-                        //Chia làm 3 bước kiểm tra phân quyền: kiểm tra phân quyền tiepnhan, xet duyet, phê duyệt để hiển thị thông báo
                         // dd($hosokt);
                         //Xem xét hồ sơ đang ở giai đoạn nào
-                        if (in_array($hosokt->trangthai_xd, $a_trangthai_tiepnhan)) {
-                            // dd(chkPhanQuyen('tnhosodenghikhenthuongcongtrang','phanquyen'));
-                            if(chkPhanQuyen('tnhosodenghikhenthuongcongtrang','phanquyen') == '0'){
-                                $model->forget($key);
-                                continue;
-                            }
-                            $hoso = dshosothiduakhenthuong_xuly::where('mahosotdkt', $ct->mahs_mapt)->orderby('created_at', 'desc')->get();
-                            if (count($hoso) <= 0 && getPhanLoaiTKTiepNhan(session('admin')->madonvi) != session('admin')->tendangnhap) {
-                                $model->forget($key);
-                                continue;
-                            }
-                            if (count($hoso) > 0) {
-                                // dd( $a_taikhoandn);
-                                if ($ct->taikhoan_tn != session('admin')->tendangnhap) { // Chỉ áp dụng cho chức năng tiếp nhận
-                                    $model->forget($key);
-                                    continue;
+                        // if (in_array($hosokt->trangthai_xd, $a_trangthai_tiepnhan)) {
+                        $hoso = dshosothiduakhenthuong_xuly::where('mahosotdkt', $ct->mahs_mapt)->orderby('created_at', 'desc')->get();
+                        if (count($hoso) <= 0 && getPhanLoaiTKTiepNhan(session('admin')->madonvi) != session('admin')->tendangnhap) {
+                            $model->forget($key);
+                            continue;
+                        }
+                        if (count($hoso) > 0) {
+                            //Thông báo cho chức năng tiếp nhận
+                            foreach ($a_dsphanquyen_tn as $val) {
+                                if (chkPhanQuyen($val, 'phanquyen') == '1') {
+                                    if ($ct->taikhoan_tn != session('admin')->tendangnhap) {
+                                        $model->forget($key);
+                                        continue;
+                                    }
+                                } else {
+                                    if ($ct->phanquyen == $val) {
+                                        $model->forget($key);
+                                        continue;
+                                    }
                                 }
                             }
                         }
+                        // }
                     }
                     break;
                 }

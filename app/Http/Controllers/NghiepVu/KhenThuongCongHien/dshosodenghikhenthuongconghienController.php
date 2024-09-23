@@ -154,9 +154,9 @@ class dshosodenghikhenthuongconghienController extends Controller
         // $a_dhkt_tapthe = a_merge(getDanhHieuKhenThuong($donvi->capdo, 'TAPTHE'), getDanhHieuKhenThuong('TW', 'TAPTHE'));
         // $a_dhkt_hogiadinh = getDanhHieuKhenThuong($donvi->capdo, 'HOGIADINH');
         //30.03.2023 Hồ sơ đề nghị thì mở hết danh hiệu để chọn do đề nghị là gửi cấp trên 
-        $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo,'CANHAN');
-        $a_dhkt_tapthe = getDanhHieuKhenThuong($donvi->capdo, 'TAPTHE');
-        $a_dhkt_hogiadinh = getDanhHieuKhenThuong($donvi->capdo, 'HOGIADINH');
+        $a_dhkt_canhan = getDanhHieuKhenThuong('ALL','CANHAN');
+        $a_dhkt_tapthe = getDanhHieuKhenThuong('ALL', 'TAPTHE');
+        $a_dhkt_hogiadinh = getDanhHieuKhenThuong('ALL', 'HOGIADINH');
 
         $a_tapthe = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['TAPTHE'])->get()->toarray(), 'tenphanloai', 'maphanloai');
         $a_hogiadinh = array_column(dmnhomphanloai_chitiet::wherein('manhomphanloai', ['HOGIADINH'])->get()->toarray(), 'tenphanloai', 'maphanloai');

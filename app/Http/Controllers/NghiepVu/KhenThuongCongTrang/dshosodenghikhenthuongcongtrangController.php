@@ -144,9 +144,9 @@ class dshosodenghikhenthuongcongtrangController extends Controller
         $model_hogiadinh = dshosothiduakhenthuong_hogiadinh::where('mahosotdkt', $model->mahosotdkt)->get();
         $model_tailieu = dshosothiduakhenthuong_tailieu::where('mahosotdkt', $model->mahosotdkt)->get();
         $donvi = viewdiabandonvi::where('madonvi', $model->madonvi)->first();
-        $a_dhkt_canhan = getDanhHieuKhenThuong($donvi->capdo, 'CANHAN');
-        $a_dhkt_tapthe = getDanhHieuKhenThuong($donvi->capdo, 'TAPTHE');
-        $a_dhkt_hogiadinh = getDanhHieuKhenThuong($donvi->capdo, 'HOGIADINH');
+        $a_dhkt_canhan = getDanhHieuKhenThuong('ALL','CANHAN');
+        $a_dhkt_tapthe = getDanhHieuKhenThuong('ALL', 'TAPTHE');
+        $a_dhkt_hogiadinh = getDanhHieuKhenThuong('ALL', 'HOGIADINH');
 
         $model->tendonvi = $donvi->tendonvi;
         $m_donvi = getDonVi(session('admin')->capdo);
@@ -395,7 +395,12 @@ class dshosodenghikhenthuongcongtrangController extends Controller
         $inputs['lydo'] = ''; //Xóa lý do trả lại
         setChuyenDV($model, $inputs);
         //Thêm dữ liệu vào bảng thông báo
+        $url = '/KhenThuongCongTrang/TiepNhan/ThongTin';       
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ xét duyệt ';
+        $chucnang = 'congtrang';
         $url =  '/KhenThuongCongTrang/TiepNhan/ThongTin';
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $inputs['madonvi'],'quanly',null);
         // storeThongBao($url, $model->noidung, 'dshosodenghikhenthuongcongtrang', $inputs['mahoso'], 'quanly', session('admin')->madonvi, $inputs['madonvi_nhan']);
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }
