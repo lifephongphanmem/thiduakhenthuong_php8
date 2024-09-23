@@ -15,6 +15,10 @@
     <script>
         jQuery(document).ready(function() {
             TableManaged3.init();
+
+            $('#madiaban').change(function() {
+                window.location.href = '/DonVi/DanhSach?madiaban=' + $(this).val();
+            });
         });
     </script>
 @stop
@@ -29,9 +33,12 @@
             <div class="card-toolbar">
                 <!--begin::Button-->
                 @if (chkPhanQuyen('dsdonvi', 'thaydoi'))
+                <a href="{{ url('DonVi/InDanhSach?madiaban=' . $inputs['madiaban']) }}" class="btn btn-info btn-sm mr-2">
+                    <i class="fa fa-print"></i> In dữ liệu</a>
+
                     <button title="Nhận từ file Excel" data-target="#modal-nhanexcel"
                         onclick="setDiaBanExCel('{{ $m_diaban->madiaban }}')" data-toggle="modal" type="button"
-                        class="btn btn-info btn-sm mr-5"><i class="fas fa-file-import"></i>Nhận Excel
+                        class="btn btn-info btn-sm mr-2"><i class="fas fa-file-import"></i>Nhận Excel
                     </button>
 
                     <a href="{{ url('DonVi/Them?madiaban=' . $inputs['madiaban']) }}" class="btn btn-info btn-sm">

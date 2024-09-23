@@ -81,6 +81,22 @@ class dsdonviController extends Controller
             ->with('pageTitle', 'Danh sách đơn vị');
     }
 
+    public function InDanhSach(Request $request)
+    {       
+        $inputs = $request->all();
+        $m_diaban = dsdiaban::where('madiaban', $inputs['madiaban'])->first();
+        $m_donvi = dsdonvi::where('madonvi', $m_diaban->madonviQL)->first();
+        $model_donvi = dsdonvi::where('madiaban', $inputs['madiaban'])->get();
+        $model = dstaikhoan::all();
+        //dd( $m_donvi);
+        return view('HeThongChung.DonVi.InDanhSach')
+            ->with('model_donvi', $model_donvi)
+            ->with('model', $model)
+            ->with('m_donvi', $m_donvi)
+            ->with('inputs', $inputs)
+            ->with('pageTitle', 'Danh sách đơn vị');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -427,6 +427,7 @@ class hethongchungController extends Controller
         $inputs['opt_duthaototrinh'] = isset($inputs['opt_duthaototrinh']);
         $inputs['opt_duthaoquyetdinh'] = isset($inputs['opt_duthaoquyetdinh']);
         $inputs['hskhenthuong_totrinh'] = isset($inputs['hskhenthuong_totrinh']);
+        $inputs['dangnhap2thietbi'] = isset($inputs['dangnhap2thietbi']);
         //Tạo mã truy cập API
         if ($inputs['keypublic'] != '') {
             $inputs['accesstoken'] = base64_encode(md5('SSA') . ':' . md5($inputs['keypublic']));
@@ -509,7 +510,10 @@ class hethongchungController extends Controller
         // if (!Session::has('admin')) {
         //     return false;
         // };
-
+        $hethong=hethongchung::first();
+        if($hethong->dangnhap2thietbi == 0){
+            return false;
+        }
         if ($tendangnhap == 'SSA') {
             return false;
         }
