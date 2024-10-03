@@ -253,6 +253,10 @@
                     <label>Hình thức thi đua</label>
                     {!! Form::select('phuongthuctochuc', getPhuongThucToChucPhongTrao(), $inputs['phuongthuctochuc'], ['class' => 'form-control select2basic', 'disabled'=>'disabled']) !!}
                 </div>
+                <div class="col-lg-4">
+                    <label>Đơn vị tham mưu</label>
+                    {!! Form::select('donvi_thammuu', setArrayAll($a_donvithammuu, 'Không chọn', ''),null, ['class' => 'form-control select2basic']) !!}
+                </div>
             </div>
 
             
