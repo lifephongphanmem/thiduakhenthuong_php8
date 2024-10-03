@@ -83,7 +83,7 @@ class APInghiepvuController extends Controller
 
         $a_API['Body'] = [];
         $a_API['Security'] = ['Signature' => ''];
-
+        return response()->json($body, Response::HTTP_OK);
         if (!isset($body['MaHoSoTDKT'])) {
             $a_API = [
                 'matrave' => '-1',
