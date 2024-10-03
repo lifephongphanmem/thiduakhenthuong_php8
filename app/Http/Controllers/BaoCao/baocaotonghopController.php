@@ -37,7 +37,7 @@ class baocaotonghopController extends Controller
             if (!Session::has('admin')) {
                 return redirect('/');
             };
-            if(!chkaction()){
+            if (!chkaction()) {
                 Session::flush();
                 return response()->view('errors.error_login');
             };
@@ -56,11 +56,15 @@ class baocaotonghopController extends Controller
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
         $m_diaban = getDiaBanBaoCaoTongHop($donvi);        //dd($m_diaban->toArray());
-
+        $a_trangthai = array(
+            'DKT' => 'Đã khen thưởng',
+            'CXKT' => 'Chưa khen thưởng'
+        );
         return view('BaoCao.TongHop.ThongTin')
             ->with('m_diaban', $m_diaban)
             ->with('m_donvi', $m_donvi)
             ->with('inputs', $inputs)
+            ->with('a_trangthai', $a_trangthai)
             ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             ->with('a_diaban', array_column($m_diaban->toArray(), 'tendiaban', 'madiaban'))
             ->with('a_donvi', array_column($m_donvi->toArray(), 'tendonvi', 'madonvi'))
@@ -165,6 +169,7 @@ class baocaotonghopController extends Controller
     public function HoSo(Request $request)
     {
         $inputs = $request->all();
+        // dd($inputs);
         $inputs['madiaban'] = $inputs['madiaban'] ?? 'ALL';
         $donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi'])->first();
         $m_diaban = getDiaBanBaoCaoTongHop($donvi);
@@ -175,15 +180,34 @@ class baocaotonghopController extends Controller
         if ($inputs['phamvithongke'] != 'ALL') {
             $model = $model->where('capdo', $inputs['phamvithongke']);
         }
-        $m_hoso = dshosothiduakhenthuong::where('trangthai', 'DKT')
-            ->wherebetween('ngayqd', [$inputs['ngaytu'], $inputs['ngayden']])
+        // $m_hoso = dshosothiduakhenthuong::where('trangthai', 'DKT')
+        $m_hoso = dshosothiduakhenthuong::where(function ($q) use ($inputs) {
+            if ($inputs['trangthai'] == 'DKT') {
+                $q->where('trangthai', 'DKT')
+                    ->wherebetween('ngayqd', [$inputs['ngaytu'], $inputs['ngayden']]);
+            }
+            if ($inputs['trangthai'] == 'CXKT') {
+                $q->wherein('trangthai', ['DTN', 'DCCVXD', 'DCCVKT', 'DDK', 'KDK', 'CXKT', 'BTLTN', 'BTLXD', 'DD', 'CD'])
+                    ->wherebetween('thoigian', [$inputs['ngaytu'], $inputs['ngayden']]);
+            }
+            if ($inputs['trangthai'] == 'ALL') {
+                $q->where(function ($query) use ($inputs) {
+                    $query->where('trangthai', 'DKT')
+                        ->wherebetween('ngayqd', [$inputs['ngaytu'], $inputs['ngayden']]);
+                })->orwhere(function ($query) use ($inputs) {
+                    $query->wherein('trangthai', ['DTN', 'DCCVXD', 'DCCVKT', 'DDK', 'KDK', 'CXKT', 'BTLTN', 'BTLXD', 'DD', 'CD'])
+                        ->wherebetween('thoigian', [$inputs['ngaytu'], $inputs['ngayden']]);
+                });
+            }
+        })
             ->wherein('madonvi', array_column($model->toArray(), 'madonvi'))
             ->wherein('phanloai', $inputs['phanloai']);
         //dd($m_hoso->toSql());
+        // dd($m_hoso);
         $m_hoso =  $m_hoso->get();
         $m_loaihinhkt = getLoaiHinhKhenThuong();
         $a_diaban = array_column($model->toArray(), 'tendiaban', 'madiaban');
-
+        // dd($m_hoso);
         foreach ($model as $ct) {
             $ct->tongso = 0;
             foreach ($m_loaihinhkt as $loaihinh) {

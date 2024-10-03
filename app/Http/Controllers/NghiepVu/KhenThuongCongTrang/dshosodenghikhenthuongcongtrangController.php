@@ -397,11 +397,10 @@ class dshosodenghikhenthuongcongtrangController extends Controller
         //Thêm dữ liệu vào bảng thông báo
         $url = '/KhenThuongCongTrang/TiepNhan/ThongTin';       
         $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
-        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ xét duyệt ';
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ đề nghị khen thưởng ';
         $chucnang = 'congtrang';
-        $url =  '/KhenThuongCongTrang/TiepNhan/ThongTin';
-        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $inputs['madonvi'],'quanly',null);
-        // storeThongBao($url, $model->noidung, 'dshosodenghikhenthuongcongtrang', $inputs['mahoso'], 'quanly', session('admin')->madonvi, $inputs['madonvi_nhan']);
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $inputs['madonvi_nhan'],'quanly',null,'tnhosodenghikhenthuongcongtrang');
+
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }
 

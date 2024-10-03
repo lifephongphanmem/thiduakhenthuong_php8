@@ -14,6 +14,7 @@ use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dmnhomphanloai_chitiet;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstaikhoan;
 use App\Models\DanhMuc\duthaoquyetdinh;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
@@ -547,8 +548,11 @@ class dshosodenghikhenthuongchuyendeController extends Controller
         $inputs['lydo'] = ''; //Xóa lý do trả lại
         setChuyenDV($model, $inputs);
         //Thêm dữ liệu vào bảng thông báo
-        $url=  '/KhenThuongChuyenDe/TiepNhan/ThongTin';
-        // storeThongBao($url,$model->noidung,'dshosodenghikhenthuongchuyende',$inputs['mahoso'],null,session('admin')->madonvi,$inputs['madonvi_nhan']);
+        $url = '/KhenThuongChuyenDe/TiepNhan/ThongTin';       
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ đề nghị khen thưởng ';
+        $chucnang = 'chuyende';
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $inputs['madonvi_nhan'],'quanly',null,'tnhosodenghikhenthuongchuyende');
         return redirect(static::$url . 'ThongTin?madonvi=' . $model->madonvi);
     }
 

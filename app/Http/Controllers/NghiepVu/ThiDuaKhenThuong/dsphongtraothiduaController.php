@@ -13,6 +13,7 @@ use App\Models\DanhMuc\dmhinhthuckhenthuong;
 use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstaikhoan;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothamgiaphongtraotd;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
@@ -150,6 +151,7 @@ class dsphongtraothiduaController extends Controller
             ->with('a_phongtrao_captren', $a_phongtrao_captren)
             ->with('m_phongtrao_captren', $m_phongtrao_captren)
             ->with('a_phamvi', $a_phamvi)
+            ->with('a_donvithammuu', getDonViThamMuu($capdo,'ARRAY'))
             ->with('a_phanloaidt', getPhanLoaiTDKT())
             ->with('inputs', $inputs)
             ->with('pageTitle', 'Danh sách phong trào thi đua');
@@ -179,6 +181,7 @@ class dsphongtraothiduaController extends Controller
             return view('errors.noperm')->with('machucnang', 'dsphongtraothidua');
         }
         $inputs = $request->all();
+        // dd($inputs);
         if (isset($inputs['qdkt'])) {
             $filedk = $request->file('qdkt');
             $inputs['qdkt'] = $inputs['maphongtraotd'] . '_qd.' . $filedk->getClientOriginalExtension();
@@ -204,7 +207,13 @@ class dsphongtraothiduaController extends Controller
             $trangthai->thoigian = date('Y-m-d H:i:s');
             $trangthai->save();
 
-            storeThongBao('/PhongTraoThiDua/Xem?maphongtraotd='.$inputs['maphongtraotd'],$inputs['noidung'],'dsphongtraothidua',$inputs['maphongtraotd'],$inputs['phamviapdung'],$inputs['madonvi']);
+                    //gán thông tin vào bảng xử lý hồ sơ
+        $url = '/HoSoThiDua/ThongTin';
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' phát động phong trào: '. $inputs['noidung'];
+        $chucnang = 'dsphongtraothidua';
+        storeThongBao($url, $noidung, $chucnang, $inputs['maphongtraotd'], $inputs['phamviapdung'], $inputs['madonvi'], null, 'phongtraothidua', null, 'dsphongtraothidua');
+            // storeThongBao('/PhongTraoThiDua/Xem?maphongtraotd='.$inputs['maphongtraotd'],$inputs['noidung'],'dsphongtraothidua',$inputs['maphongtraotd'],$inputs['phamviapdung'],$inputs['madonvi']);
         } else {
             $model->update($inputs);
         }

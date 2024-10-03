@@ -10,6 +10,6 @@ class thongbao extends Model
     use HasFactory;
     protected $table='thongbao';
     protected $fillable=[
-        'mathongbao','noidung','url','chucnang','trangthai','mahs_mapt','phamvi','madonvi_thongbao','madonvi_nhan','phanloai','taikhoan_tn'
+        'mathongbao','noidung','url','chucnang','trangthai','mahs_mapt','phamvi','madonvi_thongbao','madonvi_nhan','phanloai','taikhoan_tn','phanquyen'
     ];
 }

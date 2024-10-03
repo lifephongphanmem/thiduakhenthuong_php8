@@ -167,8 +167,8 @@ function getPhanLoaiHoSo($phanloai = 'ALL')
             }
         case 'KHENTHUONG': {
                 $a_kq = array(
-                    'KTDONVI' => 'Hồ sơ khen thưởng tại đơn vị',
-                    // 'KHENTHUONG' => 'Hồ sơ đề nghị cấp trên khen thưởng',
+                    // 'KTDONVI' => 'Hồ sơ khen thưởng tại đơn vị',
+                    'KHENTHUONG' => 'Hồ sơ đề nghị cấp trên khen thưởng',
                     'KHENCAOTHUTUONG' => 'Hồ sơ khen thưởng của Thủ tướng chính phủ',
                     'KHENCAOCHUTICHNUOC' => 'Hồ sơ khen thưởng của Chủ tịch nước ',
                 );

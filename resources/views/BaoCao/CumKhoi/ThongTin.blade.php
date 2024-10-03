@@ -178,11 +178,17 @@
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         <label>Thời điểm báo cáo</label>
                         {!! Form::select('thoidiem', getThoiDiem(), 'CANAM', [
                             'class' => 'form-control select2_modal',
                             'onchange' => 'setNgayThang($(this),"frm_hoso")',
+                        ]) !!}
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Tình trạng hồ sơ</label>
+                        {!! Form::select('trangthai', setArrayAll($a_trangthai), 'DKT', [
+                            'class' => 'form-control select2_modal'
                         ]) !!}
                     </div>
                 </div>
