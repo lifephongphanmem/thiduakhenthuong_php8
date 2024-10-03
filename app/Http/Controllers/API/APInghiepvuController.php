@@ -47,7 +47,7 @@ class APInghiepvuController extends Controller
 
         $a_API['Body'] = [];
         $a_API['Security'] = ['Signature' => ''];
-
+        return response()->json($a_API, Response::HTTP_OK);
         $model_khenthuong = dshosothiduakhenthuong::all();
         $m_donvi = viewdiabandonvi::all();
         $a_kq = [];
