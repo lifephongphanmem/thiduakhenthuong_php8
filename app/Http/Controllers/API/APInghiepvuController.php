@@ -50,7 +50,7 @@ class APInghiepvuController extends Controller
         
         $model_khenthuong = dshosothiduakhenthuong::all();
         $m_donvi = viewdiabandonvi::all();
-        return response()->json($m_donvi, Response::HTTP_OK);
+        //return response()->json($m_donvi, Response::HTTP_OK);
         $a_kq = [];
         foreach ($model_khenthuong as $hoso) {
             $conHoSo = new APIdungchungController();

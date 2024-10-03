@@ -120,9 +120,9 @@ class APIdungchungController extends Controller
         ];
         //Gán thông tin đơn vị
         $donvi_denghi = $danhsachdonvi->where('madonvi', $hoso->madonvi)->first();
-        $a_kq['MaDonViDeNghi'] = $donvi_denghi->madonvi;
-        $a_kq['TenDonViDeNghi'] = $donvi_denghi->tendonvi;
-        $a_kq['MaQuanHeNganSachDonViDeNghi'] = $donvi_denghi->maqhns;
+        $a_kq['MaDonViDeNghi'] = $donvi_denghi->madonvi ?? '';
+        $a_kq['TenDonViDeNghi'] = $donvi_denghi->tendonvi?? '';
+        $a_kq['MaQuanHeNganSachDonViDeNghi'] = $donvi_denghi->maqhns ?? '';
         $a_kq['NgayDeNghi'] = $hoso->ngayhoso;
         $a_kq['TrangThaiDeNghi'] = $hoso->trangthai;
 
@@ -221,9 +221,9 @@ class APIdungchungController extends Controller
         ];
         //Gán thông tin đơn vị
         $donvi_denghi = $danhsachdonvi->where('madonvi', $hoso->madonvi)->first();
-        $a_kq['MaDonViDeNghi'] = $donvi_denghi->madonvi;
-        $a_kq['TenDonViDeNghi'] = $donvi_denghi->tendonvi;
-        $a_kq['MaQuanHeNganSachDonViDeNghi'] = $donvi_denghi->maqhns;
+        $a_kq['MaDonViDeNghi'] = $donvi_denghi->madonvi ?? '';
+        $a_kq['TenDonViDeNghi'] = $donvi_denghi->tendonvi ?? '';
+        $a_kq['MaQuanHeNganSachDonViDeNghi'] = $donvi_denghi->maqhns ?? '';
 
         $donvi_xd = $danhsachdonvi->where('madonvi', $hoso->madonvi_xd)->first();
         $a_kq['MaDonViXetDuyet'] = $donvi_xd->madonvi ?? '';
