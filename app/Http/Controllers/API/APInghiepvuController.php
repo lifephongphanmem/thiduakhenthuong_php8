@@ -47,9 +47,10 @@ class APInghiepvuController extends Controller
 
         $a_API['Body'] = [];
         $a_API['Security'] = ['Signature' => ''];
-
+        
         $model_khenthuong = dshosothiduakhenthuong::all();
         $m_donvi = viewdiabandonvi::all();
+        //return response()->json($m_donvi, Response::HTTP_OK);
         $a_kq = [];
         foreach ($model_khenthuong as $hoso) {
             $conHoSo = new APIdungchungController();
@@ -82,7 +83,7 @@ class APInghiepvuController extends Controller
 
         $a_API['Body'] = [];
         $a_API['Security'] = ['Signature' => ''];
-
+        //return response()->json($body, Response::HTTP_OK);
         if (!isset($body['MaHoSoTDKT'])) {
             $a_API = [
                 'matrave' => '-1',
