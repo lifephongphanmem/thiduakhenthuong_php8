@@ -15,6 +15,7 @@
     <script>
         jQuery(document).ready(function() {
             TableManaged3.init();
+            TableManagedclass.init();
             $('#madonvi').change(function() {
                 window.location.href = '/XetDuyetHoSoThiDua/ThongTin?madonvi=' + $('#madonvi').val() +
                     '&nam=' + $('#nam').val();
@@ -78,14 +79,22 @@
                                 @include('includes.td.td_trangthai_hoso')
                                 <td class="text-center">
                                     <a title="Thông tin hồ sơ"
-                                        href="{{ url('/HoSoThiDua/Xem?mahosothamgiapt=' . $tt->mahosothamgiapt) }}"
+                                        {{-- href="{{ url('/HoSoThiDua/Xem?mahosothamgiapt=' . $tt->mahosothamgiapt) }}" --}}
+                                        href="{{ url($tt->url) }}"
                                         class="btn btn-sm btn-clean btn-icon" target="_blank">
                                         <i class="icon-lg la fa-eye text-dark"></i>
                                     </a>
+                                    @if ($m_phongtrao->donvi_thammuu == $inputs['madonvi'] && !in_array($tt->trangthai,['CTH','DTH']))
+                                    <button title="Danh sách hồ sơ tham gia thi đua" type="button"
+                                        onclick="confirmNhanHS('{{ $tt->mahosotdkt }}','/HoSoDeNghiKhenThuongThiDua/DSHoSo_DvThamMuu','{{ $inputs['madonvi'] }}','{{$tt->maphongtraotd}}')"
+                                        class="btn btn-sm btn-clean btn-icon" data-target="#nhan-modal-dvthammuu-confirm"
+                                        data-toggle="modal">
+                                        <i class="icon-lg flaticon-interface-5 text-success"></i>
+                                    </button>
+                                @endif
                                     @if ($tt->nhanhoso == 'DANGNHAN')
                                         @if (in_array($tt->trangthai_hoso, ['CD', 'CNXKT', 'CC']))
-                                            <button title="Nhận hồ sơ đăng ký" type="button"
-                                                {{-- onclick="confirmNhan('{{ $tt->mahosothamgiapt }}','/XetDuyetHoSoThiDua/NhanHoSo','{{ $inputs['madonvi'] }}')" --}}
+                                            <button title="Nhận hồ sơ đăng ký" type="button" {{-- onclick="confirmNhan('{{ $tt->mahosothamgiapt }}','/XetDuyetHoSoThiDua/NhanHoSo','{{ $inputs['madonvi'] }}')" --}}
                                                 onclick="confirmNhan('{{ $tt->mahosothamgiapt }}','/HoSoThiDua/NhanHoSo','{{ $inputs['madonvi'] }}')"
                                                 class="btn btn-sm btn-clean btn-icon" data-target="#nhan-modal-confirm"
                                                 data-toggle="modal">
@@ -116,7 +125,7 @@
         </div>
     </div>
     <!--end::Card-->
-    
+
     @include('includes.modal.modal-delete')
     @include('includes.modal.modal_unapprove_hs')
     @include('includes.modal.modal_accept_hs')

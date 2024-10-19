@@ -19,6 +19,7 @@ use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_canhan;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_tailieu;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_tapthe;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_xuly;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_xuly;
 use App\Models\View\view_dscumkhoi;
 use App\Models\View\viewdiabandonvi;
@@ -153,7 +154,7 @@ class xdhosodenghikhenthuongthiduacumkhoiController extends Controller
         $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' trả lại hồ sơ hồ sơ xét duyệt ';
         $chucnang = 'khenthuongcumkhoi';
         //Lấy tên tài khoản tiếp nhận để hiển thị thông báo
-        $hoso = dshosothiduakhenthuong_xuly::where('mahosotdkt', $model->mahosotdkt)->orderby('created_at', 'desc')->first();
+        $hoso = dshosotdktcumkhoi_xuly::where('mahosotdkt', $model->mahosotdkt)->orderby('created_at', 'desc')->first();
         $tk_dn = isset($hoso) ? $hoso->tendangnhap_tn : null;
         storeThongBao($url_tl, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $model->madonvi_xd, 'cumkhoi', $tk_dn, 'tnhosodenghikhenthuongthiduacumkhoi');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);

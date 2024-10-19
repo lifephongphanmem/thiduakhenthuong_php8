@@ -235,6 +235,7 @@ class baocaotonghopController extends Controller
     public function KhenThuong_m1(Request $request)
     {
         $inputs = $request->all();
+        // dd($inputs);
         $inputs['madiaban'] = $inputs['madiaban'] ?? 'ALL';
         $donvi = viewdiabandonvi::where('madonvi', $inputs['madonvi'])->first();
         $m_diaban = getDiaBanBaoCaoTongHop($donvi);
@@ -254,7 +255,7 @@ class baocaotonghopController extends Controller
         } else {
             $model = $model->get();
         }
-
+        // dd($model->take(10));
         $m_hoso = dshosothiduakhenthuong::where('trangthai', 'DKT')
             ->wherebetween('ngayqd', [$inputs['ngaytu'], $inputs['ngayden']])
             ->wherein('madonvi', array_column($model->toarray(), 'madonvi'))
@@ -273,7 +274,7 @@ class baocaotonghopController extends Controller
             ->wherein('mahosotdkt', array_column($m_hoso->toarray(), 'mahosotdkt'))->where('ketqua', 1)
             ->groupby('madonvi', 'maloaihinhkt', 'madanhhieukhenthuong')
             ->get();
-        //dd($m_canhan);
+        // dd($m_hoso);
         // dd($m_canhan->where('madanhhieukhenthuong','1650360491'));
         $a_danhhieukhenthuong = array_unique(array_merge(
             array_column($m_canhan->toarray(), 'madanhhieukhenthuong'),
@@ -297,7 +298,7 @@ class baocaotonghopController extends Controller
             // if($ct->madonvi == '1668019143')
             // dd($canhan);
         }
-        //dd($model);
+        // dd($model);
         //Lọc theo địa bàn để lấy báo cáo phù hợp
         $a_huyen = [];
         switch (getCapDoLonNhat(array_unique(array_column($a_diaban, 'capdo')))) {
@@ -320,6 +321,7 @@ class baocaotonghopController extends Controller
             $inputs['phanloaihoso'] .= (getPhanLoaiHoSo()[$phanloai] . '; ');
         }
         //  dd($model);
+        // dd($a_hinhthuckt);
         $m_donvibc = dsdonvi::where('madonvi', $inputs['madonvi'])->first();
         // return view('BaoCao.TongHop.KhenThuong_CapTinh')
         return view($view)

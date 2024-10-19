@@ -220,7 +220,7 @@
                 </div>
             </div>
 
-            
+
             <div class="form-group row">
                 <div class="col-lg-4">
                     <label>Phạm vị phát động</label>
@@ -234,7 +234,9 @@
 
                 <div class="col-lg-4">
                     <label>Đợt xét khen thưởng</label>
-                    {!! Form::select('dotxetkhenthuong', getPhanLoaiDotXetKhenThuong(), null, ['class' => 'form-control select2basic']) !!}
+                    {!! Form::select('dotxetkhenthuong', getPhanLoaiDotXetKhenThuong(), null, [
+                        'class' => 'form-control select2basic',
+                    ]) !!}
                 </div>
 
                 {{-- <div class="col-lg-4">
@@ -248,29 +250,43 @@
                     <label>Thời hạn thi đua</label>
                     {!! Form::select('thoihanthidua', getThoiHanThiDua(), null, ['class' => 'form-control select2basic']) !!}
                 </div>
-                
+
                 <div class="col-lg-4">
                     <label>Hình thức thi đua</label>
-                    {!! Form::select('phuongthuctochuc', getPhuongThucToChucPhongTrao(), $inputs['phuongthuctochuc'], ['class' => 'form-control select2basic', 'disabled'=>'disabled']) !!}
+                    {!! Form::select('phuongthuctochuc', getPhuongThucToChucPhongTrao(), $inputs['phuongthuctochuc'], [
+                        'class' => 'form-control select2basic',
+                        'disabled' => 'disabled',
+                    ]) !!}
                 </div>
-                <div class="col-lg-4">
-                    <label>Đơn vị tham mưu</label>
-                    {!! Form::select('donvi_thammuu', setArrayAll($a_donvithammuu, 'Không chọn', ''),null, ['class' => 'form-control select2basic']) !!}
-                </div>
+                @if (getDiaDanh() == 'TUYENQUANG')
+                    <div class="col-lg-4">
+                        <label>Đơn vị tham mưu</label>
+                        {!! Form::select('donvi_thammuu', setArrayAll($a_donvithammuu, 'Không chọn', ''), null, [
+                            'class' => 'form-control select2basic',
+                        ]) !!}
+                    </div>
+                @endif
+
             </div>
 
-            
+
             <div class="form-group row">
                 <div class="col-lg-12">
                     <label>Tên phong trào</label>
-                    {!! Form::textarea('noidung', isset($inputs['maphongtraotd_coso'])?$m_phongtrao_captren->noidung:null, ['class' => 'form-control', 'rows' => 2]) !!}
+                    {!! Form::textarea('noidung', isset($inputs['maphongtraotd_coso']) ? $m_phongtrao_captren->noidung : null, [
+                        'class' => 'form-control',
+                        'rows' => 2,
+                    ]) !!}
                 </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-lg-12">
                     <label>Nội dung phong trào</label>
-                    {!! Form::textarea('khauhieu', isset($inputs['maphongtraotd_coso'])?$m_phongtrao_captren->khauhieu:null, ['class' => 'form-control', 'rows' => 2]) !!}
+                    {!! Form::textarea('khauhieu', isset($inputs['maphongtraotd_coso']) ? $m_phongtrao_captren->khauhieu : null, [
+                        'class' => 'form-control',
+                        'rows' => 2,
+                    ]) !!}
                 </div>
             </div>
 
@@ -342,7 +358,8 @@
                                             <i class="icon-lg la la-file-download text-dark"></i>
                                         </button>
 
-                                        <button title="Xóa" type="button" onclick="getId('{{ $tt->id }}','{{$inputs['phuongthuctochuc']}}','{{$inputs['madonvi']}}')"
+                                        <button title="Xóa" type="button"
+                                            onclick="getId('{{ $tt->id }}','{{ $inputs['phuongthuctochuc'] }}','{{ $inputs['madonvi'] }}')"
                                             class="btn btn-sm btn-clean btn-icon" data-target="#delete-modal"
                                             data-toggle="modal">
                                             <i class="icon-lg la fa-trash-alt text-danger"></i>
@@ -446,9 +463,9 @@
         {!! Form::close() !!}
     </div>
     <script>
-        function getId(id) {         
-            phuongthuctochuc=$('#frm_ThayDoi').find("[name='phuongthuctochuc']").val();
-            madonvi=$('#frm_ThayDoi').find("[name='madonvi']").val();
+        function getId(id) {
+            phuongthuctochuc = $('#frm_ThayDoi').find("[name='phuongthuctochuc']").val();
+            madonvi = $('#frm_ThayDoi').find("[name='madonvi']").val();
             $('#frm_delete').find("[name='id']").val(id);
             $('#frm_delete').find("[name='phuongthuctochuc']").val(phuongthuctochuc);
             $('#frm_delete').find("[name='madonvi']").val(madonvi);

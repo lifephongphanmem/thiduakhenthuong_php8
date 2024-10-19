@@ -122,6 +122,9 @@ Route::group(['prefix' => 'HoSoDeNghiKhenThuongThiDua'], function () {
     //Route::get('ToTrinhHoSo', [dshosodenghikhenthuongthiduaController::class, 'ToTrinhHoSo']);
     //Route::post('ToTrinhHoSo', [dshosodenghikhenthuongthiduaController::class, 'LuuToTrinhHoSo']);
     //Route::get('InToTrinhHoSo', [dshosodenghikhenthuongthiduaController::class, 'InToTrinhHoSo']);
+
+    Route::post('NhanHoSo',[dshosodenghikhenthuongthiduaController::class,'NhanHoSo']);
+    Route::get('DSHoSo_DvThamMuu',[dshosodenghikhenthuongthiduaController::class,'DSHoSo_DvThamMuu']);
 });
 
 Route::group(['prefix' => 'TiepNhanHoSoThiDua'], function () {

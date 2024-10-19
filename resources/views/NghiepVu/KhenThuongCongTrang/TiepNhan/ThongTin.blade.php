@@ -92,4 +92,5 @@
     @include('NghiepVu._DungChung.InDuLieu')
     @include('includes.modal.modal_attackfile')
     @include('includes.modal.modal-lydo')
+    @include('includes.modal.modal_thamdinh_hs')
 @stop
