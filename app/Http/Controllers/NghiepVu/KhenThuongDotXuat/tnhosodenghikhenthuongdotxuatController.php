@@ -504,7 +504,7 @@ class tnhosodenghikhenthuongdotxuatController extends Controller
             }
             $result['message'] .= '<tr>';
             $result['message'] .= '<td class="text-center">' . $j++ . '</td>';
-            $result['message'] .= '<td class="text-center">' . $a_donvi[$tt->madonvi] . '</td>';
+            // $result['message'] .= '<td class="text-center">' . $a_donvi[$tt->madonvi] . '</td>';
             $result['message'] .= '<td>' . $tt->tendoituong . '</td>';
             $result['message'] .= '<td>' . $tt->gioitinh . '</td>';
             $result['message'] .= '<td class="text-center">' . ($a_canhan[$tt->maphanloaicanbo] ?? '') . '</td>';
