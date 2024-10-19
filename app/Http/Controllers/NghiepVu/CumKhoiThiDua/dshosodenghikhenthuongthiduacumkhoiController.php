@@ -17,6 +17,7 @@ use App\Models\DanhMuc\dscumkhoi;
 use App\Models\DanhMuc\dscumkhoi_chitiet;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstaikhoan;
 use App\Models\DanhMuc\dstruongcumkhoi;
 use App\Models\DanhMuc\dstruongcumkhoi_chitiet;
 use App\Models\DanhMuc\duthaoquyetdinh;
@@ -737,7 +738,11 @@ class dshosodenghikhenthuongthiduacumkhoiController extends Controller
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         $inputs['lydo'] = ''; //Xóa lý do trả lại        
         setChuyenDV_CumKhoi($model, $inputs);
-
+        $url = '/CumKhoiThiDua/KTCumKhoi/TiepNhan/ThongTin';       
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ đề nghị khen thưởng ';
+        $chucnang = 'khenthuongcumkhoi';
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $inputs['madonvi_nhan'],'cumkhoi',null,'tnhosokhenthuongcumkhoi');
         //setTrangThaiHoSo($inputs['madonvi'], $model, ['thoigian' => $thoigian, 'trangthai' => $model->trangthai]);
         //setChuyenHoSo($m_donvi->capdo, $model, ['madonvi' => $inputs['madonvi_nhan'], 'thoigian' => $thoigian, 'trangthai' => $model->trangthai]);
         //dd($model);

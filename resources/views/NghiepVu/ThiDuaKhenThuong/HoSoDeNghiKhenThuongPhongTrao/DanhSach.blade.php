@@ -81,7 +81,7 @@
                                         <i class="icon-lg text-dark-50 flaticon-internet"></i>
                                     </button>
                                 @endif
-                                    @if (in_array($tt->trangthai, ['CH','CC', 'CD','BTL', 'CXD']) && chkPhanQuyen('xdhosodenghikhenthuongthidua', 'thaydoi'))
+                                    @if (in_array($tt->trangthai, ['CH','CC', 'CD','BTL', 'CXD']) && chkPhanQuyen('dshosodenghikhenthuongthidua', 'thaydoi'))
                                         @if (in_array($inputs['trangthai'], ['CC', 'CD']))
                                       
                                             {{-- Trường hợp cũ đầy đủ quy trình --}}

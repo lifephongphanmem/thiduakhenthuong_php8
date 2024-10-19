@@ -1377,6 +1377,7 @@ function getTrangThaiHoSo()
         'DCCVXD' => 'Đã chuyển chuyên viên xét duyệt',
         'DCCVKT' => 'Đã chuyển chuyên viên khen thưởng',
         'DTH' => 'Đã tổng hợp',
+        'CTH' => 'Chờ tổng hợp',
     ];
 }
 
@@ -1505,6 +1506,11 @@ function getTrangThai_TD_HoSo($trangthai)
         'DCCVKT' => [
             'trangthai' => 'Đã chuyển</br>chuyên viên</br>khen thưởng',
             // 'class' => 'badge badge-warning'
+            'class' => 'badge'
+        ],
+        'CTH' => [
+            'trangthai' => 'Chờ</br>tổng hợp',
+            // 'class' => 'badge badge-success'
             'class' => 'badge'
         ],
         'DTH' => [

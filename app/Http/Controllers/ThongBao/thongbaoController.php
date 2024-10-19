@@ -8,6 +8,8 @@ use App\Models\DanhMuc\dscumkhoi_chitiet;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
 use App\Models\DanhMuc\dstaikhoan;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_xuly;
 use App\Models\NghiepVu\CumKhoiThiDua\dsphongtraothiduacumkhoi;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_xuly;
@@ -130,7 +132,14 @@ class thongbaoController extends Controller
                         'qdhosodenghikhenthuongkhangchien',
                     );
                     foreach ($model as $key => $ct) {
-                        // $hosokt = dshosothiduakhenthuong::where('mahosotdkt', $ct->mahs_mapt)->first();
+                        // if($ct->phanquyen =='tnhosodenghikhenthuongkhangchien'){
+                        //     dd($ct);
+                        // }
+                        $hosokt = dshosothiduakhenthuong::where('mahosotdkt', $ct->mahs_mapt)->first();
+                        if(!isset($hosokt)){
+                            $model->forget($key);
+                            continue;
+                        }
                         // dd($hosokt);
                         //Xem xét hồ sơ đang ở giai đoạn nào
                         $hoso = dshosothiduakhenthuong_xuly::where('mahosotdkt', $ct->mahs_mapt)->orderby('created_at', 'desc')->get();
@@ -217,6 +226,11 @@ class thongbaoController extends Controller
                                 }
                             }
                         } else {
+                            $hosokt = dshosothiduakhenthuong::where('mahosotdkt', $ct->mahs_mapt)->first();
+                            if(!isset($hosokt)){
+                                $model->forget($key);
+                                continue;
+                            }
                             $a_dsphanquyen_tn = array(
                                 'tnhosodenghikhenthuongthidua',
                             );
@@ -308,6 +322,11 @@ class thongbaoController extends Controller
                             //     }
                             // }
                         } else {
+                            $hosokt = dshosotdktcumkhoi::where('mahosotdkt', $ct->mahs_mapt)->first();
+                            if(!isset($hosokt)){
+                                $model->forget($key);
+                                continue;
+                            }
                             $a_dsphanquyen_tn = array(
                                 'tnhosodenghikhenthuongthiduacumkhoi',
                             );
@@ -317,7 +336,7 @@ class thongbaoController extends Controller
                             $a_phanquyen_qd = array(
                                 'qdhosodenghikhenthuongthiduacumkhoi',
                             );
-                            $hoso = dshosothiduakhenthuong_xuly::where('mahosotdkt', $ct->mahs_mapt)->orderby('created_at', 'desc')->get();
+                            $hoso = dshosotdktcumkhoi_xuly::where('mahosotdkt', $ct->mahs_mapt)->orderby('created_at', 'desc')->get();
                             if (count($hoso) <= 0 && getPhanLoaiTKTiepNhan(session('admin')->madonvi) != session('admin')->tendangnhap) {
                                 $model->forget($key);
                                 continue;

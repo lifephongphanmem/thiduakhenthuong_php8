@@ -68,11 +68,12 @@
                         <thead>
                             <tr class="text-center">
                                 <th width="5%">STT</th>
-                                <th>Phân loại</th>
-                                <th>Đơn vị</th>
-                                <th>Nội dung</th>
+                                <th width="10%">Phân loại</th>
+                                <th width="10%">Đơn vị</th>
+                                <th width="30%">Tên hồ sơ/<br>phong trào</th>
+                                <th width="25%">Nội dung</th>
                                 {{-- <th>Phạm vi</th> --}}
-                                <th>Thông Tin</th>
+                                <th  width="5%">Thông Tin</th>
                                 {{-- <th width="20%">Thao tác</th> --}}
                             </tr>
                         </thead>
@@ -84,6 +85,7 @@
                                     {{ ChucNang()[$tt->chucnang] }}
                                 </td>
                                 <td class="active {{$tt->class}}">{{ $a_donvi[$tt->madonvi_thongbao] ?? '' }}</td>
+                                <td class="{{$tt->class}}">{{getTenPhongTrao_KhenThuong($tt->mathongbao)}}</td>
                                 <td class="{{$tt->class}}">{{ $tt->noidung }}</td>
                                 {{-- <td class="text-center ">{{ getPhamViApDung()[$tt->phamvi] ?? $dscumkhoi[$tt->phamvi] }}</td> --}}
                                 <td class="text-center {{$tt->class}}">

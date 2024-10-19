@@ -173,6 +173,7 @@ Route::group(['prefix' => 'KhenThuongKhangChien'], function () {
         Route::post('XuLyHoSo', [tnhosodenghikhenthuongkhangchienController::class, 'XuLyHoSo']);
         Route::post('LayXuLyHoSo', [tnhosodenghikhenthuongkhangchienController::class, 'LayXuLyHoSo']);
         Route::get('QuaTrinhXuLyHoSo', [tnhosodenghikhenthuongkhangchienController::class, 'QuaTrinhXuLyHoSo']);
+        Route::get('DsHoSoThamDinh',[tnhosodenghikhenthuongkhangchienController::class,'HoSoThamDinh']);
     });
 
     Route::group(['prefix' => 'KhenThuong'], function () {
