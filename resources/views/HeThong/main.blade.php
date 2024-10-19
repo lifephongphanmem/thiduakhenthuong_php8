@@ -631,7 +631,7 @@
     <script src="{{ url('assets/js/pages/main.js') }}"></script>
 
     @yield('custom-script-footer')
-    {{-- @vite('resources/js/bootstrap.js') --}}
+    @vite('resources/js/bootstrap.js')
     <script>
 
         jQuery(document).ready(function() {
