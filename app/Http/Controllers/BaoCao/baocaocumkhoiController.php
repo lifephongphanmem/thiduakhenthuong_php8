@@ -58,11 +58,15 @@ class baocaocumkhoiController extends Controller
         $inputs['madonvi'] = $inputs['madonvi'] ?? $m_donvi->first()->madonvi;
         $donvi = $m_donvi->where('madonvi', $inputs['madonvi'])->first();
         // $m_diaban = getDiaBanBaoCaoTongHop($donvi);        //dd($m_diaban->toArray());
-
+        $a_trangthai = array(
+            'DKT' => 'Đã khen thưởng',
+            'CXKT' => 'Chưa khen thưởng'
+        );
         return view('BaoCao.CumKhoi.ThongTin')
             // ->with('m_diaban', $m_diaban)
             ->with('m_donvi', $m_donvi)
             ->with('inputs', $inputs)
+            ->with('a_trangthai', $a_trangthai)
             ->with('a_loaihinhkt', array_column(dmloaihinhkhenthuong::all()->toArray(), 'tenloaihinhkt', 'maloaihinhkt'))
             // ->with('a_diaban', array_column($m_diaban->toArray(), 'tendiaban', 'madiaban'))
             ->with('a_donvi', array_column($m_donvi->toArray(), 'tendonvi', 'madonvi'))
@@ -181,6 +185,28 @@ class baocaocumkhoiController extends Controller
             ->wherebetween('ngayqd', [$inputs['ngaytu'], $inputs['ngayden']])
             ->wherein('madonvi', array_column($model->toArray(), 'madonvi'))
             ->wherein('phanloai', $inputs['phanloai']);
+
+        // $m_hoso = dshosotdktcumkhoi::where(function ($q) use ($inputs) {
+        //     if ($inputs['trangthai'] == 'DKT') {
+        //         $q->where('trangthai', 'DKT')
+        //             ->wherebetween('ngayqd', [$inputs['ngaytu'], $inputs['ngayden']]);
+        //     }
+        //     if ($inputs['trangthai'] == 'CXKT') {
+        //         $q->wherein('trangthai', ['DTN', 'DCCVXD', 'DCCVKT', 'DDK', 'KDK', 'CXKT', 'BTLTN', 'BTLXD', 'DD', 'CD'])
+        //             ->wherebetween('thoigian', [$inputs['ngaytu'], $inputs['ngayden']]);
+        //     }
+        //     if ($inputs['trangthai'] == 'ALL') {
+        //         $q->where(function ($query) use ($inputs) {
+        //             $query->where('trangthai', 'DKT')
+        //                 ->wherebetween('ngayqd', [$inputs['ngaytu'], $inputs['ngayden']]);
+        //         })->orwhere(function ($query) use ($inputs) {
+        //             $query->wherein('trangthai', ['DTN', 'DCCVXD', 'DCCVKT', 'DDK', 'KDK', 'CXKT', 'BTLTN', 'BTLXD', 'DD', 'CD'])
+        //                 ->wherebetween('thoigian', [$inputs['ngaytu'], $inputs['ngayden']]);
+        //         });
+        //     }
+        // })
+        // ->wherein('madonvi', array_column($model->toArray(), 'madonvi'))
+        // ->wherein('phanloai', $inputs['phanloai']);
         //dd($m_hoso->toSql());
         $m_hoso =  $m_hoso->get();
         $m_loaihinhkt = getLoaiHinhKhenThuong();

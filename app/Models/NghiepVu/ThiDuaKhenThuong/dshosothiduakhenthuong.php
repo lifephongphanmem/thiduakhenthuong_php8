@@ -93,6 +93,7 @@ class dshosothiduakhenthuong extends Model
         'trangthai_xl',//Trạng thái xử lý hồ sơ
         'tendangnhap_xl',//Tài khoản đang xử lý hồ sơ
         //14/05/2024
-        'ykiendonggop'
+        'ykiendonggop',
+        'mahosotdkt_dvthammuu'//dùng để gắn mã tổng hợp của đơn vị tham mưu
     ];
 }

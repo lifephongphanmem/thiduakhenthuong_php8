@@ -14,6 +14,7 @@ use App\Models\DanhMuc\dmloaihinhkhenthuong;
 use App\Models\DanhMuc\dmnhomphanloai_chitiet;
 use App\Models\DanhMuc\dsdiaban;
 use App\Models\DanhMuc\dsdonvi;
+use App\Models\DanhMuc\dstaikhoan;
 use App\Models\DanhMuc\duthaoquyetdinh;
 use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosokhenthuong;
@@ -22,6 +23,7 @@ use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_canhan;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_detai;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tailieu;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tapthe;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_xuly;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua;
 use App\Models\View\viewdiabandonvi;
 use Illuminate\Support\Facades\File;
@@ -153,7 +155,15 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
         }else{
             setTraLaiXD($model, $inputs);
         }
-
+        //add thông tin vào bảng thông báo
+        $url_tl = '/KhenThuongCongTrang/TiepNhan/ThongTin';       
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' trả lại hồ sơ hồ sơ xét duyệt ';
+        $chucnang = 'congtrang';
+        //Lấy tên tài khoản tiếp nhận để hiển thị thông báo
+        $hoso=dshosothiduakhenthuong_xuly::where('mahosotdkt',$model->mahosotdkt)->orderby('created_at', 'desc')->first();
+        $tk_dn=isset($hoso)?$hoso->tendangnhap_tn:null;
+        storeThongBao($url_tl, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $model->madonvi_xd,'quanly',$tk_dn,'tnhosodenghikhenthuongcongtrang');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']);
     }
 
@@ -194,6 +204,11 @@ class xdhosodenghikhenthuongcongtrangController extends Controller
         getTaoDuThaoKT($model);
         $model->save();
 
+        $url = '/KhenThuongCongTrang/KhenThuong/ThongTin';       
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ phê duyệt ';
+        $chucnang = 'congtrang';
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $inputs['madonvi_nhan'],'quanly',null,'qdhosodenghikhenthuongcongtrang');
         trangthaihoso::create([
             'mahoso' => $inputs['mahoso'],
             'phanloai' => 'dshosothiduakhenthuong',

@@ -124,7 +124,8 @@
                                                             
                                                             <td class="text-center">
                                                                 <input type="checkbox"
-                                                                    name="{{ 'hoso[' . $tt->mahosothamgiapt . ']' }}"
+                                                                    {{-- name="{{ 'hoso[' . $tt->mahosothamgiapt . ']' }}" --}}
+                                                                    name="{{ 'hoso[' . $tt->mahoso . ']' }}"
                                                                     checked />
                                                             </td>
                                                         </tr>

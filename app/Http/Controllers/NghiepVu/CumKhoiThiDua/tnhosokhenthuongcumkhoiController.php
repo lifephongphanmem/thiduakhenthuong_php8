@@ -16,6 +16,7 @@ use App\Models\HeThong\trangthaihoso;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_canhan;
 use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_tapthe;
+use App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_xuly;
 use App\Models\View\view_dscumkhoi;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
@@ -151,6 +152,14 @@ class tnhosokhenthuongcumkhoiController extends Controller
         $inputs['trangthai'] = 'BTL';
         $inputs['thoigian'] = date('Y-m-d H:i:s');
         setTraLaiXD($model, $inputs);
+        $url_tl = '/CumKhoiThiDua/DeNghiThiDua/ThongTin';
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' trả lại hồ sơ hồ sơ đề nghị khen thưởng ';
+        $chucnang = 'khenthuongcumkhoi';
+        //Lấy tên tài khoản tiếp nhận để hiển thị thông báo
+        $hoso = dshosotdktcumkhoi_xuly::where('mahosotdkt', $model->mahosotdkt)->orderby('created_at', 'desc')->first();
+        $tk_dn = isset($hoso) ? $hoso->tendangnhap_tn : null;
+        storeThongBao($url_tl, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $model->madonvi_xd, 'cumkhoi', $tk_dn, 'dshosodenghikhenthuongthiduacumkhoi');
         return redirect(static::$url . 'DanhSach?madonvi=' . $model->madonvi_xd . '&macumkhoi=' . $model->macumkhoi);
     }
 
@@ -167,6 +176,12 @@ class tnhosokhenthuongcumkhoiController extends Controller
         $model->trangthai_xd = $model->trangthai;
         $model->thoigian_xd = $thoigian;
         $model->save();
+
+        $url = '/CumKhoiThiDua/XetDuyetThiDua/ThongTin';
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ xét duyệt ';
+        $chucnang = 'khenthuongcumkhoi';
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, $inputs['madonvi'], 'cumkhoi', null, 'xdhosodenghikhenthuongthiduacumkhoi');
 
         trangthaihoso::create([
             'mahoso' => $inputs['mahoso'],
@@ -223,6 +238,12 @@ class tnhosokhenthuongcumkhoiController extends Controller
         //gán thông tin vào bảng xử lý hồ sơ
 
         setChuyenChuyenVienXD($model, $inputs, 'dshosotdktcumkhoi');
+        
+        $url = '/CumKhoiThiDua/KTCumKhoi/TiepNhan/ThongTin';
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ cho ' . $a_taikhoan[$inputs['tendangnhap_tn']];
+        $chucnang = 'khenthuongcumkhoi';
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, session('admin')->madonvi, 'cumkhoi', $inputs['tendangnhap_tn'], 'tnhosokhenthuongcumkhoi');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi']. '&macumkhoi=' . $model->macumkhoi);
     }
 
@@ -237,6 +258,12 @@ class tnhosokhenthuongcumkhoiController extends Controller
         // dd($inputs);
 
         setXuLyHoSo($model, $inputs, 'dshosotdktcumkhoi');
+
+        $url = '/CumKhoiThiDua/KTCumKhoi/TiepNhan/ThongTin';
+        $a_taikhoan = array_column(dstaikhoan::select('tentaikhoan', 'tendangnhap')->get()->toarray(), 'tentaikhoan', 'tendangnhap');
+        $noidung = $a_taikhoan[session('admin')->tendangnhap] . ' chuyển hồ sơ cho ' . $a_taikhoan[$inputs['tendangnhap_tn']];
+        $chucnang = 'khenthuongcumkhoi';
+        storeThongBao($url, $noidung, $chucnang, $inputs['mahoso'], null, $model->madonvi, session('admin')->madonvi, 'cumkhoi', $inputs['tendangnhap_tn'], 'tnhosokhenthuongcumkhoi');
         return redirect(static::$url . 'ThongTin?madonvi=' . $inputs['madonvi'] . '&macumkhoi=' . $model->macumkhoi);
     }
 

@@ -44,7 +44,7 @@ class APIthongtinchungController extends Controller
             if ($header['tdktaccesstoken'][0] != $model_hethong->accesstoken)
                 return false;
         }
-
+        return true;
         //Trường hợp có mã authorization
         if (isset($header['authorization'])) {
             $chuoi = explode(':', base64_decode(str_replace('Bearer ', '', $header['authorization'][0])));
@@ -101,7 +101,7 @@ class APIthongtinchungController extends Controller
     {
         $header = $request->headers->all();
         $body = $request->all();
-
+        //return response()->json($header, Response::HTTP_OK);
         if (!$this->checkHeader($header)) {
             $a_API = [
                 'matrave' => '-1',

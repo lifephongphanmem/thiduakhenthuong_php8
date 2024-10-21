@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('dshosothiduakhenthuong', function (Blueprint $table) {
-            $table->string('chucvunguoiky', 255)->change(); // Thay đổi độ dài cột 'chucvunguoiky' thành 255
+            $table->string('mahosotdkt_dvthammuu')->nullable();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('dshosothiduakhenthuong', function (Blueprint $table) {
-            $table->string('chucvunguoiky', 50)->change(); // Thay đổi độ dài cột 'chucvunguoiky' thành 50 về như ban đầu
+            $table->dropColumn('mahosotdkt_dvthammuu');
         });
     }
 };

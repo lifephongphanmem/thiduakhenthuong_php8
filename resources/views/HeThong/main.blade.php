@@ -215,14 +215,14 @@
                                                     <span class="menu-text font-weight-bold text-dark">
                                                         &nbsp;{{ session('admin')->tentaikhoan }}</span>
                                                     {{-- @if (hasEmail()) --}}
-                                                    {{-- <span> <a href="{{ '/ThongBao/ThongTin' }}"
+                                                    <span> <a href="{{ '/ThongBao/ThongTin' }}"
                                                             class="btn btn-icon pulse pulse-primary ">
                                                             <i class="flaticon2-bell-4 text-danger"></i>
                                                             <span class="pulse-ring"></span>
                                                             <span
                                                                 class="label label-sm label-light-danger text-dark label-rounded font-weight-bolder position-absolute top-0 right-0">{{ SLThongbao(session('admin')->capdo, session('admin')->madonvi, session('admin')->tendangnhap) }}</span>
                                                         </a>
-                                                    </span> --}}
+                                                    </span>
                                                     {{-- @endif --}}
 
 

@@ -68,26 +68,28 @@
                         <thead>
                             <tr class="text-center">
                                 <th width="5%">STT</th>
-                                <th>Phân loại</th>
-                                <th>Đơn vị</th>
-                                <th>Nội dung</th>
+                                <th width="10%">Phân loại</th>
+                                <th width="10%">Đơn vị</th>
+                                <th width="30%">Tên hồ sơ/<br>phong trào</th>
+                                <th width="25%">Nội dung</th>
                                 {{-- <th>Phạm vi</th> --}}
-                                <th>Thông Tin</th>
+                                <th  width="5%">Thông Tin</th>
                                 {{-- <th width="20%">Thao tác</th> --}}
                             </tr>
                         </thead>
                         <?php $i = 1; ?>
                         @foreach ($model as $key => $tt)
                             <tr>
-                                <td style="text-align: center" >{{ $i++ }}</td>
-                                <td style="text-align: center" >
+                                <td style="text-align: center" class="{{$tt->class}}" >{{ $i++ }}</td>
+                                <td style="text-align: center" class="{{$tt->class}}">
                                     {{ ChucNang()[$tt->chucnang] }}
                                 </td>
-                                <td class="active ">{{ $a_donvi[$tt->madonvi_thongbao] ?? '' }}</td>
-                                <td >{{ $tt->noidung }}</td>
+                                <td class="active {{$tt->class}}">{{ $a_donvi[$tt->madonvi_thongbao] ?? '' }}</td>
+                                <td class="{{$tt->class}}">{{getTenPhongTrao_KhenThuong($tt->mathongbao)}}</td>
+                                <td class="{{$tt->class}}">{{ $tt->noidung }}</td>
                                 {{-- <td class="text-center ">{{ getPhamViApDung()[$tt->phamvi] ?? $dscumkhoi[$tt->phamvi] }}</td> --}}
-                                <td class="text-center">
-                                    <a href="{{$tt->url}}" target="_blank" title="Xem thông tin phong trào"
+                                <td class="text-center {{$tt->class}}">
+                                    <a title="Xem thông tin " style="cursor: pointer"
                                         onclick="doctin('{{ $tt->mathongbao }}')">
                                         <i class="icon-lg la fa-eye"></i></a>
                                 </td>
@@ -112,41 +114,12 @@
                 },
                 dataType: 'JSON',
                 success: function(data) {
-                    console.log(1234);
-                    location.reload();
+                    // console.log(1234);
+                    // location.reload();
+                    window.location.href=data.url;
                 }
             });
         }
 
-        // function getphanloai() {
-        //     phanloai = $('#phanloai').val();
-        //     // console.log(phanloai);
-        //     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        //     $.ajax({
-        //         url: "/ThongBao/getPhanLoai",
-        //         type: 'GET',
-        //         data: {
-        //             _token: CSRF_TOKEN,
-        //             phanloai: phanloai,
-        //         },
-        //         dataType: 'JSON',
-        //         success: function(data) {
-        //             // window.location.href = '/ThongBao/ThongTin?phanloai=' + $('#phanloai').val();
-        //             $('#phanloai_ct').replaceWith(data.message);
-        //             $('#phanloai_chitiet').change(function() {
-        //                 window.location.href = '/ThongBao/ThongTin?phanloai=' + $('#phanloai').val() +
-        //                     '&phanloai_ct=' + $('#phanloai_chitiet').val();
-        //             });
-        //         },
-        //         error: function(xhr, status, error) {
-        //             console.log(xhr.responseText);
-        //             console.log(error);
-        //         }
-        //     })
-        // }
-
-        function getphanloai_ct() {
-
-        }
     </script>
 @stop

@@ -51,5 +51,7 @@ class dshosothiduakhenthuong_tapthe extends Model
        'ngayqdkhenthuong',
        'sototrinhkhenthuong',
        'ngaytrinhkhenthuong',
+       'tonghop_dvthammuu',
+       'mahstonghop'
     ];
 }

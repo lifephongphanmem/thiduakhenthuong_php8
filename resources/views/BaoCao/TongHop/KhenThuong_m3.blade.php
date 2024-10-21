@@ -60,7 +60,8 @@
                 <th colspan="2">Tổng số tập thể, cá nhân đã được trình đề nghị khen thưởng</th>
                 <th colspan="2">Tổng số tập thể, cá nhân đã có quyết định khen thưởng</th>
                 <th colspan="4">Khen thưởng theo công trạng thành tích đạt được</th>
-                <th colspan="4">Khen thưởng chuyên đề</th>
+                {{-- <th colspan="4">Khen thưởng chuyên đề</th> --}}
+                <th colspan="4">Khen thưởng phong trào thi đua</th>
                 <th colspan="2">Khen thưởng đột xuất</th>
                 <th colspan="2">Khen thưởng đối ngoại</th>
                 <th colspan="2">Khen thưởng cho doanh nghiệp</th>

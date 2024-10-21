@@ -49,6 +49,13 @@ $a_trangthai_xl = getTrangThai_TD_HoSo($tt->trangthai_xl);
     @case('CD')
 
     @case('BTL')
+    @case('CTH')
+        <td align="center">
+            <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>
+            {{-- <span >{!! $a_trangthai_td['trangthai'] !!}</span> --}}
+        </td>
+    @break
+
     @case('BTLXD')
         <td align="center">
             <span class="{{ $a_trangthai_td['class'] }}">{!! $a_trangthai_td['trangthai'] !!}</span>

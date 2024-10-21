@@ -8,8 +8,12 @@ use App\Models\DanhMuc\dsdonvi;
 use App\Models\DanhMuc\dstaikhoan;
 use App\Models\DanhMuc\dstaikhoan_phamvi;
 use App\Models\HeThong\trangthaihoso;
+use App\Models\NghiepVu\CumKhoiThiDua\dsphongtraothiduacumkhoi;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_tailieu;
 use App\Models\NghiepVu\ThiDuaKhenThuong\dshosothiduakhenthuong_xuly;
+use App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua;
+use App\Models\ThongBao\taikhoan_nhanthongbao;
 use App\Models\ThongBao\thongbao;
 use App\Models\View\view_dscumkhoi;
 
@@ -1995,7 +1999,7 @@ function getPhamViKT($capkhenthuong)
     return $phamvi;
 }
 
-function storeThongBao($url, $noidung, $chucnang, $mahs_mapt, $phamvi, $madonvi, $madonvi_nhan,$phanloai,$taikhoan_tn)
+function storeThongBao($url, $noidung, $chucnang, $mahs_mapt, $phamvi, $madonvi, $madonvi_nhan, $phanloai, $taikhoan_tn, $phanquyen)
 {
     $mathongbao = getdate()[0];
     $data = [
@@ -2008,8 +2012,9 @@ function storeThongBao($url, $noidung, $chucnang, $mahs_mapt, $phamvi, $madonvi,
         'madonvi_thongbao' => $madonvi,
         'madonvi_nhan' => $madonvi_nhan,
         'trangthai' => 'CHUADOC',
-        'phanloai'=>$phanloai,
-        'taikhoan_tn'=>$taikhoan_tn
+        'phanloai' => $phanloai,
+        'taikhoan_tn' => $taikhoan_tn,
+        'phanquyen' => $phanquyen
     ];
 
     thongbao::create($data);
@@ -2055,7 +2060,7 @@ function chkThongBao()
         }
     }
 }
-function SLThongbao($capdo, $madonvi, $tendangnhap)
+function SLThongbao_26092024($capdo, $madonvi, $tendangnhap)
 {
     switch ($capdo) {
         case 'T': {
@@ -2101,6 +2106,331 @@ function SLThongbao($capdo, $madonvi, $tendangnhap)
     return $sl;
 }
 
+function SLThongbao($capdo, $madonvi, $tendangnhap)
+{
+    $a_chucnang = array(
+        'phongtraothidua' => [
+            'dsphongtraothidua' => 'Phong trào thi đua',
+            'khenthuongphongtrao' => 'Khen thưởng theo phong trào thi đua'
+
+        ],
+        'quanly' => [
+            'congtrang' => 'Khen thưởng công trạng',
+            'chuyende' => 'Khen thưởng phong trào thi đua',
+            'dotxuat' => 'Khen thưởng đột xuất',
+            'conghien' => 'Khen thưởng quá trình cống hiến',
+            'nienhan' => 'Khen thưởng theo niên hạn',
+            'doingoai' => 'Khen thưởng đối ngoại',
+            'khangchien' => 'Khen thưởng kháng chiến'
+        ],
+        'cumkhoi' => [
+            'dsphongtraothiduacumkhoi' => 'Phong trào thi đua cụm khối',
+            'khenthuongcumkhoi' => 'Khen thưởng cụm khối'
+        ]
+    );
+    switch ($capdo) {
+        case 'T': {
+                $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $a_phamvi = ['T', 'TW'];
+                break;
+            }
+        case 'TW': {
+                $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $a_phamvi = ['T', 'TW'];
+                break;
+            }
+        case 'H': {
+                $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $a_phamvi = ['T', 'TW', 'H'];
+                break;
+            }
+        case 'X': {
+                $m_cumkhoi = dscumkhoi_chitiet::where('madonvi', $madonvi)->get();
+                $a_phamvi = ['T', 'TW', 'H', 'X'];
+                break;
+            }
+        default: {
+                $m_cumkhoi = dscumkhoi_chitiet::all();
+                $a_phamvi = ['T', 'TW', 'H', 'X'];
+                break;
+            }
+    }
+
+    $a_macumkhoi = array_column($m_cumkhoi->toarray(), 'macumkhoi');
+    // $model = thongbao::wherein('phamvi', $a_phamvi)->orwherein('phamvi', $a_macumkhoi)->orwhere('madonvi_nhan',session('admin')->madonvi)->get();
+    //lấy tất cả các thông báo thuộc về đơn vị
+    $a_taikhoan_thongbao = array_column(taikhoan_nhanthongbao::where('tendangnhap', $madonvi)->get()->toarray(), 'mathongbao');
+
+    $model = thongbao::where(function ($q) use ($madonvi) {
+        $q->where('phanloai', 'quanly')
+            ->where('madonvi_nhan', $madonvi);
+    })
+        ->orwhere(function ($q) use ($a_phamvi, $madonvi) {
+            $q->where('phanloai', 'phongtraothidua')
+                ->where(function ($query) use ($a_phamvi, $madonvi) {
+                    $query->whereIn('phamvi', $a_phamvi)
+                        ->where('madonvi_thongbao', '!=', $madonvi);
+                })
+                ->orWhere('madonvi_nhan', $madonvi);
+        })
+        ->orwhere(function ($q) use ($a_macumkhoi, $madonvi) {
+            $q->where('phanloai', 'cumkhoi')
+                ->where(function ($query) use ($a_macumkhoi, $madonvi) {
+                    $query->whereIn('phamvi', $a_macumkhoi)
+                        ->where('madonvi_thongbao', '!=', $madonvi);
+                })
+                ->orWhere('madonvi_nhan', $madonvi);
+        })
+        ->wherenotin('mathongbao', $a_taikhoan_thongbao)
+        ->get();
+    // dd($model);
+    $sl = 0;
+    foreach ($model as $key => $ct) {
+        switch ($ct->phanloai) {
+            case 'quanly': {
+                $hosokt = dshosothiduakhenthuong::where('mahosotdkt', $ct->mahs_mapt)->first();
+                if(!isset($hosokt)){
+                    $model->forget($key);
+                    continue;
+                }
+                    $a_dsphanquyen_tn = array(
+                        'tnhosodenghikhenthuongcongtrang',
+                        'tnhosodenghikhenthuongdoingoai',
+                        'tnhosodenghikhenthuongconghien',
+                        'tnhosodenghikhenthuongchuyende',
+                        'tnhosodenghikhenthuongdotxuat',
+                        'tnhosodenghikhenthuongnienhan',
+                        'tnhosodenghikhenthuongkhangchien'
+                    );
+                    $a_phanquyen_xd = array(
+                        'xdhosodenghikhenthuongcongtrang',
+                        'xdhosodenghikhenthuongdoingoai',
+                        'xdhosodenghikhenthuongconghien',
+                        'xdhosodenghikhenthuongchuyende',
+                        'xdhosodenghikhenthuongdotxuat',
+                        'xdhosodenghikhenthuongnienhan',
+                        'xdhosodenghikhenthuongkhangchien'
+                    );
+                    $a_phanquyen_qd = array(
+                        'qdhosodenghikhenthuongcongtrang',
+                        'qdhosodenghikhenthuongdoingoai',
+                        'qdhosodenghikhenthuongconghien',
+                        'qdhosodenghikhenthuongchuyende',
+                        'qdhosodenghikhenthuongdotxuat',
+                        'qdhosodenghikhenthuongnienhan',
+                        'qdhosodenghikhenthuongkhangchien',
+                    );
+                    // foreach ($model as $key => $ct) {
+                    // $hosokt = dshosothiduakhenthuong::where('mahosotdkt', $ct->mahs_mapt)->first();
+                    // dd($hosokt);
+                    //Xem xét hồ sơ đang ở giai đoạn nào
+                    $hoso = dshosothiduakhenthuong_xuly::where('mahosotdkt', $ct->mahs_mapt)->orderby('created_at', 'desc')->get();
+                    // dd($hoso);
+                    if (count($hoso) <= 0 && getPhanLoaiTKTiepNhan(session('admin')->madonvi) != session('admin')->tendangnhap) {
+                        $model->forget($key);
+                        continue;
+                    }
+
+                    if (count($hoso) > 0) {
+                        //Thông báo cho chức năng tiếp nhận
+                        foreach ($a_dsphanquyen_tn as $val) {
+                            if (chkPhanQuyen($val, 'phanquyen') == '0') {
+                                if ($ct->phanquyen == $val) {
+                                    $model->forget($key);
+                                    continue;
+                                }
+                            } else {
+                                if ($ct->taikhoan_tn != session('admin')->tendangnhap && $ct->phanquyen == $val) {
+                                    $model->forget($key);
+                                    continue;
+                                }
+                            }
+                        }
+
+                        foreach ($a_phanquyen_xd as $val) {
+                            if (chkPhanQuyen($val, 'phanquyen') == '0') {
+                                if ($ct->phanquyen == $val) {
+                                    $model->forget($key);
+                                    continue;
+                                }
+                            }
+                        }
+
+                        foreach ($a_phanquyen_qd as $val) {
+                            if (chkPhanQuyen($val, 'phanquyen') == '0') {
+                                if ($ct->phanquyen == $val) {
+                                    $model->forget($key);
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                    // }
+                    // }
+                    break;
+                }
+            case 'phongtraothidua': {
+                    //phong trào cấp tỉnh thì tất cả đơn vị có thể nhìn thấy, phong trào cấp huyện thì chỉ có các đơn vị thuộc huyên mới xem được
+                    //kiểm tra đơn vị có thuộc huyện, sở ban ngành để hiển thị thông báo phong trào
+                    // foreach ($model as $key => $ct) {
+                    $phongtrao = dsphongtraothidua::where('maphongtraotd', $ct->mahs_mapt)->first();
+                    if (isset($phongtrao)) {
+                        //Kiểm tra quyền
+                        if (chkPhanQuyen('dshosothidua', 'phanquyen') == '0') {
+                            $model->forget($key);
+                            continue;
+                        }
+                        if (in_array($ct->phamvi, ['H', 'SBN'])) {
+                            $madiaban = dsdonvi::where('madonvi', $ct->madonvi_thongbao)->first()->madiaban;
+                            $diaban = array_column(dsdiaban::where('madiabanQL', $madiaban)->get()->toarray(), 'madiaban');
+                            // dd($diaban);
+                            // dd(session('admin'));
+                            if (!in_array(session('admin')->madiaban, $diaban)) {
+                                $model->forget($key);
+                                continue;
+                            }
+                        }
+                    } else {
+                        $hosokt = dshosothiduakhenthuong::where('mahosotdkt', $ct->mahs_mapt)->first();
+                        if(!isset($hosokt)){
+                            $model->forget($key);
+                            continue;
+                        }
+                        $a_dsphanquyen_tn = array(
+                            'tnhosodenghikhenthuongthidua',
+                        );
+                        $a_phanquyen_xd = array(
+                            'xdhosodenghikhenthuongthidua',
+                        );
+                        $a_phanquyen_qd = array(
+                            'qdhosodenghikhenthuongthidua',
+                        );
+                        $hoso = dshosothiduakhenthuong_xuly::where('mahosotdkt', $ct->mahs_mapt)->orderby('created_at', 'desc')->get();
+                        if (count($hoso) <= 0 && getPhanLoaiTKTiepNhan(session('admin')->madonvi) != session('admin')->tendangnhap) {
+                            $model->forget($key);
+                            continue;
+                        }
+                        if (count($hoso) > 0) {
+                            //Thông báo cho chức năng tiếp nhận
+                            foreach ($a_dsphanquyen_tn as $val) {
+                                if (chkPhanQuyen($val, 'phanquyen') == '0') {
+                                    if ($ct->phanquyen == $val) {
+                                        $model->forget($key);
+                                        continue;
+                                    }
+                                } else {
+                                    if ($ct->taikhoan_tn != session('admin')->tendangnhap && $ct->phanquyen == $val) {
+                                        $model->forget($key);
+                                        continue;
+                                    }
+                                }
+                            }
+
+                            foreach ($a_phanquyen_xd as $val) {
+                                if (chkPhanQuyen($val, 'phanquyen') == '0') {
+                                    if ($ct->phanquyen == $val) {
+                                        $model->forget($key);
+                                        continue;
+                                    }
+                                }
+                            }
+
+                            foreach ($a_phanquyen_qd as $val) {
+                                if (chkPhanQuyen($val, 'phanquyen') == '0') {
+                                    if ($ct->phanquyen == $val) {
+                                        $model->forget($key);
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // }
+                    break;
+                }
+
+            case 'cumkhoi': {
+                    // foreach ($model as $key => $ct) {
+                    $phongtrao = dsphongtraothiduacumkhoi::where('maphongtraotd', $ct->mahs_mapt)->first();
+                    if (isset($phongtrao)) {
+                        //Kiểm tra quyền
+                        if (chkPhanQuyen('dshosothiduacumkhoi', 'phanquyen') == '0') {
+                            $model->forget($key);
+                            continue;
+                        }
+                    } else {
+                        $hosokt = dshosotdktcumkhoi::where('mahosotdkt', $ct->mahs_mapt)->first();
+                        if(!isset($hosokt)){
+                            $model->forget($key);
+                            continue;
+                        }
+                        $a_dsphanquyen_tn = array(
+                            'tnhosodenghikhenthuongthiduacumkhoi',
+                        );
+                        $a_phanquyen_xd = array(
+                            'xdhosodenghikhenthuongthiduacumkhoi',
+                        );
+                        $a_phanquyen_qd = array(
+                            'qdhosodenghikhenthuongthiduacumkhoi',
+                        );
+                        $hoso = \App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_xuly::where('mahosotdkt', $ct->mahs_mapt)->orderby('created_at', 'desc')->get();
+                        if (count($hoso) <= 0 && getPhanLoaiTKTiepNhan(session('admin')->madonvi) != session('admin')->tendangnhap) {
+                            $model->forget($key);
+                            continue;
+                        }
+                        if (count($hoso) > 0) {
+                            //Thông báo cho chức năng tiếp nhận
+                            foreach ($a_dsphanquyen_tn as $val) {
+                                if (chkPhanQuyen($val, 'phanquyen') == '0') {
+                                    if ($ct->phanquyen == $val) {
+                                        $model->forget($key);
+                                        continue;
+                                    }
+                                } else {
+                                    if ($ct->taikhoan_tn != session('admin')->tendangnhap && $ct->phanquyen == $val) {
+                                        $model->forget($key);
+                                        continue;
+                                    }
+                                }
+                            }
+                            foreach ($a_phanquyen_xd as $val) {
+                                if (chkPhanQuyen($val, 'phanquyen') == '0') {
+                                    if ($ct->phanquyen == $val) {
+                                        $model->forget($key);
+                                        continue;
+                                    }
+                                }
+                            }
+                            foreach ($a_phanquyen_qd as $val) {
+                                if (chkPhanQuyen($val, 'phanquyen') == '0') {
+                                    if ($ct->phanquyen == $val) {
+                                        $model->forget($key);
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // }
+                    break;
+                }
+        }
+
+        // if ($ct->trangthai == 'CHUADOC') {
+        //     $sl += 1;
+        // }
+    };
+    foreach ($model as $ct) {
+        $trangthai = taikhoan_nhanthongbao::where('mathongbao', $ct->mathongbao)->where('tendangnhap', $tendangnhap)->first();
+        $ct->trangthai = isset($trangthai) ? 'DADOC' : 'CHUADOC';
+        if ($ct->trangthai == 'CHUADOC') {
+            $sl += 1;
+        }
+    }
+    // dd($model);
+    return $sl;
+}
+
 function hasEmail()
 {
     if (session('admin')->capdo == 'SSA') {
@@ -2122,6 +2452,7 @@ function ChucNang()
         'dotxuat' => 'Khen thưởng đột xuất',
         'conghien' => 'Khen thưởng theo quá trình cống hiến',
         'doingoai' => 'Khen thưởng đối ngoại',
+        'khangchien' => 'Khen thưởng kháng chiến',
         'dsphongtraothidua' => 'Phong trào thi đua',
         'khenthuongphongtrao' => 'Khen thưởng theo phong trào thi đua',
         'dsphongtraothiduacumkhoi' => 'Phong trào thi đua cụm khối',
@@ -2129,3 +2460,120 @@ function ChucNang()
     ];
 }
 
+function getDonViThamMuu($phamvi, $kieudulieu)
+{
+    switch ($phamvi) {
+        case 'T': {
+                $model = \App\Models\View\viewdiabandonvi::wherein('capdo', ['H', 'T'])->get();
+                break;
+            }
+        case 'TW': {
+                $model = \App\Models\View\viewdiabandonvi::wherein('capdo', ['H', 'T'])->get();
+                break;
+            }
+        case 'H': {
+                $model = \App\Models\View\viewdiabandonvi::wherein('capdo', ['H'])->get();
+                break;
+            }
+        case 'SBN': {
+                $model = \App\Models\View\viewdiabandonvi::wherein('capdo', ['H'])->get();
+                break;
+            }
+        case 'X': {
+                $model = \App\Models\View\viewdiabandonvi::wherein('capdo', ['X'])->get();
+                break;
+            }
+    }
+
+    switch ($kieudulieu) {
+        case 'MODEL': {
+                return $model;
+                break;
+            }
+        default:
+            return array_column($model->toarray(), 'tendonvi', 'madonvi');
+    }
+}
+
+function getDonViXetDuyetDiaBan_PhongTrao($donvi, $kieudulieu = 'ARRAY', $donvithammuu = null)
+{
+    //Lấy đơn vị quản lý địa bàn và đơn vi
+    $m_diaban = \App\Models\DanhMuc\dsdiaban::where('madiaban', $donvi->madiaban)->first();
+    //$a_donvi = [$m_diaban->madonviKT, $donvi->madonvi]; 2023.05.25 bỏ chức năng tự gửi hồ sơ đề nghị lên đơn mình do đã tách hồ sơ khen thưởng tại đơn vị
+    $a_donvi = [$m_diaban->madonviKT];
+    if ($donvithammuu != null) {
+        if($donvi->madonvi == $donvithammuu){
+            // dd($a_donvi);
+            $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
+
+            if ($m_diabanQL != null)
+                $a_donvi = [$m_diabanQL->madonviKT];
+        }else{
+            array_push($a_donvi, $donvithammuu);
+        }
+
+    } else {
+        $m_diabanQL = \App\Models\DanhMuc\dsdiaban::where('madiaban', $m_diaban->madiabanQL)->first();
+
+        if ($m_diabanQL != null)
+            $a_donvi = array_merge($a_donvi, [$m_diabanQL->madonviKT]);
+    }
+
+    //2023.05.25 thêm điều kiện đơn vị không gửi đc cho chính mính (kể cả đơn vị quản lý ở cấp H)
+    // if ($donvi->capdo != 'T') {
+    //     $a_donvi = array_diff($a_donvi, [$donvi->madonvi]);
+    // }
+
+    $model = \App\Models\DanhMuc\dsdonvi::wherein('madonvi', $a_donvi)->get();
+
+    switch ($kieudulieu) {
+        case 'MODEL': {
+                return $model;
+                break;
+            }
+        default:
+            return array_column($model->toarray(), 'tendonvi', 'madonvi');
+    }
+}
+
+function getTenPhongTrao_KhenThuong($mathongbao)
+{
+    $thongbao=\App\Models\ThongBao\thongbao::where('mathongbao',$mathongbao)->first();
+    $mahoso=$thongbao->mahs_mapt;
+    switch ($thongbao->phanloai){
+        case 'quanly': {
+            $hoso=dshosothiduakhenthuong::where('mahosotdkt',$mahoso)->first();
+            $noidung=$hoso->noidung??'';
+            break;
+        }
+        case 'phongtraothidua':{
+            if($thongbao->chucnang == 'khenthuongphongtrao'){
+                $hoso=dshosothiduakhenthuong::where('mahosotdkt',$mahoso)->first();
+                $noidung=$hoso->noidung??'';
+            }else{
+                $hoso=\App\Models\NghiepVu\ThiDuaKhenThuong\dsphongtraothidua::where('maphongtraotd',$mahoso)->first();
+                $noidung=$hoso->noidung??'';
+            }
+            break;
+        }
+        case 'cumkhoi':{
+            if($thongbao->chucnang == 'khenthuongcumkhoi'){
+                $hoso= \App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi::where('mahosotdkt',$mahoso)->first();
+                $noidung=$hoso->noidung??'';
+            }else{
+                $hoso=\App\Models\NghiepVu\CumKhoiThiDua\dsphongtraothiduacumkhoi::where('mahosotdkt',$mahoso)->first();
+                $noidung=$hoso->noidung??'';
+            }
+            break;
+        }
+    }
+    return $noidung;
+}
+
+function getDiaDanh()
+{
+    $a_HeThongChung = getHeThongChung();
+    //Xét theo tỉnh để cho chức năng đơn vị tham mưu chạy
+    $diadanh = strtoupper(trim(str_replace(' ', '', chuyenkhongdau($a_HeThongChung['diadanh']))));
+    return $diadanh;
+}
