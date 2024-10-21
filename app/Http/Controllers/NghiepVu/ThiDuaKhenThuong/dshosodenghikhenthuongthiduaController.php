@@ -184,6 +184,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
         $inputs['phanloaihoso'] = 'dshosothiduakhenthuong';
         $inputs['url_tailieudinhkem'] = '/DungChung/DinhKemHoSoKhenThuong';
 
+
         $m_phongtrao = dsphongtraothidua::where('maphongtraotd', $inputs['maphongtraotd'])->first();
         $ngayhientai = date('Y-m-d');
         //Kiểm tra phong trào        
@@ -251,6 +252,7 @@ class dshosodenghikhenthuongthiduaController extends Controller
         $inputs['url_return'] = static::$url . 'DanhSach?madonvi=' . $inputs['madonvi'] . '&maphongtraotd=' . $inputs['maphongtraotd'];
         // dd($m_phongtrao);
         // dd($inputs);
+        // dd($model_hoso);
         return view('NghiepVu.ThiDuaKhenThuong.HoSoDeNghiKhenThuongPhongTrao.DanhSach')
             ->with('inputs', $inputs)
             ->with('model', $model)
@@ -681,10 +683,19 @@ class dshosodenghikhenthuongthiduaController extends Controller
                 }
             case 'TUYENQUANG': {
                     if ($m_phongtrao->donvi_thammuu == $inputs['madonvi']) {
-                        $model = dshosothiduakhenthuong::where('maphongtraotd', $inputs['maphongtraotd'])
+                        $model_denghi = dshosothiduakhenthuong::where('maphongtraotd', $inputs['maphongtraotd'])
                             ->where('madonvi_nhan', $inputs['madonvi'])
                             ->wherenotin('trangthai', ['BTL'])
                             ->get();
+                            //Lấy danh sách hồ sơ tham gia của đơn vị cấp huyện
+                            $model_thamgia = dshosothamgiaphongtraotd::where('maphongtraotd', $inputs['maphongtraotd'])
+                            ->wherein('mahosothamgiapt', function ($qr) use ($inputs) {
+                                $qr->select('mahosothamgiapt')->from('dshosothamgiaphongtraotd')
+                                    ->where('madonvi_nhan', $inputs['madonvi'])
+                                    ->orwhere('madonvi_nhan_h', $inputs['madonvi'])
+                                    ->orwhere('madonvi_nhan_t', $inputs['madonvi'])->get();
+                            })->wherenotin('trangthai', ['BTL'])->get();
+                            $model=$model_denghi->concat($model_thamgia);
                     } else {
                         $model = dshosothamgiaphongtraotd::where('maphongtraotd', $inputs['maphongtraotd'])
                             ->wherein('mahosothamgiapt', function ($qr) use ($inputs) {
