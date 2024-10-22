@@ -2501,6 +2501,7 @@ function getDonViXetDuyetDiaBan_PhongTrao($donvi, $kieudulieu = 'ARRAY', $donvit
     $m_diaban = \App\Models\DanhMuc\dsdiaban::where('madiaban', $donvi->madiaban)->first();
     //$a_donvi = [$m_diaban->madonviKT, $donvi->madonvi]; 2023.05.25 bỏ chức năng tự gửi hồ sơ đề nghị lên đơn mình do đã tách hồ sơ khen thưởng tại đơn vị
     $a_donvi = [$m_diaban->madonviKT];
+    // dd($m_diaban);
     if ($donvithammuu != null) {
         if($donvi->madonvi == $donvithammuu){
             // dd($a_donvi);

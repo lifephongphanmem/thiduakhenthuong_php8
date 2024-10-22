@@ -207,14 +207,17 @@ class dshosothiduaController extends Controller
         }
         $inputs['trangthai'] = session('chucnang')['dshosothidua']['trangthai'] ?? 'CC';
         //  dd($inputs);
+        // dd(session('admin'));
         // dd(getDonViXetDuyetDiaBan($donvi));
+        
         // dd($model);
         return view('NghiepVu.ThiDuaKhenThuong.HoSoThiDua.ThongTin')
             ->with('inputs', $inputs)
             ->with('model', $model->sortby('tungay'))
             ->with('m_donvi', $m_donvi)
             ->with('m_diaban', $m_diaban)
-            ->with('a_donviql', getDonViXetDuyetDiaBan($donvi))
+            // ->with('a_donviql', getDonViXetDuyetDiaBan($donvi))
+            ->with('a_donviql', getDonViXetDuyetDiaBan_PhongTrao($donvi,'ARRAY',))
             ->with('a_phamvi', getPhamViPhongTrao())
             ->with('a_phanloai', getPhanLoaiPhongTraoThiDua(true))
             ->with('a_trangthaihoso', getTrangThaiTDKT())
