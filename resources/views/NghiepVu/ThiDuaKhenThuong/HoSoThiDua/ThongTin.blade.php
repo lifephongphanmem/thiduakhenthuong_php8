@@ -144,7 +144,7 @@
 
                                         @if ($tt->hosodonvi > 0 && in_array($tt->trangthai, ['CC', 'BTL']) && chkPhanQuyen('dshosothidua', 'hoanthanh'))
                                             <button title="Trình hồ sơ đăng ký" type="button"
-                                                onclick="confirmChuyen('{{ $tt->mahosothamgiapt }}','/HoSoThiDua/ChuyenHoSo')"
+                                                onclick="confirmChuyen('{{ $tt->mahosothamgiapt }}','/HoSoThiDua/ChuyenHoSo','{{$tt->donvi_thammuu}}',{{$inputs['madonvi']}})"
                                                 class="btn btn-sm btn-clean btn-icon" data-target="#chuyen-modal-confirm"
                                                 data-toggle="modal">
                                                 <i class="icon-lg la fa-share-square text-primary"></i></button>

@@ -2191,7 +2191,7 @@ function SLThongbao($capdo, $madonvi, $tendangnhap)
                 $hosokt = dshosothiduakhenthuong::where('mahosotdkt', $ct->mahs_mapt)->first();
                 if(!isset($hosokt)){
                     $model->forget($key);
-                    continue;
+                    continue 2;
                 }
                     $a_dsphanquyen_tn = array(
                         'tnhosodenghikhenthuongcongtrang',
@@ -2228,7 +2228,7 @@ function SLThongbao($capdo, $madonvi, $tendangnhap)
                     // dd($hoso);
                     if (count($hoso) <= 0 && getPhanLoaiTKTiepNhan(session('admin')->madonvi) != session('admin')->tendangnhap) {
                         $model->forget($key);
-                        continue;
+                        continue 2;
                     }
 
                     if (count($hoso) > 0) {
@@ -2278,7 +2278,7 @@ function SLThongbao($capdo, $madonvi, $tendangnhap)
                         //Kiểm tra quyền
                         if (chkPhanQuyen('dshosothidua', 'phanquyen') == '0') {
                             $model->forget($key);
-                            continue;
+                            continue 2;
                         }
                         if (in_array($ct->phamvi, ['H', 'SBN'])) {
                             $madiaban = dsdonvi::where('madonvi', $ct->madonvi_thongbao)->first()->madiaban;
@@ -2287,14 +2287,14 @@ function SLThongbao($capdo, $madonvi, $tendangnhap)
                             // dd(session('admin'));
                             if (!in_array(session('admin')->madiaban, $diaban)) {
                                 $model->forget($key);
-                                continue;
+                                continue 2;
                             }
                         }
                     } else {
                         $hosokt = dshosothiduakhenthuong::where('mahosotdkt', $ct->mahs_mapt)->first();
                         if(!isset($hosokt)){
                             $model->forget($key);
-                            continue;
+                            continue 2;
                         }
                         $a_dsphanquyen_tn = array(
                             'tnhosodenghikhenthuongthidua',
@@ -2308,7 +2308,7 @@ function SLThongbao($capdo, $madonvi, $tendangnhap)
                         $hoso = dshosothiduakhenthuong_xuly::where('mahosotdkt', $ct->mahs_mapt)->orderby('created_at', 'desc')->get();
                         if (count($hoso) <= 0 && getPhanLoaiTKTiepNhan(session('admin')->madonvi) != session('admin')->tendangnhap) {
                             $model->forget($key);
-                            continue;
+                            continue 2;
                         }
                         if (count($hoso) > 0) {
                             //Thông báo cho chức năng tiếp nhận
@@ -2356,13 +2356,13 @@ function SLThongbao($capdo, $madonvi, $tendangnhap)
                         //Kiểm tra quyền
                         if (chkPhanQuyen('dshosothiduacumkhoi', 'phanquyen') == '0') {
                             $model->forget($key);
-                            continue;
+                            continue 2;
                         }
                     } else {
                         $hosokt = dshosotdktcumkhoi::where('mahosotdkt', $ct->mahs_mapt)->first();
                         if(!isset($hosokt)){
                             $model->forget($key);
-                            continue;
+                            continue 2;
                         }
                         $a_dsphanquyen_tn = array(
                             'tnhosodenghikhenthuongthiduacumkhoi',
@@ -2376,7 +2376,7 @@ function SLThongbao($capdo, $madonvi, $tendangnhap)
                         $hoso = \App\Models\NghiepVu\CumKhoiThiDua\dshosotdktcumkhoi_xuly::where('mahosotdkt', $ct->mahs_mapt)->orderby('created_at', 'desc')->get();
                         if (count($hoso) <= 0 && getPhanLoaiTKTiepNhan(session('admin')->madonvi) != session('admin')->tendangnhap) {
                             $model->forget($key);
-                            continue;
+                            continue 2;
                         }
                         if (count($hoso) > 0) {
                             //Thông báo cho chức năng tiếp nhận
@@ -2526,7 +2526,6 @@ function getDonViXetDuyetDiaBan_PhongTrao($donvi, $kieudulieu = 'ARRAY', $donvit
     // }
 
     $model = \App\Models\DanhMuc\dsdonvi::wherein('madonvi', $a_donvi)->get();
-
     switch ($kieudulieu) {
         case 'MODEL': {
                 return $model;
