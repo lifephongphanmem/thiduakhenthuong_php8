@@ -16,7 +16,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="control-label">Cơ quan tiếp nhận<span class="require">*</span></label>
-                            {!! Form::select('madonvi_nhan', $a_donviql, null, ['class' => 'form-control select2_modal']) !!}                            
+                            {!! Form::select('madonvi_nhan', $a_donviql, null, ['id'=>'donvi_nhan','class' => 'form-control select2_modal']) !!}                            
                         </div>
                     </div>
                 </div>
@@ -55,7 +55,35 @@
         //$('#frm_chuyen').submit();
     }
 
-    function confirmChuyen(mahs,url) {
+    function confirmChuyen(mahs,url,dvthammuu=null,madonvi=null) {
+        // console.log(dvthammuu);
+        if(dvthammuu != null){
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var url_dv='/HoSoThiDua/getDonViThamMuu'
+        $.ajax({
+            url: url_dv,
+            type: 'GET',
+            data: {
+                _token: CSRF_TOKEN,
+                mahs: mahs,
+                madonvi: madonvi,
+                donvithammuu: dvthammuu
+            },
+            dataType: 'JSON',
+            success: function (data) {
+                // console.log(data);
+                if (data.status == 'success') {
+                    $('#donvi_nhan').replaceWith(data.message);
+                    // TableManagedclass.init();
+                    // TableManaged3.init();
+                    // $('#frm_nhan_hs').attr('action', url_hs);
+                }
+            },
+            error: function (message) {
+                toastr.error(message, 'Lỗi!');
+            }
+        });
+        }
         $('#frm_chuyen').attr('action', url);
         $('#frm_chuyen').find("[name='mahoso']").val(mahs);
     }

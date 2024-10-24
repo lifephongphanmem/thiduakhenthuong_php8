@@ -1,12 +1,11 @@
 @if (session('admin')->opt_quytrinhkhenthuong == 'TAIKHOAN')
-    @if (chkPhanQuyen($inputs['phanquyen'], 'xuly') && getDiaDanh()=='TUYENQUANG')
+    {{-- @if (chkPhanQuyen($inputs['phanquyen'], 'xuly') && getDiaDanh()=='TUYENQUANG')
         <button title="Thẩm định hồ sơ" type="button"
             onclick="confirmThamDinhHoSo('{{ $tt->mahosotdkt }}','{{ $inputs['url_thamdinh'] }}')"
             class="btn btn-sm btn-clean btn-icon" data-target="#modal-thamdinhhoso" data-toggle="modal">
-            {{-- <i class="icon-lg la flaticon-list text-success"></i> --}}
             <i class="icon-lg text-success flaticon2-files-and-folders"></i>
         </button>
-    @endif
+    @endif --}}
 
     @if (in_array($tt->trangthai_hoso, ['CD']) && chkPhanQuyen($inputs['phanquyen'], 'tiepnhan') && $tt->taikhoantiepnhan)
         <button title="Tiếp nhận hồ sơ" type="button"
@@ -39,6 +38,13 @@
     @if (in_array($tt->trangthai_hoso, ['DCCVXD', 'BTLXD', 'BTL', 'BTLTN', 'KDK']) &&
             $tt->thaotac &&
             chkPhanQuyen($inputs['phanquyen'], 'xuly'))
+                @if (getDiaDanh()=='TUYENQUANG')
+                <button title="Thẩm định hồ sơ" type="button"
+                    onclick="confirmThamDinhHoSo('{{ $tt->mahosotdkt }}','{{ $inputs['url_thamdinh'] }}')"
+                    class="btn btn-sm btn-clean btn-icon" data-target="#modal-thamdinhhoso" data-toggle="modal">
+                    <i class="icon-lg text-success flaticon2-files-and-folders"></i>
+                </button>
+            @endif
         <button title="Xử lý hồ sơ" type="button"
             onclick="confirmXuLyHoSo('{{ $tt->mahosotdkt }}', '{{ $inputs['madonvi'] }}','{{ $tt->dieukien_hs == true ? 1 : 0 }}','{{ $tt->trangthai_xl }}', '{{ $inputs['url_xd'] . 'XuLyHoSo' }}','{{ $tt->tendangnhap_xl }}')"
             class="btn btn-sm btn-clean btn-icon" data-target="#modal-xulyhoso" data-toggle="modal">
